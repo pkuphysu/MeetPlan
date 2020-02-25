@@ -1,0 +1,127 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    综合指导课详情
+{% endblock %}
+
+{% block content-header %}
+    <h1>综合指导课详情</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-block btn-primary"
+                                onclick="window.location.href='{% url 'meet_plan:tea-plan-add' %}'"> 新增
+                        </button>
+                        <button type="button" class="btn btn-block btn-primary"
+                                onclick="window.location.href='{% url 'meet_plan:tea-plan-update' plan.id %}'">编辑
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>计划编号</th>
+                            <th>地点</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>是否允许多人</th>
+                        </tr>
+
+                        <tr>
+                            <th>{{ plan.id }}</th>
+                            <th>{{ plan.place }}</th>
+                            <th>{{ plan.start_time }}</th>
+                            <th>{{ plan.end_time }}</th>
+                            <th>{{ plan.allow_other }}</th>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+    <div class="row">
+        {% if ordernum == 0 %}
+            <div class="col-xs-12">
+                <div>暂时还没有同学预约.</div>
+            </div>
+        {% else %}
+            <div class="col-xs-12 col-md-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">预约列表1</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th>预约编号</th>
+                                <th>学生姓名</th>
+                                <th>学号</th>
+                                <th>状态</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr>
+                                <td>{{ order0id }}</td>
+                                <td>{{ order0stu }}</td>
+                                <td>{{ order0stuid }}</td>
+                                <td>{{ order0finish }}</td>
+                                <td>{{ order0message }}</td>
+                                <td><a href="{% url 'meet_plan:tea-order-update' order0id %}">确认</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            {% if ordernum > 1 %}
+                <div class="col-xs-12 col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">预约列表2</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <th>预约编号</th>
+                                    <th>学生姓名</th>
+                                    <th>学号</th>
+                                    <th>状态</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ order1id }}</td>
+                                    <td>{{ order1stu }}</td>
+                                    <td>{{ order1stuid }}</td>
+                                    <td>{{ order1finish }}</td>
+                                    <td>{{ order1message }}</td>
+                                    <td><a href="{% url 'meet_plan:tea-order-update' order0id %}">确认</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

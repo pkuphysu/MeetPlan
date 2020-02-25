@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    编辑个人邮箱
+{% endblock %}
+
+{% block content-header %}
+    <h1>编辑个人邮箱</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Update">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
