@@ -1,0 +1,61 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    修改综合指导课安排
+{% endblock %}
+
+{% block content-header %}
+    <h1>修改综合指导课安排</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Update">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block headcss %}
+{% endblock %}
+
+{% block footjs %}
+    <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
+    <script>
+        var startdatetimepicker = laydate.render({
+            elem: '#starttimepicker',
+            type: 'datetime',
+            theme: 'molv',
+            format: 'yyyy/M/d H:m',
+            min: '{{semesterstartdate}}',
+            max: '{{semesterenddate}}',
+            ready: function () {
+                startdatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
+            }
+        });
+        var enddatetimepicker = laydate.render({
+            elem: '#endtimepicker',
+            type: 'datetime',
+            theme: 'molv',
+            format: 'yyyy/M/d H:m',
+            min: '{{semesterstartdate}}',
+            max: '{{semesterenddate}}',
+            ready: function () {
+                enddatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
+            }
+        });
+    </script>
+{% endblock %}

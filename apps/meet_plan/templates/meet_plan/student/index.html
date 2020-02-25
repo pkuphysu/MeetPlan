@@ -1,0 +1,212 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    综合指导课首页
+{% endblock %}
+{% block content-header %}
+    <h1>综合指导课首页</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    {% if user.userprofile and user.userprofile.user_img %}
+                        <img class="profile-user-img img-responsive img-circle"
+                             src="{{ user.userprofile.user_img.url }}"
+                             alt="User profile picture">
+                    {% else %}
+                        <img src="{% static 'images/headpicture/default.jpg' %}"
+                             class="profile-user-img img-responsive img-circle" alt="User profile picture">
+                    {% endif %}
+
+                    <h3 class="profile-username text-center">{{ user.user_name }}</h3>
+
+                    <p class="text-muted text-center"></p>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>本学期预约数</b> <a class="pull-right">{{ this_meetplanorder_list.count }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>有效预约数</b> <a class="pull-right">{{ meetplanorder_ava_num }}/8</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>历史预约数</b> <a class="pull-right">{{ meetplanorder_list.count }}</a>
+                        </li>
+                    </ul>
+
+                    {#                    <a href="{% url 'meet_plan:tea-plan-add' %}" class="btn btn-primary btn-block"><b>新增安排</b></a>#}
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#this_semester" data-toggle="tab">本学期</a></li>
+                    <li class=""><a href="#history" data-toggle="tab">历史</a></li>
+                    <li class=""><a href="#about" data-toggle="tab">相关说明</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="this_semester">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">本学期({{ semesterstartdate }}到{{ semesterenddate }})预约记录</h3>
+
+                                <div class="box-tools">
+                                    <button type="button" class="btn btn-block btn-primary"
+                                            onclick="window.location.href='{% url 'meet_plan:stu-all-tea-all-plan-list' %}'">
+                                        去选课
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            {% for meetplanorder in this_meetplanorder_list %}
+                                {% if forloop.first %}
+                                    <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>日期</th>
+                                        <th>时间</th>
+                                        <th>地点</th>
+                                        <th>教师</th>
+                                        <th>备注</th>
+                                        <th>状态</th>
+                                    </tr>
+                                {% endif %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ meetplanorder.meet_plan.start_time|date }}</td>
+                                <td>{{ meetplanorder.meet_plan.start_time|time }}-{{ meetplanorder.meet_plan.end_time|time }}</td>
+                                <td>{{ meetplanorder.meet_plan.place }}</td>
+                                <td>{{ meetplanorder.meet_plan.teacher.user_name }}</td>
+                                <td>{{ meetplanorder.meet_plan.message }}</td>
+                                {% if meetplanorder.completed %}
+                                    <td><span class="label label-success">已确认</span></td>
+                                {% else %}
+                                    <td><span class="label label-warning">待确认</span></td>
+                                {% endif %}
+                            </tr>
+                            {% if forloop.last %}
+                                </tbody></table>
+                                </div>
+                                <!-- /.box-body -->
+                            {% endif %}
+                            {% empty %}
+                                <div class="box-body table-responsive no-padding">
+                                    暂无任何预约
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="history">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">历史预约记录</h3>
+
+                                <div class="box-tools">
+                                    {#                  <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'meet_plan:stu-all-tea-all-plan-list' %}'">选课</button>#}
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            {% for meetplanorder in meetplanorder_list %}
+                                {% if forloop.first %}
+                                    <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>日期</th>
+                                        <th>时间</th>
+                                        <th>地点</th>
+                                        <th>教师</th>
+                                        <th>备注</th>
+                                        <th>状态</th>
+                                    </tr>
+                                {% endif %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ meetplanorder.meet_plan.start_time|date }}</td>
+                                <td>{{ meetplanorder.meet_plan.start_time|time }}-{{ meetplanorder.meet_plan.end_time|time }}</td>
+                                <td>{{ meetplanorder.meet_plan.place }}</td>
+                                <td>{{ meetplanorder.meet_plan.teacher.user_name }}</td>
+                                <td>{{ meetplanorder.meet_plan.message }}</td>
+                                {% if meetplanorder.completed %}
+                                    <td><span class="label label-success">已确认</span></td>
+                                {% else %}
+                                    <td><span class="label label-warning">待确认</span></td>
+                                {% endif %}
+                            </tr>
+                            {% if forloop.last %}
+                                </tbody></table>
+                                </div>
+                                <!-- /.box-body -->
+                            {% endif %}
+                            {% empty %}
+                                <div class="box-body table-responsive no-padding">
+                                    暂无任何预约
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="about">
+                        <!-- About Box -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">综合指导课相关说明</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
+
+                                <p>如果你身边有转系同学无法访问本网站,请让其辅导员提供学生姓名学号向学工办申请账号.</p>
+
+                                <hr/>
+
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
+
+                                <p>未在网上完成选课的同学可通过提交纸质版《综合指导课选课证明》到物理学院学生工作办公室进行补录.</p>
+
+                                <hr/>
+
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
+
+                                <p>建议物理学院本科生低年级每学期选课2次,有助于尽早确定科研方向.高年级可以用本研指导代替不超过3次的综合指导课课程.
+                                    毕业前要求完成8次选课,记一个必修学分,每学期完成课程次数不设上限.
+                                    但在系统内仅能选2次,如需多次选课请手动提交纸质版证明到物理学院学生工作办公室.
+                                </p>
+
+                                <hr/>
+
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
+
+                                <p><a href="{% static 'files/meetplan/zhzdk.pdf' %}">《综合指导课选课证明》下载</a></p>
+
+                                <hr/>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
