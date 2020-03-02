@@ -16,7 +16,7 @@ def noindex(request):
     if not request.user.is_authenticated:
         if request.GET.get('token'):
             return HttpResponseRedirect(reverse('account_auth:iaaa_auth') +
-                                        '?rand={}%token={}'.format(request.GET.get('rand'), request.GET.get('token'))
+                                        '?rand={}&token={}'.format(request.GET.get('rand'), request.GET.get('token'))
                                         )
             # return HttpResponseRedirect(reverse('account_auth:iaaa_auth')
             #                             + '?rand=%s&token=%s' % (request.GET.get('rand'),
