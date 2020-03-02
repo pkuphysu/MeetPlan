@@ -28,3 +28,13 @@ urlpatterns = [
     # 网站首页页面
     path('', include('apps.portal.urls')),
 ]
+
+
+from django.conf import settings
+if settings.DEBUG:
+    from django.views.static import serve  # 导入
+    from django.conf.urls import url
+    from django.conf import settings
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
+    ]
