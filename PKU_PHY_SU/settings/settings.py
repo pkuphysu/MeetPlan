@@ -18,7 +18,7 @@ import configparser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 读取机密信息
 config = configparser.RawConfigParser()
-config.read(os.path.join(BASE_DIR, "PKU_PHY_SU/secret_config.ini"), encoding='UTF-8')
+config.read(os.path.join(BASE_DIR, "secret_config.ini"), encoding='UTF-8')
 
 APPID = config.get('IAAA', 'APPID')
 APPKEY = config.get('IAAA', 'APPKEY')
@@ -30,7 +30,7 @@ APPKEY = config.get('IAAA', 'APPKEY')
 SECRET_KEY = config.get('Django', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -145,10 +145,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/uploads/") # 项目目录下的media�
 
 STATIC_URL = '/static/'
 # 开发阶段放置项目自己的静态文件
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles"), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "../../staticfiles"), ]
 
 # 执行collectstatic命令后会将项目中的静态文件收集到该目录下面来（所以不应该在该目录下面放置自己的一些静态文件，因为会覆盖掉）, 生产环境用 Nginx 处理
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, '../../static')
 
 # Django 认证系统使用的模型类
 AUTH_USER_MODEL = 'account_auth.User'
@@ -156,3 +156,31 @@ AUTH_USER_MODEL = 'account_auth.User'
 # 配置登录url地址
 # LOGIN_URL = '/account/login/iaaa'  # /user/login/iaaa?next=
 LOGIN_URL = '/account_auth/login/iaaa'
+
+
+# 发送邮件
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# 使用 SSL 连接
+EMAIL_USE_SSL = True
+# SMTP 服务地址和端口
+EMAIL_HOST = config.get('Email', 'HOST')
+EMAIL_PORT = config.getint('Email', 'PORT')
+# 发送邮件的邮箱
+EMAIL_HOST_USER = config.get('Email', 'USER')
+EMAIL_HOST_PASSWORD = config.get('Email', 'PASSWORD')
+EMAIL_FROM = config.get('Email', 'FROM')
+
+
+# Redis 缓存配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://%s:%s/pku_phy_1" % (config.get('Redis', 'HOST'), config.get('Redis', 'PORT')),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

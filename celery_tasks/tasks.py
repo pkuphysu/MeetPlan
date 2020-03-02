@@ -11,7 +11,7 @@ app = Celery('pku_phy_celery.tasks')
 
 app.conf.update(
     # 配置broker, 这里我们用redis作为broker
-    BROKER_URL='redis://172.16.179.142:6379/pku_phy_celery',
+    BROKER_URL='redis://localhost:6379/pku_phy_su_celery',
     # 使用项目数据库存储任务执行结果
     CELERY_RESULT_BACKEND='django-db',
     # 配置定时器模块，定时器信息存储在数据库中
@@ -21,6 +21,7 @@ app.conf.update(
 # 设置app自动加载任务
 # 从已经安装的app中查找任务
 app.autodiscover_tasks(settings.INSTALLED_APPS)
+
 
 @app.tasks
 def send_register_active_email(to_email, username, token):
