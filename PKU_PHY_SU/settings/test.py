@@ -1,12 +1,9 @@
-import os
 import configparser
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # 读取机密信息
 config = configparser.RawConfigParser()
-config.read(os.path.join(BASE_DIR, "PKU_PHY_SU/secret_config.ini"), encoding='UTF-8')
+config.read(filenames='PKU_PHY_SU/secret_config.ini', encoding='UTF-8')
 
 APPID = config.get('IAAA', 'APPID')
 APPKEY = config.get('IAAA', 'APPKEY')
@@ -19,9 +16,9 @@ ALLOWED_HOSTS = ['*']
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$l!yy=1_6r%fq8h+@n^p0gteowo&g=e*bct93&tz6a)giohgfp'
 
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -32,6 +29,7 @@ DATABASES = {
         'PORT': 3306,
     }
 }
+
 
 # 发送邮件
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -50,7 +48,7 @@ EMAIL_FROM = config.get('Email', 'FROM')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/pku_phy_1",
+        "LOCATION": "redis://127.0.0.1:6379/pku_phy_test_1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

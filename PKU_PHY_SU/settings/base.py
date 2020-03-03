@@ -13,8 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # 根据环境变量导入不同设置文件
-# 如果环境变量中存在 ENV（具体值可行自定义）则判定为生产环境导入生产环境设置
-# 否则则判定为开发环境导入开发环境设置
+# "export PHY_ENV='DEVELOP'"
 if not os.environ.get('PHY_ENV'):
     from .pro import *
 elif os.environ.get('PHY_ENV') == 'TEST':
@@ -22,8 +21,11 @@ elif os.environ.get('PHY_ENV') == 'TEST':
 else:
     from .dev import *
 
-# Application definition
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
