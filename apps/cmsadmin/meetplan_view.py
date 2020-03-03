@@ -14,7 +14,7 @@ from .forms import MeetPlanCreateForm, MeetPlanUpdateForm, MeetPlanOrderCreateFo
 
 class MeetPlanView(AdminRequiredMixin, ListView):
     model = MeetPlan
-    template_name = 'cmsadmin/meetplan_all.html'
+    template_name = 'cmsadmin/meetplan/meetplan_all.html'
     paginate_by = 50
     context_object_name = 'meetplan_list'
 
@@ -25,7 +25,7 @@ class MeetPlanView(AdminRequiredMixin, ListView):
 
 class MeetPlanCreateView(AdminRequiredMixin, CreateView):
     model = MeetPlan
-    template_name = 'cmsadmin/meetplan_create.html'
+    template_name = 'cmsadmin/meetplan/meetplan_create.html'
     form_class = MeetPlanCreateForm
     success_url = '/cmsadmin/meetplan_all/'
 
@@ -33,13 +33,13 @@ class MeetPlanCreateView(AdminRequiredMixin, CreateView):
 class MeetPlanUpdateView(AdminRequiredMixin, UpdateView):
     model = MeetPlan
     form_class = MeetPlanUpdateForm
-    template_name = 'cmsadmin/meetplan_update.html'
+    template_name = 'cmsadmin/meetplan/meetplan_update.html'
     success_url = '/cmsadmin/meetplan_all/'
 
 
 class MeetPlanOrderView(AdminRequiredMixin, ListView):
     model = MeetPlanOrder
-    template_name = 'cmsadmin/meetplanorder_all.html'
+    template_name = 'cmsadmin/meetplan/meetplanorder_all.html'
     paginate_by = 50
     context_object_name = 'meetplanorder_list'
 
@@ -50,7 +50,7 @@ class MeetPlanOrderView(AdminRequiredMixin, ListView):
 
 class MeetPlanOrderCreateView(AdminRequiredMixin, CreateView):
     model = MeetPlanOrder
-    template_name = 'cmsadmin/meetplanorder_create.html'
+    template_name = 'cmsadmin/meetplan/meetplanorder_create.html'
     form_class = MeetPlanOrderCreateForm
     success_url = '/cmsadmin/meetplanorder_all/'
 
@@ -58,13 +58,13 @@ class MeetPlanOrderCreateView(AdminRequiredMixin, CreateView):
 class UpdateMeetPlanOrderView(AdminRequiredMixin, UpdateView):
     model = MeetPlanOrder
     form_class = MeetPlanOrderUpdateForm
-    template_name = 'cmsadmin/meetplanorder_update.html'
+    template_name = 'cmsadmin/meetplan/meetplanorder_update.html'
     success_url = '/cmsadmin/meetplanorder_all/'
 
 
 class FeedBackListView(AdminRequiredMixin, ListView):
     model = FeedBack
-    template_name = 'cmsadmin/feedback_all.html'
+    template_name = 'cmsadmin/meetplan/meetplan_feedback_all.html'
     paginate_by = 20
     context_object_name = 'feedback_list'
 
@@ -76,5 +76,5 @@ class FeedBackListView(AdminRequiredMixin, ListView):
 class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
     model = FeedBack
     form_class = FeedBackUpdateForm
-    template_name = 'cmsadmin/feedback_update.html'
+    template_name = 'cmsadmin/meetplan/meetplan_feedback_update.html'
     success_url = '/cmsadmin/meetplanfeedback_all/'

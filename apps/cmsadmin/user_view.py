@@ -9,7 +9,7 @@ from .forms import UserCreateForm, UserUpdateForm
 
 class UserView(AdminRequiredMixin, ListView):
     model = User
-    template_name = 'cmsadmin/user_all.html'
+    template_name = 'cmsadmin/user/user_all.html'
     paginate_by = 50
     context_object_name = 'user_list'
 
@@ -20,7 +20,7 @@ class UserView(AdminRequiredMixin, ListView):
 
 class UserCreateView(AdminRequiredMixin, CreateView):
     model = User
-    template_name = 'cmsadmin/user_create.html'
+    template_name = 'cmsadmin/user/user_create.html'
     form_class = UserCreateForm
     success_url = '/cmsadmin/user_all/'
 
@@ -37,13 +37,13 @@ class CreateManyUserView(AdminRequiredMixin, View):
 class UpdateUserView(AdminRequiredMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
-    template_name = 'cmsadmin/user_update.html'
+    template_name = 'cmsadmin/user/user_update.html'
     success_url = '/cmsadmin/user_all/'
 
 
 class DeletedUserListView(AdminRequiredMixin, ListView):
     model = User
-    template_name = 'cmsadmin/user_deletelist.html'
+    template_name = 'cmsadmin/user/user_deletelist.html'
     paginate_by = 50
     context_object_name = 'user_list'
 
