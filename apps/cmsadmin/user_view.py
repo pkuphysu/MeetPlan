@@ -1,11 +1,14 @@
+from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.base import View
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
+from django.conf import settings
 from utils.mixin import AdminRequiredMixin
 from apps.account_auth.models import User
 from .forms import UserCreateForm, UserUpdateForm
-
+from .tasks import send_account_active_email
 
 class UserView(AdminRequiredMixin, ListView):
     model = User
@@ -26,7 +29,22 @@ class UserCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         # TODO: 如果添加成功, 发送邮件通知
-        return super().form_valid(form)
+        # return super().form_valid(form)
+        response = super().form_valid(form)
+        # 加密用户信息
+        serializer = Serializer(settings.SECRET_KEY, expires_in=60*60*24*7)
+        info = {'active': form.cleaned_data['identity_id']}
+        token = serializer.dumps(info)  # bytes
+        token = token.decode()
+        email = '{}@pku.edu.cn'.format(form.cleaned_data['identity_id'])
+        email = '598049186@qq.com'
+        user_name = form.cleaned_data['user_name']
+        domain = self.request.META['HTTP_HOST']
+        active_path = reverse('account_auth:active-account', kwargs={'token': token})
+        active_url = 'http://{}{}'.format(domain, active_path)
+        # 发邮件
+        send_account_active_email.delay(email, user_name, active_url, domain)
+        return response
 
 
 class CreateManyUserView(AdminRequiredMixin, View):

@@ -48,9 +48,16 @@ EMAIL_FROM = config.get('Email', 'FROM')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.1.13:6379/pku_phy_dev_1",
+        "LOCATION": "redis://192.168.1.13:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
+
+
+# Broker配置，使用Redis作为消息中间件
+CELERY_BROKER_URL = 'redis://192.168.1.13:6379/2'
+
+
+print('DEVELOP')

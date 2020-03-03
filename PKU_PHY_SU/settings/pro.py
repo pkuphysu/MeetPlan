@@ -45,12 +45,20 @@ EMAIL_FROM = config.get('Email', 'FROM')
 
 
 # Redis 缓存配置
+REDIS_ADDRESS = '{}:{}'.format(config.get('Redis', 'HOST'), config.get('Redis', 'PORT'))
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://%s:%s/pku_phy_1" % (config.get('Redis', 'HOST'), config.get('Redis', 'PORT')),
+        "LOCATION": "redis://{}/5".format(REDIS_ADDRESS),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
+
+
+# Broker配置，使用Redis作为消息中间件
+CELERY_BROKER_URL = 'redis://{}/6'.format(REDIS_ADDRESS)
+
+
+print('PRODUCT')
