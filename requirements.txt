@@ -1,3 +1,4 @@
+itsdangerous
 amqp==2.5.2
 Babel==2.8.0
 billiard==3.6.2.0

@@ -134,4 +134,6 @@ LOGIN_URL = '/account_auth/login/iaaa'
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-
+# Celery 配置
+CELERY_RESULT_SERIALIZER = 'json'  # 结果序列化方案
+CELERY_RESULT_BACKEND = 'django-db'  # BACKEND配置，这里使用redis

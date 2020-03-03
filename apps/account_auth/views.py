@@ -1,10 +1,11 @@
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import logout
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
-
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired
+from django.conf import settings
 from utils.mixin import LoginRequiredMixin, UserProfileRequiredMixin
 from .models import User, UserProfile
 from .forms import UserEmailUpdateForm, UserProfileUpdateForm, UserProfileCreateForm, UserProfileImgUpdateForm
@@ -26,6 +27,29 @@ def noindex(request):
 
 def index(request):
     return HttpResponseRedirect(reverse('portal:index'))
+
+
+class ActiveView(View):
+    """用户激活"""
+
+    def get(self, request, token):
+        """进行用户激活"""
+        # 进行解密，获取要激活的用户信息
+        serializer = Serializer(settings.SECRET_KEY, 60*60*24*7)
+        try:
+            info = serializer.loads(token)
+            # 获取待激活用户的id
+            user_id = info['active']
+
+            # 根据id获取用户信息
+            user = User.objects.get(identity_id=user_id)
+            user.is_active = True
+            user.save()
+            # 跳转到登录页面
+            return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
+        except SignatureExpired:
+            # 激活链接已过期
+            return HttpResponse('激活链接已过期')
 
 
 class UserProfileAddView(LoginRequiredMixin, CreateView):
