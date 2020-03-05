@@ -1,11 +1,10 @@
 from django import forms
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from utils.mixin import FormMixin
+from utils.mixin.form import FormMixin
 from .models import User, UserProfile
 
 
 class UserEmailUpdateForm(forms.ModelForm, FormMixin):
-    # email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     class Meta:
         model = User
         fields = ['email']
@@ -18,11 +17,6 @@ class UserEmailUpdateForm(forms.ModelForm, FormMixin):
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
-        # error_messages = {
-        #     'email': {
-        #         'max_length': ("This writer's name is too long."),
-        #     },
-        # }
 
 
 class UserProfileCreateForm(forms.ModelForm, FormMixin):
@@ -61,15 +55,3 @@ class UserProfileUpdateForm(forms.ModelForm, FormMixin):
                                             'id': 'datepicker',
                                             }),
         }
-
-
-class UserProfileImgUpdateForm(forms.ModelForm, FormMixin):
-    class Meta:
-        model = UserProfile
-        fields = ['user_img']
-        labels = {
-            'user_img': '头像',
-        }
-        # widgets = {
-        #     'user_img': forms.FileInput()
-        # }

@@ -52,7 +52,7 @@ def have_profile_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAM
     return actual_decorator
 
 
-class AdminRequiredMixin(object):
+class AdminRequiredMixin:
     """
     普通管理员验证类
     """
@@ -62,7 +62,7 @@ class AdminRequiredMixin(object):
         return admin_required(view_func=view, login_url=settings.LOGIN_URL)
 
 
-class TeacherRequiredMixin(object):
+class TeacherRequiredMixin:
     """
     教师验证类
     """
@@ -72,7 +72,7 @@ class TeacherRequiredMixin(object):
         return teacher_required(view_func=view, login_url=settings.LOGIN_URL)
 
 
-class StaffRequiredMixin(object):
+class StaffRequiredMixin:
     """
     超级管理员验证类, 此类用户可访问 django 默认 admin 后台, 本项目暂时用不到
     """
@@ -83,7 +83,7 @@ class StaffRequiredMixin(object):
         return staff_member_required(view_func=view, login_url=settings.LOGIN_URL)
 
 
-class LoginRequiredMixin(object):
+class LoginRequiredMixin:
     """
     登录验证类
     """
@@ -94,7 +94,7 @@ class LoginRequiredMixin(object):
         return login_required(function=view, login_url=settings.LOGIN_URL)
 
 
-class UserProfileRequiredMixin(object):
+class UserProfileRequiredMixin:
     """
     登录验证类
     """
@@ -105,38 +105,3 @@ class UserProfileRequiredMixin(object):
         return have_profile_required(view_func=view)
 
 
-class FormMixin(object):
-    """返回错误信息表单"""
-    def get_error(self):
-        if hasattr(self, 'errors'):
-            errors = self.errors.get_json_data()
-            print(errors)
-            if errors != {}:
-                error_tuple = errors.popitem()
-                error_list = error_tuple[1]
-                error_dict = error_list[0]
-                message = error_dict['message']
-                print(message)
-                return message
-            else:
-                return None
-        else:
-            return None
-
-    def as_div(self):
-        '''
-        <div class="form-group">
-                  <label for="exampleInputFile">File input</label>
-                  <input type="file" id="exampleInputFile">
-
-                  <p class="help-block">Example block-level help text here.</p>
-                </div>
-        :return:
-        '''
-        return self._html_output(
-            normal_row='<div class="form-group"> %(label)s %(field)s %(help_text)s</div>',
-            error_row='%s',
-            row_ender='</div>',
-            help_text_html='<p class="help-block">%s</p>',
-            errors_on_separate_row=True,
-        )

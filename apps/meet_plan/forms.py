@@ -1,6 +1,6 @@
 from django import forms
 
-from utils.mixin import FormMixin
+from utils.mixin.form import FormMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
 
 

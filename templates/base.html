@@ -61,8 +61,8 @@
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
-                    {% if user.userprofile and user.userprofile.user_img %}
-                  <img src="{{user.userprofile.user_img.url}}" class="img-circle" alt="User Image">
+                    {% if user.userprofile and user.userprofile.head_picture %}
+                  <img src="{{user.userprofile.head_picture.img.url}}" class="img-circle" alt="User Image">
                     {% else %}
                     <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
                     {% endif %}
