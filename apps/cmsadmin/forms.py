@@ -1,8 +1,7 @@
 from django import forms
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from utils.mixin import FormMixin
-from apps.account_auth.models import User, UserProfile
-from apps.meet_plan.models import MeetPlan, MeetPlanOrder, SemesterDateRange, FeedBack
+from utils.mixin.form import FormMixin
+from apps.account_auth.models import User
+from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack, SemesterDateRange
 
 
 class UserCreateForm(forms.ModelForm, FormMixin):
@@ -217,4 +216,21 @@ class FeedBackUpdateForm(forms.ModelForm, FormMixin):
         widgets = {
             'have_checked': forms.Select(attrs={'class': 'form-control'},
                                          choices=FeedBack.FeedBackChoices)
+        }
+
+
+class SemesterDateRangeCreateForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = SemesterDateRange
+        fields = {
+            'start_date',
+            'end_date'
+        }
+        widgets = {
+            'start_date': forms.DateInput(attrs={'class': 'form-control',
+                                                     'id': 'startdatepicker'
+                                                     }),
+            'end_date': forms.DateInput(attrs={'class': 'form-control',
+                                                   'id': 'enddatepicker'
+                                                   }),
         }

@@ -1,20 +1,16 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-
-from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.base import View
 
-from utils.mixin import AdminRequiredMixin
-from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
-from .forms import MeetPlanCreateForm, MeetPlanUpdateForm, MeetPlanOrderCreateForm, MeetPlanOrderUpdateForm, FeedBackUpdateForm
+from utils.mixin.permission import AdminRequiredMixin
+from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack, SemesterDateRange
+from .forms import MeetPlanCreateForm, MeetPlanUpdateForm, MeetPlanOrderCreateForm, MeetPlanOrderUpdateForm,\
+    FeedBackUpdateForm, SemesterDateRangeCreateForm
 
 
 class MeetPlanView(AdminRequiredMixin, ListView):
     model = MeetPlan
-    template_name = 'cmsadmin/meetplan_all.html'
+    template_name = 'cmsadmin/meetplan/meetplan_all.html'
     paginate_by = 50
     context_object_name = 'meetplan_list'
 
@@ -25,21 +21,27 @@ class MeetPlanView(AdminRequiredMixin, ListView):
 
 class MeetPlanCreateView(AdminRequiredMixin, CreateView):
     model = MeetPlan
-    template_name = 'cmsadmin/meetplan_create.html'
+    template_name = 'cmsadmin/meetplan/meetplan_create.html'
     form_class = MeetPlanCreateForm
-    success_url = '/cmsadmin/meetplan_all/'
+    # success_url = '/cmsadmin/meetplan_all/'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan_all')
 
 
 class MeetPlanUpdateView(AdminRequiredMixin, UpdateView):
     model = MeetPlan
     form_class = MeetPlanUpdateForm
-    template_name = 'cmsadmin/meetplan_update.html'
-    success_url = '/cmsadmin/meetplan_all/'
+    template_name = 'cmsadmin/meetplan/meetplan_update.html'
+    # success_url = '/cmsadmin/meetplan_all/'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan_all')
 
 
 class MeetPlanOrderView(AdminRequiredMixin, ListView):
     model = MeetPlanOrder
-    template_name = 'cmsadmin/meetplanorder_all.html'
+    template_name = 'cmsadmin/meetplan/meetplanorder_all.html'
     paginate_by = 50
     context_object_name = 'meetplanorder_list'
 
@@ -50,21 +52,27 @@ class MeetPlanOrderView(AdminRequiredMixin, ListView):
 
 class MeetPlanOrderCreateView(AdminRequiredMixin, CreateView):
     model = MeetPlanOrder
-    template_name = 'cmsadmin/meetplanorder_create.html'
+    template_name = 'cmsadmin/meetplan/meetplanorder_create.html'
     form_class = MeetPlanOrderCreateForm
-    success_url = '/cmsadmin/meetplanorder_all/'
+    # success_url = '/cmsadmin/meetplanorder_all/'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplanorder_all')
 
 
-class UpdateMeetPlanOrderView(AdminRequiredMixin, UpdateView):
+class MeetPlanOrderViewUpdate(AdminRequiredMixin, UpdateView):
     model = MeetPlanOrder
     form_class = MeetPlanOrderUpdateForm
-    template_name = 'cmsadmin/meetplanorder_update.html'
-    success_url = '/cmsadmin/meetplanorder_all/'
+    template_name = 'cmsadmin/meetplan/meetplanorder_update.html'
+    # success_url = '/cmsadmin/meetplanorder_all/'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplanorder_all')
 
 
 class FeedBackListView(AdminRequiredMixin, ListView):
     model = FeedBack
-    template_name = 'cmsadmin/feedback_all.html'
+    template_name = 'cmsadmin/meetplan/meetplan_feedback_all.html'
     paginate_by = 20
     context_object_name = 'feedback_list'
 
@@ -76,5 +84,17 @@ class FeedBackListView(AdminRequiredMixin, ListView):
 class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
     model = FeedBack
     form_class = FeedBackUpdateForm
-    template_name = 'cmsadmin/feedback_update.html'
-    success_url = '/cmsadmin/meetplanfeedback_all/'
+    template_name = 'cmsadmin/meetplan/meetplan_feedback_update.html'
+    # success_url = '/cmsadmin/meetplanfeedback_all/'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:feedback_all')
+
+
+class SemesterDateRangeCreateView(AdminRequiredMixin, CreateView):
+    model = SemesterDateRange
+    form_class = SemesterDateRangeCreateForm
+    template_name = 'cmsadmin/meetplan/semesterdaterange_create.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan_all')

@@ -20,18 +20,19 @@
 
 {% block usermenu %}
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        {% if user.userprofile and user.userprofile.user_img %}
-        <img src="{{ user.userprofile.user_img.url }}" class="user-image" alt="User Image">
+        {% if user.userprofile and user.userprofile.head_picture %}
+        <img src="{{ user.userprofile.head_picture.img.url }}" class="user-image" alt="User Image">
         {% else %}
         <img src="{% static 'images/headpicture/default.jpg' %}" class="user-image" alt="User Image">
         {% endif %}
         <span class="hidden-xs">{{ user.user_name }}</span>
     </a>
+    {% if user.is_authenticated %}
     <ul class="dropdown-menu">
         <!-- User image -->
           <li class="user-header">
-              {% if user.userprofile and user.userprofile.user_img %}
-                  <img src="{{ user.userprofile.user_img.url }}" class="img-circle" alt="User Image">
+              {% if user.userprofile and user.userprofile.head_picture %}
+                  <img src="{{ user.userprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
               {% else %}
                   <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
               {% endif %}
@@ -49,13 +50,14 @@
           </li>
           <li class="user-footer">
             <div class="pull-left">
-              <a href="{% url 'account_auth:userprofileimg_add' user.identity_id %}" class="btn btn-default btn-flat">修改头像</a>
+              <a href="{% url 'account_auth:userprofileimg_add' %}" class="btn btn-default btn-flat">修改头像</a>
             </div>
             <div class="pull-right">
               <a href="{% url 'account_auth:logout' %}" class="btn btn-default btn-flat">注销</a>
             </div>
           </li>
     </ul>
+    {% endif %}
 {% endblock %}
 
 {% block sidebarmenu %}
@@ -66,6 +68,7 @@
                 <span>返回网站首页</span>
             </a>
         </li>
+    {% if user.is_authenticated %}
         {% if user.is_admin %}
         <li>
             <a href="{% url 'cmsadmin:index' %}"><i class="glyphicon glyphicon-wrench"></i>
@@ -114,6 +117,7 @@
                 {% endif %}
             </ul>
         </li>
+    {% endif %}
         <li>
             <a href="{% url 'portal:about' %}"><i class="fa fa-home"></i>
                 <span>关于我们</span>
