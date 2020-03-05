@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
-from utils.mixin import LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin
+from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
 from .forms import MeetPlanCreateForm, MeetPlanUpdateForm, MeetPlanOrderUpdateForm, FeedBackCreateForm
 from .utils import get_semester_date_range

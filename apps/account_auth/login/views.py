@@ -7,17 +7,30 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.urls import reverse
+from django.conf import settings
 
 
 class IAAALoginView(View):
 
     def get(self, request):
-        print(request.__dict__)
+        if settings.DEBUG:
+            return TemplateResponse(request, template='account_auth/login/local_login.html')
+
         response = TemplateResponse(request, template='account_auth/login/iaaa_login.html')
         if request.META.get('QUERY_STRING'):
             response.set_cookie(key='next', value=request.META.get('QUERY_STRING'), expires=5 * 60)
         return response
-        # return render(request, template_name='account_auth/login/iaaa_login.html')
+
+    def post(self, request):
+        if settings.DEBUG:
+            identity_id = request.POST.get('username', None)
+            user_model = get_user_model()
+            user = user_model.objects.filter(identity_id=identity_id)
+            if user.count():
+                login(request, user[0])
+                return HttpResponseRedirect(reverse('portal:index'))
+            else:
+                return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
 
 
 class IAAALoginAuth(View):
@@ -60,8 +73,8 @@ class IAAALoginAuth(View):
             dept_id = user_info['deptId']
             identity_type = user_info['identityType']
 
-            User = get_user_model()
-            user = User.objects.filter(identity_id=identity_id)
+            user_model = get_user_model()
+            user = user_model.objects.filter(identity_id=identity_id)
             if user.count():
                 login(request=request, user=user[0])
                 if request.COOKIES.get('next'):
