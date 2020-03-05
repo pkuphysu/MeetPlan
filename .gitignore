@@ -6,7 +6,8 @@ __pycache__
 /log/
 PKU_PHY_SU/secret_config.ini
 uwsgi.ini
-migrations
+!/apps/*/migrations/__init__.py
+/apps/*/migrations/*
 
 
 ### Linux ###
