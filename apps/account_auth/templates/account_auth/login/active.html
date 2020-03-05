@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    激活成功
+{% endblock %}
+
+{% block content-header %}
+    <h1>激活成功</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="error-page">
+        <h2 class="headline text-green"> 欢迎 </h2>
+        <div class="error-content">
+            <h3><i class="fa fa-check text-green"></i> 您已经成功激活您的账户! </h3>
+
+            <p>
+                正在重定向至登录界面！ 欢迎您的加入～
+            </p>
+            <p>
+                若您的浏览器没有跳转，您可以点击<a href="{% url 'portal:index' %}">链接</a>返回主页。
+            </p>
+        </div>
+        <!-- /.error-content -->
+    </div>
+{% endblock %}
+
+{% block footjs %}
+    <script language=javascript>
+        document.write("<form action='https://iaaa.pku.edu.cn/iaaa/oauth.jsp' method=post name='formx1' style='display:none'>");
+        document.write("<input type=hidden name='appID' value='phymeetplan1'>");
+        document.write("<input type=hidden name='redirectUrl' value='https://meetplan.phy.pku.edu.cn'>");
+        document.write("</form>");
+        setTimeout("document.formx1.submit();", 1000);
+    </script>
+{% endblock %}

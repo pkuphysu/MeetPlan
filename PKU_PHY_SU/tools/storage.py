@@ -1,8 +1,8 @@
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 
 class FileStorage(FileSystemStorage):
-    from django.conf import settings
 
     def __init__(self, location=settings.MEDIA_ROOT, base_url=settings.MEDIA_URL):
         # 初始化

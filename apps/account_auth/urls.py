@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('add_userprofile/', views.UserProfileAddView.as_view(), name='userprofile_add'),
     path('userprofile_update/<int:pk>/', views.UserProfileUpdateView.as_view(), name='userprofile_update'),
-    path('userprofileimg_update/<int:pk>/', views.UserProfileImgUpdateView.as_view(), name='userprofileimg_add'),
+    path('userprofileimg_upload/', views.UserProfileImgUpdateView.as_view(), name='userprofileimg_add'),
     path('useremail_update/<int:pk>/', views.UserEmailUpdateView.as_view(), name='useremail_update'),
 
 ]

@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.urls import reverse
+from django.utils.html import escape, mark_safe
 
 from . import models
-
 
 # Register your models here.
 
@@ -88,8 +88,14 @@ class UserProfileAdmin(admin.ModelAdmin):
         'gender',
         'birth',
         'telephone',
-        'user_img'
+        'link_to_head_picture'
     ]
+
+    def link_to_head_picture(self, obj):
+        link = reverse("admin:filemanager_img_change", args=[obj.head_picture.id])
+        return mark_safe(f'<a href="{link}">{escape(obj.head_picture.__str__())}</a>')
+
+    link_to_head_picture.short_description = '头像'
     list_filter = ['gender']
     search_fields = ['user', 'telephone']
     list_per_page = 20

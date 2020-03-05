@@ -57,7 +57,8 @@ CACHES = {
 
 
 # Broker配置，使用Redis作为消息中间件
-CELERY_BROKER_URL = 'redis://192.168.1.13:6379/2'
+#CELERY_BROKER_URL = 'redis://192.168.1.13:6379/2'
+CELERY_BROKER_URL = 'amqp://dev:dev@192.168.1.13:5672/dev'
 
 
 print('DEVELOP')

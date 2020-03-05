@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from db.base_model import BaseModel
 from phonenumber_field.modelfields import PhoneNumberField
-from utils.storage import FileStorage
 
 
 # Create your models here.
@@ -45,7 +44,6 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
     identity_id = models.CharField(max_length=11, unique=True, verbose_name='职工号\\学号', db_index=True, primary_key=True)
     user_name = models.CharField(max_length=100, null=False, blank=False, verbose_name='姓名')
     email = models.EmailField(null=True, blank=True, verbose_name='电子邮件')
-    # email = models.EmailField(default='%s@pku.edu.cn' % identity_id, help_text='电子邮件')
     is_active = models.BooleanField(default=False, verbose_name='是否激活')
     is_teacher = models.BooleanField(default=False, verbose_name='是否为教职工')
     is_admin = models.BooleanField(default=False, verbose_name='是否为管理员, 管理员可登陆cmsadmin管理页面')
@@ -94,8 +92,8 @@ class UserProfile(BaseModel, models.Model):
     telephone = PhoneNumberField(region='CN', null=False, blank=False, verbose_name='联系方式')
 
     birth = models.DateField(null=True, blank=True, verbose_name='生日')
-    user_img = models.ImageField(default=None, upload_to='userprofile/headpicture/', null=True, blank=True,
-                                 storage=FileStorage(), verbose_name='用户头像')
+    from apps.filemanager.models import Img
+    head_picture = models.ForeignKey(to=Img, on_delete=models.SET_NULL, null=True, blank=True, default=None)
 
     class Meta:
         verbose_name = "用户详细信息"

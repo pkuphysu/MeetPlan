@@ -23,7 +23,11 @@ urlpatterns += [
     path('meetplan_update/<int:pk>/', meetplan_view.MeetPlanUpdateView.as_view(), name='meetplan_update'),
     path('meetplanorder_all/', meetplan_view.MeetPlanOrderView.as_view(), name='meetplanorder_all'),
     path('meetplanorder_create/', meetplan_view.MeetPlanOrderCreateView.as_view(), name='meetplanorder_create'),
-    path('meetplanorder_update/<int:pk>/', meetplan_view.UpdateMeetPlanOrderView.as_view(), name='meetplanorder_update'),
+    path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderViewUpdate.as_view(), name='meetplanorder_update'),
     path('meetplanfeedback_all/', meetplan_view.FeedBackListView.as_view(), name='feedback_all'),
     path('meetplanfeedback_update/<int:pk>/', meetplan_view.FeedBackUpdateView.as_view(), name='feedback_update'),
+]
+
+urlpatterns += [
+    path('semesterdaterange/', meetplan_view.SemesterDateRangeCreateView.as_view(), name='meetplan-semester-create')
 ]

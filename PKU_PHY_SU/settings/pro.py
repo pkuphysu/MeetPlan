@@ -58,7 +58,13 @@ CACHES = {
 
 
 # Broker配置，使用Redis作为消息中间件
-CELERY_BROKER_URL = 'redis://{}/6'.format(REDIS_ADDRESS)
-
+# CELERY_BROKER_URL = 'redis://{}/6'.format(REDIS_ADDRESS)
+CELERY_BROKER_URL = 'amqp://{}:{}@{}:{}/{}'.format(
+    config.get('RabbitMQ', 'USER'),
+    config.get('RabbitMQ', 'PASSWORD'),
+    config.get('RabbitMQ', 'HOST'),
+    config.get('RabbitMQ', 'PORT'),
+    config.get('RabbitMQ', 'NAME'),
+)
 
 print('PRODUCT')

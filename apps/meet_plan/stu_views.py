@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.views.generic.edit import CreateView
 
-from utils.mixin import LoginRequiredMixin, UserProfileRequiredMixin
+from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin
 from apps.account_auth.models import User
 from .models import MeetPlan, MeetPlanOrder
 from .forms import MeetPlanOrderCreateForm
