@@ -29,6 +29,12 @@ class UserManager(BaseUserManager):
         kwargs['is_active'] = False
         return self._create_user(identity_id=identity_id, user_name=user_name, **kwargs)
 
+    def create_user(self, identity_id, user_name, is_teacher, **kwargs):
+        if is_teacher:
+            return self.create_tea(identity_id, user_name, **kwargs)
+        else:
+            return self.create_stu(identity_id, user_name, **kwargs)
+
     def create_superuser(self, identity_id, user_name, **kwargs):
         kwargs['is_superuser'] = True
         kwargs['is_active'] = True

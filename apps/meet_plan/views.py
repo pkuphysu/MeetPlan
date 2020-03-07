@@ -21,7 +21,6 @@ class IndexView(LoginRequiredMixin, UserProfileRequiredMixin, View):
         date_range = get_semester_date_range()
         current_user = request.user
         if current_user.is_teacher:
-            # TODO: 完善教师综合指导课概览页面
             queryset = MeetPlan.objects.filter(teacher=current_user, is_delete=False)
             context = {
                 'semesterstartdate': date_range[0].strftime("%Y-%m-%d"),
@@ -40,7 +39,6 @@ class IndexView(LoginRequiredMixin, UserProfileRequiredMixin, View):
             }
             return TemplateResponse(request, 'meet_plan/teacher/index.html', context)
         else:
-            # TODO: 完善学生综合指导课概览页面
             date_range = get_semester_date_range()
             queryset = MeetPlanOrder.objects.filter(student=current_user, is_delete=False)
             context = {

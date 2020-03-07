@@ -90,6 +90,20 @@ class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('cmsadmin:feedback_all')
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        self.ori_obj = super().get_object(queryset=queryset)
+        return obj
+
+    def form_valid(self, form):
+        from apps.meet_plan.tasks import send_meetplan_feedback_update_email
+        domain = self.request.get_host()
+        if self.object.have_checked != self.ori_obj.have_checked:
+            send_meetplan_feedback_update_email.delay(self.object.id, domain)
+
+        response = super().form_valid(form)
+        return response
+
 
 class SemesterDateRangeCreateView(AdminRequiredMixin, CreateView):
     model = SemesterDateRange

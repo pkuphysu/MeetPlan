@@ -90,6 +90,7 @@
                                 </li>
                                 <!-- /.timeline-label -->
                                 {% for order in meetplan.meetplanorder_set.all %}
+                                    {% if not order.is_delete %}
                                     <!-- timeline item -->
                                     <li>
                                         <i class="fa fa-comments bg-yellow"></i>
@@ -114,6 +115,7 @@
                                             </div>
                                         </div>
                                     </li>
+                                    {% endif %}
                                     <!-- END timeline item -->
                                 {% endfor %}
                             {% endfor %}

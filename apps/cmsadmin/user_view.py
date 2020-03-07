@@ -1,12 +1,13 @@
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.base import View
 
 from utils.mixin.permission import AdminRequiredMixin
 from apps.account_auth.models import User
+from utils.mixin.view import FileUploadViewMixin
+
 from .forms import UserCreateForm, UserUpdateForm
-from .tasks import send_account_active_email
+from .tasks import send_account_active_email, create_many_user
 
 
 class UserView(AdminRequiredMixin, ListView):
@@ -31,15 +32,24 @@ class UserCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        domain = self.request.META['HTTP_HOST']
+        domain = self.request.get_host()
         # 发邮件
         send_account_active_email.delay(self.object.identity_id, domain)
         return response
 
 
-class CreateManyUserView(AdminRequiredMixin, View):
-    model = User
-    # TODO: 增加批量添加用户功能
+class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
+    template_name = 'cmsadmin/user/user_create_many.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user_all')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        domain = self.request.get_host()
+        # 创建任务
+        create_many_user.delay(self.object.id, domain)
+        return response
 
 
 class UpdateUserView(AdminRequiredMixin, UpdateView):
