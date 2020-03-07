@@ -46,10 +46,6 @@ class MeetPlanUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
         context['semesterenddate'] = date_range[1].strftime("%Y-%m-%d")
         return context
 
-    def form_valid(self, form):
-        # TODO: 发送已确认邮件
-        return super().form_valid(form)
-
 
 class MeetPlanListView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, ListView):
     model = MeetPlan
@@ -93,13 +89,19 @@ class MeetPlanOrderUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, Teac
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
+        self.ori_obj = super().get_object(queryset=queryset)
         if obj.meet_plan.teacher != self.request.user:
             raise PermissionDenied
         return obj
 
     def form_valid(self, form):
-        # TODO: 发送邮件
-        return super().form_valid(form)
+        from .tasks import send_meetplan_order_update_email
+        domain = self.request.get_host()
+        if self.object.completed != self.ori_obj.completed or self.object.is_delete != self.ori_obj.is_delete:
+            send_meetplan_order_update_email.delay(self.object.id, domain)
+
+        response = super().form_valid(form)
+        return response
 
 
 class FeedBackCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, CreateView):
@@ -108,9 +110,14 @@ class FeedBackCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
     form_class = FeedBackCreateForm
 
     def form_valid(self, form):
-        # TODO: 发送邮件
         form.instance.teacher = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        from .tasks import send_meetplan_feedback_create_email
+        domain = self.request.get_host()
+        send_meetplan_feedback_create_email.delay(self.object.id, domain)
+
+        return response
 
 
 class FeedBackListView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, ListView):

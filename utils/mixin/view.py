@@ -8,8 +8,9 @@ class FileUploadForm(forms.ModelForm, FormMixin):
     class Meta:
         model = File
         fields = ['file']
-        labels = {}
-        widgets = {}
+        labels = {
+            'file': '文件'
+        }
 
 
 class FileUploadViewMixin(CreateView):
@@ -18,7 +19,7 @@ class FileUploadViewMixin(CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.upload_or_download = True
+        form.instance.upload_or_generate = True
         return super().form_valid(form)
 
 
@@ -26,8 +27,9 @@ class ImgUploadForm(forms.ModelForm, FormMixin):
     class Meta:
         model = Img
         fields = ['img']
-        labels = {}
-        widgets = {}
+        labels = {
+            'img': '图片'
+        }
 
 
 class ImgUploadViewMixin(CreateView):
@@ -36,7 +38,7 @@ class ImgUploadViewMixin(CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.upload_or_download = True
+        form.instance.upload_or_generate = True
         return super().form_valid(form)
 
 

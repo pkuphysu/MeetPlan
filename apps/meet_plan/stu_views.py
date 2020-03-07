@@ -79,8 +79,12 @@ class MeetPlanOrderCreateView(LoginRequiredMixin, UserProfileRequiredMixin, Crea
     def form_valid(self, form):
         form.instance.meet_plan = self.meet_plan
         form.instance.student = self.request.user
-        # TODO: 发送邮件
-        return super().form_valid(form)
+        response = super().form_valid(form)
+
+        from .tasks import send_meetplan_order_create_email
+        domain = self.request.get_host()
+        send_meetplan_order_create_email.delay(self.object.id, domain)
+        return response
 
     # def is_limit_reached(self):
     #     return Contact.objects.filter(contact_owner=self.request.user).count() >= 100
@@ -95,5 +99,10 @@ class MeetPlanOrderCreateView(LoginRequiredMixin, UserProfileRequiredMixin, Crea
             raise PermissionDenied
         if not self.meet_plan.available_choice or self.meet_plan.start_time < timezone.now():
             raise PermissionDenied
-        else:
-            return super().post(request, *args, **kwargs)
+
+        if MeetPlanOrder.objects.filter(student=self.request.user,
+                                        meet_plan=self.meet_plan,
+                                        is_delete=False).count() > 0:
+            return PermissionDenied
+
+        return super().post(request, *args, **kwargs)

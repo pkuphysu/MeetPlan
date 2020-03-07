@@ -36,13 +36,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # 使用 SSL 连接
 EMAIL_USE_SSL = True
 # SMTP 服务地址和端口
+# EMAIL_HOST = 'localhost'
 EMAIL_HOST = config.get('Email', 'HOST')
+# EMAIL_PORT = 1025
 EMAIL_PORT = config.getint('Email', 'PORT')
 # 发送邮件的邮箱
 EMAIL_HOST_USER = config.get('Email', 'USER')
 EMAIL_HOST_PASSWORD = config.get('Email', 'PASSWORD')
 EMAIL_FROM = config.get('Email', 'FROM')
-
+# EMAIL_FROM = '本地test'
 
 # Redis 缓存配置
 CACHES = {

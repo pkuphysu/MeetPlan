@@ -11,8 +11,8 @@ from django.conf import settings
 class MeetPlan(BaseModel):
     """综合指导课模型类"""
     AllowOtherChoices = (
-        (0, '不允许'),
-        (1, '允许')
+        (False, '不允许'),
+        (True, '允许')
     )
     teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
     place = models.CharField(verbose_name="谈话地点", max_length=128, help_text="谈话地点")
