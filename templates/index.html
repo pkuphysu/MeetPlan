@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block logo %}
-    <a href="{% url 'cmsadmin:index' %}" class="logo">
+    <a href="{% url 'portal:index' %}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>P</b>hy</span>
         <!-- logo for regular state and mobile devices -->
@@ -21,42 +21,42 @@
 {% block usermenu %}
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         {% if user.userprofile and user.userprofile.head_picture %}
-        <img src="{{ user.userprofile.head_picture.img.url }}" class="user-image" alt="User Image">
+            <img src="{{ user.userprofile.head_picture.img.url }}" class="user-image" alt="User Image">
         {% else %}
-        <img src="{% static 'images/headpicture/default.jpg' %}" class="user-image" alt="User Image">
+            <img src="{% static 'images/headpicture/default.jpg' %}" class="user-image" alt="User Image">
         {% endif %}
         <span class="hidden-xs">{{ user.user_name }}</span>
     </a>
     {% if user.is_authenticated %}
-    <ul class="dropdown-menu">
-        <!-- User image -->
-          <li class="user-header">
-              {% if user.userprofile and user.userprofile.head_picture %}
-                  <img src="{{ user.userprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
-              {% else %}
-                  <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
-              {% endif %}
-            <p>
-            {% if user.is_admin %}
-            管理员
-            {% elif user.is_teacher %}
-            教师
-            {% else %}
-            学生
-            {% endif %}
-               {{user.user_name}}
-              <small>从{{ user.create_time|date }}加入</small>
-            </p>
-          </li>
-          <li class="user-footer">
-            <div class="pull-left">
-              <a href="{% url 'account_auth:userprofileimg_add' %}" class="btn btn-default btn-flat">修改头像</a>
-            </div>
-            <div class="pull-right">
-              <a href="{% url 'account_auth:logout' %}" class="btn btn-default btn-flat">注销</a>
-            </div>
-          </li>
-    </ul>
+        <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+                {% if user.userprofile and user.userprofile.head_picture %}
+                    <img src="{{ user.userprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
+                {% else %}
+                    <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
+                {% endif %}
+                <p>
+                    {% if user.is_admin %}
+                        管理员
+                    {% elif user.is_teacher %}
+                        教师
+                    {% else %}
+                        学生
+                    {% endif %}
+                    {{ user.user_name }}
+                    <small>从{{ user.create_time|date }}加入</small>
+                </p>
+            </li>
+            <li class="user-footer">
+                <div class="pull-left">
+                    <a href="{% url 'account_auth:userprofileimg_add' %}" class="btn btn-default btn-flat">修改头像</a>
+                </div>
+                <div class="pull-right">
+                    <a href="{% url 'account_auth:logout' %}" class="btn btn-default btn-flat">注销</a>
+                </div>
+            </li>
+        </ul>
     {% endif %}
 {% endblock %}
 
@@ -68,56 +68,66 @@
                 <span>返回网站首页</span>
             </a>
         </li>
-    {% if user.is_authenticated %}
-        {% if user.is_admin %}
-        <li>
-            <a href="{% url 'cmsadmin:index' %}"><i class="glyphicon glyphicon-wrench"></i>
-                <span>管理员后台</span>
-            </a>
-        </li>
-        {% endif %}
-        {% if user.is_superuser %}
-        <li>
-            <a href="{% url 'admin:index' %}"><i class="fa  fa-user-secret"></i>
-                <span>超级管理员后台</span>
-            </a>
-        </li>
-        {% endif %}
+        {% if user.is_authenticated %}
+            {% if user.is_admin %}
+                <li>
+                    <a href="{% url 'cmsadmin:index' %}"><i class="glyphicon glyphicon-wrench"></i>
+                        <span>管理员后台</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if user.is_superuser %}
+                <li>
+                    <a href="{% url 'admin:index' %}"><i class="fa  fa-user-secret"></i>
+                        <span>超级管理员后台</span>
+                    </a>
+                </li>
+            {% endif %}
 
-        <li class="treeview">
-            <a href="#">
-                <i class="fa fa-users"></i> <span>个人中心</span>
-                <span class="pull-right-container">
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>个人中心</span>
+                    <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="{% url 'account_auth:useremail_update' user.identity_id %}"><i class="fa fa-circle-o"></i> 修改邮件</a></li>
-                <li><a href="{% url 'account_auth:userprofile_update' user.identity_id %}"><i class="fa fa-circle-o"></i> 修改个人资料</a></li>
-            </ul>
-        </li>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{% url 'account_auth:useremail_update' user.pk %}"><i
+                            class="fa fa-circle-o"></i> 修改邮件</a></li>
+                    {% if user.is_teacher %}
+                        <li><a href="{% url 'account_auth:teacher-profile-create' %}"><i
+                                class="fa fa-circle-o"></i>修改个人详细资料</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_auth:student-profile-create' %}"><i
+                                class="fa fa-circle-o"></i>修改个人详细资料</a></li>
+                    {% endif %}
+                </ul>
+            </li>
 
-        <li class="treeview">
-            <a href="#">
-                <i class="fa fa-tv"></i> <span>综合指导课</span>
-                <span class="pull-right-container">
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-tv"></i> <span>综合指导课</span>
+                    <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
-            </a>
-            <ul class="treeview-menu">
-                {% if not user.is_teacher %}
-                    <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
-                    <li><a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}"><i class="fa fa-circle-o"></i> 课程列表 </a></li>
+                </a>
+                <ul class="treeview-menu">
+                    {% if not user.is_teacher %}
+                        <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
+                        <li><a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}"><i class="fa fa-circle-o"></i>
+                            课程列表 </a></li>
 
-                {% else %}
-                    <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
-                    <li><a href="{% url 'meet_plan:tea-plan-add' %}"><i class="fa fa-circle-o"></i> 增加安排 </a></li>
-                    <li><a href="{% url 'meet_plan:tea-plan-list-all' %}"><i class="fa fa-circle-o"></i> 历史安排 </a></li>
-                    <li><a href="{% url 'meet_plan:tea-feedback-list' %}"><i class="fa fa-circle-o"></i> 使用反馈 </a></li>
-                {% endif %}
-            </ul>
-        </li>
-    {% endif %}
+                    {% else %}
+                        <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
+                        <li><a href="{% url 'meet_plan:tea-plan-add' %}"><i class="fa fa-circle-o"></i> 增加安排 </a></li>
+                        <li><a href="{% url 'meet_plan:tea-plan-list-all' %}"><i class="fa fa-circle-o"></i> 历史安排 </a>
+                        </li>
+                        <li><a href="{% url 'meet_plan:tea-feedback-list' %}"><i class="fa fa-circle-o"></i> 使用反馈 </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endif %}
         <li>
             <a href="{% url 'portal:about' %}"><i class="fa fa-home"></i>
                 <span>关于我们</span>
@@ -142,7 +152,7 @@
 {% endblock %}
 
 {% block content-header %}
-     <h1>首页</h1>
+    <h1>首页</h1>
 {% endblock %}
 
 {% block content %}

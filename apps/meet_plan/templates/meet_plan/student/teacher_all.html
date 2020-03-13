@@ -40,7 +40,7 @@
                     <th>{{ teacher.meetplan_available_num }}</th>
                     <th>{{ teacher.meetplanorder_available_num }}</th>
                     {% if teacher.meetplanorder_available_num %}
-                        <th><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.identity_id %}">查看</a></th>
+                        <th><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></th>
                     {% else %}
                         <th><a href="javascript:void(0)">已选完</a></th>
                     {% endif %}

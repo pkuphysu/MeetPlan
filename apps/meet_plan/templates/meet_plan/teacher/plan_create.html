@@ -35,27 +35,21 @@
 {% block footjs %}
     <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
     <script>
-        var startdatetimepicker = laydate.render({
+        laydate.render({
             elem: '#starttimepicker',
             type: 'datetime',
             theme: 'molv',
             format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
-            ready: function () {
-                startdatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
-            }
+            min: '{{term_start_date}}',
+            max: '{{term_end_date}}'
         });
-        var enddatetimepicker = laydate.render({
+        laydate.render({
             elem: '#endtimepicker',
             type: 'datetime',
             theme: 'molv',
             format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
-            ready: function () {
-                enddatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
-            }
+            min: '{{term_start_date}}',
+            max: '{{term_end_date}}'
         });
     </script>
 {% endblock %}

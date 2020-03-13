@@ -10,8 +10,8 @@
 
         <div class="error-content">
           <h3><i class="fa fa-warning text-yellow"></i> 我太难了! 无法找到.</h3>
-            {% if error_message %}
-                <p>{{ error_message }}</p>
+            {% if exception %}
+                <p>{{ exception }}</p>
             {% else %}
           <p>
             我们无法找到您要找的页面.

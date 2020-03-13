@@ -14,12 +14,12 @@
             <div class="box">
                 <div class="box-header">
                     <div class="box-tools">
-                        <button type="button" class="btn btn-block btn-primary"
+                        <button type="button" class="btn btn-primary"
                                 onclick="window.location.href='{% url 'meet_plan:tea-plan-add' %}'"> 新增
                         </button>
-                        <button type="button" class="btn btn-block btn-primary"
-                                onclick="window.location.href='{% url 'meet_plan:tea-plan-update' plan.id %}'">编辑
-                        </button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="window.location.href='{% url 'meet_plan:tea-plan-update' plan.id %}'">编辑
+                    </button>
                     </div>
                 </div>
                 <div class="box-body table-responsive no-padding">
@@ -45,6 +45,14 @@
                     </table>
                 </div>
                 <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    <div class="pull-right">
+                        <button class="btn btn-danger"
+                                onclick="window.location.href='{% url 'meet_plan:tea-plan-confirm-delete' object.pk %}'">
+                            删除
+                        </button>
+                    </div>
+                </div>
             </div>
             <!-- /.box -->
         </div>

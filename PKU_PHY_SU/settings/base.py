@@ -38,13 +38,13 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     'rest_framework',
-    'phonenumber_field',
 
     'apps.account_auth.apps.AccountAuthConfig',
     'apps.filemanager.apps.FilemanagerConfig',
     'apps.cmsadmin.apps.CmsadminConfig',
     'apps.portal.apps.PortalConfig',
     'apps.meet_plan.apps.MeetPlanConfig',
+    'apps.options.apps.OptionsConfig',
 ]
 
 MIDDLEWARE = [

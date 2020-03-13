@@ -1,11 +1,11 @@
 {% extends 'cmsadmin/index.html' %}
 
 {% block title %}
-    综合指导课
+    综合指导课预约列表
 {% endblock %}
 
 {% block content-header %}
-    <h1>综合指导课</h1>
+    <h1>综合指导课预约列表</h1>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
 
               <div class="box-header">
                 <div class="box-tools">
-                    <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplanorder_create' %}'">增加综合指导课选课情况</button>
+                    <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplanorder_create' %}'">增加综合指导课预约</button>
                 </div>
               </div>
             <!-- /.box-header -->

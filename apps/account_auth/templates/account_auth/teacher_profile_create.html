@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    编辑个人资料
+{% endblock %}
+
+{% block content-header %}
+    <h1>编辑个人资料</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Save">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
