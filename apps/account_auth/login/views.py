@@ -1,13 +1,12 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.views.generic import View
 import requests, hashlib
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.urls import reverse
 from django.conf import settings
+from ..tasks import send_account_active_email
 
 
 class IAAALoginView(View):
@@ -76,16 +75,25 @@ class IAAALoginAuth(View):
             user_model = get_user_model()
             user = user_model.objects.filter(identity_id=identity_id)
             if user.count():
-                login(request=request, user=user[0])
-                if request.COOKIES.get('next'):
-                    cookie_next = request.COOKIES.get('next')
-                    response = HttpResponseRedirect(cookie_next.split('=')[1])
-                    response.delete_cookie('next')
-                    return response
+                if user[0].is_active:
+                    login(request=request, user=user[0])
+                    if request.COOKIES.get('next'):
+                        cookie_next = request.COOKIES.get('next')
+                        response = HttpResponseRedirect(cookie_next.split('=')[1])
+                        response.delete_cookie('next')
+                        return response
+                    else:
+                        return HttpResponseRedirect(reverse('portal:index'))
                 else:
-                    return HttpResponseRedirect(reverse('portal:index'))
+                    domain = request.get_host()
+                    send_account_active_email.delay(user[0].identity_id, domain)
+                    ctx = {
+                        'exception': '您还没有激活，我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收。'
+                    }
+                    return TemplateResponse(request, template='403.html', context=ctx)
+
             else:
-                return HttpResponse('errMsg:%s%s%s' % (name, identity_type, '本应用仅对物理学院学生与教职工开放，若您符合上述条件，请联系网站管理员。'))
+                return HttpResponse('errMsg:%s%s%s' % (name, identity_type, '本应用仅对物理学院学生与教职工开放，若您符合上述条件，请联系网站管理员帮您注册。'))
         else:
-            errMsg = iaaa_response.json()['errMsg']
-            return HttpResponse('errMsg:%s\n%s' % (errMsg, '请联系网站管理员'))
+            err_msg = iaaa_response.json()['errMsg']
+            return HttpResponse('errMsg:%s\n%s' % (err_msg, '请联系网站管理员'))

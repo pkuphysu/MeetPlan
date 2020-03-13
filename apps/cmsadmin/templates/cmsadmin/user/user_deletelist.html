@@ -42,7 +42,7 @@
                               <th>{{ user.is_active }}</th>
                               <th>{{ user.is_teacher }}</th>
                               <th>{{ user.is_admin }}</th>
-                              <th><a href="{% url 'cmsadmin:user_update' user.identity_id %}">编辑</a></th>
+                              <th><a href="{% url 'cmsadmin:user-recovery' user.pk %}">恢复</a></th>
                             </tr>
                   {% if forloop.last %}
                         </tbody>

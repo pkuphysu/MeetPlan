@@ -10,8 +10,15 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     re_path('^active/(?P<token>.*)$', views.ActiveView.as_view(), name='active-account'),
 
-    path('add_userprofile/', views.UserProfileAddView.as_view(), name='userprofile_add'),
-    path('userprofile_update/<int:pk>/', views.UserProfileUpdateView.as_view(), name='userprofile_update'),
+    path('baseprofile_add/', views.UserProfileAddView.as_view(), name='userprofile_add'),
+
+    path('student_profile_create_ajax/', views.LoadMajorView.as_view(), name='major_ajax'),
+    path('student_profile_create/', views.StudentProfileCreateView.as_view(), name='student-profile-create'),
+    path('student_profile_update/<int:pk>/', views.StudentProfileUpdateView.as_view(), name='student-profile-update'),
+
+    path('teacher_profile_create/', views.TeacherProfileCreateView.as_view(), name='teacher-profile-create'),
+    path('teacher_profile_update/<int:pk>/', views.TeacherProfileUpdateView.as_view(), name='teacher-profile-update'),
+
     path('userprofileimg_upload/', views.UserProfileImgUpdateView.as_view(), name='userprofileimg_add'),
     path('useremail_update/<int:pk>/', views.UserEmailUpdateView.as_view(), name='useremail_update'),
 

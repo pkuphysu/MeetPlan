@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth import logout
@@ -8,11 +9,11 @@ from django.views.generic.edit import CreateView, UpdateView
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadData
 from django.conf import settings
 
-from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin
+from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin
 from utils.mixin.view import ImgUploadViewMixin
 
-from .models import User, UserProfile
-from .forms import UserEmailUpdateForm, UserProfileUpdateForm, UserProfileCreateForm
+from .models import User, UserProfile, StudentProfile, Department, Major, TeacherProfile
+from .forms import UserEmailForm, UserProfileForm, StudentProfileForm, TeacherProfileForm
 
 
 # Create your views here.
@@ -53,52 +54,42 @@ class ActiveView(View):
             return TemplateResponse(request, template='account_auth/login/active.html')
         except SignatureExpired:
             ctx = {
-                'error_message': '激活链接已过期！ 请登录或联系管理员获取新的激活链接。'
+                'exception': '激活链接已过期！ 请登录或联系管理员获取新的激活链接。'
             }
             return TemplateResponse(request, template='404.html', context=ctx)
         except BadData:
             ctx = {
-                'error_message': '激活链接错误！ 请复制粘贴完整的激活链接。'
+                'exception': '激活链接错误！ 请复制粘贴完整的激活链接。'
             }
             return TemplateResponse(request, template='404.html', context=ctx)
 
 
-class UserProfileAddView(LoginRequiredMixin, CreateView):
-    # model = UserProfile
-    form_class = UserProfileCreateForm
-    template_name = 'account_auth/userprofile_create.html'
-    success_url = '/index/'
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
-class UserProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateView):
-    model = UserProfile
-    template_name = 'account_auth/userprofile_update.html'
-    form_class = UserProfileUpdateForm
-    # fields = ['gender', 'telephone', 'birth', 'user_img']
-    success_url = '/index/'
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        if obj.user != self.request.user:
-            raise PermissionDenied
-        return obj
-
-
 class UserEmailUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateView):
     model = User
-    form_class = UserEmailUpdateForm
+    form_class = UserEmailForm
     template_name = 'account_auth/useremail_update.html'
-    success_url = '/index/'
+
+    def get_success_url(self):
+        return reverse('portal:index')
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
         if obj != self.request.user:
-            raise PermissionDenied
+            raise PermissionDenied('你只能更改自己的邮件！')
         return obj
+
+
+class UserProfileAddView(LoginRequiredMixin, CreateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = 'account_auth/userprofile_create.html'
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class UserProfileImgUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, ImgUploadViewMixin):
@@ -112,3 +103,98 @@ class UserProfileImgUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, Img
         self.request.user.userprofile.head_picture = self.object
         self.request.user.userprofile.save()
         return response
+
+
+class StudentProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, CreateView):
+    model = StudentProfile
+    template_name = 'account_auth/student_profile_create.html'
+    form_class = StudentProfileForm
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def get(self, request, *args, **kwargs):
+        try:
+            id = request.user.studentprofile.id
+            return HttpResponseRedirect(reverse('account_auth:student-profile-update',
+                                                kwargs={'pk': id}))
+        except StudentProfile.DoesNotExist:
+            return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_teacher:
+            raise PermissionDenied('您的身份是老师，请转向老师补充资料界面。')
+        else:
+            return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class StudentProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateView):
+    model = StudentProfile
+    form_class = StudentProfileForm
+    template_name = 'account_auth/student_profile_update.html'
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(StudentProfile, id=self.kwargs['pk'])
+        if obj != self.request.user.studentprofile:
+            raise PermissionDenied('你只能更改自己的个人资料！')
+        return obj
+
+
+class LoadMajorView(LoginRequiredMixin, UserProfileRequiredMixin, View):
+
+    def get(self, request):
+        if request.is_ajax:
+            department_id = request.GET.get('department')
+            majors = Major.objects.filter(department_id=department_id)
+            return TemplateResponse(request, 'account_auth/ajax/major_dropdown_list_options.html', {'majors': majors})
+        else:
+            raise PermissionDenied('本接口只允许ajax请求')
+
+
+class TeacherProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+    model = TeacherProfile
+    template_name = 'account_auth/teacher_profile_create.html'
+    form_class = TeacherProfileForm
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def get(self, request, *args, **kwargs):
+        try:
+            id = request.user.teacherprofile.id
+            return HttpResponseRedirect(reverse('account_auth:teacher-profile-update',
+                                            kwargs={'pk': id}))
+        except TeacherProfile.DoesNotExist:
+            return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_teacher:
+            raise PermissionDenied('您的身份是学生，请转向学生补充资料界面。')
+        else:
+            return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class TeacherProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+    model = TeacherProfile
+    form_class = TeacherProfileForm
+    template_name = 'account_auth/teacher_profile_update.html'
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(TeacherProfile, id=self.kwargs['pk'])
+        if obj != self.request.user.teacherprofile:
+            raise PermissionDenied('你只能更改自己的个人资料！')
+        return obj

@@ -13,6 +13,13 @@
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="box box-primary">
+                <div class="box-header">
+                    <div class="pull-right">
+                        <button class="btn btn-danger"
+                                onclick="window.location.href='{% url 'meet_plan:tea-order-delete' object.pk %}'">删除
+                        </button>
+                    </div>
+                </div>
                 <!-- form start -->
                 <form role="form" method="post">
                     <div class="box-body">
@@ -22,6 +29,7 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary" value="Update">提交</button>
+
                     </div>
                 </form>
             </div>
