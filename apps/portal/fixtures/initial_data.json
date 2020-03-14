@@ -1,0 +1,13 @@
+[
+  {
+    "model": "portal.friendlink",
+    "pk": 1,
+    "fields": {
+      "name": "新城梦呓",
+      "url": "htt",
+      "value": "2020-01-17T00:00:00+08:00",
+      "create_time": "2019-12-31T16:00:00Z",
+      "update_time": "2019-12-31T16:00:00Z"
+    }
+  }
+]

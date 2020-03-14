@@ -1,10 +1,12 @@
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.views.generic import ListView
 from django.views.generic.base import View
 
 from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin
-
+from .models import FriendLink
+from ..account_auth.models import User
 
 # Create your views here.
 
@@ -30,21 +32,17 @@ class IndexView(LoginRequiredMixin, UserProfileRequiredMixin, View):
         return TemplateResponse(request, 'index.html')
 
 
-class AboutView(LoginRequiredMixin, UserProfileRequiredMixin, View):
-    def get(self, request):
-        return TemplateResponse(request, 'portal/about.html')
+class ContactView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+    model = User
+    template_name = 'portal/contact.html'
+    context_object_name = 'admin_list'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_admin=True)
 
 
-class ContactView(LoginRequiredMixin, UserProfileRequiredMixin, View):
-    def get(self, request):
-        return TemplateResponse(request, 'portal/contact.html')
+class FriendLinkView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+    model = FriendLink
+    template_name = 'portal/friendlink.html'
+    context_object_name = 'friendlink_list'
 
-
-class RecruitmentView(LoginRequiredMixin, UserProfileRequiredMixin, View):
-    def get(self, request):
-        return TemplateResponse(request, 'portal/recruitment.html')
-
-
-class FriendLinkView(LoginRequiredMixin, UserProfileRequiredMixin, View):
-    def get(self, request):
-        return TemplateResponse(request, 'portal/friendlink.html')
