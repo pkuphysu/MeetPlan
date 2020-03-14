@@ -8,15 +8,16 @@ from django.db.models import Q
 from django.utils import timezone
 from django.views.generic.edit import CreateView
 
-from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin
-
+from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin
+from utils.mixin.permission import StuViewMixin
 from ..account_auth.models import User
 from .models import MeetPlan, MeetPlanOrder
 from .forms import MeetPlanOrderCreateForm
 from .utils import get_term_date
 
 
-class TeacherListView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+# class TeacherListView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
+class TeacherListView(StuViewMixin, ListView):
     template_name = 'meet_plan/student/teacher_all.html'
     context_object_name = 'teacher_list'
 
@@ -44,7 +45,8 @@ class TeacherListView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
         return queryset
 
 
-class TeacherPlanListView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+# class TeacherPlanListView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
+class TeacherPlanListView(StuViewMixin, ListView):
     template_name = 'meet_plan/student/teacher_plan_all.html'
     context_object_name = 'plan_list'
     paginate_by = 50
@@ -70,7 +72,8 @@ class TeacherPlanListView(LoginRequiredMixin, UserProfileRequiredMixin, ListView
         return context
 
 
-class MeetPlanOrderCreateView(LoginRequiredMixin, UserProfileRequiredMixin, CreateView):
+# class MeetPlanOrderCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, CreateView):
+class MeetPlanOrderCreateView(StuViewMixin, CreateView):
     model = MeetPlanOrder
     template_name = 'meet_plan/student/order_create.html'
     form_class = MeetPlanOrderCreateForm
@@ -104,4 +107,4 @@ class MeetPlanOrderCreateView(LoginRequiredMixin, UserProfileRequiredMixin, Crea
         return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('meet_plan:index')
+        return reverse('meet_plan:stu-index')

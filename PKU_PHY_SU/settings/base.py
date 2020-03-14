@@ -114,8 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 
-MEDIA_URL = '/media/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/uploads/") # 项目目录下的media目录 需要在项目目录下创建media目录
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media") # 项目目录下的media目录 需要在项目目录下创建media目录
 
 STATIC_URL = '/static/'
 # 开发阶段放置项目自己的静态文件

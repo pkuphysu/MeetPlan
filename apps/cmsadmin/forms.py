@@ -1,7 +1,8 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from apps.account_auth.models import User, UserProfile
-from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
+from ..account_auth.models import User
+from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
+from ..meet_plan.utils import get_term_date
 
 
 class UserForm(forms.ModelForm, FormMixin):
@@ -94,7 +95,7 @@ class MeetPlanOrderForm(forms.ModelForm, FormMixin):
         }
         widgets = {
             'completed': forms.Select(attrs={'class': 'form-control'},
-                                      choices=((True,'已完成'),(False, '未完成'))),
+                                      choices=((True, '已完成'), (False, '未完成'))),
             'message': forms.Textarea(attrs={'class': 'form-control',
                                              'row': '5',
                                              'placeholder': 'Enter...'})
@@ -125,3 +126,49 @@ class OptionForm(forms.Form, FormMixin):
                                                         'id': 'start_date',
                                                         'placeholder': 'yyyy-M-d'}),
                           label='学期结束日期')
+
+
+class MeetPlanReportTeacherForm(forms.Form, FormMixin):
+    start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                               'id': 'start_date',
+                                                               'placeholder': 'yyyy-M-d'}),
+                                 label='统计开始日期')
+    end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'id': 'start_date',
+                                                             'placeholder': 'yyyy-M-d'}),
+                               label='统计结束日期', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        date_range = get_term_date()
+        self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
+        self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')
+
+
+class MeetPlanReportStudentForm(forms.Form, FormMixin):
+    start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                               'id': 'start_date',
+                                                               'placeholder': 'yyyy-M-d'}),
+                                 label='统计开始日期')
+    end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'id': 'start_date',
+                                                             'placeholder': 'yyyy-M-d'}),
+                               label='统计结束日期', )
+
+    use = forms.BooleanField(widget=forms.Select(attrs={'class': 'form-control'},
+                                                 choices=((True, '按照时间'),
+                                                          (False, '按照年级'))),
+                             label='统计方式', initial=True,
+                             help_text='当选择按照时间时，只有统计开始时间和结束时间是有用的，年级选项可以随便选会被忽略。'
+                                       '当选择按照年级时，只有年级选项是有用的，开始时间和结束时间会被忽略但必须填写。')
+
+    grade = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+                                      label='年级(可多选)')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        date_range = get_term_date()
+        self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
+        self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')
+        students = User.objects.filter(is_teacher=False)
+        self.fields['grade'].choices = students

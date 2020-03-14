@@ -4,9 +4,9 @@ from . import views, tea_views, stu_views
 app_name = 'meet_plan'
 
 urlpatterns = [
-    path('', views.noindex),
-    path('index/', views.IndexView.as_view(), name='index'),
-
+    path('', views.NoIndexView.as_view()),
+    path('tea_index/', views.TeaIndexView.as_view(), name='tea-index'),
+    path('stu_index/', views.StuIndexView.as_view(), name='stu-index'),
 ]
 
 # 学生相关

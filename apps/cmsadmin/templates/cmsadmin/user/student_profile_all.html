@@ -27,6 +27,7 @@
                             <th>手机</th>
                             <th>系所</th>
                             <th>专业</th>
+                            <th>年级</th>
                             <th>宿舍</th>
                             <th>操作</th>
                         </tr>
@@ -43,6 +44,7 @@
                     <th>{{ profile.phone_number }}</th>
                     <th>{{ profile.department }}</th>
                     <th>{{ profile.major }}</th>
+                    <th>{{ profile.grade }}</th>
                     <th>{{ profile.dorm }}</th>
                     <th><a href="{% url 'cmsadmin:student-profile-update' profile.pk %}">编辑</a></th>
                 </tr>
