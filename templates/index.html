@@ -64,8 +64,8 @@
     <ul class="sidebar-menu tree" data-widget="tree">
         <li class="header">菜单栏</li>
         <li>
-            <a href="{% url 'portal:index' %}"><i class="fa fa-mail-reply-all"></i>
-                <span>返回网站首页</span>
+            <a href="{% url 'portal:index' %}"><i class="fa fa-home"></i>
+                <span>首页</span>
             </a>
         </li>
         {% if user.is_authenticated %}
@@ -113,12 +113,12 @@
                 </a>
                 <ul class="treeview-menu">
                     {% if not user.is_teacher %}
-                        <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
+                        <li><a href="{% url 'meet_plan:stu-index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
                         <li><a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}"><i class="fa fa-circle-o"></i>
                             课程列表 </a></li>
 
                     {% else %}
-                        <li><a href="{% url 'meet_plan:index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
+                        <li><a href="{% url 'meet_plan:tea-index' %}"><i class="fa fa-circle-o"></i> 概览 </a></li>
                         <li><a href="{% url 'meet_plan:tea-plan-add' %}"><i class="fa fa-circle-o"></i> 增加安排 </a></li>
                         <li><a href="{% url 'meet_plan:tea-plan-list-all' %}"><i class="fa fa-circle-o"></i> 历史安排 </a>
                         </li>

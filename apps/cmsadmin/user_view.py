@@ -7,9 +7,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from utils.mixin.permission import AdminRequiredMixin
 from utils.mixin.view import FileUploadViewMixin
 
+from . import urls
 from .forms import UserForm
-from .tasks import create_many_user
-from ..account_auth.models import User, UserProfile, StudentProfile, TeacherProfile
+from .tasks import account_create_many_user
+from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile
 from ..account_auth.tasks import send_account_active_email
 from ..account_auth.forms import UserProfileForm, StudentProfileForm, TeacherProfileForm
 
@@ -47,10 +48,11 @@ class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
         return reverse('cmsadmin:user_all')
 
     def form_valid(self, form):
+        form.instance.app = urls.app_name
         response = super().form_valid(form)
         domain = self.request.get_host()
         # 创建任务
-        create_many_user.delay(self.object.id, domain)
+        account_create_many_user.delay(self.object.id, domain)
         return response
 
 
@@ -90,7 +92,7 @@ class DeletedUserListView(AdminRequiredMixin, ListView):
 
 
 class UserProfileListView(AdminRequiredMixin, ListView):
-    model = UserProfile
+    model = BaseProfile
     template_name = 'cmsadmin/user/base_profile_all.html'
     paginate_by = 50
     context_object_name = 'base_profile_list'
@@ -100,7 +102,7 @@ class UserProfileListView(AdminRequiredMixin, ListView):
 
 
 class UserProfileUpdateView(AdminRequiredMixin, UpdateView):
-    model = UserProfile
+    model = BaseProfile
     form_class = UserProfileForm
     template_name = 'cmsadmin/user/base_profile_update.html'
 

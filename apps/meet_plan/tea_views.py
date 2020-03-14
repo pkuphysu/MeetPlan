@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin
+# from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin
+from utils.mixin.permission import TeaViewMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
 from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm
 from .utils import get_term_date
@@ -12,7 +13,8 @@ from .utils import get_term_date
 # Create your views here.
 
 
-class MeetPlanCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+# class MeetPlanCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+class MeetPlanCreateView(TeaViewMixin, CreateView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_create.html'
     form_class = MeetPlanForm
@@ -32,7 +34,8 @@ class MeetPlanCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
         return context
 
 
-class MeetPlanUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+# class MeetPlanUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+class MeetPlanUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlan
     form_class = MeetPlanForm
     template_name = 'meet_plan/teacher/plan_update.html'
@@ -54,7 +57,8 @@ class MeetPlanUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
         return context
 
 
-class MeetPlanListView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, ListView):
+# class MeetPlanListView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, ListView):
+class MeetPlanListView(TeaViewMixin, ListView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_all.html'
     paginate_by = 50
@@ -65,7 +69,8 @@ class MeetPlanListView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequ
         return qs.filter(teacher=self.request.user).order_by('-create_time')
 
 
-class MeetPlanDetailView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, DetailView):
+# class MeetPlanDetailView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DetailView):
+class MeetPlanDetailView(TeaViewMixin, DetailView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_detail.html'
     context_object_name = 'plan'
@@ -89,7 +94,8 @@ class MeetPlanDetailView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
         return context
 
 
-class MeetPlanDeleteView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
+# class MeetPlanDeleteView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
+class MeetPlanDeleteView(TeaViewMixin, DeleteView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_confirm_delete.html'
 
@@ -100,16 +106,17 @@ class MeetPlanDeleteView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
         return obj
 
     def get_success_url(self):
-        return reverse('meet_plan:index')
+        return reverse('meet_plan:tea-index')
 
 
-class MeetPlanOrderUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+# class MeetPlanOrderUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlanOrder
     template_name = 'meet_plan/teacher/planorder_update.html'
     form_class = MeetPlanOrderUpdateForm
 
     def get_success_url(self):
-        return reverse('meet_plan:index')
+        return reverse('meet_plan:tea-index')
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
@@ -128,7 +135,8 @@ class MeetPlanOrderUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, Teac
         return response
 
 
-class MeetPlanOrderDeleteView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
+# class MeetPlanOrderDeleteView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
+class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
     model = MeetPlanOrder
     template_name = 'meet_plan/teacher/planorder_confirm_delete.html'
 
@@ -139,10 +147,11 @@ class MeetPlanOrderDeleteView(LoginRequiredMixin, UserProfileRequiredMixin, Teac
         return obj
 
     def get_success_url(self):
-        return reverse('meet_plan:index')
+        return reverse('meet_plan:tea-index')
 
 
-class FeedBackCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+# class FeedBackCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+class FeedBackCreateView(TeaViewMixin, CreateView):
     model = FeedBack
     template_name = 'meet_plan/teacher/feedback_create.html'
     form_class = FeedBackCreateForm
@@ -157,8 +166,12 @@ class FeedBackCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRe
 
         return response
 
+    def get_success_url(self):
+        return reverse('meet_plan:tea-feedback-list')
 
-class FeedBackListView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, ListView):
+
+# class FeedBackListView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, ListView):
+class FeedBackListView(TeaViewMixin, ListView):
     model = FeedBack
     template_name = 'meet_plan/teacher/feedback_all.html'
     paginate_by = 10

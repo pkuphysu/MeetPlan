@@ -1,6 +1,6 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from .models import User, UserProfile, StudentProfile, TeacherProfile, Department, Major
+from .models import User, BaseProfile, StudentProfile, TeacherProfile, Department, Major
 
 
 class UserEmailForm(forms.ModelForm, FormMixin):
@@ -20,7 +20,7 @@ class UserEmailForm(forms.ModelForm, FormMixin):
 
 class UserProfileForm(forms.ModelForm, FormMixin):
     class Meta:
-        model = UserProfile
+        model = BaseProfile
         fields = ['birth', 'gender']
         labels = {
             'gender': '性别',
@@ -28,37 +28,32 @@ class UserProfileForm(forms.ModelForm, FormMixin):
         }
         widgets = {
             'gender': forms.Select(attrs={'class': 'form-control'},
-                                   choices=UserProfile.GenderChoices),
+                                   choices=BaseProfile.GenderChoices),
             'birth': forms.TextInput(attrs={'class': 'form-control',
                                             'id': 'datepicker'}),
         }
 
 
 class StudentProfileForm(forms.ModelForm, FormMixin):
-    # department = forms.ModelChoiceField(queryset=Department.objects.all(),
-    #                                     widget=forms.Select(attrs={'class': 'form-control'}))
-    #
-    # major = forms.ModelChoiceField(queryset=Major.objects.all(),
-    #                                widget=forms.Select(attrs={'class': 'form-control'}))
-
     class Meta:
         model = StudentProfile
-        fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm']
+        fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm', 'grade']
         labels = {
             'is_graduate': '身份',
             'phone_number': '联系方式',
             'department': '系所',
             'major': '专业',
-            'dorm': '宿舍'
+            'dorm': '宿舍',
+            'grade': '年级',
         }
-
         widgets = {
             'department': forms.Select(attrs={'class':'form-control'}),
             'major': forms.Select(attrs={'class': 'form-control'}),
             'is_graduate': forms.Select(attrs={'class': 'form-control'},
                                         choices=StudentProfile.GRADUATE_CHOICES),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'dorm': forms.TextInput(attrs={'class': 'form-control'})
+            'dorm': forms.TextInput(attrs={'class': 'form-control'}),
+            'grade': forms.Select(attrs={'class': 'form-control'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -75,9 +70,6 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
 
 
 class TeacherProfileForm(forms.ModelForm, FormMixin):
-    department = forms.ModelChoiceField(queryset=Department.objects.all(),
-                                        widget=forms.Select(attrs={'class': 'form-control'}))
-
     class Meta:
         model = TeacherProfile
         fields = ['phone_number', 'department', 'office', 'introduce']
@@ -89,7 +81,7 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
         }
         widgets = {
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-
+            'department': forms.Select(attrs={'class': 'form-control'}),
             'office': forms.TextInput(attrs={'class': 'form-control'}),
             'introduce': forms.Textarea(attrs={'class': 'form-control',
                                                'row': '5',

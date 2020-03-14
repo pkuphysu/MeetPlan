@@ -9,12 +9,13 @@ from django.views.generic.edit import CreateView, UpdateView
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadData
 from django.conf import settings
 
-from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin
+# from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin
+from utils.mixin.permission import TeaViewMixin, StuViewMixin, ViewMixin, LoginRequiredMixin, TeacherRequiredMixin
 from utils.mixin.view import ImgUploadViewMixin
 
-from .models import User, UserProfile, StudentProfile, Department, Major, TeacherProfile
+from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile
 from .forms import UserEmailForm, UserProfileForm, StudentProfileForm, TeacherProfileForm
-
+from . import urls
 
 # Create your views here.
 
@@ -64,10 +65,12 @@ class ActiveView(View):
             return TemplateResponse(request, template='404.html', context=ctx)
 
 
-class UserEmailUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateView):
+# class UserEmailUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, UpdateView):
+class UserEmailUpdateView(ViewMixin, UpdateView):
+
     model = User
     form_class = UserEmailForm
-    template_name = 'account_auth/useremail_update.html'
+    template_name = 'account_auth/user_email_update.html'
 
     def get_success_url(self):
         return reverse('portal:index')
@@ -79,33 +82,48 @@ class UserEmailUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateVi
         return obj
 
 
-class UserProfileAddView(LoginRequiredMixin, CreateView):
-    model = UserProfile
+class BaseProfileAddView(LoginRequiredMixin, CreateView):
+    model = BaseProfile
     form_class = UserProfileForm
-    template_name = 'account_auth/userprofile_create.html'
+    template_name = 'account_auth/base_profile_create.html'
 
     def get_success_url(self):
-        return reverse('portal:index')
+        if self.request.user.is_teacher:
+            return reverse('account_auth:teacher-profile-create')
+        else:
+            return reverse('account_auth:student-profile-create')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get(self, request, *args, **kwargs):
+        if not hasattr(request.user, 'baseprofile'):
+            return super().get(request, *args, **kwargs)
+        else:
+            if request.user.is_teacher:
+                return HttpResponseRedirect(reverse('account_auth:teacher-profile-create'))
+            else:
+                return HttpResponseRedirect(reverse('account_auth:student-profile-create'))
 
-class UserProfileImgUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, ImgUploadViewMixin):
-    template_name = 'account_auth/userprofileimg_upload.html'
+
+# class BaseProfileImgUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, ImgUploadViewMixin):
+class BaseProfileImgUpdateView(ViewMixin, ImgUploadViewMixin):
+    template_name = 'account_auth/base_profile_img_upload.html'
 
     def get_success_url(self):
         return reverse('portal:index')
 
     def form_valid(self, form):
+        form.instance.app = urls.app_name
         response = super().form_valid(form)
         self.request.user.userprofile.head_picture = self.object
         self.request.user.userprofile.save()
         return response
 
 
-class StudentProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, CreateView):
+class StudentProfileCreateView(ViewMixin, CreateView):
+# class StudentProfileCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, CreateView):
     model = StudentProfile
     template_name = 'account_auth/student_profile_create.html'
     form_class = StudentProfileForm
@@ -132,8 +150,10 @@ class StudentProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, Cre
         return super().form_valid(form)
 
 
-class StudentProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, UpdateView):
+# class StudentProfileUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, UpdateView):
+class StudentProfileUpdateView(StuViewMixin, UpdateView):
     model = StudentProfile
+
     form_class = StudentProfileForm
     template_name = 'account_auth/student_profile_update.html'
 
@@ -147,8 +167,8 @@ class StudentProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, Upd
         return obj
 
 
-class LoadMajorView(LoginRequiredMixin, UserProfileRequiredMixin, View):
-
+# class LoadMajorView(LoginRequiredMixin, BaseProfileRequiredMixin, View):
+class LoadMajorView(ViewMixin, View):
     def get(self, request):
         if request.is_ajax:
             department_id = request.GET.get('department')
@@ -158,7 +178,8 @@ class LoadMajorView(LoginRequiredMixin, UserProfileRequiredMixin, View):
             raise PermissionDenied('本接口只允许ajax请求')
 
 
-class TeacherProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+# class TeacherProfileCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
+class TeacherProfileCreateView(ViewMixin, TeacherRequiredMixin, CreateView):
     model = TeacherProfile
     template_name = 'account_auth/teacher_profile_create.html'
     form_class = TeacherProfileForm
@@ -185,7 +206,8 @@ class TeacherProfileCreateView(LoginRequiredMixin, UserProfileRequiredMixin, Tea
         return super().form_valid(form)
 
 
-class TeacherProfileUpdateView(LoginRequiredMixin, UserProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+# class TeacherProfileUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
+class TeacherProfileUpdateView(TeaViewMixin, UpdateView):
     model = TeacherProfile
     form_class = TeacherProfileForm
     template_name = 'account_auth/teacher_profile_update.html'

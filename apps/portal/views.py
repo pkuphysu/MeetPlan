@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 from django.views.generic.base import View
 
-from utils.mixin.permission import LoginRequiredMixin, UserProfileRequiredMixin
+from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin, ViewMixin
 from .models import FriendLink
 from ..account_auth.models import User
 
@@ -27,12 +27,14 @@ def noindex(request):
         return HttpResponseRedirect(reverse('portal:index'))
 
 
-class IndexView(LoginRequiredMixin, UserProfileRequiredMixin, View):
+# class IndexView(LoginRequiredMixin, BaseProfileRequiredMixin, View):
+class IndexView(ViewMixin, View):
     def get(self, request):
         return TemplateResponse(request, 'index.html')
 
 
-class ContactView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+class ContactView(ViewMixin, ListView):
+    # class ContactView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
     model = User
     template_name = 'portal/contact.html'
     context_object_name = 'admin_list'
@@ -41,7 +43,8 @@ class ContactView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
         return super().get_queryset().filter(is_admin=True)
 
 
-class FriendLinkView(LoginRequiredMixin, UserProfileRequiredMixin, ListView):
+# class FriendLinkView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
+class FriendLinkView(ViewMixin, ListView):
     model = FriendLink
     template_name = 'portal/friendlink.html'
     context_object_name = 'friendlink_list'

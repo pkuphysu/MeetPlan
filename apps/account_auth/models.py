@@ -92,7 +92,7 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
         return self.is_superuser
 
 
-class UserProfile(BaseModel):
+class BaseProfile(BaseModel):
     GenderChoices = (
         (False, '男'),
         (True, '女'),
@@ -135,6 +135,17 @@ class Major(BaseModel):
         return self.major
 
 
+class Grade(BaseModel):
+    grade = models.CharField(verbose_name='年级', max_length=4)
+
+    class Meta:
+        verbose_name = '年级'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '{}级'.format(self.grade)
+
+
 class StudentProfile(BaseModel):
     GRADUATE_CHOICES = (
         (True, '研究生'),
@@ -149,6 +160,7 @@ class StudentProfile(BaseModel):
 
     department = models.ForeignKey(to=Department, on_delete=models.DO_NOTHING, verbose_name='系所')
     major = models.ForeignKey(to=Major, on_delete=models.DO_NOTHING, verbose_name='专业')
+    grade = models.ForeignKey(to=Grade, on_delete=models.DO_NOTHING, verbose_name='年级')
 
     dorm = models.CharField(verbose_name='宿舍', max_length=32)
 

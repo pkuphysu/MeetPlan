@@ -82,7 +82,7 @@ class PHYUserAdmin(UserAdmin):
 admin.site.register(models.User, PHYUserAdmin)
 
 
-class UserProfileAdmin(admin.ModelAdmin):
+class BaseProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'gender',
@@ -101,7 +101,20 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_select_related = True
 
 
-admin.site.register(models.UserProfile, UserProfileAdmin)
+admin.site.register(models.BaseProfile, BaseProfileAdmin)
+
+
+class GradeAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'grade',
+    ]
+    search_fields = ['grade']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.Grade, GradeAdmin)
 
 
 class DepartmentAdmin(admin.ModelAdmin):
@@ -143,13 +156,14 @@ class StudentProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'is_graduate',
+        'grade',
         'phone_number',
         'department',
         'major',
         'dorm'
     ]
 
-    list_filter = ['is_graduate', 'department', 'major']
+    list_filter = ['is_graduate', 'department', 'major', 'grade']
     search_fields = ['user', 'phone_number']
     list_per_page = 20
     list_select_related = True

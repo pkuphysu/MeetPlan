@@ -1,12 +1,15 @@
 from django.urls import reverse
-from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import AdminRequiredMixin
-from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
-from .forms import MeetPlanForm, MeetPlanOrderForm, FeedBackForm, OptionForm
-from apps.meet_plan.utils import get_term_date
+from .tasks import meetplan_create_teacher_report, meetplan_create_student_report
+from ..meet_plan.utils import get_term_date
+from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
+from ..filemanager.models import File
+from .forms import MeetPlanForm, MeetPlanOrderForm, FeedBackForm, OptionForm, MeetPlanReportTeacherForm, \
+    MeetPlanReportStudentForm
+from . import urls
 
 
 class MeetPlanListView(AdminRequiredMixin, ListView):
@@ -138,4 +141,44 @@ class TermDateUpdateView(AdminRequiredMixin, FormView):
         ed.value = '{}{}'.format(form.cleaned_data['end'], 'T00:00:00+08:00')
         st.save()
         ed.save()
+        return super().form_valid(form)
+
+
+class MeetPlanReportListView(AdminRequiredMixin, ListView):
+    model = File
+    template_name = 'cmsadmin/meetplan/meetplan_report_all.html'
+    paginate_by = 20
+    context_object_name = 'report_file_list'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(app=urls.app_name, upload_or_generate=False)
+
+
+class MeetPlanReportTeacherCreateView(AdminRequiredMixin, FormView):
+    form_class = MeetPlanReportTeacherForm
+    template_name = 'cmsadmin/meetplan/meetplan_teacher_report_create.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan-report-all')
+
+    def form_valid(self, form):
+        meetplan_create_teacher_report.delay(user_id=self.request.user.id,
+                                             app_name=urls.app_name,
+                                             start_date=form.cleaned_data['start_date'],
+                                             end_date=form.cleaned_data['end_date'])
+        return super().form_valid(form)
+
+
+class MeetPlanReportStudentCreateView(AdminRequiredMixin, FormView):
+    form_class = MeetPlanReportStudentForm
+    template_name = 'cmsadmin/meetplan/meetplan_student_report_create.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan-report-all')
+
+    def form_valid(self, form):
+        meetplan_create_student_report.delay(user_id=self.request.user.id,
+                                             app_name=urls.app_name,
+                                             start_date=form.cleaned_data['start_date'],
+                                             end_date=form.cleaned_data['end_date'])
         return super().form_valid(form)
