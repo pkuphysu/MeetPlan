@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin
 from utils.mixin.permission import TeaViewMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
 from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm
@@ -13,7 +12,6 @@ from .utils import get_term_date
 # Create your views here.
 
 
-# class MeetPlanCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
 class MeetPlanCreateView(TeaViewMixin, CreateView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_create.html'
@@ -34,7 +32,6 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
         return context
 
 
-# class MeetPlanUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
 class MeetPlanUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlan
     form_class = MeetPlanForm
@@ -57,7 +54,6 @@ class MeetPlanUpdateView(TeaViewMixin, UpdateView):
         return context
 
 
-# class MeetPlanListView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, ListView):
 class MeetPlanListView(TeaViewMixin, ListView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_all.html'
@@ -69,7 +65,6 @@ class MeetPlanListView(TeaViewMixin, ListView):
         return qs.filter(teacher=self.request.user).order_by('-create_time')
 
 
-# class MeetPlanDetailView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DetailView):
 class MeetPlanDetailView(TeaViewMixin, DetailView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_detail.html'
@@ -94,7 +89,6 @@ class MeetPlanDetailView(TeaViewMixin, DetailView):
         return context
 
 
-# class MeetPlanDeleteView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
 class MeetPlanDeleteView(TeaViewMixin, DeleteView):
     model = MeetPlan
     template_name = 'meet_plan/teacher/plan_confirm_delete.html'
@@ -109,7 +103,6 @@ class MeetPlanDeleteView(TeaViewMixin, DeleteView):
         return reverse('meet_plan:tea-index')
 
 
-# class MeetPlanOrderUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
 class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlanOrder
     template_name = 'meet_plan/teacher/planorder_update.html'
@@ -135,7 +128,6 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
         return response
 
 
-# class MeetPlanOrderDeleteView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, DeleteView):
 class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
     model = MeetPlanOrder
     template_name = 'meet_plan/teacher/planorder_confirm_delete.html'
@@ -150,7 +142,6 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
         return reverse('meet_plan:tea-index')
 
 
-# class FeedBackCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
 class FeedBackCreateView(TeaViewMixin, CreateView):
     model = FeedBack
     template_name = 'meet_plan/teacher/feedback_create.html'
@@ -170,7 +161,6 @@ class FeedBackCreateView(TeaViewMixin, CreateView):
         return reverse('meet_plan:tea-feedback-list')
 
 
-# class FeedBackListView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, ListView):
 class FeedBackListView(TeaViewMixin, ListView):
     model = FeedBack
     template_name = 'meet_plan/teacher/feedback_all.html'

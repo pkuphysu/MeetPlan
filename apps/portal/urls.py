@@ -7,7 +7,6 @@ app_name = 'portal'
 urlpatterns = [
     # TODO: 向计算中心申请更改callback地址及注册IP
     path('', views.noindex),
-    # path('', IAAALoginAuth.as_view()),
 
     path('index/', views.IndexView.as_view(), name='index'),
 

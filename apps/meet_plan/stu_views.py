@@ -8,7 +8,6 @@ from django.db.models import Q
 from django.utils import timezone
 from django.views.generic.edit import CreateView
 
-from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin
 from utils.mixin.permission import StuViewMixin
 from ..account_auth.models import User
 from .models import MeetPlan, MeetPlanOrder
@@ -16,7 +15,6 @@ from .forms import MeetPlanOrderCreateForm
 from .utils import get_term_date
 
 
-# class TeacherListView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
 class TeacherListView(StuViewMixin, ListView):
     template_name = 'meet_plan/student/teacher_all.html'
     context_object_name = 'teacher_list'
@@ -45,7 +43,6 @@ class TeacherListView(StuViewMixin, ListView):
         return queryset
 
 
-# class TeacherPlanListView(LoginRequiredMixin, BaseProfileRequiredMixin, ListView):
 class TeacherPlanListView(StuViewMixin, ListView):
     template_name = 'meet_plan/student/teacher_plan_all.html'
     context_object_name = 'plan_list'
@@ -72,7 +69,6 @@ class TeacherPlanListView(StuViewMixin, ListView):
         return context
 
 
-# class MeetPlanOrderCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, CreateView):
 class MeetPlanOrderCreateView(StuViewMixin, CreateView):
     model = MeetPlanOrder
     template_name = 'meet_plan/student/order_create.html'

@@ -9,7 +9,6 @@ from django.views.generic.edit import CreateView, UpdateView
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadData
 from django.conf import settings
 
-# from utils.mixin.permission import LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin
 from utils.mixin.permission import TeaViewMixin, StuViewMixin, ViewMixin, LoginRequiredMixin, TeacherRequiredMixin
 from utils.mixin.view import ImgUploadViewMixin
 
@@ -65,7 +64,6 @@ class ActiveView(View):
             return TemplateResponse(request, template='404.html', context=ctx)
 
 
-# class UserEmailUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, UpdateView):
 class UserEmailUpdateView(ViewMixin, UpdateView):
 
     model = User
@@ -107,7 +105,6 @@ class BaseProfileAddView(LoginRequiredMixin, CreateView):
                 return HttpResponseRedirect(reverse('account_auth:student-profile-create'))
 
 
-# class BaseProfileImgUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, ImgUploadViewMixin):
 class BaseProfileImgUpdateView(ViewMixin, ImgUploadViewMixin):
     template_name = 'account_auth/base_profile_img_upload.html'
 
@@ -123,7 +120,6 @@ class BaseProfileImgUpdateView(ViewMixin, ImgUploadViewMixin):
 
 
 class StudentProfileCreateView(ViewMixin, CreateView):
-# class StudentProfileCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, CreateView):
     model = StudentProfile
     template_name = 'account_auth/student_profile_create.html'
     form_class = StudentProfileForm
@@ -150,7 +146,6 @@ class StudentProfileCreateView(ViewMixin, CreateView):
         return super().form_valid(form)
 
 
-# class StudentProfileUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, UpdateView):
 class StudentProfileUpdateView(StuViewMixin, UpdateView):
     model = StudentProfile
 
@@ -167,7 +162,6 @@ class StudentProfileUpdateView(StuViewMixin, UpdateView):
         return obj
 
 
-# class LoadMajorView(LoginRequiredMixin, BaseProfileRequiredMixin, View):
 class LoadMajorView(ViewMixin, View):
     def get(self, request):
         if request.is_ajax:
@@ -178,7 +172,6 @@ class LoadMajorView(ViewMixin, View):
             raise PermissionDenied('本接口只允许ajax请求')
 
 
-# class TeacherProfileCreateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, CreateView):
 class TeacherProfileCreateView(ViewMixin, TeacherRequiredMixin, CreateView):
     model = TeacherProfile
     template_name = 'account_auth/teacher_profile_create.html'
@@ -206,7 +199,6 @@ class TeacherProfileCreateView(ViewMixin, TeacherRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# class TeacherProfileUpdateView(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, UpdateView):
 class TeacherProfileUpdateView(TeaViewMixin, UpdateView):
     model = TeacherProfile
     form_class = TeacherProfileForm

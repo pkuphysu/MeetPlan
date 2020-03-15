@@ -18,9 +18,6 @@ class NoIndexView(ViewMixin, View):
         else:
             return HttpResponseRedirect(reverse('meet_plan:stu-index'))
 
-# def noindex(request):
-#     return HttpResponseRedirect(reverse('meet_plan:index'))
-
 
 class TeaIndexView(TeaViewMixin, View):
     def get(self, request):
