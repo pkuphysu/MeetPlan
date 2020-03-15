@@ -14,7 +14,7 @@ import os
 
 # 根据环境变量导入不同设置文件
 # "export PHY_ENV='DEVELOP'"
-if not os.environ.get('PHY_ENV'):
+if not os.environ.get('PHY_ENV') or os.environ.get('PHY_ENV') == 'PRO':
     from .pro import *
 elif os.environ.get('PHY_ENV') == 'TEST':
     from .test import *
