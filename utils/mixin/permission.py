@@ -7,21 +7,6 @@ from django.contrib.auth.decorators import user_passes_test
 from functools import wraps
 
 
-# def admin_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=settings.LOGIN_URL):
-#     """
-#     Decorator for views that checks that the user is logged in and is a admin
-#     member, redirecting to the login page if necessary.
-#     """
-#     actual_decorator = user_passes_test(
-#         lambda u: u.is_active and u.is_admin and not u.is_delete,
-#         login_url=login_url,
-#         redirect_field_name=redirect_field_name
-#     )
-#     if view_func:
-#         return actual_decorator(view_func)
-#     return actual_decorator
-
-
 def user_admin_required(viewfunc):
     @wraps(viewfunc)
     def _wrapper(request, *args, **kwargs):
@@ -53,21 +38,6 @@ def user_student_required(viewfunc):
             raise PermissionDenied("您的身份不是学生！")
 
     return _wrapper
-
-
-# def teacher_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=settings.LOGIN_URL):
-#     """
-#     Decorator for views that checks that the user is logged in and is a admin
-#     member, redirecting to the login page if necessary.
-#     """
-#     actual_decorator = user_passes_test(
-#         lambda u: u.is_active and u.is_teacher and not u.is_delete,
-#         login_url=login_url,
-#         redirect_field_name=redirect_field_name
-#     )
-#     if view_func:
-#         return actual_decorator(view_func)
-#     return actual_decorator
 
 
 def have_base_profile_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME,
