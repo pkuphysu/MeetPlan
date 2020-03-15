@@ -43,7 +43,13 @@
                             <span class="label label-warning">待处理</span>
                         {% endif %}
                     </th>
-                    <th><a href="{% url 'cmsadmin:feedback_update' feedback.id %}">编辑</a></th>
+                    <th>
+                        {% if feedback.have_checked %}
+                            <a href="#">无法更改</a>
+                        {% else %}
+                            <a href="{% url 'cmsadmin:feedback_update' feedback.id %}">处理</a>
+                        {% endif %}
+                    </th>
                 </tr>
                 {% if forloop.last %}
                     </tbody>

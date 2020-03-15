@@ -101,8 +101,8 @@ class BaseProfile(BaseModel):
     gender = models.BooleanField(default=False, choices=GenderChoices, verbose_name='性别')
 
     birth = models.DateField(null=True, blank=True, verbose_name='生日')
-    from apps.filemanager.models import Img
-    head_picture = models.ForeignKey(to=Img, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    from apps.filemanager.models import MyImg
+    head_picture = models.ForeignKey(to=MyImg, on_delete=models.SET_NULL, null=True, blank=True, default=None)
 
     class Meta:
         verbose_name = "基本信息"

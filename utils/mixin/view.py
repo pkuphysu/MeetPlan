@@ -1,12 +1,12 @@
 from django.views.generic.edit import CreateView
 from django import forms
-from apps.filemanager.models import File, Img
+from apps.filemanager.models import MyFile, MyImg
 from utils.mixin.form import FormMixin
 
 
 class FileUploadForm(forms.ModelForm, FormMixin):
     class Meta:
-        model = File
+        model = MyFile
         fields = ['file']
         labels = {
             'file': '文件'
@@ -14,7 +14,7 @@ class FileUploadForm(forms.ModelForm, FormMixin):
 
 
 class FileUploadViewMixin(CreateView):
-    model = File
+    model = MyFile
     form_class = FileUploadForm
 
     def form_valid(self, form):
@@ -25,7 +25,7 @@ class FileUploadViewMixin(CreateView):
 
 class ImgUploadForm(forms.ModelForm, FormMixin):
     class Meta:
-        model = Img
+        model = MyImg
         fields = ['img']
         labels = {
             'img': '图片'
@@ -33,7 +33,7 @@ class ImgUploadForm(forms.ModelForm, FormMixin):
 
 
 class ImgUploadViewMixin(CreateView):
-    model = Img
+    model = MyImg
     form_class = ImgUploadForm
 
     def form_valid(self, form):

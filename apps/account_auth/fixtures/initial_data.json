@@ -461,5 +461,59 @@
       "create_time": "2020-01-01T00:00:00+08:00",
       "update_time": "2020-01-01T00:00:00+08:00"
     }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 1,
+    "fields": {
+      "grade": 15,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 2,
+    "fields": {
+      "grade": 16,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 3,
+    "fields": {
+      "grade": 17,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 4,
+    "fields": {
+      "grade": 18,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 5,
+    "fields": {
+      "grade": 19,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 6,
+    "fields": {
+      "grade": 20,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
   }
 ]
