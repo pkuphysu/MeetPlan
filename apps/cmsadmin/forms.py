@@ -1,6 +1,6 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from ..account_auth.models import User
+from ..account_auth.models import User, Grade
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..meet_plan.utils import get_term_date
 
@@ -134,7 +134,7 @@ class MeetPlanReportTeacherForm(forms.Form, FormMixin):
                                                                'placeholder': 'yyyy-M-d'}),
                                  label='统计开始日期')
     end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'id': 'start_date',
+                                                             'id': 'end_date',
                                                              'placeholder': 'yyyy-M-d'}),
                                label='统计结束日期', )
 
@@ -146,29 +146,44 @@ class MeetPlanReportTeacherForm(forms.Form, FormMixin):
 
 
 class MeetPlanReportStudentForm(forms.Form, FormMixin):
+    USE_CHOICES = (
+        (True, '按照时间'),
+        (False, '按照年级')
+    )
+
+    DETAIL_CHOICES = (
+        (True, '统计'),
+        (False, '不统计')
+    )
+
     start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                                'id': 'start_date',
                                                                'placeholder': 'yyyy-M-d'}),
                                  label='统计开始日期')
     end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'id': 'start_date',
+                                                             'id': 'end_date',
                                                              'placeholder': 'yyyy-M-d'}),
                                label='统计结束日期', )
 
-    use = forms.BooleanField(widget=forms.Select(attrs={'class': 'form-control'},
-                                                 choices=((True, '按照时间'),
-                                                          (False, '按照年级'))),
-                             label='统计方式', initial=True,
-                             help_text='当选择按照时间时，只有统计开始时间和结束时间是有用的，年级选项可以随便选会被忽略。'
-                                       '当选择按照年级时，只有年级选项是有用的，开始时间和结束时间会被忽略但必须填写。')
+    use = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                            label='统计方式',
+                            help_text='当选择按照时间时，只有统计开始时间和结束时间是有用的，年级选项可以随便选会被忽略。'
+                                      '当选择按照年级时，只有年级选项是有用的，开始时间和结束时间会被忽略但必须填写。',
+                            choices=USE_CHOICES
+                            )
 
-    grade = forms.MultipleChoiceField(widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
-                                      label='年级(可多选)')
+    grade = forms.ModelMultipleChoiceField(queryset=Grade.objects.all().order_by('-id'),
+                                           widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+                                           label='年级(可多选)')
+
+    detail = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                               label='学生详细选课情况',
+                               help_text='此项只在选择“按照年级”时有用，当选择统计时，将会在输出文件中输出同学们的具体选课情况。'
+                                         '当选择不统计时，只会输出同学们的已完成总数。',
+                               choices=DETAIL_CHOICES, initial=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         date_range = get_term_date()
         self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
         self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')
-        students = User.objects.filter(is_teacher=False)
-        self.fields['grade'].choices = students

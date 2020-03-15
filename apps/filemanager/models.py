@@ -4,7 +4,7 @@ from django.conf import settings
 # Create your models here.
 
 
-class File(BaseModel):
+class MyFile(BaseModel):
     """文件管理类"""
     UPLOAD_OR_GENERATE_CHOICES = (
         (True, '上传'),
@@ -26,7 +26,7 @@ class File(BaseModel):
         return '{}-{}'.format(self.user, self.file.url)
 
 
-class Img(BaseModel):
+class MyImg(BaseModel):
     """图片管理类"""
     UPLOAD_OR_GENERATE_CHOICES = (
         (True, '上传'),

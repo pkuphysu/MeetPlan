@@ -4,7 +4,7 @@ from django.contrib import admin
 from . import models
 
 
-class FileAdmin(admin.ModelAdmin):
+class MyFileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'file',
@@ -17,10 +17,10 @@ class FileAdmin(admin.ModelAdmin):
     list_select_related = True
 
 
-admin.site.register(models.File, FileAdmin)
+admin.site.register(models.MyFile, MyFileAdmin)
 
 
-class ImgAdmin(admin.ModelAdmin):
+class MyImgAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'img',
@@ -33,4 +33,4 @@ class ImgAdmin(admin.ModelAdmin):
     list_select_related = True
 
 
-admin.site.register(models.Img, ImgAdmin)
+admin.site.register(models.MyImg, MyImgAdmin)

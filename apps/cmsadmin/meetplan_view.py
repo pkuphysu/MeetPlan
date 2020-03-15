@@ -6,7 +6,7 @@ from utils.mixin.permission import AdminRequiredMixin
 from .tasks import meetplan_create_teacher_report, meetplan_create_student_report
 from ..meet_plan.utils import get_term_date
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
-from ..filemanager.models import File
+from ..filemanager.models import MyFile
 from .forms import MeetPlanForm, MeetPlanOrderForm, FeedBackForm, OptionForm, MeetPlanReportTeacherForm, \
     MeetPlanReportStudentForm
 from . import urls
@@ -145,18 +145,18 @@ class TermDateUpdateView(AdminRequiredMixin, FormView):
 
 
 class MeetPlanReportListView(AdminRequiredMixin, ListView):
-    model = File
+    model = MyFile
     template_name = 'cmsadmin/meetplan/meetplan_report_all.html'
     paginate_by = 20
     context_object_name = 'report_file_list'
 
     def get_queryset(self):
-        return super().get_queryset().filter(app=urls.app_name, upload_or_generate=False)
+        return super().get_queryset().filter(app=urls.app_name, upload_or_generate=False).order_by('-id')
 
 
 class MeetPlanReportTeacherCreateView(AdminRequiredMixin, FormView):
     form_class = MeetPlanReportTeacherForm
-    template_name = 'cmsadmin/meetplan/meetplan_teacher_report_create.html'
+    template_name = 'cmsadmin/meetplan/meetplan_report_teacher_create.html'
 
     def get_success_url(self):
         return reverse('cmsadmin:meetplan-report-all')
@@ -171,14 +171,19 @@ class MeetPlanReportTeacherCreateView(AdminRequiredMixin, FormView):
 
 class MeetPlanReportStudentCreateView(AdminRequiredMixin, FormView):
     form_class = MeetPlanReportStudentForm
-    template_name = 'cmsadmin/meetplan/meetplan_student_report_create.html'
+    template_name = 'cmsadmin/meetplan/meetplan_report_student_create.html'
 
     def get_success_url(self):
         return reverse('cmsadmin:meetplan-report-all')
 
     def form_valid(self, form):
+        print(list(form.cleaned_data['grade'].values_list('id', flat=True)))
+        print(form.cleaned_data['use'])
         meetplan_create_student_report.delay(user_id=self.request.user.id,
                                              app_name=urls.app_name,
                                              start_date=form.cleaned_data['start_date'],
-                                             end_date=form.cleaned_data['end_date'])
+                                             end_date=form.cleaned_data['end_date'],
+                                             grades=list(form.cleaned_data['grade'].values_list('id', flat=True)),
+                                             date_or_grade=form.cleaned_data['use'],
+                                             detail = form.cleaned_data['detail'])
         return super().form_valid(form)
