@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content-header %}
-     <h1>403</h1>
+    <h1>403</h1>
 {% endblock %}
 
 {% block content %}
@@ -9,27 +9,28 @@
         <h2 class="headline text-yellow"> 403</h2>
 
         <div class="error-content">
-          <h3><i class="fa fa-warning text-yellow"></i> 发现一个坏孩子! </h3>
-            {% if error_message %}
-                <p>{{ error_message }}</p>
+            <h3><i class="fa fa-warning text-yellow"></i> 发现一个坏孩子！</h3>
+            {% if exception %}
+                <p>{{ exception }}</p>
             {% else %}
-          <p>
-            我们认为您无权访问您要找的页面.
-              您可以点击<a href="{% url 'portal:index' %}">链接</a>返回主页,或者向系统管理员报告这个错误,亦或者百度一下.
-          </p>
-            <form class="search-form" action="https://www.baidu.com/s">
-            <div class="input-group">
-              <input type="text" name="wd" class="form-control" placeholder="Search">
-
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-danger btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-            <!-- /.input-group -->
-          </form>
+                <p>我们认为您无权访问您要找的页面。</p>
             {% endif %}
+            <p>
+                您可以点击<a href="{% url 'portal:index' %}">链接</a>返回主页，或者向系统管理员报告这个错误，亦或者百度一下。
+            </p>
+            <form class="search-form" action="https://www.baidu.com/s">
+                <div class="input-group">
+                    <input type="text" name="wd" class="form-control" placeholder="Search">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-danger btn-flat"><i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.input-group -->
+            </form>
+
         </div>
         <!-- /.error-content -->
-      </div>
+    </div>
 {% endblock %}

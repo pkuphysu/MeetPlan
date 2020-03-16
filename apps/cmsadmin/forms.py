@@ -1,10 +1,11 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from apps.account_auth.models import User
-from apps.meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack, SemesterDateRange
+from ..account_auth.models import User, Grade
+from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
+from ..meet_plan.utils import get_term_date
 
 
-class UserCreateForm(forms.ModelForm, FormMixin):
+class UserForm(forms.ModelForm, FormMixin):
     class Meta:
         model = User
         fields = {
@@ -35,45 +36,7 @@ class UserCreateForm(forms.ModelForm, FormMixin):
         }
 
 
-class UserUpdateForm(forms.ModelForm, FormMixin):
-    class Meta:
-        model = User
-        fields = {
-            'identity_id',
-            'user_name',
-            'email',
-            'is_teacher',
-            'is_admin',
-            'is_delete'
-        }
-        labels = {
-            'identity_id': '职工号\\学号',
-            'user_name': '姓名',
-            'email': '电子邮件',
-            'is_teacher': '是否为教职工',
-            'is_admin': '是否为管理员',
-            'is_delete': '删除标记'
-        }
-        help_texts = {
-            'is_admin': '管理员可登陆cmsadmin管理页面',
-            'is_delete': '标记删除后,用户无法登录本网站,可从左侧"已删除用户管理"中查看'
-        }
-        widgets = {
-            'identity_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'user_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'is_teacher': forms.Select(attrs={'class': 'form-control'},
-                                       choices=((True, '是'), (False, '否'))),
-            'is_admin': forms.Select(attrs={'class': 'form-control'},
-                                     choices=((True, '是'), (False, '否'))),
-        }
-
-
-class MeetPlanCreateForm(forms.ModelForm, FormMixin):
-    teacher = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=True, is_delete=False).order_by('identity_id'),
-        widget=forms.Select(attrs={'class': 'form-control'}))
-
+class MeetPlanForm(forms.ModelForm, FormMixin):
     class Meta:
         model = MeetPlan
         fields = [
@@ -89,6 +52,7 @@ class MeetPlanCreateForm(forms.ModelForm, FormMixin):
         }
         help_texts = {}
         widgets = {
+            'teacher': forms.Select(attrs={'class': 'form-control'}),
             'place': forms.TextInput(attrs={'class': 'form-control'}),
             'start_time': forms.DateTimeInput(attrs={'class': 'form-control',
                                                      'id': 'starttimepicker',
@@ -103,50 +67,16 @@ class MeetPlanCreateForm(forms.ModelForm, FormMixin):
                                              'placeholder': 'Enter...'})
         }
 
-
-class MeetPlanUpdateForm(forms.ModelForm, FormMixin):
-    teacher = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=True, is_delete=False).order_by('identity_id'),
-        widget=forms.Select(attrs={'class': 'form-control'}))
-
-    class Meta:
-        model = MeetPlan
-        fields = [
-            'teacher', 'place', 'start_time', 'end_time', 'allow_other', 'message', 'is_delete'
-        ]
-        labels = {
-            'teacher': '老师',
-            'place': '地点',
-            'start_time': '开始时间',
-            'end_time': '结束时间',
-            'allow_other': '允许多人',
-            'message': '备注',
-            'is_delete': '删除标记'
-        }
-        help_texts = {
-            'is_delete': '勾选后提交表示删除, 不会再显示'
-        }
-        widgets = {
-            'place': forms.TextInput(attrs={'class': 'form-control'}),
-            'start_time': forms.DateTimeInput(attrs={'class': 'form-control',
-                                                     'id': 'starttimepicker'
-                                                     }),
-            'end_time': forms.DateTimeInput(attrs={'class': 'form-control',
-                                                   'id': 'endtimepicker'
-                                                   }),
-            'allow_other': forms.Select(attrs={'class': 'form-control'},
-                                        choices=MeetPlan.AllowOtherChoices),
-            'message': forms.Textarea(attrs={'class': 'form-control',
-                                             'row': '5',
-                                             'placeholder': 'Enter...'})
-        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['teacher'].queryset = User.objects.filter(is_teacher=True)
 
 
-class MeetPlanOrderCreateForm(forms.ModelForm, FormMixin):
-    meet_plan = forms.ModelChoiceField(queryset=MeetPlan.objects.filter(is_delete=False),
+class MeetPlanOrderForm(forms.ModelForm, FormMixin):
+    meet_plan = forms.ModelChoiceField(queryset=MeetPlan.objects.all(),
                                        widget=forms.Select(attrs={'class': 'form-control'}))
     student = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=False, is_delete=False).order_by('identity_id'),
+        queryset=User.objects.filter(is_teacher=False).order_by('identity_id'),
         widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
@@ -165,38 +95,6 @@ class MeetPlanOrderCreateForm(forms.ModelForm, FormMixin):
         }
         widgets = {
             'completed': forms.Select(attrs={'class': 'form-control'},
-                                      choices=((True,'已完成'),(False, '未完成'))),
-            'message': forms.Textarea(attrs={'class': 'form-control',
-                                             'row': '5',
-                                             'placeholder': 'Enter...'})
-        }
-
-
-class MeetPlanOrderUpdateForm(forms.ModelForm, FormMixin):
-    meet_plan = forms.ModelChoiceField(queryset=MeetPlan.objects.filter(is_delete=False),
-                                       widget=forms.Select(attrs={'class': 'form-control'}))
-    student = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=False, is_delete=False).order_by('identity_id'),
-        widget=forms.Select(attrs={'class': 'form-control'}))
-
-    class Meta:
-        model = MeetPlanOrder
-        fields = [
-            'meet_plan',
-            'completed',
-            'student',
-            'message',
-            'is_delete',
-        ]
-        labels = {
-            'completed': '是否已经完成交流',
-            'is_delete': '删除标记'
-        }
-        help_texts = {
-            'is_delete': '勾选后提交表示删除, 不会再显示, 即此次预约失效, 即便其已经完成, 也不算数'
-        }
-        widgets = {
-            'completed': forms.Select(attrs={'class': 'form-control'},
                                       choices=((True, '已完成'), (False, '未完成'))),
             'message': forms.Textarea(attrs={'class': 'form-control',
                                              'row': '5',
@@ -204,7 +102,7 @@ class MeetPlanOrderUpdateForm(forms.ModelForm, FormMixin):
         }
 
 
-class FeedBackUpdateForm(forms.ModelForm, FormMixin):
+class FeedBackForm(forms.ModelForm, FormMixin):
     class Meta:
         model = FeedBack
         fields = [
@@ -219,18 +117,73 @@ class FeedBackUpdateForm(forms.ModelForm, FormMixin):
         }
 
 
-class SemesterDateRangeCreateForm(forms.ModelForm, FormMixin):
-    class Meta:
-        model = SemesterDateRange
-        fields = {
-            'start_date',
-            'end_date'
-        }
-        widgets = {
-            'start_date': forms.DateInput(attrs={'class': 'form-control',
-                                                     'id': 'startdatepicker'
-                                                     }),
-            'end_date': forms.DateInput(attrs={'class': 'form-control',
-                                                   'id': 'enddatepicker'
-                                                   }),
-        }
+class OptionForm(forms.Form, FormMixin):
+    start = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                          'id': 'start_date',
+                                                          'placeholder': 'yyyy-M-d'}),
+                            label='学期开始日期')
+    end = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                        'id': 'start_date',
+                                                        'placeholder': 'yyyy-M-d'}),
+                          label='学期结束日期')
+
+
+class MeetPlanReportTeacherForm(forms.Form, FormMixin):
+    start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                               'id': 'start_date',
+                                                               'placeholder': 'yyyy-M-d'}),
+                                 label='统计开始日期')
+    end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'id': 'end_date',
+                                                             'placeholder': 'yyyy-M-d'}),
+                               label='统计结束日期', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        date_range = get_term_date()
+        self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
+        self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')
+
+
+class MeetPlanReportStudentForm(forms.Form, FormMixin):
+    USE_CHOICES = (
+        (True, '按照时间'),
+        (False, '按照年级')
+    )
+
+    DETAIL_CHOICES = (
+        (True, '统计'),
+        (False, '不统计')
+    )
+
+    start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                               'id': 'start_date',
+                                                               'placeholder': 'yyyy-M-d'}),
+                                 label='统计开始日期')
+    end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'id': 'end_date',
+                                                             'placeholder': 'yyyy-M-d'}),
+                               label='统计结束日期', )
+
+    use = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                            label='统计方式',
+                            help_text='当选择按照时间时，只有统计开始时间和结束时间是有用的，年级选项可以随便选会被忽略。'
+                                      '当选择按照年级时，只有年级选项是有用的，开始时间和结束时间会被忽略但必须填写。',
+                            choices=USE_CHOICES
+                            )
+
+    grade = forms.ModelMultipleChoiceField(queryset=Grade.objects.all().order_by('-id'),
+                                           widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+                                           label='年级(可多选)')
+
+    detail = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                               label='学生详细选课情况',
+                               help_text='此项只在选择“按照年级”时有用，当选择统计时，将会在输出文件中输出同学们的具体选课情况。'
+                                         '当选择不统计时，只会输出同学们的已完成总数。',
+                               choices=DETAIL_CHOICES, initial=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        date_range = get_term_date()
+        self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
+        self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')

@@ -1,10 +1,9 @@
 from django import forms
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from utils.mixin.form import FormMixin
-from .models import User, UserProfile
+from .models import User, BaseProfile, StudentProfile, TeacherProfile, Department, Major
 
 
-class UserEmailUpdateForm(forms.ModelForm, FormMixin):
+class UserEmailForm(forms.ModelForm, FormMixin):
     class Meta:
         model = User
         fields = ['email']
@@ -19,39 +18,74 @@ class UserEmailUpdateForm(forms.ModelForm, FormMixin):
         }
 
 
-class UserProfileCreateForm(forms.ModelForm, FormMixin):
+class UserProfileForm(forms.ModelForm, FormMixin):
     class Meta:
-        model = UserProfile
-        fields = ['birth', 'gender', 'telephone']
+        model = BaseProfile
+        fields = ['birth', 'gender']
         labels = {
             'gender': '性别',
-            'telephone': '联系方式',
             'birth': '生日',
         }
         widgets = {
             'gender': forms.Select(attrs={'class': 'form-control'},
-                                   choices=UserProfile.GenderChoices),
-            'telephone': PhoneNumberPrefixWidget(attrs={'class': 'form-control'}, initial='CN'),
+                                   choices=BaseProfile.GenderChoices),
             'birth': forms.TextInput(attrs={'class': 'form-control',
-                                            'id': 'datepicker',
-                                            }),
+                                            'id': 'datepicker'}),
         }
 
 
-class UserProfileUpdateForm(forms.ModelForm, FormMixin):
+class StudentProfileForm(forms.ModelForm, FormMixin):
     class Meta:
-        model = UserProfile
-        fields = ['birth', 'gender', 'telephone']
+        model = StudentProfile
+        fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm', 'grade']
         labels = {
-            'gender': '性别',
-            'telephone': '联系方式',
-            'birth': '生日',
+            'is_graduate': '身份',
+            'phone_number': '联系方式',
+            'department': '系所',
+            'major': '专业',
+            'dorm': '宿舍',
+            'grade': '年级',
         }
         widgets = {
-            'gender': forms.Select(attrs={'class': 'form-control'},
-                                   choices=UserProfile.GenderChoices),
-            'telephone': PhoneNumberPrefixWidget(attrs={'class': 'form-control'}, initial='CN'),
-            'birth': forms.TextInput(attrs={'class': 'form-control',
-                                            'id': 'datepicker',
-                                            }),
+            'department': forms.Select(attrs={'class':'form-control'}),
+            'major': forms.Select(attrs={'class': 'form-control'}),
+            'is_graduate': forms.Select(attrs={'class': 'form-control'},
+                                        choices=StudentProfile.GRADUATE_CHOICES),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'dorm': forms.TextInput(attrs={'class': 'form-control'}),
+            'grade': forms.Select(attrs={'class': 'form-control'})
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['major'].queryset = Major.objects.none()
+        if 'department' in self.data:
+            try:
+                department_id = int(self.data.get('department'))
+                self.fields['major'].queryset = Major.objects.filter(department_id=department_id)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['major'].queryset = self.instance.department.major_set
+
+
+class TeacherProfileForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = TeacherProfile
+        fields = ['phone_number', 'department', 'office', 'introduce']
+        labels = {
+            'phone_number': '联系方式',
+            'department': '系所',
+            'office': '办公室',
+            'introduce': '个人简介',
+        }
+        widgets = {
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-control'}),
+            'office': forms.TextInput(attrs={'class': 'form-control'}),
+            'introduce': forms.Textarea(attrs={'class': 'form-control',
+                                               'row': '5',
+                                               'placeholder': 'Enter...'}
+                                        )
+        }
+

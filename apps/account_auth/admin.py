@@ -82,12 +82,11 @@ class PHYUserAdmin(UserAdmin):
 admin.site.register(models.User, PHYUserAdmin)
 
 
-class UserProfileAdmin(admin.ModelAdmin):
+class BaseProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
         'gender',
         'birth',
-        'telephone',
         'link_to_head_picture'
     ]
 
@@ -102,4 +101,90 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_select_related = True
 
 
-admin.site.register(models.UserProfile, UserProfileAdmin)
+admin.site.register(models.BaseProfile, BaseProfileAdmin)
+
+
+class GradeAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'grade',
+    ]
+    search_fields = ['grade']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.Grade, GradeAdmin)
+
+
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'department',
+    ]
+    search_fields = ['department']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.Department, DepartmentAdmin)
+
+
+class MajorAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'major',
+        'link_to_department',
+    ]
+
+    def link_to_department(self, obj):
+        link = reverse("admin:account_auth_department_change", args=[obj.department.id])
+        return mark_safe(f'<a href="{link}">{escape(obj.department.__str__())}</a>')
+
+    link_to_department.short_description = '系所'
+
+    search_fields = ['major', 'link_to_department']
+    list_filter = ['department']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.Major, MajorAdmin)
+
+
+class StudentProfileAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'is_graduate',
+        'grade',
+        'phone_number',
+        'department',
+        'major',
+        'dorm'
+    ]
+
+    list_filter = ['is_graduate', 'department', 'major', 'grade']
+    search_fields = ['user', 'phone_number']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.StudentProfile, StudentProfileAdmin)
+
+
+class TeacherProfileAdmin(admin.ModelAdmin):
+    list_display = [
+        'user',
+        'phone_number',
+        'department',
+        'office',
+        'introduce'
+    ]
+
+    list_filter = ['department']
+    search_fields = ['user', 'office', 'introduce']
+    list_per_page = 20
+    list_select_related = True
+
+
+admin.site.register(models.TeacherProfile, TeacherProfileAdmin)

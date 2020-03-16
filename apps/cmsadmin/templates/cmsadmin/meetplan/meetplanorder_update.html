@@ -1,17 +1,23 @@
 {% extends 'cmsadmin/index.html' %}
 
 {% block title %}
-    编辑综合指导课选课情况
+    编辑综合指导课预约
 {% endblock %}
 
 {% block content-header %}
-    <h1>编辑综合指导课选课情况</h1>
+    <h1>编辑综合指导课预约</h1>
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">编辑{{ object }}</h3>
+                    <div class="pull-right">
+                        <button class="btn btn-danger" onclick="window.location.href='{% url 'cmsadmin:meetplanorder-confirm-delete' object.pk %}'">删除</button>
+                    </div>
+                </div>
                 <!-- form start -->
                 <form role="form" method="post">
                     <div class="box-body">

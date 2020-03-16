@@ -4,7 +4,7 @@ from django.conf import settings
 # Create your models here.
 
 
-class File(BaseModel):
+class MyFile(BaseModel):
     """文件管理类"""
     UPLOAD_OR_GENERATE_CHOICES = (
         (True, '上传'),
@@ -13,8 +13,10 @@ class File(BaseModel):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
                              verbose_name='所有者')
     file = models.FileField(verbose_name='文件')
+    app = models.CharField(verbose_name='应用名', max_length=32, db_index=True)
     upload_or_generate = models.BooleanField(verbose_name='上传还是生成', choices=UPLOAD_OR_GENERATE_CHOICES,
                                              default=True)
+    remark = models.TextField(verbose_name='备注', null=True, blank=True)
 
     class Meta:
         verbose_name = "文件管理"
@@ -24,7 +26,7 @@ class File(BaseModel):
         return '{}-{}'.format(self.user, self.file.url)
 
 
-class Img(BaseModel):
+class MyImg(BaseModel):
     """图片管理类"""
     UPLOAD_OR_GENERATE_CHOICES = (
         (True, '上传'),
@@ -33,8 +35,10 @@ class Img(BaseModel):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,
                              verbose_name='所有者')
     img = models.ImageField(verbose_name='图片')
+    app = models.CharField(verbose_name='应用名', max_length=32, db_index=True)
     upload_or_generate = models.BooleanField(verbose_name='上传还是生成', choices=UPLOAD_OR_GENERATE_CHOICES,
                                              default=True)
+    remark = models.TextField(verbose_name='备注', null=True, blank=True)
 
     class Meta:
         verbose_name = "图片管理"

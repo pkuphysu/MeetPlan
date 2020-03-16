@@ -2,17 +2,22 @@
 {% load staticfiles %}
 
 {% block title %}
-    编辑综合指导课
+    编辑综合指导课安排
 {% endblock %}
 
 {% block content-header %}
-    <h1>编辑综合指导课</h1>
+    <h1>编辑综合指导课安排</h1>
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="pull-right">
+                        <button class="btn btn-danger" onclick="window.location.href='{% url 'cmsadmin:meetplan-confirm-delete' object.pk %}'">删除</button>
+                    </div>
+                </div>
                 <!-- form start -->
                 <form role="form" method="post">
                     <div class="box-body">
@@ -35,27 +40,17 @@
 {% block footjs %}
     <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
     <script>
-        var startdatetimepicker = laydate.render({
+        laydate.render({
             elem: '#starttimepicker',
             type: 'datetime',
             theme: 'molv',
-            format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
-            ready: function () {
-                startdatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
-            }
+            format: 'yyyy/M/d H:m'
         });
-        var enddatetimepicker = laydate.render({
+        laydate.render({
             elem: '#endtimepicker',
             type: 'datetime',
             theme: 'molv',
-            format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
-            ready: function () {
-                enddatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
-            }
+            format: 'yyyy/M/d H:m'
         });
     </script>
 {% endblock %}

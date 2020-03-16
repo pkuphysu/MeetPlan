@@ -11,8 +11,8 @@
 </div>
 <script language=javascript>
     document.write("<form action='https://iaaa.pku.edu.cn/iaaa/oauth.jsp' method=post name='formx1' style='display:none'>");
-    document.write("<input type=hidden name='appID' value='phymeetplan1'>");
-    document.write("<input type=hidden name='redirectUrl' value='https://meetplan.phy.pku.edu.cn'>");
+    document.write("<input type=hidden name='appID' value='{{ app_id }}'>");
+    document.write("<input type=hidden name='redirectUrl' value='{{ redirect_url }}'>");
     document.write("</form>");
     setTimeout("document.formx1.submit();", 1000);
 </script>

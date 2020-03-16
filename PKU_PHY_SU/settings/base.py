@@ -14,7 +14,7 @@ import os
 
 # 根据环境变量导入不同设置文件
 # "export PHY_ENV='DEVELOP'"
-if not os.environ.get('PHY_ENV'):
+if not os.environ.get('PHY_ENV') or os.environ.get('PHY_ENV') == 'PRO':
     from .pro import *
 elif os.environ.get('PHY_ENV') == 'TEST':
     from .test import *
@@ -38,13 +38,13 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     'rest_framework',
-    'phonenumber_field',
 
     'apps.account_auth.apps.AccountAuthConfig',
     'apps.filemanager.apps.FilemanagerConfig',
     'apps.cmsadmin.apps.CmsadminConfig',
     'apps.portal.apps.PortalConfig',
     'apps.meet_plan.apps.MeetPlanConfig',
+    'apps.options.apps.OptionsConfig',
 ]
 
 MIDDLEWARE = [
@@ -114,8 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 
-MEDIA_URL = '/media/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/uploads/") # 项目目录下的media目录 需要在项目目录下创建media目录
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media") # 项目目录下的media目录 需要在项目目录下创建media目录
 
 STATIC_URL = '/static/'
 # 开发阶段放置项目自己的静态文件

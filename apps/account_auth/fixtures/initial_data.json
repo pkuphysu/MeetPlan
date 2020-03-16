@@ -1,0 +1,519 @@
+[
+  {
+    "model": "account_auth.user",
+    "pk": 1,
+    "fields": {
+      "identity_id": "1600011378",
+      "user_name": "郜瑞啸",
+      "email": "1600011378@pku.edu.cn",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00",
+      "is_superuser": true,
+      "is_active": true,
+      "is_teacher": true,
+      "is_admin": true
+    }
+  },
+  {
+    "model": "account_auth.user",
+    "pk": 2,
+    "fields": {
+      "identity_id": "1600013913",
+      "user_name": "付瑞璐",
+      "email": "1600013913@pku.edu.cn",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "account_auth.user",
+    "pk": 3,
+    "fields": {
+      "identity_id": "1600011380",
+      "user_name": "朱源哲",
+      "email": "1600011380@pku.edu.cn",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00",
+      "is_active": true,
+      "is_teacher": true
+    }
+  },
+  {
+    "model": "account_auth.user",
+    "pk": 4,
+    "fields": {
+      "identity_id": "1600011388",
+      "user_name": "钱思天",
+      "email": "1600011388@pku.edu.cn",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.user",
+    "pk": 5,
+    "fields": {
+      "identity_id": "1600011379",
+      "user_name": "付泽浩",
+      "email": "1600011379@pku.edu.cn",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00",
+      "is_delete": true
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 1,
+    "fields": {
+      "department": "大气与海洋科学系",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 2,
+    "fields": {
+      "department": "现代光学所",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 3,
+    "fields": {
+      "department": "技术物理系",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 4,
+    "fields": {
+      "department": "理论物理研究所",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 5,
+    "fields": {
+      "department": "凝聚态物理与材料物理研究所",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 6,
+    "fields": {
+      "department": "量子材料科学中心",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 7,
+    "fields": {
+      "department": "天文学系",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 8,
+    "fields": {
+      "department": "重离子物理研究所",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 9,
+    "fields": {
+      "department": "物理学院（本科）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 10,
+    "fields": {
+      "department": "物理学院行政部门",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 1,
+    "fields": {
+      "department": 1,
+      "major": "气象学",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 2,
+    "fields": {
+      "department": 1,
+      "major": "大气物理学与大气环境",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 3,
+    "fields": {
+      "department": 1,
+      "major": "大气科学（物理海洋学）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 4,
+    "fields": {
+      "department": 1,
+      "major": "大气科学（气候学）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 5,
+    "fields": {
+      "department": 2,
+      "major": "光学",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 6,
+    "fields": {
+      "department": 2,
+      "major": "原子与分子物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 7,
+    "fields": {
+      "department": 3,
+      "major": "粒子物理与原子核物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 8,
+    "fields": {
+      "department": 4,
+      "major": "理论物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 9,
+    "fields": {
+      "department": 5,
+      "major": "凝聚态物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 10,
+    "fields": {
+      "department": 6,
+      "major": "凝聚态物理（量材）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 11,
+    "fields": {
+      "department": 7,
+      "major": "天体物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 12,
+    "fields": {
+      "department": 8,
+      "major": "核技术及应用",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 13,
+    "fields": {
+      "department": 8,
+      "major": "等离子体物理",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 14,
+    "fields": {
+      "department": 8,
+      "major": "核科学与技术（医学物理和工程）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 15,
+    "fields": {
+      "department": 8,
+      "major": "核能与核技术工程",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 16,
+    "fields": {
+      "department": 9,
+      "major": "物理学类",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 17,
+    "fields": {
+      "department": 9,
+      "major": "物理学",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 18,
+    "fields": {
+      "department": 9,
+      "major": "天文学专业（天体物理方向）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 19,
+    "fields": {
+      "department": 9,
+      "major": "天文学专业（天文高新技术与应用方向）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 20,
+    "fields": {
+      "department": 9,
+      "major": "大气科学专业",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 21,
+    "fields": {
+      "department": 9,
+      "major": "核物理（核科学与技术）",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 22,
+    "fields": {
+      "department": 10,
+      "major": "学生工作办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 23,
+    "fields": {
+      "department": 10,
+      "major": "院图书馆",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 24,
+    "fields": {
+      "department": 10,
+      "major": "教务办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 25,
+    "fields": {
+      "department": 10,
+      "major": "科研与交流办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 26,
+    "fields": {
+      "department": 10,
+      "major": "党政办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 27,
+    "fields": {
+      "department": 10,
+      "major": "院教代会常委会",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 28,
+    "fields": {
+      "department": 10,
+      "major": "院工会",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 29,
+    "fields": {
+      "department": 10,
+      "major": "综合办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 30,
+    "fields": {
+      "department": 10,
+      "major": "实验室与设备管理办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.major",
+    "pk": 31,
+    "fields": {
+      "department": 10,
+      "major": "财务办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 1,
+    "fields": {
+      "grade": 15,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 2,
+    "fields": {
+      "grade": 16,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 3,
+    "fields": {
+      "grade": 17,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 4,
+    "fields": {
+      "grade": 18,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 5,
+    "fields": {
+      "grade": 19,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.grade",
+    "pk": 6,
+    "fields": {
+      "grade": 20,
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  }
+]
