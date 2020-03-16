@@ -1,0 +1,24 @@
+[
+  {
+    "model": "options.option",
+    "pk": 1,
+    "fields": {
+      "app": "meet_plan",
+      "name": "term_start_date",
+      "value": "2020-01-17T00:00:00+08:00",
+      "create_time": "2019-12-31T16:00:00Z",
+      "update_time": "2019-12-31T16:00:00Z"
+    }
+  },
+  {
+    "model": "options.option",
+    "pk": 2,
+    "fields": {
+      "app": "meet_plan",
+      "name": "term_end_date",
+      "value": "2020-06-23T00:00:00+08:00",
+      "create_time": "2019-12-31T16:00:00Z",
+      "update_time": "2019-12-31T16:00:00Z"
+    }
+  }
+]

@@ -11,8 +11,8 @@ from django.conf import settings
 class MeetPlan(BaseModel):
     """综合指导课模型类"""
     AllowOtherChoices = (
-        (0, '不允许'),
-        (1, '允许')
+        (False, '不允许'),
+        (True, '允许')
     )
     teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
     place = models.CharField(verbose_name="谈话地点", max_length=128, help_text="谈话地点")
@@ -31,10 +31,6 @@ class MeetPlan(BaseModel):
 
     def __str__(self):
         return 'id:%d tea:%s' % (self.id, self.teacher.user_name)
-
-    def get_absolute_url(self):
-        # return reverse('meet_plan:tea-add-plan', kwargs={'pk': self.pk})
-        return reverse('meet_plan:tea-plan-detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
         if not self.allow_other:
@@ -69,22 +65,8 @@ class MeetPlanOrder(BaseModel):
             self.meet_plan.save()
         super(MeetPlanOrder, self).save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        # return reverse('meet_plan:tea-add-plan', kwargs={'pk': self.pk})
-        return reverse('meet_plan:index')
-
     def __str__(self):
         return 'id:%d tea:%s' % (self.id, self.student.user_name)
-
-
-class SemesterDateRange(BaseModel):
-    """综合指导课学期起止时间"""
-    start_date = models.DateField(verbose_name='学期开始时间')
-    end_date = models.DateField(verbose_name='学期结束时间')
-
-    class Meta:
-        verbose_name = '学期起止时间'
-        verbose_name_plural = verbose_name
 
 
 class FeedBack(BaseModel):
@@ -102,7 +84,3 @@ class FeedBack(BaseModel):
     class Meta:
         verbose_name = '教师反馈'
         verbose_name_plural = verbose_name
-
-    def get_absolute_url(self):
-        # return reverse('meet_plan:tea-add-plan', kwargs={'pk': self.pk})
-        return reverse('meet_plan:tea-feedback-list')

@@ -7,6 +7,7 @@ config.read(filenames='PKU_PHY_SU/secret_config.ini', encoding='UTF-8')
 
 APPID = config.get('IAAA', 'APPID')
 APPKEY = config.get('IAAA', 'APPKEY')
+APPREDIRECTURL = config.get('IAAA', 'APPREDIRECTURL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -14,6 +14,7 @@
           <div class="box">
 
               <div class="box-header">
+                  <h3 class="box-title">本学期({{ term_start_date|date }}到{{ term_end_date|date }})</h3>
                 <div class="box-tools">
                     <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplan_create' %}'">增加综合指导课</button>
                 </div>

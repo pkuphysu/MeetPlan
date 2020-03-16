@@ -40,18 +40,6 @@ class MeetPlanOrderAdmin(admin.ModelAdmin):
 admin.site.register(models.MeetPlanOrder, MeetPlanOrderAdmin)
 
 
-class SemesterDateRangeAdmin(admin.ModelAdmin):
-    list_display = [
-        'id',
-        'start_date',
-        'end_date',
-    ]
-    list_per_page = 20
-
-
-admin.site.register(models.SemesterDateRange, SemesterDateRangeAdmin)
-
-
 class FeedBackAdmin(admin.ModelAdmin):
     list_display = [
         'id',

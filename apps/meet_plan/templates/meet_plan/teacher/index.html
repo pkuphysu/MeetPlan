@@ -30,10 +30,10 @@
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>本学期安排数</b> <a class="pull-right">{{ this_semester_plan.count }}</a>
+                            <b>本学期安排数</b> <a class="pull-right">{{ this_term_plan.count }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>本学期预约数</b> <a class="pull-right">{{ this_semeseter_planorder_num }}</a>
+                            <b>本学期预约数</b> <a class="pull-right">{{ this_term_planorder_num }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>历史安排数</b> <a class="pull-right">{{ history_plan_num }}</a>
@@ -71,14 +71,14 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#timeline" data-toggle="tab">时间线</a></li>
-                    <li><a href="#this_semester_plan" data-toggle="tab">本学期安排</a></li>
+                    <li><a href="#this_term_plan" data-toggle="tab">本学期安排</a></li>
                     <li><a href="#about" data-toggle="tab">补充说明</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="timeline">
                         <!-- The timeline -->
                         <ul class="timeline timeline-inverse">
-                            {% for meetplan in this_semester_planorder %}
+                            {% for meetplan in this_term_planorder %}
                                 <!-- timeline time label -->
                                 <li class="time-label">
                                 <span class="bg-red">
@@ -90,6 +90,7 @@
                                 </li>
                                 <!-- /.timeline-label -->
                                 {% for order in meetplan.meetplanorder_set.all %}
+                                    {% if not order.is_delete %}
                                     <!-- timeline item -->
                                     <li>
                                         <i class="fa fa-comments bg-yellow"></i>
@@ -114,6 +115,7 @@
                                             </div>
                                         </div>
                                     </li>
+                                    {% endif %}
                                     <!-- END timeline item -->
                                 {% endfor %}
                             {% endfor %}
@@ -122,14 +124,14 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="tab-pane" id="this_semester_plan">
+                    <div class="tab-pane" id="this_term_plan">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">本学期({{ semesterstartdate }}到{{ semesterenddate }})预约记录</h3>
+                                <h3 class="box-title">本学期({{ term_start_date }}到{{ term_end_date }})预约记录</h3>
                             </div>
                             <!-- /.box-header -->
 
-                            {% for meetplan in this_semester_plan %}
+                            {% for meetplan in this_term_plan %}
                                 {% if forloop.first %}
                                     <div class="box-body table-responsive no-padding">
                                     <table class="table table-hover">
