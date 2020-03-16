@@ -1,4 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.response import TemplateResponse
 from django.views.generic import View
 import requests, hashlib
@@ -14,8 +15,11 @@ class IAAALoginView(View):
     def get(self, request):
         if settings.DEBUG:
             return TemplateResponse(request, template='account_auth/login/local_login.html')
-
-        response = TemplateResponse(request, template='account_auth/login/iaaa_login.html')
+        ctx = {
+            'app_id': settings.APPID,
+            'redirect_url': settings.APPREDIRECTURL
+        }
+        response = TemplateResponse(request, template='account_auth/login/iaaa_login.html', context=ctx)
         if request.META.get('QUERY_STRING'):
             response.set_cookie(key='next', value=request.META.get('QUERY_STRING'), expires=5 * 60)
         return response
@@ -30,6 +34,8 @@ class IAAALoginView(View):
                 return HttpResponseRedirect(reverse('portal:index'))
             else:
                 return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
+        else:
+            raise Http404()
 
 
 class IAAALoginAuth(View):
@@ -42,18 +48,10 @@ class IAAALoginAuth(View):
         else:
             remote_ip = request.META.get('REMOTE_ADDR')
 
-        # remote_ip = '10.128.202.184'
-        print(request.META.get('HTTP_X_FORWARDED_FOR'))
-        print('REMOTE_ADDR-' + request.META.get('REMOTE_ADDR'))
-        print('REMOTE_IP-' + remote_ip)
-
         PARA_STR = "appId=%s&remoteAddr=%s&token=%s" % (settings.APPID, remote_ip, token) + settings.APPKEY
-        print('PARA_STR:' + PARA_STR)
 
         msgAbs = hashlib.md5()
         msgAbs.update(PARA_STR.encode('utf-8'))
-        print(msgAbs)
-        print('msgAbs-' + msgAbs.hexdigest())
 
         url = "https://iaaa.pku.edu.cn/iaaa/svc/token/validate.do?remoteAddr=%s&appId=%s&token=%s&msgAbs=%s" % \
               (remote_ip, settings.APPID, token, msgAbs.hexdigest())
@@ -62,7 +60,6 @@ class IAAALoginAuth(View):
             iaaa_response = requests.get(url=url)
         except requests.exceptions.ConnectionError:
             return HttpResponse('服务器网络错误, 请稍后重新登录!\n如果您可以联系管理员, 感激不尽!')
-        print(iaaa_response.json())
 
         status = iaaa_response.json()['success']
         if status:
@@ -87,13 +84,9 @@ class IAAALoginAuth(View):
                 else:
                     domain = request.get_host()
                     send_account_active_email.delay(user[0].identity_id, domain)
-                    ctx = {
-                        'exception': '您还没有激活，我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收。'
-                    }
-                    return TemplateResponse(request, template='403.html', context=ctx)
-
+                    raise PermissionDenied('您还没有激活，我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收。')
             else:
-                return HttpResponse('errMsg:%s%s%s' % (name, identity_type, '本应用仅对物理学院学生与教职工开放，若您符合上述条件，请联系网站管理员帮您注册。'))
+                raise PermissionDenied('本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请联系网站管理员帮您注册。'.format(name, identity_id))
         else:
             err_msg = iaaa_response.json()['errMsg']
             return HttpResponse('errMsg:%s\n%s' % (err_msg, '请联系网站管理员'))

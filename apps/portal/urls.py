@@ -1,6 +1,5 @@
-from django.urls import path, reverse
+from django.urls import path
 from . import views
-from apps.account_auth.login.views import IAAALoginAuth
 
 app_name = 'portal'
 
