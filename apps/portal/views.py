@@ -12,16 +12,20 @@ from ..account_auth.models import User
 
 
 # http://hostname 或 http://hostname/ 重定向至 http://hostname/index/
+# def noindex(request):
+#     if not request.user.is_authenticated:
+#         if request.GET.get('token'):
+#             return HttpResponseRedirect(reverse('account_auth:iaaa_auth') +
+#                                         '?rand={}&token={}'.format(request.GET.get('rand'), request.GET.get('token'))
+#                                         )
+#         else:
+#             return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
+#     else:
+#         return HttpResponseRedirect(reverse('portal:index'))
+
+
 def noindex(request):
-    if not request.user.is_authenticated:
-        if request.GET.get('token'):
-            return HttpResponseRedirect(reverse('account_auth:iaaa_auth') +
-                                        '?rand={}&token={}'.format(request.GET.get('rand'), request.GET.get('token'))
-                                        )
-        else:
-            return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
-    else:
-        return HttpResponseRedirect(reverse('portal:index'))
+    return HttpResponseRedirect(reverse('portal:index'))
 
 
 class IndexView(ViewMixin, View):
