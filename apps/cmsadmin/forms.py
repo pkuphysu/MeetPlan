@@ -6,6 +6,8 @@ from ..meet_plan.utils import get_term_date
 
 
 class UserForm(forms.ModelForm, FormMixin):
+    field_order = ['identity_id', 'user_name', 'email', 'is_teacher', 'is_admin']
+
     class Meta:
         model = User
         fields = {
@@ -37,6 +39,8 @@ class UserForm(forms.ModelForm, FormMixin):
 
 
 class MeetPlanForm(forms.ModelForm, FormMixin):
+    field_order = ['teacher', 'place', 'start_time', 'end_time', 'allow_other', 'message']
+
     class Meta:
         model = MeetPlan
         fields = [
@@ -79,12 +83,14 @@ class MeetPlanOrderForm(forms.ModelForm, FormMixin):
         queryset=User.objects.filter(is_teacher=False).order_by('identity_id'),
         widget=forms.Select(attrs={'class': 'form-control'}))
 
+    field_order = ['meet_plan', 'student', 'completed', 'message']
+
     class Meta:
         model = MeetPlanOrder
         fields = [
             'meet_plan',
-            'completed',
             'student',
+            'completed',
             'message',
         ]
         labels = {
@@ -126,6 +132,7 @@ class OptionForm(forms.Form, FormMixin):
                                                         'id': 'start_date',
                                                         'placeholder': 'yyyy-M-d'}),
                           label='学期结束日期')
+    field_order = ['start', 'end']
 
 
 class MeetPlanReportTeacherForm(forms.Form, FormMixin):
@@ -137,6 +144,7 @@ class MeetPlanReportTeacherForm(forms.Form, FormMixin):
                                                              'id': 'end_date',
                                                              'placeholder': 'yyyy-M-d'}),
                                label='统计结束日期', )
+    field_order = ['start_date', 'end_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -181,6 +189,7 @@ class MeetPlanReportStudentForm(forms.Form, FormMixin):
                                help_text='此项只在选择“按照年级”时有用，当选择统计时，将会在输出文件中输出同学们的具体选课情况。'
                                          '当选择不统计时，只会输出同学们的已完成总数。',
                                choices=DETAIL_CHOICES, initial=False)
+    field_order = ['start_date', 'end_date', 'use', 'grade', 'detail']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
