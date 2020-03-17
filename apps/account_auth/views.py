@@ -51,17 +51,15 @@ class ActiveView(View):
             user.is_active = True
             user.save()
             # 跳转到登录页面
-            return TemplateResponse(request, template='account_auth/login/active.html')
+            ctx = {
+                'app_id': settings.APPID,
+                'redirect_url': settings.APPREDIRECTURL
+            }
+            return TemplateResponse(request, template='account_auth/login/active.html', context=ctx)
         except SignatureExpired:
-            ctx = {
-                'exception': '激活链接已过期！ 请登录或联系管理员获取新的激活链接。'
-            }
-            return TemplateResponse(request, template='404.html', context=ctx)
+            raise PermissionDenied('激活链接已过期！ 请登录或联系管理员获取新的激活链接')
         except BadData:
-            ctx = {
-                'exception': '激活链接错误！ 请复制粘贴完整的激活链接。'
-            }
-            return TemplateResponse(request, template='404.html', context=ctx)
+            raise PermissionDenied('激活链接错误！ 请复制粘贴完整的激活链接')
 
 
 class UserEmailUpdateView(ViewMixin, UpdateView):

@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-
+{% load meetplan_filter %}
 {% block title %}
     综合指导课
 {% endblock %}
@@ -36,14 +36,22 @@
                     {% endif %}
                 <tr>
                     <th>{{ teacher.user_name }}</th>
-                    <th>{{ teacher.meetplan_num }}</th>
-                    <th>{{ teacher.meetplan_available_num }}</th>
-                    <th>{{ teacher.meetplanorder_available_num }}</th>
-                    {% if teacher.meetplanorder_available_num %}
-                        <th><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></th>
-                    {% else %}
-                        <th><a href="javascript:void(0)">已选完</a></th>
-                    {% endif %}
+                    {% with meetplans=teacher.meetplan_set.all|in_this_term %}
+                        {% with meetplan=meetplans|in_this_term %}
+                            <th>{{ meetplan|length }}</th>
+                        {% endwith %}
+                        {% with meetplan=meetplans|in_this_term_after_now %}
+                            <th>{{ meetplan|length }}</th>
+                            {% with num=meetplan|available_num %}
+                                <th>{{ num }}</th>
+                                {% if num %}
+                                    <th><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></th>
+                                {% else %}
+                                    <th><a href="javascript:void(0)">已选完</a></th>
+                                {% endif %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
                 </tr>
                 {% if forloop.last %}
                     </tbody>
@@ -56,43 +64,6 @@
                         暂无任何安排
                     </div>
                 {% endfor %}
-                <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <!--#上一页-->
-                        <!--当有上一页时-->
-                        {% if page_obj.has_previous %}
-                            <li>
-                                <a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}?page={{ page_obj.previous_page_number }}">上一页</a>
-                            </li>
-                        {% else %}
-                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
-                        {% endif %}
-
-                        <!--中间的页码，如果是当前页，添加active属性-->
-
-                        {% for page in paginator.page_range %}
-                            {% if page == page_obj.number %}
-                                <li class="active">
-                                    <a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% else %}
-                                <li>
-                                    <a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-
-                        <!--#下一页-->
-                        {% if page_obj.has_next %}
-                            <li>
-                                <a href="{% url 'meet_plan:stu-all-tea-all-plan-list' %}?page={{ page_obj.next_page_number }}">下一页</a>
-                            </li>
-                        {% else %}
-                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
             </div>
             <!-- /.box -->
         </div>
