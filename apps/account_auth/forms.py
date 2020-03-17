@@ -35,6 +35,8 @@ class UserProfileForm(forms.ModelForm, FormMixin):
 
 
 class StudentProfileForm(forms.ModelForm, FormMixin):
+    field_order = ['is_graduate', 'grade', 'phone_number', 'department', 'major', 'dorm']
+
     class Meta:
         model = StudentProfile
         fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm', 'grade']
@@ -70,6 +72,8 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
 
 
 class TeacherProfileForm(forms.ModelForm, FormMixin):
+    field_order = ['department', 'office', 'phone_number', 'introduce']
+
     class Meta:
         model = TeacherProfile
         fields = ['phone_number', 'department', 'office', 'introduce']

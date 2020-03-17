@@ -5,6 +5,8 @@ from .models import MeetPlan, MeetPlanOrder, FeedBack
 
 
 class MeetPlanForm(forms.ModelForm, FormMixin):
+    field_order = ['place', 'start_time', 'end_time', 'allow_other', 'message']
+
     class Meta:
         model = MeetPlan
         fields = [
