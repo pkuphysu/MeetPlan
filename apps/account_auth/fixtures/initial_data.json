@@ -15,54 +15,6 @@
     }
   },
   {
-    "model": "account_auth.user",
-    "pk": 2,
-    "fields": {
-      "identity_id": "1600013913",
-      "user_name": "付瑞璐",
-      "email": "1600013913@pku.edu.cn",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00",
-      "is_active": true
-    }
-  },
-  {
-    "model": "account_auth.user",
-    "pk": 3,
-    "fields": {
-      "identity_id": "1600011380",
-      "user_name": "朱源哲",
-      "email": "1600011380@pku.edu.cn",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00",
-      "is_active": true,
-      "is_teacher": true
-    }
-  },
-  {
-    "model": "account_auth.user",
-    "pk": 4,
-    "fields": {
-      "identity_id": "1600011388",
-      "user_name": "钱思天",
-      "email": "1600011388@pku.edu.cn",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.user",
-    "pk": 5,
-    "fields": {
-      "identity_id": "1600011379",
-      "user_name": "付泽浩",
-      "email": "1600011379@pku.edu.cn",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00",
-      "is_delete": true
-    }
-  },
-  {
     "model": "account_auth.department",
     "pk": 1,
     "fields": {
@@ -147,7 +99,88 @@
     "model": "account_auth.department",
     "pk": 10,
     "fields": {
-      "department": "物理学院行政部门",
+      "department": "学生工作办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 11,
+    "fields": {
+      "department": "院图书馆",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 12,
+    "fields": {
+      "department": "教务办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 13,
+    "fields": {
+      "department": "科研与交流办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 14,
+    "fields": {
+      "department": "党政办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 15,
+    "fields": {
+      "department": "院教代会常委会",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 16,
+    "fields": {
+      "department": "院工会",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 17,
+    "fields": {
+      "department": "综合办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 18,
+    "fields": {
+      "department": "实验室与设备管理办公室",
+      "create_time": "2020-01-01T00:00:00+08:00",
+      "update_time": "2020-01-01T00:00:00+08:00"
+    }
+  },
+  {
+    "model": "account_auth.department",
+    "pk": 19,
+    "fields": {
+      "department": "财务办公室",
       "create_time": "2020-01-01T00:00:00+08:00",
       "update_time": "2020-01-01T00:00:00+08:00"
     }
@@ -358,106 +391,6 @@
     "fields": {
       "department": 9,
       "major": "核物理（核科学与技术）",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 22,
-    "fields": {
-      "department": 10,
-      "major": "学生工作办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 23,
-    "fields": {
-      "department": 10,
-      "major": "院图书馆",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 24,
-    "fields": {
-      "department": 10,
-      "major": "教务办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 25,
-    "fields": {
-      "department": 10,
-      "major": "科研与交流办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 26,
-    "fields": {
-      "department": 10,
-      "major": "党政办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 27,
-    "fields": {
-      "department": 10,
-      "major": "院教代会常委会",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 28,
-    "fields": {
-      "department": 10,
-      "major": "院工会",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 29,
-    "fields": {
-      "department": 10,
-      "major": "综合办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 30,
-    "fields": {
-      "department": 10,
-      "major": "实验室与设备管理办公室",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00"
-    }
-  },
-  {
-    "model": "account_auth.major",
-    "pk": 31,
-    "fields": {
-      "department": 10,
-      "major": "财务办公室",
       "create_time": "2020-01-01T00:00:00+08:00",
       "update_time": "2020-01-01T00:00:00+08:00"
     }

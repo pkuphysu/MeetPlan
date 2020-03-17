@@ -102,7 +102,7 @@ class BaseProfile(BaseModel):
 
     birth = models.DateField(null=True, blank=True, verbose_name='生日')
     from apps.filemanager.models import MyImg
-    head_picture = models.ForeignKey(to=MyImg, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    head_picture = models.ForeignKey(to=MyImg, on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 
     class Meta:
         verbose_name = "基本信息"
