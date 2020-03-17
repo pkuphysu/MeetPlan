@@ -164,7 +164,7 @@ def meetplan_create_student_report(user_id, app_name, start_date, end_date, grad
                                         meet_plan__end_time__lte=end_date)
                     for mto in mto_qs:
                         writer.writerow([user.identity_id, user.user_name, user.email, department, major,
-                                         mto.meet_plan.teacher.user_name, mto.meet_plan.teacher.id,
+                                         mto.meet_plan.teacher.user_name, mto.meet_plan.teacher.identity_id,
                                          mto.meet_plan.start_time, mto.meet_plan.end_time,
                                          '已完成' if mto.completed else '未完成', '正常'])
 
@@ -183,7 +183,7 @@ def meetplan_create_student_report(user_id, app_name, start_date, end_date, grad
                                         meet_plan__end_time__lte=end_date)
                     for mto in mto_qs:
                         writer.writerow([user.identity_id, user.user_name, user.email, department, major,
-                                         mto.meet_plan.teacher.user_name, mto.meet_plan.teacher.id,
+                                         mto.meet_plan.teacher.user_name, mto.meet_plan.teacher.identity_id,
                                          mto.meet_plan.start_time, mto.meet_plan.end_time,
                                          '已完成' if mto.completed else '未完成', '未设置学生信息无法判断年级'])
 
