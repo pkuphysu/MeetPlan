@@ -129,7 +129,7 @@ class OptionForm(forms.Form, FormMixin):
                                                           'placeholder': 'yyyy-M-d'}),
                             label='学期开始日期')
     end = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                        'id': 'start_date',
+                                                        'id': 'end_date',
                                                         'placeholder': 'yyyy-M-d'}),
                           label='学期结束日期')
     field_order = ['start', 'end']
