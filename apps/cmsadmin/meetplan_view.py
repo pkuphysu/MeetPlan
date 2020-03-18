@@ -99,7 +99,7 @@ class FeedBackListView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(is_delete=False, teacher=self.request.user).order_by('-create_time')
+        return qs.filter(teacher=self.request.user).order_by('-create_time')
 
 
 class FeedBackUpdateView(AdminRequiredMixin, UpdateView):

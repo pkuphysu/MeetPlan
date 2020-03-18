@@ -13,8 +13,8 @@ class SoftDeletableQuerySet(QuerySet):
 class BaseModelManager(models.Manager):
     _queryset_class = SoftDeletableQuerySet
 
-    def get_queryset(self):
-        return super(BaseModelManager, self).get_queryset().filter(is_delete=False)
+    def get_queryset(self, is_delete=False):
+        return super(BaseModelManager, self).get_queryset().filter(is_delete=is_delete)
 
 
 class BaseModel(models.Model):

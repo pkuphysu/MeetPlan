@@ -35,7 +35,7 @@
                   {% endif %}
                             <tr>
                               <th>{{ report_file.id }}</th>
-                              <th>{{ report_file.user }}</th>
+                              <th>{{ report_file.user.user_name }}</th>
                               <th>{{ report_file.file.name }}</th>
                               <th>{{ report_file.remark }}</th>
                               <th><a href="{{ report_file.file.url }}">下载</a></th>

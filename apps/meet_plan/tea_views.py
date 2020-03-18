@@ -76,18 +76,6 @@ class MeetPlanDetailView(TeaViewMixin, DetailView):
             raise PermissionDenied('您只能查看您创建的综合指导课安排！')
         return obj
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        order_list = MeetPlanOrder.objects.filter(meet_plan=self.get_object())
-        context['ordernum'] = order_list.count()
-        for i in range(0, order_list.count()):
-            context['order%did' % i] = order_list[i].id
-            context['order%dstuid' % i] = order_list[i].student.identity_id
-            context['order%dstu' % i] = order_list[i].student.user_name
-            context['order%dfinish' % i] = '已确认' if order_list[i].completed else '待确认'
-            context['order%dmessage' % i] = order_list[i].message
-        return context
-
 
 class MeetPlanDeleteView(TeaViewMixin, DeleteView):
     model = MeetPlan
@@ -122,7 +110,7 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
         from .tasks import send_meetplan_order_update_email
         domain = self.request.get_host()
         if self.object.completed != self.ori_obj.completed or self.object.is_delete != self.ori_obj.is_delete:
-            send_meetplan_order_update_email.delay(self.object.id, domain)
+            send_meetplan_order_update_email.delay(self.object.id, domain, self.object.is_delete)
 
         response = super().form_valid(form)
         return response
@@ -135,7 +123,7 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
         if obj.meet_plan.teacher != self.request.user:
-            raise PermissionDenied('您只能删除属于您创建的综合指导课的预约！')
+            raise PermissionDenied('您只能删除您创建的综合指导课的预约！')
         return obj
 
     def get_success_url(self):

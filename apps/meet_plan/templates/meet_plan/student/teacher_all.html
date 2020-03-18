@@ -12,12 +12,8 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-
                 <div class="box-header">
 
-                    <div class="box-tools">
-                        {#                    <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'meet_plan:tea-plan-add' %}'">增加综合指导课</button>#}
-                    </div>
                 </div>
                 <!-- /.box-header -->
 
@@ -28,6 +24,7 @@
                         <tbody>
                         <tr>
                             <th>教师姓名</th>
+                            <th>系所</th>
                             <th>学期安排数</th>
                             <th>剩余安排数</th>
                             <th>剩余可选人数</th>
@@ -36,6 +33,7 @@
                     {% endif %}
                 <tr>
                     <th>{{ teacher.user_name }}</th>
+                    <th>{{ teacher.teacherprofile.department }}</th>
                     {% with meetplans=teacher.meetplan_set.all|in_this_term %}
                         {% with meetplan=meetplans|in_this_term %}
                             <th>{{ meetplan|length }}</th>

@@ -39,7 +39,14 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
 
     class Meta:
         model = StudentProfile
-        fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm', 'grade']
+        fields = [
+            'is_graduate',
+            'phone_number',
+            'department',
+            'major',
+            'dorm',
+            'grade'
+        ]
         labels = {
             'is_graduate': '身份',
             'phone_number': '联系方式',
