@@ -34,7 +34,9 @@
                 <tr>
                     <th>{{ feedback.id }}</th>
                     <th>{{ feedback.teacher.user_name }}</th>
-                    <th>{{ feedback.teacher.identity_id }}</th>
+                    {#TODO 内测结束恢复代码#}
+                    <th>内测期间隐藏</th>
+                    {#<th>{{ feedback.teacher.identity_id }}</th>#}
                     <th>{{ feedback.message }}</th>
                     <th>
                         {% if feedback.have_checked %}

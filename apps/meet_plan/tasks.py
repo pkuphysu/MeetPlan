@@ -60,8 +60,11 @@ def send_meetplan_order_create_email(self, meetplanorder_id, domain):
 
 
 @shared_task(base=TransactionAwareTask, bind=True)
-def send_meetplan_order_update_email(self, meetplanorder_id, domain):
-    order = MeetPlanOrder.objects.get(id=meetplanorder_id)
+def send_meetplan_order_update_email(self, meetplanorder_id, domain, is_delete):
+    if is_delete:
+        order = MeetPlanOrder.objects.get_queryset(is_delete=True, id=meetplanorder_id)[0]
+    else:
+        order = MeetPlanOrder.objects.get(id=meetplanorder_id)
     meetplan = order.meet_plan
     student = order.student
     stu_email = [student.email]
@@ -94,9 +97,7 @@ def send_meetplan_feedback_create_email(self, feedback_id, domain):
     message = feedback.message
 
     user_model = get_user_model()
-    admins = user_model.objects.filter(is_delete=False,
-                                     is_active=True,
-                                     is_admin=True)
+    admins = user_model.objects.filter(is_active=True, is_admin=True)
     admin_email = list(admins.values_list('email', flat=True))
 
     # 构造邮件信息
@@ -122,9 +123,7 @@ def send_meetplan_feedback_update_email(self, feedback_id, domain):
     message = feedback.message
 
     user_model = get_user_model()
-    admins = user_model.objects.filter(is_delete=False,
-                                       is_active=True,
-                                       is_admin=True)
+    admins = user_model.objects.filter(is_active=True, is_admin=True)
     admins = list(admins.values_list('user_name', 'email'))
 
     # 构造邮件信息
