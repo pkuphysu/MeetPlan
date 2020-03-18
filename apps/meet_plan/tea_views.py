@@ -1,11 +1,11 @@
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import TeaViewMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
-from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm
+from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm, MeetPlanFastCreateForm
 from .utils import get_term_date
 
 
@@ -22,6 +22,53 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.teacher = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        date_range = get_term_date()
+        context['term_start_date'] = date_range[0].strftime("%Y-%m-%d")
+        context['term_end_date'] = date_range[1].strftime("%Y-%m-%d")
+        return context
+
+
+class MeetPlanFastCreateView(TeaViewMixin, FormView):
+    template_name = 'meet_plan/teacher/plan_create_fast.html'
+    form_class = MeetPlanFastCreateForm
+
+    def get_success_url(self):
+        return reverse('meet_plan:tea-index')
+
+    def form_valid(self, form):
+        import dateutil.parser, datetime
+
+        data = form.cleaned_data
+        start_time = dateutil.parser.parse('{}T{}+08:00'.format(data['date'], data['time']))
+        long = int(data['long'])
+        place = data['place']
+        allow_other = True if data['allow_other'] == '1' else False
+        message = data['message']
+        term_range = get_term_date()[1] if data['every_week'] == '2' else start_time
+
+        meetplan_obj_list = []
+        duration = datetime.timedelta(hours=0.5)
+        duration_week = datetime.timedelta(weeks=1)
+        while start_time <= term_range:
+            s_time = start_time
+            for i in range(long):
+                meetplan_obj_list.append(
+                    MeetPlan(
+                        teacher=self.request.user,
+                        place=place,
+                        start_time=s_time,
+                        end_time=s_time+duration,
+                        allow_other=allow_other,
+                        message=message,
+                    )
+                )
+                s_time += duration
+            start_time += duration_week
+        MeetPlan.objects.bulk_create(meetplan_obj_list)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):

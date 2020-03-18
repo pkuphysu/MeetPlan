@@ -70,15 +70,16 @@
         <div class="col-md-9">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#timeline" data-toggle="tab">时间线</a></li>
+                    <li class="active"><a href="#timeline_after" data-toggle="tab">时间线</a></li>
+                    <li><a href="#timeline_before" data-toggle="tab">之前的安排</a></li>
                     <li><a href="#this_term_plan" data-toggle="tab">本学期安排</a></li>
                     <li><a href="#about" data-toggle="tab">补充说明</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="timeline">
+                    <div class="tab-pane active" id="timeline_after">
                         <!-- The timeline -->
                         <ul class="timeline timeline-inverse">
-                            {% for meetplan in this_term_planorder %}
+                            {% for meetplan in this_term_plan_after_now %}
                                 <!-- timeline time label -->
                                 <li class="time-label">
                                 <span class="bg-red">
@@ -90,7 +91,49 @@
                                 </li>
                                 <!-- /.timeline-label -->
                                 {% for order in meetplan.meetplanorder_set.all %}
-                                    {% if not order.is_delete %}
+                                    <!-- timeline item -->
+                                    <li>
+                                        <i class="fa fa-comments bg-yellow"></i>
+
+                                        <div class="timeline-item">
+                                            <span class="time"><i
+                                                    class="fa fa-clock-o"></i>于{{ order.create_time }}预约</span>
+
+                                            <h3 class="timeline-header"><a href="#">{{ order.student.user_name }}</a>
+                                            </h3>
+
+                                            <div class="timeline-body">
+                                                {{ order.message }}
+                                            </div>
+                                            <div class="timeline-footer">
+                                                <a class="btn btn-warning btn-flat btn-xs">待进行</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- END timeline item -->
+                                {% endfor %}
+                            {% endfor %}
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-pane" id="timeline_before">
+                        <!-- The timeline -->
+                        <ul class="timeline timeline-inverse">
+                            {% for meetplan in this_term_plan_before_now %}
+                                <!-- timeline time label -->
+                                <li class="time-label">
+                                <span class="bg-red">
+                                  {{ meetplan.start_time|date:'m月d日' }}
+                                </span>
+                                    <span class="bg-blue">
+                                    {{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}
+                                </span>
+                                </li>
+                                <!-- /.timeline-label -->
+                                {% for order in meetplan.meetplanorder_set.all %}
                                     <!-- timeline item -->
                                     <li>
                                         <i class="fa fa-comments bg-yellow"></i>
@@ -115,7 +158,6 @@
                                             </div>
                                         </div>
                                     </li>
-                                    {% endif %}
                                     <!-- END timeline item -->
                                 {% endfor %}
                             {% endfor %}

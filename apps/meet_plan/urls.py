@@ -20,6 +20,7 @@ urlpatterns += [
 urlpatterns += [
     path('my_plan_all/', tea_views.MeetPlanListView.as_view(), name='tea-plan-list-all'),
     path('my_plan_create/', tea_views.MeetPlanCreateView.as_view(), name='tea-plan-add'),
+    path('my_plan_create_fast/', tea_views.MeetPlanFastCreateView.as_view(), name='tea-plan-add-fast'),
     path('my_plan_update/<int:pk>/', tea_views.MeetPlanUpdateView.as_view(), name='tea-plan-update'),
     path('my_plan_detail/<int:pk>/', tea_views.MeetPlanDetailView.as_view(), name='tea-plan-detail'),
     path('my_plan_confirm_delete/<int:pk>/', tea_views.MeetPlanDeleteView.as_view(), name='tea-plan-confirm-delete'),
