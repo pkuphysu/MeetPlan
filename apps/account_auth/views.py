@@ -112,8 +112,8 @@ class BaseProfileImgUpdateView(ViewMixin, ImgUploadViewMixin):
     def form_valid(self, form):
         form.instance.app = urls.app_name
         response = super().form_valid(form)
-        self.request.user.userprofile.head_picture = self.object
-        self.request.user.userprofile.save()
+        self.request.user.baseprofile.head_picture = self.object
+        self.request.user.baseprofile.save()
         return response
 
 
