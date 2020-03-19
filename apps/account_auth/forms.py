@@ -49,7 +49,7 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
         ]
         labels = {
             'is_graduate': '身份',
-            'phone_number': '联系方式',
+            'phone_number': '手机',
             'department': '系所',
             'major': '专业',
             'dorm': '宿舍',
@@ -85,7 +85,7 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
         model = TeacherProfile
         fields = ['phone_number', 'department', 'office', 'introduce']
         labels = {
-            'phone_number': '联系方式',
+            'phone_number': '办公室电话',
             'department': '系所',
             'office': '办公室',
             'introduce': '个人简介',
