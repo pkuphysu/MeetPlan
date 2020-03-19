@@ -146,7 +146,81 @@
 {% endblock %}
 
 {% block content %}
-    待添
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-body">
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i>欢迎！</h4>
+                        感谢您参与网站的内测，如您在使用过程中遇到任何问题，都可以与学工办<a href="mailto:zhangfanpku@pku.edu.cn">张帆</a>
+                        或16级<a href="mailto:rxgao@pku.edu.cn">郜瑞啸</a>联系，再次感谢您的支持！
+                    </div>
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-warning"></i> 注意!</h4>
+                        本次内测不留档，内测结束时会删除全部数据！内测阶段仍然以<a href="http://zhzdk.phy.ruixiaolu.com">原综合指导课</a>网站为准！
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-body">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="3" class=""></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="{% static 'images/headpicture/1.jpeg' %}"
+                                     alt="First slide">
+
+                                <div class="carousel-caption">
+
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="{% static 'images/headpicture/2.jpeg' %}"
+                                     alt="Second slide">
+
+                                <div class="carousel-caption">
+
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="{% static 'images/headpicture/3.jpeg' %}"
+                                     alt="Third slide">
+
+                                <div class="carousel-caption">
+
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img src="{% static 'images/headpicture/4.jpeg' %}"
+                                     alt="Fourth slide">
+
+                                <div class="carousel-caption">
+
+                                </div>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="fa fa-angle-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="fa fa-angle-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footer %}
