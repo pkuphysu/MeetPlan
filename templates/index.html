@@ -14,7 +14,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>P</b>hy</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>PHY</b>服务</span>
+        <span class="logo-lg"><b>综合指导课</b></span>
     </a>
 {% endblock %}
 
@@ -153,75 +153,26 @@
                     <div class="alert alert-success alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4><i class="icon fa fa-check"></i>欢迎！</h4>
-                        感谢您参与网站的内测，如您在使用过程中遇到任何问题，都可以与学工办<a href="mailto:zhangfanpku@pku.edu.cn">张帆</a>
+                        如您在使用过程中遇到任何问题，都可以与学工办<a href="mailto:zhangfanpku@pku.edu.cn">张帆</a>
                         或16级<a href="mailto:rxgao@pku.edu.cn">郜瑞啸</a>联系，再次感谢您的支持！
+                        <ul>
+                            <li>您可以点击左边个人中心更改您的邮件地址（默认为职工号|学号邮箱）</li>
+                            <li>您可以点击右上方头像上传您的照片或退出登录</li>
+                            <li>您可以在左侧菜单栏中点击综合指导课进入相关页面</li>
+                            {% if user.is_teacher %}
+                                <li>默认已导入旧网站的数据，如有异常请联系技术人员</li>
+                                <li>您可以使用综合指导课栏目下的教师反馈与技术人员取得联系</li>
+                            {% else %}
+                                <li>默认已导入旧网站数据，如有异常请联系技术人员</li>
+                            {% endif %}
+                            <li>您可以在左侧联系我们页面找到本站全部管理员的联系方式</li>
+                        </ul>
                     </div>
                     <div class="alert alert-warning alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4><i class="icon fa fa-warning"></i> 注意!</h4>
-                        本次内测不留档，内测结束时会删除全部数据！内测阶段仍然以<a href="http://zhzdk.phy.ruixiaolu.com">原综合指导课</a>网站为准！
-                    </div>
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-ban"></i> 注意!</h4>
-                        内测期间，经由本网站进行的综合指导课全部不算数！！！<br/>
-                        无论是否是学生选了老师的课还是其他情况，都不算数！！！
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-default">
-                <div class="box-body">
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="3" class=""></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img src="https://s1.ax1x.com/2020/03/19/8sa5c9.jpg"
-                                     alt="First slide">
-
-                                <div class="carousel-caption">
-
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img src="https://ae01.alicdn.com/kf/H27dea0e3a955448482198945f58ed5beU.jpeg"
-                                     alt="Second slide">
-
-                                <div class="carousel-caption">
-
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img src="https://ae01.alicdn.com/kf/Hc63cc777b053425e80a0df6179145f85R.jpeg"
-                                     alt="Third slide">
-
-                                <div class="carousel-caption">
-
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img src="https://ae01.alicdn.com/kf/Hd28dd7de3cbd41da9a2797a88f40d2f6C.jpeg"
-                                     alt="Fourth slide">
-
-                                <div class="carousel-caption">
-
-                                </div>
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                            <span class="fa fa-angle-left"></span>
-                        </a>
-                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                            <span class="fa fa-angle-right"></span>
-                        </a>
+                        公测期间<a href="http://zhzdk.phy.ruixiaolu.com">原综合指导课</a>网站不再使用，数据也不会再同步，原网站已禁止
+                        新增和更新操作，仅支持查询已有数据供您与本系统内数据进行对比。
                     </div>
                 </div>
             </div>

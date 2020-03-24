@@ -13,9 +13,7 @@
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    {#TODO 内测结束恢复代码#}
-                    {#<h3 class="box-title">{{ object }}</h3>#}
-                    <h3 class="box-title">{{ object.user_name }}</h3>
+                    <h3 class="box-title">{{ object }}</h3>
                     <div class="pull-right">
                         <button class="btn btn-danger" onclick="window.location.href='{% url 'cmsadmin:user-confirm-delete' object.pk %}'">删除</button>
                     </div>

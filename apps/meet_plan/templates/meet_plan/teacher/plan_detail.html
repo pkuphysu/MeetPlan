@@ -57,7 +57,7 @@
         {% with mtos=plan.meetplanorder_set.all %}
             {% if mtos %}
                 {% for mto in mtos %}
-                    <div class="col-xs-12 col-md-6">
+                    <div class="col-md-6">
                         <div class="box">
                             <div class="box-header">
                                 <h3 class="box-title">预约{{ forloop.counter }}</h3>
@@ -68,22 +68,30 @@
                                     <tbody>
                                     <tr>
                                         <th>预约编号</th>
-                                        <th>学生姓名</th>
-                                        <th>学号</th>
-                                        <th>状态</th>
-                                        <th>备注</th>
-                                        <th>操作</th>
+                                        <td>{{ mto.id }}</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ mto.id }}</td>
+                                        <th>学生姓名</th>
                                         <td>{{ mto.student.user_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>学号</th>
                                         <td>{{ mto.student.identity_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>状态</th>
                                         {% if mto.completed %}
                                             <td>已确认</td>
                                         {% else %}
                                             <th>待确认</th>
                                         {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th>备注</th>
                                         <td>{{ mto.message }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>操作</th>
                                         <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">确认</a></td>
                                     </tr>
                                     </tbody>
