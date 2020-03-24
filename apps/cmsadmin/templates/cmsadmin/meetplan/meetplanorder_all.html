@@ -39,9 +39,7 @@
                 <tr>
                     <th>{{ meetplanorder.id }}</th>
                     <th>{{ meetplanorder.meet_plan_id }}</th>
-                    {#TODO 内测结束恢复代码#}
-                    <th>内测期间隐藏</th>
-{#                    <th>{{ meetplanorder.student.identity_id }}</th>#}
+                    <th>{{ meetplanorder.student.identity_id }}</th>
                     <th>{{ meetplanorder.student.user_name }}</th>
                     <th>{{ meetplanorder.completed }}</th>
                     <th><a href="{% url 'cmsadmin:meetplanorder_update' meetplanorder.id %}">编辑</a></th>

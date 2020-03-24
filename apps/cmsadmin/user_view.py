@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.generic import DetailView
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -56,6 +57,12 @@ class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
         return response
 
 
+class UserDetailView(AdminRequiredMixin, DetailView):
+    model = User
+    template_name = 'cmsadmin/user/user_detail.html'
+    context_object_name = 'user_detail'
+
+
 class UpdateUserView(AdminRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
@@ -91,16 +98,6 @@ class DeletedUserListView(AdminRequiredMixin, ListView):
         return User.objects.get_queryset(is_delete=True).order_by('-update_time')
 
 
-class UserProfileListView(AdminRequiredMixin, ListView):
-    model = BaseProfile
-    template_name = 'cmsadmin/user/base_profile_all.html'
-    paginate_by = 50
-    context_object_name = 'base_profile_list'
-
-    def get_queryset(self):
-        return super().get_queryset().order_by('user_id')
-
-
 class UserProfileUpdateView(AdminRequiredMixin, UpdateView):
     model = BaseProfile
     form_class = UserProfileForm
@@ -110,16 +107,6 @@ class UserProfileUpdateView(AdminRequiredMixin, UpdateView):
         return reverse('cmsadmin:base-profile-all')
 
 
-class StudentProfileListView(AdminRequiredMixin, ListView):
-    model = StudentProfile
-    template_name = 'cmsadmin/user/student_profile_all.html'
-    paginate_by = 50
-    context_object_name = 'student_profile_list'
-
-    def get_queryset(self):
-        return super().get_queryset().order_by('user_id')
-
-
 class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
     model = StudentProfile
     form_class = StudentProfileForm
@@ -127,16 +114,6 @@ class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('cmsadmin:student-profile-all')
-
-
-class TeacherProfileListView(AdminRequiredMixin, ListView):
-    model = TeacherProfile
-    template_name = 'cmsadmin/user/teacher_profile_all.html'
-    paginate_by = 50
-    context_object_name = 'teacher_profile_list'
-
-    def get_queryset(self):
-        return super().get_queryset().order_by('user_id')
 
 
 class TeacherProfileUpdateView(AdminRequiredMixin, UpdateView):

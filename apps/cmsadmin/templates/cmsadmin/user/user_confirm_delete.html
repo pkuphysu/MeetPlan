@@ -16,9 +16,7 @@
                 <form role="form" method="post">
                     <div class="box-body">
                         {% csrf_token %}
-                        {#TODO 内测结束恢复代码#}
-                        {# <p>确定要删除"{{ object }}"?</p> #}
-                        <p>确定要删除 "{{ object.user_name }}"?</p>
+                         <p>确定要删除"{{ object }}"?</p>
                         <input type="submit" value="Confirm">
                     </div>
                 </form>

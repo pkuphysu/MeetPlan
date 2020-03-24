@@ -12,19 +12,15 @@ urlpatterns += [
     path('user_all/', user_view.UserView.as_view(), name='user_all'),
     path('user_create/', user_view.UserCreateView.as_view(), name='user_create'),
     path('user_create_many/', user_view.CreateManyUserView.as_view(), name='user_create_many'),
+    path('user_detail/<int:pk>/', user_view.UserDetailView.as_view(), name='user-detail'),
     path('user_update/<int:pk>/', user_view.UpdateUserView.as_view(), name='user_update'),
     path('user_deletelist/', user_view.DeletedUserListView.as_view(), name='user_delete_list'),
     path('user_recovery/<int:pk>/', user_view.RecoveryUserView.as_view(), name='user-recovery'),
     path('user_confirm_delete/<int:pk>/', user_view.UserDeleteView.as_view(), name='user-confirm-delete'),
 
-    path('base_profile_all/', user_view.UserProfileListView.as_view(), name='base-profile-all'),
-    path('base_profile_update/<int:pk>/', user_view.UserProfileUpdateView.as_view(), name='base-profile-update'),
-
-    path('student_profile_all/', user_view.StudentProfileListView.as_view(), name='student-profile-all'),
-    path('student_profile_update/<int:pk>/', user_view.StudentProfileUpdateView.as_view(), name='student-profile-update'),
-
-    path('teacher_profile_all/', user_view.TeacherProfileListView.as_view(), name='teacher-profile-all'),
-    path('teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(), name='teacher-profile-update'),
+    path('user_base_profile_update/<int:pk>/', user_view.UserProfileUpdateView.as_view(), name='base-profile-update'),
+    path('user_student_profile_update/<int:pk>/', user_view.StudentProfileUpdateView.as_view(), name='student-profile-update'),
+    path('user_teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(), name='teacher-profile-update'),
 
 ]
 
@@ -50,8 +46,5 @@ urlpatterns += [
          name='meetplan-report-teacher-create'),
     path('meetplan_report_student_create/', meetplan_view.MeetPlanReportStudentCreateView.as_view(),
          name='meetplan-report-student-create'),
-]
-
-urlpatterns += [
-    path('term_date_setting/', meetplan_view.TermDateUpdateView.as_view(), name='meetplan-termdate-update')
+    path('meetplan_term_date_setting/', meetplan_view.TermDateUpdateView.as_view(), name='meetplan-termdate-update')
 ]
