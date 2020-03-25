@@ -47,6 +47,9 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
             'dorm',
             'grade'
         ]
+        help_texts = {
+            'department': '本科生请选择“物理学院（本科）”，并在专业中选择自己的专业方向。'
+        }
         labels = {
             'is_graduate': '身份',
             'phone_number': '手机',
