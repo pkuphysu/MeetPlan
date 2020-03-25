@@ -32,20 +32,20 @@
                         </tr>
                     {% endif %}
                 <tr>
-                    <th>{{ teacher.user_name }}</th>
-                    <th>{{ teacher.teacherprofile.department }}</th>
+                    <td>{{ teacher.user_name }}</td>
+                    <td>{{ teacher.teacherprofile.department }}</td>
                     {% with meetplans=teacher.meetplan_set.all|in_this_term %}
                         {% with meetplan=meetplans|in_this_term %}
-                            <th>{{ meetplan|length }}</th>
+                            <td>{{ meetplan|length }}</td>
                         {% endwith %}
                         {% with meetplan=meetplans|in_this_term_after_now %}
-                            <th>{{ meetplan|length }}</th>
+                            <td>{{ meetplan|length }}</td>
                             {% with num=meetplan|available_num %}
-                                <th>{{ num }}</th>
+                                <td>{{ num }}</td>
                                 {% if num %}
-                                    <th><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></th>
+                                    <td><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></td>
                                 {% else %}
-                                    <th><a href="javascript:void(0)">已选完</a></th>
+                                    <td><a href="javascript:void(0)">已选完</a></td>
                                 {% endif %}
                             {% endwith %}
                         {% endwith %}
