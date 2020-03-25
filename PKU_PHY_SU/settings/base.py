@@ -139,6 +139,8 @@ SESSION_CACHE_ALIAS = "default"
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100000  # 每个worker执行10w个任务就会被销毁，可防止内存泄露
 CELERY_RESULT_SERIALIZER = 'json'  # 结果序列化方案
 CELERY_RESULT_BACKEND = 'django-db'  # BACKEND配置，这里使用redis
+CELERY_ENABLE_UTC = False
 CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 DEFAULT_FILE_STORAGE = 'PKU_PHY_SU.tools.storage.FileStorage'
