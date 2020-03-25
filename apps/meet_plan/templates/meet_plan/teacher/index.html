@@ -57,8 +57,8 @@
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> 使用流程</strong>
                     <ul>
                         <li>添加时间安排</li>
-                        <li>如有同学选择了您的预约谈话,您将收到电子邮件通知,您也可以在本页面右侧看到具体的预约TimeLine</li>
-                        <li>和学生谈话完成后,请再次及时登录系统‘确认’与相应同学的谈话</li>
+                        <li>如有同学选择了您的预约谈话，您将收到电子邮件通知，您也可以在本页面右侧看到具体的预约TimeLine</li>
+                        <li>和学生谈话完成后，请再次及时登录系统“确认”与相应同学的谈话</li>
                     </ul>
 
                 </div>
@@ -123,43 +123,46 @@
                         <!-- The timeline -->
                         <ul class="timeline timeline-inverse">
                             {% for meetplan in this_term_plan_before_now %}
-                                <!-- timeline time label -->
-                                <li class="time-label">
+                                {% if meetplan.meetplanorder_set.exists %}
+                                    <!-- timeline time label -->
+                                    <li class="time-label">
                                 <span class="bg-red">
                                   {{ meetplan.start_time|date:'m月d日' }}
                                 </span>
-                                    <span class="bg-blue">
+                                        <span class="bg-blue">
                                     {{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}
                                 </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                                {% for order in meetplan.meetplanorder_set.all %}
-                                    <!-- timeline item -->
-                                    <li>
-                                        <i class="fa fa-comments bg-yellow"></i>
+                                    </li>
+                                    <!-- /.timeline-label -->
+                                    {% for order in meetplan.meetplanorder_set.all %}
+                                        <!-- timeline item -->
+                                        <li>
+                                            <i class="fa fa-comments bg-yellow"></i>
 
-                                        <div class="timeline-item">
+                                            <div class="timeline-item">
                                             <span class="time"><i
                                                     class="fa fa-clock-o"></i>于{{ order.create_time }}预约</span>
 
-                                            <h3 class="timeline-header"><a href="#">{{ order.student.user_name }}</a>
-                                            </h3>
+                                                <h3 class="timeline-header"><a
+                                                        href="#">{{ order.student.user_name }}</a>
+                                                </h3>
 
-                                            <div class="timeline-body">
-                                                {{ order.message }}
+                                                <div class="timeline-body">
+                                                    {{ order.message }}
+                                                </div>
+                                                <div class="timeline-footer">
+                                                    {% if order.completed %}
+                                                        <a class="btn btn-success btn-flat btn-xs">已确认</a>
+                                                    {% else %}
+                                                        <a class="btn btn-warning btn-flat btn-xs"
+                                                           href="{% url 'meet_plan:tea-order-update' order.id %}">去确认</a>
+                                                    {% endif %}
+                                                </div>
                                             </div>
-                                            <div class="timeline-footer">
-                                                {% if order.completed %}
-                                                    <a class="btn btn-success btn-flat btn-xs">已确认</a>
-                                                {% else %}
-                                                    <a class="btn btn-warning btn-flat btn-xs"
-                                                       href="{% url 'meet_plan:tea-order-update' order.id %}">去确认</a>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- END timeline item -->
-                                {% endfor %}
+                                        </li>
+                                        <!-- END timeline item -->
+                                    {% endfor %}
+                                {% endif %}
                             {% endfor %}
                             <li>
                                 <i class="fa fa-clock-o bg-gray"></i>
@@ -188,12 +191,18 @@
                                     </tr>
                                 {% endif %}
                             <tr>
-                                <th>{{ meetplan.id }}</th>
-                                <th>{{ meetplan.place }}</th>
-                                <th>{{ meetplan.start_time|date }}</th>
-                                <th>{{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}</th>
-                                <th>{{ meetplan.allow_other }}</th>
-                                <th><a href="{% url 'meet_plan:tea-plan-detail' meetplan.id %}">查看详情</a></th>
+                                <td>{{ meetplan.id }}</td>
+                                <td>{{ meetplan.place }}</td>
+                                <td>{{ meetplan.start_time|date }}</td>
+                                <td>{{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}</td>
+                                <td>
+                                    {% if meetplan.allow_other %}
+                                        允许
+                                    {% else %}
+                                        不允许
+                                    {% endif %}
+                                </td>
+                                <td><a href="{% url 'meet_plan:tea-plan-detail' meetplan.id %}">查看详情</a></td>
                             </tr>
                             {% if forloop.last %}
                                 </tbody>
@@ -216,21 +225,19 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-
-                                <strong><i class="fa fa-file-text-o margin-r-5"></i>有同学参与了谈话,但没有经过网上预约,如果添加记录?</strong>
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i>有同学参与了谈话，但没有经过网上预约，如果添加记录？</strong>
                                 <ul>
-                                    <li>记录同学姓名,日期,时间,地点</li>
-                                    <li>登录选课系统,使用“使用反馈”功能,提交以上信息</li>
-                                    <li>或者发Email给管理员,注明添加选课指导谈话记录</li>
+                                    <li>记录同学姓名、日期、时间、地点</li>
+                                    <li>登录选课系统，使用“使用反馈”功能，提交以上信息</li>
+                                    <li>或者发Email给管理员，注明添加选课指导谈话记录</li>
                                 </ul>
                                 <hr/>
-                                <strong><i class="fa fa-file-text-o margin-r-5"></i>误删了同学记录怎么办?</strong>
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i>误删了同学记录怎么办？</strong>
                                 <ul>
-                                    <li>找到同学预约时收到的Email,复制内容</li>
-                                    <li>如果找不到预约Email,记录同学姓名,日期,时间,地点</li>
-                                    <li>登录选课系统,点击“使用反馈”链接,注明找回记录,粘贴以上信息提交</li>
+                                    <li>找到同学预约时收到的Email，复制内容</li>
+                                    <li>如果找不到预约Email，记录同学姓名、日期、时间、地点</li>
+                                    <li>登录选课系统，点击“使用反馈”链接，注明找回记录，粘贴以上信息提交</li>
                                 </ul>
-
                             </div>
                             <!-- /.box-body -->
                         </div>

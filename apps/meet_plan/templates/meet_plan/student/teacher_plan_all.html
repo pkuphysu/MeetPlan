@@ -36,18 +36,18 @@
                         </tr>
                     {% endif %}
                 <tr>
-                    <th>{{ plan.start_time | date }}</th>
-                    <th>{{ plan.start_time | time }}到{{ plan.end_time | time }}</th>
-                    <th>{{ plan.place }}</th>
-                    <th>{{ plan.message }}</th>
-                    <th>{{ plan.available_choice }} </th>
-                    <th>{{ plan.allow_other }}</th>
+                    <td>{{ plan.start_time | date }}</td>
+                    <td>{{ plan.start_time | time }}到{{ plan.end_time | time }}</td>
+                    <td>{{ plan.place }}</td>
+                    <td>{{ plan.message }}</td>
+                    <td>{{ plan.available_choice }} </td>
+                    <td>{{ plan.allow_other }}</td>
                     {% if not plan.available %}
-                        <th>已过期</th>
+                        <td>已过期</td>
                     {% elif plan.available_choice %}
-                        <th><a href="{% url 'meet_plan:stu-order-create' plan.id %}">预约</a></th>
+                        <td><a href="{% url 'meet_plan:stu-order-create' plan.id %}">预约</a></td>
                     {% else %}
-                        <th>已选满</th>
+                        <td>已选满</td>
                     {% endif %}
                 </tr>
                 {% if forloop.last %}
