@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load cache %}
 
 {% block title %}
     综合指导课安排列表
@@ -30,18 +31,22 @@
                             <th>时间</th>
                             <th>地点</th>
                             <th>备注</th>
-                            <th>剩余名额</th>
                             <th>多人</th>
+                            <th>剩余名额</th>
                             <th>点击预约</th>
                         </tr>
                     {% endif %}
                 <tr>
-                    <td>{{ plan.start_time | date }}</td>
-                    <td>{{ plan.start_time | time }}到{{ plan.end_time | time }}</td>
-                    <td>{{ plan.place }}</td>
-                    <td>{{ plan.message }}</td>
+
+                    {% cache None meetplan_plan_detail plan.id %}
+                        <td>{{ plan.start_time | date }}</td>
+                        <td>{{ plan.start_time | time }}到{{ plan.end_time | time }}</td>
+                        <td>{{ plan.place }}</td>
+                        <td>{{ plan.message }}</td>
+                        <td>{{ plan.allow_other }}</td>
+                    {% endcache %}
+
                     <td>{{ plan.available_choice }} </td>
-                    <td>{{ plan.allow_other }}</td>
                     {% if not plan.available %}
                         <td>已过期</td>
                     {% elif plan.available_choice %}

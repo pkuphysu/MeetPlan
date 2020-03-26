@@ -144,3 +144,9 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 DEFAULT_FILE_STORAGE = 'PKU_PHY_SU.tools.storage.FileStorage'
+
+# Redis Cache 过期设置
+REDIS_TIMEOUT = 7*24*60*60
+CUBES_REDIS_TIMEOUT = 60*60
+NEVER_REDIS_TIMEOUT = 365*24*60*60
+
