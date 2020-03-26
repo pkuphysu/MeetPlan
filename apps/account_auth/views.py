@@ -193,6 +193,10 @@ class TeacherProfileCreateView(ViewMixin, TeacherRequiredMixin, CreateView):
             return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_teacher_name_and_department', [self.request.user.id])
+        cache.delete(key)
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -210,3 +214,10 @@ class TeacherProfileUpdateView(TeaViewMixin, UpdateView):
         if obj != self.request.user.teacherprofile:
             raise PermissionDenied('你只能更改自己的个人资料！')
         return obj
+
+    def form_valid(self, form):
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_teacher_name_and_department', [self.request.user.id])
+        cache.delete(key)
+        return super().form_valid(form)

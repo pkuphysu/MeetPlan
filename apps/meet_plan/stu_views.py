@@ -17,9 +17,10 @@ from .utils import get_term_date
 class TeacherListView(StuViewMixin, ListView):
     template_name = 'meet_plan/student/teacher_all.html'
     context_object_name = 'teacher_list'
+    paginate_by = 50
 
     def get_queryset(self):
-        return User.objects.filter(is_teacher=True)
+        return User.objects.filter(is_teacher=True).order_by('identity_id')
 
 
 class TeacherPlanListView(StuViewMixin, ListView):
@@ -62,6 +63,12 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
         from .tasks import send_meetplan_order_create_email
         domain = self.request.get_host()
         send_meetplan_order_create_email.delay(self.object.id, domain)
+
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.meet_plan.teacher_id])
+        cache.delete(key)
+
         return response
 
     def post(self, request, *args, **kwargs):

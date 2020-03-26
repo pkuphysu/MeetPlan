@@ -21,6 +21,16 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
         return reverse('meet_plan:tea-plan-detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
+
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
         form.instance.teacher = self.request.user
         return super().form_valid(form)
 
@@ -69,6 +79,16 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
                 s_time += duration
             start_time += duration_week
         MeetPlan.objects.bulk_create(meetplan_obj_list)
+
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -99,6 +119,14 @@ class MeetPlanUpdateView(TeaViewMixin, UpdateView):
         context['semesterstartdate'] = date_range[0].strftime("%Y-%m-%d")
         context['semesterenddate'] = date_range[1].strftime("%Y-%m-%d")
         return context
+
+    def form_valid(self, form):
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_plan_detail', [self.object.id])
+        cache.delete(key)
+
+        return super().form_valid(form)
 
 
 class MeetPlanListView(TeaViewMixin, ListView):
@@ -136,6 +164,18 @@ class MeetPlanDeleteView(TeaViewMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('meet_plan:tea-index')
+
+    def delete(self, request, *args, **kwargs):
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
+        return super().delete(request, *args, **kwargs)
 
 
 class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
@@ -175,6 +215,14 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('meet_plan:tea-index')
+
+    def delete(self, request, *args, **kwargs):
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
+        return super().delete(request, *args, **kwargs)
 
 
 class FeedBackCreateView(TeaViewMixin, CreateView):
