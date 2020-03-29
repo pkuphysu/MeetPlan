@@ -12,7 +12,7 @@ class MyFileAdmin(admin.ModelAdmin):
         'create_time'
     ]
     list_filter = ['upload_or_generate']
-    search_fields = ['user', 'upload_or_generate']
+    search_fields = ['user__user_name', 'upload_or_generate']
     list_per_page = 20
     list_select_related = True
 
@@ -28,7 +28,7 @@ class MyImgAdmin(admin.ModelAdmin):
         'create_time'
     ]
     list_filter = ['upload_or_generate']
-    search_fields = ['user']
+    search_fields = ['user__user_name']
     list_per_page = 20
     list_select_related = True
 

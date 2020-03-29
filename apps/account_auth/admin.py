@@ -96,7 +96,7 @@ class BaseProfileAdmin(admin.ModelAdmin):
 
     link_to_head_picture.short_description = '头像'
     list_filter = ['gender']
-    search_fields = ['user', 'telephone']
+    search_fields = ['user__user_name', 'telephone']
     list_per_page = 20
     list_select_related = True
 
@@ -143,7 +143,7 @@ class MajorAdmin(admin.ModelAdmin):
 
     link_to_department.short_description = '系所'
 
-    search_fields = ['major', 'link_to_department']
+    search_fields = ['major', 'department__department']
     list_filter = ['department']
     list_per_page = 20
     list_select_related = True
@@ -164,7 +164,7 @@ class StudentProfileAdmin(admin.ModelAdmin):
     ]
 
     list_filter = ['is_graduate', 'department', 'major', 'grade']
-    search_fields = ['user', 'phone_number']
+    search_fields = ['user__user_name', 'phone_number']
     list_per_page = 20
     list_select_related = True
 
@@ -182,7 +182,7 @@ class TeacherProfileAdmin(admin.ModelAdmin):
     ]
 
     list_filter = ['department']
-    search_fields = ['user', 'office', 'introduce']
+    search_fields = ['user__user_name', 'office', 'introduce']
     list_per_page = 20
     list_select_related = True
 
