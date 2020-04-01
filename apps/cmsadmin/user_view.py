@@ -13,17 +13,27 @@ from .forms import UserForm
 from .tasks import account_create_many_user
 from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile
 from ..account_auth.tasks import send_account_active_email
-from ..account_auth.forms import UserProfileForm, StudentProfileForm, TeacherProfileForm
+from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherProfileForm
 
 
-class UserView(AdminRequiredMixin, ListView):
+class TeacherListView(AdminRequiredMixin, ListView):
     model = User
-    template_name = 'cmsadmin/user/user_all.html'
+    template_name = 'cmsadmin/user/teacher_all.html'
     paginate_by = 50
     context_object_name = 'user_list'
 
     def get_queryset(self):
-        return super().get_queryset().order_by('-identity_id')
+        return super().get_queryset().filter(is_teacher=True).order_by('-identity_id')
+
+
+class StudentListView(AdminRequiredMixin, ListView):
+    model = User
+    template_name = 'cmsadmin/user/student_all.html'
+    paginate_by = 50
+    context_object_name = 'user_list'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_teacher=False).order_by('-identity_id')
 
 
 class UserCreateView(AdminRequiredMixin, CreateView):
@@ -32,7 +42,10 @@ class UserCreateView(AdminRequiredMixin, CreateView):
     form_class = UserForm
 
     def get_success_url(self):
-        return reverse('cmsadmin:user_all')
+        if self.object.is_teacher:
+            return reverse('cmsadmin:user_teacher_all')
+        else:
+            return reverse('cmsadmin:user_student_all')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -46,7 +59,7 @@ class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
     template_name = 'cmsadmin/user/user_create_many.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:user_all')
+        return reverse('cmsadmin:index')
 
     def form_valid(self, form):
         form.instance.app = urls.app_name
@@ -69,7 +82,10 @@ class UpdateUserView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/user_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:user_all')
+        if self.object.is_teacher:
+            return reverse('cmsadmin:user_teacher_all')
+        else:
+            return reverse('cmsadmin:user_student_all')
 
 
 class UserDeleteView(AdminRequiredMixin, DeleteView):
@@ -77,7 +93,10 @@ class UserDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'cmsadmin/user/user_confirm_delete.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:user_all')
+        if self.object.is_teacher:
+            return reverse('cmsadmin:user_teacher_all')
+        else:
+            return reverse('cmsadmin:user_student_all')
 
 
 class RecoveryUserView(AdminRequiredMixin, View):
@@ -98,9 +117,9 @@ class DeletedUserListView(AdminRequiredMixin, ListView):
         return User.objects.get_queryset(is_delete=True).order_by('-update_time')
 
 
-class UserProfileUpdateView(AdminRequiredMixin, UpdateView):
+class BaseProfileUpdateView(AdminRequiredMixin, UpdateView):
     model = BaseProfile
-    form_class = UserProfileForm
+    form_class = BaseProfileForm
     template_name = 'cmsadmin/user/base_profile_update.html'
 
     def get_success_url(self):

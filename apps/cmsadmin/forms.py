@@ -73,7 +73,9 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['teacher'].queryset = User.objects.filter(is_teacher=True).order_by('user_name')
+        from db.base_model import Convert
+        self.fields['teacher'].queryset = User.objects.filter(is_teacher=True).order_by(
+            Convert('user_name', 'gbk').asc())
 
 
 class MeetPlanOrderForm(forms.ModelForm, FormMixin):
