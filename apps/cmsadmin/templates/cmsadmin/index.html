@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block subtitle %}
-后台管理系统
+    后台管理系统
 {% endblock %}
 
 {% block logo %}
@@ -20,31 +20,31 @@
 
 {% block usermenu %}
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        {% if user.userprofile and user.userprofile.head_picture %}
-        <img src="{{ user.userprofile.head_picture.img.url }}" class="user-image" alt="User Image">
+        {% if user.baseprofile and user.baseprofile.head_picture %}
+            <img src="{{ user.baseprofile.head_picture.img.url }}" class="user-image" alt="User Image">
         {% else %}
-        <img src="{% static 'images/headpicture/default.jpg' %}" class="user-image" alt="User Image">
+            <img src="{% static 'images/headpicture/default.jpg' %}" class="user-image" alt="User Image">
         {% endif %}
         <span class="hidden-xs">{{ user.user_name }}</span>
     </a>
     <ul class="dropdown-menu">
         <!-- User image -->
-          <li class="user-header">
-              {% if user.userprofile and user.userprofile.head_picture %}
-                  <img src="{{ user.userprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
-              {% else %}
-                  <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
-              {% endif %}
+        <li class="user-header">
+            {% if user.baseprofile and user.baseprofile.head_picture %}
+                <img src="{{ user.baseprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
+            {% else %}
+                <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
+            {% endif %}
             <p>
-              管理员 {{user.user_name}}
-              <small>从{{ user.create_time|date }}加入</small>
+                管理员 {{ user.user_name }}
+                <small>从{{ user.create_time|date }}加入</small>
             </p>
-          </li>
-          <li class="user-footer">
+        </li>
+        <li class="user-footer">
             <div class="pull-right">
-              <a href="{% url 'account_auth:logout' %}" class="btn btn-default btn-flat">注销</a>
+                <a href="{% url 'account_auth:logout' %}" class="btn btn-default btn-flat">注销</a>
             </div>
-          </li>
+        </li>
     </ul>
 {% endblock %}
 
@@ -71,9 +71,6 @@
             <ul class="treeview-menu">
                 <li><a href="{% url 'cmsadmin:user_all' %}"><i class="fa fa-circle-o"></i> 人员列表</a></li>
                 <li><a href="{% url 'cmsadmin:user_delete_list' %}"><i class="fa fa-circle-o"></i> 已删除用户管理</a></li>
-                <li><a href="{% url 'cmsadmin:base-profile-all' %}"><i class="fa fa-circle-o"></i> 用户基本信息表</a></li>
-                <li><a href="{% url 'cmsadmin:student-profile-all' %}"><i class="fa fa-circle-o"></i> 学生详细信息表</a></li>
-                <li><a href="{% url 'cmsadmin:teacher-profile-all' %}"><i class="fa fa-circle-o"></i> 教师详细信息表</a></li>
             </ul>
         </li>
 
@@ -88,7 +85,8 @@
                 <li><a href="{% url 'cmsadmin:meetplan_all' %}"><i class="fa fa-circle-o"></i> 综合指导课安排 </a></li>
                 <li><a href="{% url 'cmsadmin:meetplanorder_all' %}"><i class="fa fa-circle-o"></i> 综合指导课预约表 </a></li>
                 <li><a href="{% url 'cmsadmin:feedback_all' %}"><i class="fa fa-circle-o"></i> 查看教师反馈 </a></li>
-                <li><a href="{% url 'cmsadmin:meetplan-termdate-update' %}"><i class="fa fa-circle-o"></i> 设置学期日期 </a></li>
+                <li><a href="{% url 'cmsadmin:meetplan-termdate-update' %}"><i class="fa fa-circle-o"></i> 设置学期日期 </a>
+                </li>
                 <li><a href="{% url 'cmsadmin:meetplan-report-all' %}"><i class="fa fa-circle-o"></i> 导出报表文件 </a></li>
             </ul>
         </li>
@@ -100,7 +98,81 @@
 {% endblock %}
 
 {% block content %}
-    待填充, 展示最近使用情况等
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ total_user_num }}</h3>
+
+                    <p>用户数</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+                <a href="{% url 'cmsadmin:user_all' %}" class="small-box-footer">
+                    更多信息 <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ meetplan_total_num }}</h3>
+
+                    <p>综合指导课历史总安排数</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{% url 'cmsadmin:meetplan_all' %}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>{{ meetplan_this_term_total_num }}</h3>
+
+                    <p>综合指导课本学期安排数</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-comments"></i>
+                </div>
+                <a href="{% url 'cmsadmin:meetplan_all' %}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ meetplanorder_this_term_total_num }}</h3>
+
+                    <p>综合指导课本学期预约数</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'cmsadmin:meetplanorder_all' %}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-purple">
+                <div class="inner">
+                    <h3>{{ meetplan_feedback_num }}</h3>
+
+                    <p>综合指导课教师反馈数</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'cmsadmin:feedback_all' %}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footer %}

@@ -16,7 +16,7 @@ class MeetPlanAdmin(admin.ModelAdmin):
         'message',
         'available_choice',
     ]
-    search_fields = ['teacher']
+    search_fields = ['teacher__user_name']
     list_per_page = 20
     list_select_related = True
 
@@ -32,7 +32,7 @@ class MeetPlanOrderAdmin(admin.ModelAdmin):
         'completed',
         'message'
     ]
-    search_fields = ['meet_plan', 'student']
+    search_fields = ['meet_plan__teacher__user_name', 'student__user_name']
     list_per_page = 20
     list_select_related = True
 
@@ -46,7 +46,7 @@ class FeedBackAdmin(admin.ModelAdmin):
         'teacher',
         'message',
     ]
-    search_fields = ['teacher']
+    search_fields = ['teacher__user_name']
     list_per_page = 20
     list_select_related = True
 

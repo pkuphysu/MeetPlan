@@ -52,13 +52,14 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
     """
     User模型
     """
-    identity_id = models.CharField(max_length=16, unique=True, verbose_name='职工号\\学号', db_index=True)
+    id_regex = RegexValidator(regex=r'^\d{8,12}$', message="账号格式错误。")
+    identity_id = models.CharField(validators=[id_regex], max_length=16, unique=True, verbose_name='职工号\\学号',
+                                   db_index=True)
     user_name = models.CharField(max_length=100, null=False, blank=False, verbose_name='姓名')
     email = models.EmailField(null=True, blank=True, verbose_name='电子邮件')
     is_active = models.BooleanField(default=False, verbose_name='是否激活')
     is_teacher = models.BooleanField(default=False, verbose_name='是否为教职工')
     is_admin = models.BooleanField(default=False, verbose_name='是否为管理员, 管理员可登陆cmsadmin管理页面')
-    # is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'identity_id'
     REQUIRED_FIELDS = ['user_name']
     EMAIL_FIELD = 'email'
@@ -100,7 +101,7 @@ class BaseProfile(BaseModel):
     user = models.OneToOneField(verbose_name='用户', to=User, on_delete=models.DO_NOTHING, db_index=True)
     gender = models.BooleanField(default=False, choices=GenderChoices, verbose_name='性别')
 
-    birth = models.DateField(null=True, blank=True, verbose_name='生日')
+    birth = models.DateField(verbose_name='生日')
     from apps.filemanager.models import MyImg
     head_picture = models.ForeignKey(to=MyImg, on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 
@@ -156,7 +157,7 @@ class StudentProfile(BaseModel):
     is_graduate = models.BooleanField(verbose_name='研究生\\本科生', default=False, choices=GRADUATE_CHOICES)
 
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',message="号码格式错误。")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17)
 
     department = models.ForeignKey(to=Department, on_delete=models.DO_NOTHING, verbose_name='系所')
     major = models.ForeignKey(to=Major, on_delete=models.DO_NOTHING, verbose_name='专业')
@@ -176,7 +177,7 @@ class TeacherProfile(BaseModel):
     user = models.OneToOneField(verbose_name='教师', to=User, on_delete=models.DO_NOTHING, db_index=True)
 
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="号码格式错误。座机请加区号")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17)
 
     department = models.ForeignKey(to=Department, on_delete=models.DO_NOTHING, verbose_name='系所')
     office = models.CharField(verbose_name='办公室', max_length=100)

@@ -20,5 +20,5 @@ def in_this_term_after_now(meetplan):
 
 
 @register.filter
-def available_num(meetplan):
+def available_order_num(meetplan):
     return meetplan.aggregate(Sum('available_choice'))['available_choice__sum']

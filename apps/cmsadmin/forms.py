@@ -73,14 +73,14 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['teacher'].queryset = User.objects.filter(is_teacher=True)
+        self.fields['teacher'].queryset = User.objects.filter(is_teacher=True).order_by('user_name')
 
 
 class MeetPlanOrderForm(forms.ModelForm, FormMixin):
-    meet_plan = forms.ModelChoiceField(queryset=MeetPlan.objects.all(),
+    meet_plan = forms.ModelChoiceField(queryset=MeetPlan.objects.order_by('-id')[:50],
                                        widget=forms.Select(attrs={'class': 'form-control'}))
     student = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=False).order_by('identity_id'),
+        queryset=User.objects.filter(is_teacher=False).order_by('-identity_id'),
         widget=forms.Select(attrs={'class': 'form-control'}))
 
     field_order = ['meet_plan', 'student', 'completed', 'message']
@@ -129,7 +129,7 @@ class OptionForm(forms.Form, FormMixin):
                                                           'placeholder': 'yyyy-M-d'}),
                             label='学期开始日期')
     end = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                        'id': 'start_date',
+                                                        'id': 'end_date',
                                                         'placeholder': 'yyyy-M-d'}),
                           label='学期结束日期')
     field_order = ['start', 'end']

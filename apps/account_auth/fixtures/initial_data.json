@@ -1,20 +1,5 @@
 [
   {
-    "model": "account_auth.user",
-    "pk": 1,
-    "fields": {
-      "identity_id": "1600011378",
-      "user_name": "郜瑞啸",
-      "email": "1600011378@pku.edu.cn",
-      "create_time": "2020-01-01T00:00:00+08:00",
-      "update_time": "2020-01-01T00:00:00+08:00",
-      "is_superuser": true,
-      "is_active": true,
-      "is_teacher": true,
-      "is_admin": true
-    }
-  },
-  {
     "model": "account_auth.department",
     "pk": 1,
     "fields": {
