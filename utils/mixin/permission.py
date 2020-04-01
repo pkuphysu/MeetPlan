@@ -41,7 +41,7 @@ def user_student_required(viewfunc):
 
 
 def have_base_profile_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME,
-                               redirect_filed_url='account_auth:userprofile_add'):
+                               redirect_filed_url='account_auth:baseprofile_add'):
     """
     Decorator for views that checks that the user is logged in and is a admin
     member, redirecting to the login page if necessary.
