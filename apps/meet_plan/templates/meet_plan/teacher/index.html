@@ -15,9 +15,9 @@
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    {% if user.userprofile and user.userprofile.user_img %}
+                    {% if user.baseprofile and user.baseprofile.user_img %}
                         <img class="profile-user-img img-responsive img-circle"
-                             src="{{ user.userprofile.user_img.url }}"
+                             src="{{ user.baseprofile.user_img.url }}"
                              alt="User profile picture">
                     {% else %}
                         <img src="{% static 'images/headpicture/default.jpg' %}"
