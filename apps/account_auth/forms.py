@@ -39,10 +39,20 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
 
     class Meta:
         model = StudentProfile
-        fields = ['is_graduate', 'phone_number', 'department', 'major', 'dorm', 'grade']
+        fields = [
+            'is_graduate',
+            'phone_number',
+            'department',
+            'major',
+            'dorm',
+            'grade'
+        ]
+        help_texts = {
+            'department': '本科生请选择“物理学院（本科）”，并在专业中选择自己的专业方向。'
+        }
         labels = {
             'is_graduate': '身份',
-            'phone_number': '联系方式',
+            'phone_number': '手机',
             'department': '系所',
             'major': '专业',
             'dorm': '宿舍',
@@ -78,7 +88,7 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
         model = TeacherProfile
         fields = ['phone_number', 'department', 'office', 'introduce']
         labels = {
-            'phone_number': '联系方式',
+            'phone_number': '办公室电话',
             'department': '系所',
             'office': '办公室',
             'introduce': '个人简介',

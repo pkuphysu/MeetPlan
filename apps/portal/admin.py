@@ -16,7 +16,7 @@ class FriendLinkAdmin(admin.ModelAdmin):
     ]
 
     def link_to_img(self, obj):
-        link = reverse("admin:filemanager_img_change", args=[obj.image.id])
+        link = reverse("admin:filemanager_myimg_change", args=[obj.image_id])
         return mark_safe(f'<a href="{link}">{escape(obj.image.__str__())}</a>')
 
     link_to_img.short_description = '图片'

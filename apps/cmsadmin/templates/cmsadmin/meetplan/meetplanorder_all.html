@@ -11,79 +11,86 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12">
-          <div class="box">
+            <div class="box">
 
-              <div class="box-header">
-                <div class="box-tools">
-                    <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplanorder_create' %}'">增加综合指导课预约</button>
+                <div class="box-header">
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-block btn-primary"
+                                onclick="window.location.href='{% url 'cmsadmin:meetplanorder_create' %}'">增加综合指导课预约
+                        </button>
+                    </div>
                 </div>
-              </div>
-            <!-- /.box-header -->
+                <!-- /.box-header -->
 
-              {% for meetplanorder in meetplanorder_list %}
-                  {% if forloop.first %}
-                      <div class="box-body table-responsive no-padding">
+                {% for meetplanorder in meetplanorder_list %}
+                    {% if forloop.first %}
+                        <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                         <tbody>
-                            <tr>
-                              <th>计划编号</th>
-                              <th>学号</th>
-                              <th>姓名</th>
-                              <th>是否完成</th>
-                              <th>操作</th>
-                            </tr>
-                  {% endif %}
-                            <tr>
-                              <th>{{ meetplanorder.meet_plan.id }}</th>
-                              <th>{{ meetplanorder.student.identity_id }}</th>
-                              <th>{{ meetplanorder.student.user_name }}</th>
-                              <th>{{ meetplanorder.completed }}</th>
-                              <th><a href="{% url 'cmsadmin:meetplanorder_update' meetplanorder.id %}">编辑</a></th>
-                            </tr>
-                  {% if forloop.last %}
-                        </tbody>
-                        </table>
-                      </div>
-                      <!-- /.box-body -->
-                  {% endif %}
-              {% empty %}
-                  <div class="box-body table-responsive no-padding">
-                  暂无任何成员
-                  </div>
-              {% endfor %}
-              <div class="box-footer clearfix">
+                        <tr>
+                            <th>预约编号</th>
+                            <th>计划编号</th>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>是否完成</th>
+                            <th>操作</th>
+                        </tr>
+                    {% endif %}
+                <tr>
+                    <th>{{ meetplanorder.id }}</th>
+                    <th>{{ meetplanorder.meet_plan_id }}</th>
+                    <th>{{ meetplanorder.student.identity_id }}</th>
+                    <th>{{ meetplanorder.student.user_name }}</th>
+                    <th>{{ meetplanorder.completed }}</th>
+                    <th><a href="{% url 'cmsadmin:meetplanorder_update' meetplanorder.id %}">编辑</a></th>
+                </tr>
+                {% if forloop.last %}
+                    </tbody>
+                    </table>
+                    </div>
+                    <!-- /.box-body -->
+                {% endif %}
+                {% empty %}
+                    <div class="box-body table-responsive no-padding">
+                        暂无任何成员
+                    </div>
+                {% endfor %}
+                <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                    <!--#上一页-->
+                        <!--#上一页-->
                         <!--当有上一页时-->
                         {% if page_obj.has_previous %}
-                        <li><a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                            <li>
+                                <a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+                            </li>
                         {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
                         {% endif %}
 
                         <!--中间的页码，如果是当前页，添加active属性-->
 
                         {% for page in paginator.page_range %}
-                        {% if page == page_obj.number %}
-                        <li class="active">
-                            <a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page }}">{{ page }}</a>
-                        </li>
-                        {% else %}
-                        <li><a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page }}">{{ page }}</a></li>
-                        {% endif %}
+                            {% if page == page_obj.number %}
+                                <li class="active">
+                                    <a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% else %}
+                                <li><a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page }}">{{ page }}</a></li>
+                            {% endif %}
                         {% endfor %}
 
 
                         <!--#下一页-->
                         {% if page_obj.has_next %}
-                        <li><a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="{% url 'cmsadmin:meetplanorder_all' %}?page={{ page_obj.next_page_number }}">下一页</a>
+                            </li>
                         {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
                         {% endif %}
                     </ul>
-              </div>
-          </div>
-          <!-- /.box -->
+                </div>
+            </div>
+            <!-- /.box -->
         </div>
-      </div>
+    </div>
 {% endblock %}

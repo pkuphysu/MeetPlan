@@ -39,7 +39,7 @@ def send_meetplan_order_create_email(self, meetplanorder_id, domain):
     )
     my_send_mail.delay(tea_subject, tea_html, from_email, tea_email)
 
-    # 教师邮件
+    # 学生邮件
     stu_subject = '物理学院综合指导课新预约'
     stu_html = loader.render_to_string(
         'email/meetplan/stu_meetplan_order_create.html',
@@ -60,8 +60,11 @@ def send_meetplan_order_create_email(self, meetplanorder_id, domain):
 
 
 @shared_task(base=TransactionAwareTask, bind=True)
-def send_meetplan_order_update_email(self, meetplanorder_id, domain):
-    order = MeetPlanOrder.objects.get(id=meetplanorder_id)
+def send_meetplan_order_update_email(self, meetplanorder_id, domain, is_delete):
+    if is_delete:
+        order = MeetPlanOrder.objects.get_queryset(is_delete=True, id=meetplanorder_id)[0]
+    else:
+        order = MeetPlanOrder.objects.get(id=meetplanorder_id)
     meetplan = order.meet_plan
     student = order.student
     stu_email = [student.email]
@@ -94,9 +97,7 @@ def send_meetplan_feedback_create_email(self, feedback_id, domain):
     message = feedback.message
 
     user_model = get_user_model()
-    admins = user_model.objects.filter(is_delete=False,
-                                     is_active=True,
-                                     is_admin=True)
+    admins = user_model.objects.filter(is_active=True, is_admin=True)
     admin_email = list(admins.values_list('email', flat=True))
 
     # 构造邮件信息
@@ -122,9 +123,7 @@ def send_meetplan_feedback_update_email(self, feedback_id, domain):
     message = feedback.message
 
     user_model = get_user_model()
-    admins = user_model.objects.filter(is_delete=False,
-                                       is_active=True,
-                                       is_admin=True)
+    admins = user_model.objects.filter(is_active=True, is_admin=True)
     admins = list(admins.values_list('user_name', 'email'))
 
     # 构造邮件信息
@@ -141,3 +140,34 @@ def send_meetplan_feedback_update_email(self, feedback_id, domain):
         }
     )
     my_send_mail.delay(feedback_subject, feedback_html, from_email, [teacher.email])
+
+
+@shared_task
+def send_meetplan_alert_everyday(domain):
+    from django.utils import timezone
+    import datetime
+    mto_qs = MeetPlanOrder.objects.filter(meet_plan__start_time__gte=timezone.now(),
+                                          meet_plan__end_time__lte=timezone.now()+datetime.timedelta(days=1))
+    subject = '物理学院综合指导课预约提醒'
+    from_email = settings.EMAIL_FROM
+    for mto in mto_qs:
+        meetplan = mto.meet_plan
+        teacher = meetplan.teacher
+        student = mto.student
+
+        html = loader.render_to_string(
+            'email/meetplan/stu_meetplan_order_alert.html',
+            {
+                'domain': domain,
+                'user_name': student.user_name,
+                'stu_message': mto.message,
+
+                'tea_name': teacher.user_name,
+                'start_time': meetplan.start_time,
+                'end_time': meetplan.end_time,
+                'place': meetplan.place,
+                'tea_email': teacher.email,
+                'tea_message': meetplan.message,
+            }
+        )
+        my_send_mail.delay(subject, html, from_email, [student.email])

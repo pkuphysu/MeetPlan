@@ -41,13 +41,13 @@
                         </tr>
                     {% endif %}
                 <tr>
-                    <th>{{ user.identity_id }}</th>
-                    <th>{{ user.user_name }}</th>
-                    <th>{{ user.email }}</th>
-                    <th>{{ user.is_active }}</th>
-                    <th>{{ user.is_teacher }}</th>
-                    <th>{{ user.is_admin }}</th>
-                    <th><a href="{% url 'cmsadmin:user_update' user.pk %}">编辑</a></th>
+                    <td>{{ user.identity_id }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_active }}</td>
+                    <td>{{ user.is_teacher }}</td>
+                    <td>{{ user.is_admin }}</td>
+                    <td><a href="{% url 'cmsadmin:user-detail' user.pk %}">查看</a></td>
                 </tr>
                 {% if forloop.last %}
                     </tbody>

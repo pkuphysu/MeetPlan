@@ -36,6 +36,48 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
         }
 
 
+class MeetPlanFastCreateForm(forms.Form, FormMixin):
+    LONG_CHOICES = (
+        (1, '半小时'),
+        (2, '一小时'),
+        (3, '一个半小时'),
+        (4, '两个小时')
+    )
+    EVERY_CHOICES = (
+        (1, '否'),
+        (2, '是')
+    )
+    ALLOW_OTHER_CHOICES = (
+        (1, '允许'),
+        (2, '不允许')
+    )
+    date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'date'}),
+                           label='日期')
+    time = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'time'}),
+                           label='开始时间')
+    place = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            max_length=128)
+    long = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                             label='持续时间',
+                             help_text='默认一次谈话半小时，选择一小时即在上面所选时间后安排两次谈话',
+                             choices=LONG_CHOICES)
+    allow_other = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                                    choices=ALLOW_OTHER_CHOICES,
+                                    label='允许多人')
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
+                                                           'row': '5',
+                                                           'placeholder': 'Enter...'}),
+                              label='备注', required=False)
+    every_week = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                                   choices=EVERY_CHOICES,
+                                   label='每周安排',
+                                   help_text='选否则只安排上面所选日期，选是则会自动安排本学期内每周该时间段')
+
+    field_order = [date, time, place, long, allow_other, every_week]
+
+
 class MeetPlanOrderCreateForm(forms.ModelForm, FormMixin):
     class Meta:
         model = MeetPlanOrder
