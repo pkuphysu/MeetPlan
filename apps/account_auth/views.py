@@ -13,7 +13,7 @@ from utils.mixin.permission import TeaViewMixin, StuViewMixin, ViewMixin, LoginR
 from utils.mixin.view import ImgUploadViewMixin
 
 from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile
-from .forms import UserEmailForm, UserProfileForm, StudentProfileForm, TeacherProfileForm
+from .forms import UserEmailForm, BaseProfileForm, StudentProfileForm, TeacherProfileForm
 from . import urls
 
 # Create your views here.
@@ -80,7 +80,7 @@ class UserEmailUpdateView(ViewMixin, UpdateView):
 
 class BaseProfileAddView(LoginRequiredMixin, CreateView):
     model = BaseProfile
-    form_class = UserProfileForm
+    form_class = BaseProfileForm
     template_name = 'account_auth/base_profile_create.html'
 
     def get_success_url(self):

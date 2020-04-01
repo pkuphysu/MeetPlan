@@ -37,8 +37,8 @@
                                             </h5>
                                         </div>
                                         <div class="widget-user-image">
-                                            {% if admin.userprofile and admin.userprofile.head_picture %}
-                                                <img src="{{ admin.userprofile.head_picture.img.url }}"
+                                            {% if admin.baseprofile and admin.baseprofile.head_picture %}
+                                                <img src="{{ admin.baseprofile.head_picture.img.url }}"
                                                      class="img-circle" alt="User Avatar">
                                             {% else %}
                                                 <img src="{% static 'images/headpicture/default.jpg' %}"

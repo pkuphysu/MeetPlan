@@ -92,7 +92,11 @@
                                     </tr>
                                     <tr>
                                         <th>操作</th>
-                                        <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">确认</a></td>
+                                        {% if not mto.completed %}
+                                            <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">确认</a></td>
+                                        {% else %}
+                                            <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">已确认</a></td>
+                                        {% endif %}
                                     </tr>
                                     </tbody>
                                 </table>

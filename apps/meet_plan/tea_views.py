@@ -125,6 +125,12 @@ class MeetPlanUpdateView(TeaViewMixin, UpdateView):
         from django.core.cache.utils import make_template_fragment_key
         key = make_template_fragment_key('meetplan_plan_detail', [self.object.id])
         cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.object.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.object.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.object.id])
+        cache.delete(key)
 
         return super().form_valid(form)
 
