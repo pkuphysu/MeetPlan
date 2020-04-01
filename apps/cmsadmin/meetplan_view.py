@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
@@ -36,6 +37,12 @@ class MeetPlanCreateView(AdminRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('cmsadmin:meetplan_all')
+
+
+class MeetPlanDetailView(AdminRequiredMixin, DetailView):
+    model = MeetPlan
+    template_name = 'cmsadmin/meetplan/meetplan_detail.html'
+    context_object_name = 'plan'
 
 
 class MeetPlanUpdateView(AdminRequiredMixin, UpdateView):
