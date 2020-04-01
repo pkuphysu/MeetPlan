@@ -18,7 +18,7 @@ class UserEmailForm(forms.ModelForm, FormMixin):
         }
 
 
-class UserProfileForm(forms.ModelForm, FormMixin):
+class BaseProfileForm(forms.ModelForm, FormMixin):
     class Meta:
         model = BaseProfile
         fields = ['birth', 'gender']
