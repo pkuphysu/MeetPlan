@@ -55,7 +55,6 @@ class IAAALoginAuth(View):
 
         url = "https://iaaa.pku.edu.cn/iaaa/svc/token/validate.do?remoteAddr=%s&appId=%s&token=%s&msgAbs=%s" % \
               (remote_ip, settings.APPID, token, msgAbs.hexdigest())
-        print(url)
         try:
             iaaa_response = requests.get(url=url)
         except requests.exceptions.ConnectionError:
