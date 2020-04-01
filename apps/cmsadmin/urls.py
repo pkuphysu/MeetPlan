@@ -9,7 +9,8 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('user_all/', user_view.UserView.as_view(), name='user_all'),
+    path('user_teacher_all/', user_view.TeacherListView.as_view(), name='user_teacher_all'),
+    path('user_student_all/', user_view.StudentListView.as_view(), name='user_student_all'),
     path('user_create/', user_view.UserCreateView.as_view(), name='user_create'),
     path('user_create_many/', user_view.CreateManyUserView.as_view(), name='user_create_many'),
     path('user_detail/<int:pk>/', user_view.UserDetailView.as_view(), name='user-detail'),
@@ -18,7 +19,7 @@ urlpatterns += [
     path('user_recovery/<int:pk>/', user_view.RecoveryUserView.as_view(), name='user-recovery'),
     path('user_confirm_delete/<int:pk>/', user_view.UserDeleteView.as_view(), name='user-confirm-delete'),
 
-    path('user_base_profile_update/<int:pk>/', user_view.UserProfileUpdateView.as_view(), name='base-profile-update'),
+    path('user_base_profile_update/<int:pk>/', user_view.BaseProfileUpdateView.as_view(), name='base-profile-update'),
     path('user_student_profile_update/<int:pk>/', user_view.StudentProfileUpdateView.as_view(), name='student-profile-update'),
     path('user_teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(), name='teacher-profile-update'),
 

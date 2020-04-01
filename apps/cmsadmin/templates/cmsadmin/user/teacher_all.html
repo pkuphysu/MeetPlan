@@ -1,0 +1,100 @@
+{% extends 'cmsadmin/index.html' %}
+
+{% block title %}
+    用户列表
+{% endblock %}
+
+{% block content-header %}
+    用户列表
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-warning"
+                                onclick="window.location.href='{% url 'cmsadmin:user_create_many' %}'">批量增加用户
+                        </button>
+                        <button type="button" class="btn btn-primary"
+                                onclick="window.location.href='{% url 'cmsadmin:user_create' %}'">增加用户
+                        </button>
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+
+                {% for user in user_list %}
+                    {% if forloop.first %}
+                        <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>学号/职工号</th>
+                            <th>姓名</th>
+                            <th>电子邮件</th>
+                            <th>是否激活</th>
+                            <th>是否老师</th>
+                            <th>是否管理员</th>
+                            <th>操作</th>
+                        </tr>
+                    {% endif %}
+                <tr>
+                    <td>{{ user.identity_id }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_active }}</td>
+                    <td>{{ user.is_teacher }}</td>
+                    <td>{{ user.is_admin }}</td>
+                    <td><a href="{% url 'cmsadmin:user-detail' user.pk %}">查看</a></td>
+                </tr>
+                {% if forloop.last %}
+                    </tbody>
+                    </table>
+                    </div>
+                    <!-- /.box-body -->
+                {% endif %}
+                {% empty %}
+                    <div class="box-body table-responsive no-padding">
+                        暂无任何成员
+                    </div>
+                {% endfor %}
+                <div class="box-footer clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <!--#上一页-->
+                        <!--当有上一页时-->
+                        {% if page_obj.has_previous %}
+                            <li><a href="{% url 'cmsadmin:user_teacher_all' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+                            </li>
+                        {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                        {% endif %}
+
+                        <!--中间的页码，如果是当前页，添加active属性-->
+
+                        {% for page in paginator.page_range %}
+                            {% if page == page_obj.number %}
+                                <li class="active">
+                                    <a href="{% url 'cmsadmin:user_teacher_all' %}?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% else %}
+                                <li><a href="{% url 'cmsadmin:user_teacher_all' %}?page={{ page }}">{{ page }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        <!--#下一页-->
+                        {% if page_obj.has_next %}
+                            <li><a href="{% url 'cmsadmin:user_teacher_all' %}?page={{ page_obj.next_page_number }}">下一页</a>
+                            </li>
+                        {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+{% endblock %}
