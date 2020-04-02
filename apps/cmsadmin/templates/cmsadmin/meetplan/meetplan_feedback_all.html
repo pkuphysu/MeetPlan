@@ -16,12 +16,9 @@
 
                 </div>
                 <!-- /.box-header -->
-
-                {% for feedback in feedback_list %}
-                    {% if forloop.first %}
-                        <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                        <tbody>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
                             <th>反馈编号</th>
                             <th>教师</th>
@@ -30,70 +27,54 @@
                             <th>处理状态</th>
                             <th>操作</th>
                         </tr>
-                    {% endif %}
-                <tr>
-                    <th>{{ feedback.id }}</th>
-                    <th>{{ feedback.teacher.user_name }}</th>
-                    <th>{{ feedback.teacher.identity_id }}</th>
-                    <th>{{ feedback.message }}</th>
-                    <th>
-                        {% if feedback.have_checked %}
-                            <span class="label label-success">已回应</span>
-                        {% else %}
-                            <span class="label label-warning">待处理</span>
-                        {% endif %}
-                    </th>
-                    <th>
-                        {% if feedback.have_checked %}
-                            <a href="#">无法更改</a>
-                        {% else %}
-                            <a href="{% url 'cmsadmin:feedback_update' feedback.id %}">处理</a>
-                        {% endif %}
-                    </th>
-                </tr>
-                {% if forloop.last %}
-                    </tbody>
+                        </thead>
+                        <tbody>
+                        {% for feedback in feedback_list %}
+                            <tr>
+                                <th>{{ feedback.id }}</th>
+                                <th>{{ feedback.teacher.user_name }}</th>
+                                <th>{{ feedback.teacher.identity_id }}</th>
+                                <th>{{ feedback.message }}</th>
+                                <th>
+                                    {% if feedback.have_checked %}
+                                        <span class="label label-success">已回应</span>
+                                    {% else %}
+                                        <span class="label label-warning">待处理</span>
+                                    {% endif %}
+                                </th>
+                                <th>
+                                    {% if feedback.have_checked %}
+                                        <a href="#">无法更改</a>
+                                    {% else %}
+                                        <a href="{% url 'cmsadmin:feedback_update' feedback.id %}">处理</a>
+                                    {% endif %}
+                                </th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
-                    </div>
-                    <!-- /.box-body -->
-                {% endif %}
-                {% empty %}
-                    <div class="box-body table-responsive no-padding">
-                        暂无任何反馈
-                    </div>
-                {% endfor %}
+                </div>
+                <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <!--#上一页-->
-                        <!--当有上一页时-->
                         {% if page_obj.has_previous %}
-                            <li>
-                                <a href="{% url 'cmsadmin:feedback_all' %}?page={{ page_obj.previous_page_number }}">上一页</a>
-                            </li>
+                            <li><a href="?page=1">&laquo; 首页</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
                         {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
                             <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
                         {% endif %}
 
-                        <!--中间的页码，如果是当前页，添加active属性-->
+                        <li class="active">
+                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                        </li>
 
-                        {% for page in paginator.page_range %}
-                            {% if page == page_obj.number %}
-                                <li class="active">
-                                    <a href="{% url 'cmsadmin:feedback_all' %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% else %}
-                                <li><a href="{% url 'cmsadmin:feedback_all' %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-
-                        <!--#下一页-->
                         {% if page_obj.has_next %}
-                            <li><a href="{% url 'cmsadmin:feedback_all' %}?page={{ page_obj.next_page_number }}">下一页</a>
-                            </li>
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
                         {% else %}
                             <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
                         {% endif %}
                     </ul>
                 </div>

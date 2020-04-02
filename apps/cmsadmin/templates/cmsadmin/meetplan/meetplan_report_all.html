@@ -11,79 +11,73 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12">
-          <div class="box">
-              <div class="box-header">
-                <div class="box-tools">
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplan-report-teacher-create' %}'">生成教师报表</button>
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'cmsadmin:meetplan-report-student-create' %}'">生成学生报表</button>
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-primary"
+                                onclick="window.location.href='{% url 'cmsadmin:meetplan-report-teacher-create' %}'">
+                            生成教师报表
+                        </button>
+                        <button type="button" class="btn btn-primary"
+                                onclick="window.location.href='{% url 'cmsadmin:meetplan-report-student-create' %}'">
+                            生成学生报表
+                        </button>
+                    </div>
                 </div>
-              </div>
-            <!-- /.box-header -->
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>文件id</th>
+                            <th>用户</th>
+                            <th>文件名</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
 
-              {% for report_file in report_file_list %}
-                  {% if forloop.first %}
-                      <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
+
                         <tbody>
+                        {% for report_file in report_file_list %}
                             <tr>
-                              <th>文件id</th>
-                              <th>用户</th>
-                              <th>文件名</th>
-                              <th>备注</th>
-                              <th>操作</th>
+                                <th>{{ report_file.id }}</th>
+                                <th>{{ report_file.user.user_name }}</th>
+                                <th>{{ report_file.file.name }}</th>
+                                <th>{{ report_file.remark }}</th>
+                                <th><a href="{{ report_file.file.url }}">下载</a></th>
                             </tr>
-                  {% endif %}
-                            <tr>
-                              <th>{{ report_file.id }}</th>
-                              <th>{{ report_file.user.user_name }}</th>
-                              <th>{{ report_file.file.name }}</th>
-                              <th>{{ report_file.remark }}</th>
-                              <th><a href="{{ report_file.file.url }}">下载</a></th>
-                            </tr>
-                  {% if forloop.last %}
-                        </tbody>
-                        </table>
-                      </div>
-                      <!-- /.box-body -->
-                  {% endif %}
-              {% empty %}
-                  <div class="box-body table-responsive no-padding">
-                  暂无任何成员
-                  </div>
-              {% endfor %}
-              <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                    <!--#上一页-->
-                        <!--当有上一页时-->
-                        {% if page_obj.has_previous %}
-                        <li><a href="{% url 'cmsadmin:meetplan-report-all' %}?page={{ page_obj.previous_page_number }}">上一页</a></li>
-                        {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
-                        {% endif %}
-
-                        <!--中间的页码，如果是当前页，添加active属性-->
-
-                        {% for page in paginator.page_range %}
-                        {% if page == page_obj.number %}
-                        <li class="active">
-                            <a href="{% url 'cmsadmin:meetplan-report-all' %}?page={{ page }}">{{ page }}</a>
-                        </li>
-                        {% else %}
-                        <li><a href="{% url 'cmsadmin:meetplan-report-all' %}?page={{ page }}">{{ page }}</a></li>
-                        {% endif %}
                         {% endfor %}
-
-
-                        <!--#下一页-->
-                        {% if page_obj.has_next %}
-                        <li><a href="{% url 'cmsadmin:meetplan-report-all' %}?page={{ page_obj.next_page_number }}">下一页</a></li>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page=1">&laquo; 首页</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
                         {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                        {% endif %}
+
+                        <li class="active">
+                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
                         {% endif %}
                     </ul>
-              </div>
-          </div>
-          <!-- /.box -->
+                </div>
+
+            </div>
+            <!-- /.box -->
         </div>
-      </div>
+    </div>
 {% endblock %}

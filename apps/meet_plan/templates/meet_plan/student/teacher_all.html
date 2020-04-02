@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load staticfiles %}
 {% load meetplan_filter %}
 {% load cache %}
 
@@ -18,12 +19,59 @@
 
                 </div>
                 <!-- /.box-header -->
-
-                {% for teacher in teacher_list %}
-                    {% if forloop.first %}
-                        <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
+                <div class="box-body">
+                    <table id="tea_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th width="80">教师姓名</th>
+                            <th width="160">系所</th>
+                            <th width="20">学期安排数</th>
+                            <th width="20">剩余安排数</th>
+                            <th width="20">剩余可选人数</th>
+                            <th width="40">操作</th>
+                        </tr>
+                        </thead>
                         <tbody>
+                        {% for teacher in teacher_list %}
+                            <tr>
+                                {% cache 2592000 meetplan_teacher_name_and_department teacher.id %}
+                                    <td>{{ teacher.user_name }}</td>
+                                    <td>{{ teacher.teacherprofile.department }}</td>
+                                {% endcache %}
+
+                                {% with meetplans=teacher.meetplan_set.all|in_this_term %}
+                                    {% cache 86400 meetplan_meetplan_total_num teacher.id %}
+                                        {% with meetplan=meetplans|in_this_term %}
+                                            <td>{{ meetplan|length }}</td>
+                                        {% endwith %}
+                                    {% endcache %}
+
+                                    {% cache 3600 meetplan_meetplan_avail_num teacher.id %}
+                                        {% with meetplan=meetplans|in_this_term_after_now %}
+
+                                            <td>{{ meetplan|length }}</td>
+                                        {% endwith %}
+                                    {% endcache %}
+
+                                    {% cache 1800 meetplan_meetplan_order_avail_num teacher.id %}
+                                        {% with meetplan=meetplans|in_this_term_after_now %}
+                                            {% with num=meetplan|available_order_num %}
+                                                <td>{{ num }}</td>
+                                                {% if num %}
+                                                    <td>
+                                                        <a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td>已选完</td>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endcache %}
+                                {% endwith %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
                         <tr>
                             <th>教师姓名</th>
                             <th>系所</th>
@@ -32,79 +80,33 @@
                             <th>剩余可选人数</th>
                             <th>操作</th>
                         </tr>
-                    {% endif %}
-                <tr>
-
-                    {% cache 2592000 meetplan_teacher_name_and_department teacher.id %}
-                        <td>{{ teacher.user_name }}</td>
-                        <td>{{ teacher.teacherprofile.department }}</td>
-                    {% endcache %}
-
-                    {% with meetplans=teacher.meetplan_set.all|in_this_term %}
-
-                        {% cache 86400 meetplan_meetplan_total_num teacher.id %}
-                            {% with meetplan=meetplans|in_this_term %}
-                                <td>{{ meetplan|length }}</td>
-                            {% endwith %}
-                        {% endcache %}
-
-                        {% cache 3600 meetplan_meetplan_avail_num teacher.id %}
-                            {% with meetplan=meetplans|in_this_term_after_now %}
-
-                                <td>{{ meetplan|length }}</td>
-                            {% endwith %}
-                        {% endcache %}
-
-                        {% cache 1800 meetplan_meetplan_order_avail_num teacher.id %}
-                            {% with meetplan=meetplans|in_this_term_after_now %}
-                                {% with num=meetplan|available_order_num %}
-                                    <td>{{ num }}</td>
-                                    {% if num %}
-                                        <td><a href="{% url 'meet_plan:stu-tea-plan-list' teacher.pk %}">查看</a></td>
-                                    {% else %}
-                                        <td>已选完</td>
-                                    {% endif %}
-                                {% endwith %}
-                            {% endwith %}
-                        {% endcache %}
-
-
-                    {% endwith %}
-                </tr>
-                {% if forloop.last %}
-                    </tbody>
+                        </tfoot>
                     </table>
-                    </div>
-                    <!-- /.box-body -->
-                {% endif %}
-                {% empty %}
-                    <div class="box-body table-responsive no-padding">
-                        暂无任何安排
-                    </div>
-                {% endfor %}
-                <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        {% if page_obj.has_previous %}
-                            <li><a href="?page=1">&laquo; 首页</a></li>
-                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
-                        {% else %}
-                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
-                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
-                        {% endif %}
-
-                        <li class="active">
-                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
-                        </li>
-
-                        {% if page_obj.has_next %}
-                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
-                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
-                        {% else %}
-                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
-                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
-                        {% endif %}
-                    </ul>
                 </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page=1">&laquo; 首页</a></li>
+                        <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
+                        <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                    {% endif %}
+
+                    <li class="active">
+                        <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                        <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                        <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
+                    {% endif %}
+                </ul>
             </div>
             <!-- /.box -->
         </div>
