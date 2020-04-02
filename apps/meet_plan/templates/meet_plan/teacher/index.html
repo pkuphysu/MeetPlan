@@ -175,12 +175,9 @@
                                 <h3 class="box-title">本学期({{ term_start_date }}到{{ term_end_date }})预约记录</h3>
                             </div>
                             <!-- /.box-header -->
-
-                            {% for meetplan in this_term_plan %}
-                                {% if forloop.first %}
-                                    <div class="box-body table-responsive no-padding">
-                                    <table class="table table-hover">
-                                    <tbody>
+                            <div class="box-body table-responsive no-padding">
+                                <table class="table table-hover">
+                                    <thead>
                                     <tr>
                                         <th>计划编号</th>
                                         <th>地点</th>
@@ -189,32 +186,33 @@
                                         <th>是否允许多人</th>
                                         <th>操作</th>
                                     </tr>
-                                {% endif %}
-                            <tr>
-                                <td>{{ meetplan.id }}</td>
-                                <td>{{ meetplan.place }}</td>
-                                <td>{{ meetplan.start_time|date }}</td>
-                                <td>{{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}</td>
-                                <td>
-                                    {% if meetplan.allow_other %}
-                                        允许
-                                    {% else %}
-                                        不允许
-                                    {% endif %}
-                                </td>
-                                <td><a href="{% url 'meet_plan:tea-plan-detail' meetplan.id %}">查看详情</a></td>
-                            </tr>
-                            {% if forloop.last %}
-                                </tbody>
+                                    </thead>
+                                    <tbody>
+                                    {% for meetplan in this_term_plan %}
+                                        <tr>
+                                            <td>{{ meetplan.id }}</td>
+                                            <td>{{ meetplan.place }}</td>
+                                            <td>{{ meetplan.start_time|date }}</td>
+                                            <td>{{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}</td>
+                                            <td>
+                                                {% if meetplan.allow_other %}
+                                                    允许
+                                                {% else %}
+                                                    不允许
+                                                {% endif %}
+                                            </td>
+                                            <td><a href="{% url 'meet_plan:tea-plan-detail' meetplan.id %}">查看详情</a>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td>暂无任何安排</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
                                 </table>
-                                </div>
-                                <!-- /.box-body -->
-                            {% endif %}
-                            {% empty %}
-                                <div class="box-body table-responsive no-padding">
-                                    暂无任何安排
-                                </div>
-                            {% endfor %}
+                            </div>
+                            <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
                     </div>

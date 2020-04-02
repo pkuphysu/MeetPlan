@@ -60,10 +60,12 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
             'place': forms.TextInput(attrs={'class': 'form-control'}),
             'start_time': forms.DateTimeInput(attrs={'class': 'form-control',
                                                      'id': 'starttimepicker',
-                                                     'placeholder': 'yyyy/M/d H:m'}),
+                                                     'placeholder': 'yyyy/M/d H:m',
+                                                     'readonly': 'readonly'}),
             'end_time': forms.DateTimeInput(attrs={'class': 'form-control',
                                                    'id': 'endtimepicker',
-                                                   'placeholder': 'yyyy/M/d H:m'}),
+                                                   'placeholder': 'yyyy/M/d H:m',
+                                                   'readonly': 'readonly'}),
             'allow_other': forms.Select(attrs={'class': 'form-control'},
                                         choices=MeetPlan.AllowOtherChoices),
             'message': forms.Textarea(attrs={'class': 'form-control',
@@ -128,11 +130,13 @@ class FeedBackForm(forms.ModelForm, FormMixin):
 class OptionForm(forms.Form, FormMixin):
     start = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                           'id': 'start_date',
-                                                          'placeholder': 'yyyy-M-d'}),
+                                                          'placeholder': 'yyyy-M-d',
+                                                          'readonly': 'readonly'}),
                             label='学期开始日期')
     end = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                         'id': 'end_date',
-                                                        'placeholder': 'yyyy-M-d'}),
+                                                        'placeholder': 'yyyy-M-d',
+                                                        'readonly': 'readonly'}),
                           label='学期结束日期')
     field_order = ['start', 'end']
 
@@ -140,11 +144,13 @@ class OptionForm(forms.Form, FormMixin):
 class MeetPlanReportTeacherForm(forms.Form, FormMixin):
     start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                                'id': 'start_date',
-                                                               'placeholder': 'yyyy-M-d'}),
+                                                               'placeholder': 'yyyy-M-d',
+                                                               'readonly': 'readonly'}),
                                  label='统计开始日期')
     end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                              'id': 'end_date',
-                                                             'placeholder': 'yyyy-M-d'}),
+                                                             'placeholder': 'yyyy-M-d',
+                                                             'readonly': 'readonly'}),
                                label='统计结束日期', )
     field_order = ['start_date', 'end_date']
 
@@ -168,11 +174,13 @@ class MeetPlanReportStudentForm(forms.Form, FormMixin):
 
     start_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                                'id': 'start_date',
-                                                               'placeholder': 'yyyy-M-d'}),
+                                                               'placeholder': 'yyyy-M-d',
+                                                               'readonly': 'readonly'}),
                                  label='统计开始日期')
     end_date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                              'id': 'end_date',
-                                                             'placeholder': 'yyyy-M-d'}),
+                                                             'placeholder': 'yyyy-M-d',
+                                                             'readonly': 'readonly'}),
                                label='统计结束日期', )
 
     use = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),

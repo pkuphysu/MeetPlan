@@ -19,7 +19,6 @@ from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherPro
 class TeacherListView(AdminRequiredMixin, ListView):
     model = User
     template_name = 'cmsadmin/user/teacher_all.html'
-    paginate_by = 50
     context_object_name = 'user_list'
 
     def get_queryset(self):
@@ -29,7 +28,6 @@ class TeacherListView(AdminRequiredMixin, ListView):
 class StudentListView(AdminRequiredMixin, ListView):
     model = User
     template_name = 'cmsadmin/user/student_all.html'
-    paginate_by = 50
     context_object_name = 'user_list'
 
     def get_queryset(self):

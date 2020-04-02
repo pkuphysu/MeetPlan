@@ -16,11 +16,9 @@
 
                 </div>
                 <!-- /.box-header -->
-                {% for user in user_list %}
-                    {% if forloop.first %}
-                        <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                        <tbody>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
                             <th>学号/职工号</th>
                             <th>姓名</th>
@@ -30,60 +28,44 @@
                             <th>是否管理员</th>
                             <th>操作</th>
                         </tr>
-                    {% endif %}
-                <tr>
-                    <td>{{ user.identity_id }}</td>
-                    <td>{{ user.user_name }}</td>
-                    <td>内测期间隐藏</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.is_active }}</td>
-                    <td>{{ user.is_teacher }}</td>
-                    <td>{{ user.is_admin }}</td>
-                    <td><a href="{% url 'cmsadmin:user-recovery' user.pk %}">恢复</a></td>
-                </tr>
-                {% if forloop.last %}
-                    </tbody>
+                        </thead>
+                        <tbody>
+                        {% for user in user_list %}
+                            <tr>
+                                <td>{{ user.identity_id }}</td>
+                                <td>{{ user.user_name }}</td>
+                                <td>内测期间隐藏</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.is_active }}</td>
+                                <td>{{ user.is_teacher }}</td>
+                                <td>{{ user.is_admin }}</td>
+                                <td><a href="{% url 'cmsadmin:user-recovery' user.pk %}">恢复</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
-                    </div>
-                    <!-- /.box-body -->
-                {% endif %}
-                {% empty %}
-                    <div class="box-body table-responsive no-padding">
-                        暂无任何成员
-                    </div>
-                {% endfor %}
+                </div>
+                <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <!--#上一页-->
-                        <!--当有上一页时-->
                         {% if page_obj.has_previous %}
-                            <li>
-                                <a href="{% url 'cmsadmin:user_delete_list' %}?page={{ page_obj.previous_page_number }}">上一页</a>
-                            </li>
+                            <li><a href="?page=1">&laquo; 首页</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
                         {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
                             <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
                         {% endif %}
 
-                        <!--中间的页码，如果是当前页，添加active属性-->
+                        <li class="active">
+                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                        </li>
 
-                        {% for page in paginator.page_range %}
-                            {% if page == page_obj.number %}
-                                <li class="active">
-                                    <a href="{% url 'cmsadmin:user_delete_list' %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% else %}
-                                <li><a href="{% url 'cmsadmin:user_delete_list' %}?page={{ page }}">{{ page }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-
-
-                        <!--#下一页-->
                         {% if page_obj.has_next %}
-                            <li>
-                                <a href="{% url 'cmsadmin:user_delete_list' %}?page={{ page_obj.next_page_number }}">下一页</a>
-                            </li>
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
                         {% else %}
                             <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
                         {% endif %}
                     </ul>
                 </div>

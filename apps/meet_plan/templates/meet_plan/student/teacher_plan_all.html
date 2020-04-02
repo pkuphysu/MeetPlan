@@ -20,12 +20,9 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
-
-                {% for plan in plan_list %}
-                    {% if forloop.first %}
-                        <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                        <tbody>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <thead>
                         <tr>
                             <th>日期</th>
                             <th>时间</th>
@@ -35,71 +32,52 @@
                             <th>剩余名额</th>
                             <th>点击预约</th>
                         </tr>
-                    {% endif %}
-                <tr>
+                        </thead>
+                        <tbody>
+                        {% for plan in plan_list %}
+                            <tr>
 
-                    {% cache None meetplan_plan_detail plan.id %}
-                        <td>{{ plan.start_time | date }}</td>
-                        <td>{{ plan.start_time | time }}到{{ plan.end_time | time }}</td>
-                        <td>{{ plan.place }}</td>
-                        <td>{{ plan.message }}</td>
-                        <td>{{ plan.allow_other }}</td>
-                    {% endcache %}
+                                {% cache None meetplan_plan_detail plan.id %}
+                                    <td>{{ plan.start_time | date }}</td>
+                                    <td>{{ plan.start_time | time }}到{{ plan.end_time | time }}</td>
+                                    <td>{{ plan.place }}</td>
+                                    <td>{{ plan.message }}</td>
+                                    <td>{{ plan.allow_other }}</td>
+                                {% endcache %}
 
-                    <td>{{ plan.available_choice }} </td>
-                    {% if not plan.available %}
-                        <td>已过期</td>
-                    {% elif plan.available_choice %}
-                        <td><a href="{% url 'meet_plan:stu-order-create' plan.id %}">预约</a></td>
-                    {% else %}
-                        <td>已选满</td>
-                    {% endif %}
-                </tr>
-                {% if forloop.last %}
-                    </tbody>
+                                <td>{{ plan.available_choice }} </td>
+                                {% if not plan.available %}
+                                    <td>已过期</td>
+                                {% elif plan.available_choice %}
+                                    <td><a href="{% url 'meet_plan:stu-order-create' plan.id %}">预约</a></td>
+                                {% else %}
+                                    <td>已选满</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
-                    </div>
-                    <!-- /.box-body -->
-                {% endif %}
-                {% empty %}
-                    <div class="box-body table-responsive no-padding">
-                        该老师暂无任何安排
-                    </div>
-                {% endfor %}
+                </div>
                 <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <!--#上一页-->
-                        <!--当有上一页时-->
                         {% if page_obj.has_previous %}
-                            <li>
-                                <a href="{% url 'meet_plan:stu-tea-plan-list' teacher_id %}?page={{ page_obj.previous_page_number }}">上一页</a>
-                            </li>
+                            <li><a href="?page=1">&laquo; 首页</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
                         {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
                             <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
                         {% endif %}
 
-                        <!--中间的页码，如果是当前页，添加active属性-->
+                        <li class="active">
+                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                        </li>
 
-                        {% for page in paginator.page_range %}
-                            {% if page == page_obj.number %}
-                                <li class="active">
-                                    <a href="{% url 'meet_plan:stu-tea-plan-list' teacher_id %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% else %}
-                                <li>
-                                    <a href="{% url 'meet_plan:stu-tea-plan-list' teacher_id %}?page={{ page }}">{{ page }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-
-                        <!--#下一页-->
                         {% if page_obj.has_next %}
-                            <li>
-                                <a href="{% url 'meet_plan:stu-tea-plan-list' teacher_id %}?page={{ page_obj.next_page_number }}">下一页</a>
-                            </li>
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
                         {% else %}
                             <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
                         {% endif %}
                     </ul>
                 </div>
