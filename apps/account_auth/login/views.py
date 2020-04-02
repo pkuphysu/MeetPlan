@@ -83,7 +83,10 @@ class IAAALoginAuth(View):
                 else:
                     domain = request.get_host()
                     send_account_active_email.delay(user[0].identity_id, domain)
-                    raise PermissionDenied('您还没有激活，我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收。')
+                    raise PermissionDenied("""<div class="callout callout-success">
+                    <h4>验证成功，但您还没有激活账号!</h4>
+                    <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
+                    </div>""")
             else:
                 raise PermissionDenied('本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请联系网站管理员帮您注册。'.format(name, identity_id))
         else:
