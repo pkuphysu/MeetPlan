@@ -24,10 +24,12 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
             'place': forms.TextInput(attrs={'class': 'form-control'}),
             'start_time': forms.DateTimeInput(attrs={'class': 'form-control',
                                                      'id': 'starttimepicker',
-                                                     'placeholder': 'yyyy/M/d H:m'}),
+                                                     'placeholder': 'yyyy/M/d H:m',
+                                                     'readonly': 'readonly'}),
             'end_time': forms.DateTimeInput(attrs={'class': 'form-control',
                                                    'id': 'endtimepicker',
-                                                   'placeholder': 'yyyy/M/d H:m'}),
+                                                   'placeholder': 'yyyy/M/d H:m',
+                                                   'readonly': 'readonly'}),
             'allow_other': forms.Select(attrs={'class': 'form-control'},
                                         choices=MeetPlan.AllowOtherChoices),
             'message': forms.Textarea(attrs={'class': 'form-control',
@@ -52,10 +54,12 @@ class MeetPlanFastCreateForm(forms.Form, FormMixin):
         (2, '不允许')
     )
     date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                         'id': 'date'}),
+                                                         'id': 'date',
+                                                         'readonly': 'readonly'}),
                            label='日期')
     time = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                         'id': 'time'}),
+                                                         'id': 'time',
+                                                         'readonly': 'readonly'}),
                            label='开始时间')
     place = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
                             max_length=128)

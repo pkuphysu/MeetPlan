@@ -2,14 +2,14 @@
 
 $(function () {
     // 完整域名：http://127.0.0.1:8000/cms/staffs
-    var url = window.location.href; // 返回本地地址
+    var url = window.location.href.split('?')[0]; // 返回本地地址
     // http:
     var protocol = window.location.protocol;
     // 127.0.0.1:8000
     var host = window.location.host;
-    var domain = protocol + '//'+ host;
+    var domain = protocol + '//' + host;
     // console.log(domain); // 打印测试域名
-    var path = url.replace(domain,'');
+    var path = url.replace(domain, '');
     // 获取所有管理界面文件的url
     var menuLis = $(".sidebar-menu li"); // 获取li标签，得到一个数组
     // 循环遍历左侧栏目及。sidebar-menu 下面的li标签

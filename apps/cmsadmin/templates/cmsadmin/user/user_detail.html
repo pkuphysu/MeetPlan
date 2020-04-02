@@ -1,4 +1,5 @@
 {% extends 'cmsadmin/index.html' %}
+{% load meetplan_filter %}
 
 {% block title %}
     用户详情
@@ -244,5 +245,93 @@
                 </div>
             {% endwith %}
         {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title">综合指导课情况</h3>
+                    <div class="box-tools">
+                        {% if object.is_teacher %}
+                            <button class="btn btn-primary pull-right"
+                                    onclick="window.location.href='{% url 'cmsadmin:meetplan_create' %}'">
+                                新增安排
+                            </button>
+
+                        {% else %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% if object.is_teacher %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>计划编号</th>
+                                <th>地点</th>
+                                <th>日期</th>
+                                <th>时间</th>
+                                <th>是否允许多人</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% with meetplans=object.meetplan_set.all|in_this_term %}
+                                {% for meetplan in meetplans %}
+                                    <tr>
+                                        <td>{{ meetplan.id }}</td>
+                                        <td>{{ meetplan.place }}</td>
+                                        <td>{{ meetplan.start_time|date }}</td>
+                                        <td>{{ meetplan.start_time|time }}到{{ meetplan.end_time|time }}</td>
+                                        <td>
+                                            {% if meetplan.allow_other %}
+                                                允许
+                                            {% else %}
+                                                不允许
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'cmsadmin:meetplan-detail' meetplan.id %}">查看详情</a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% endwith %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>日期</th>
+                                <th>时间</th>
+                                <th>地点</th>
+                                <th>教师</th>
+                                <th>备注</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% with meetplanorders=object.meetplanorder_set.all %}
+                                {% for meetplanorder in meetplanorders %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ meetplanorder.meet_plan.start_time|date }}</td>
+                                        <td>{{ meetplanorder.meet_plan.start_time|time }}-{{ meetplanorder.meet_plan.end_time|time }}</td>
+                                        <td>{{ meetplanorder.meet_plan.place }}</td>
+                                        <td>{{ meetplanorder.meet_plan.teacher.user_name }}</td>
+                                        <td>{{ meetplanorder.meet_plan.message }}</td>
+                                        {% if meetplanorder.completed %}
+                                            <td><span class="label label-success">已确认</span></td>
+                                        {% else %}
+                                            <td><span class="label label-warning">待确认</span></td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            {% endwith %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

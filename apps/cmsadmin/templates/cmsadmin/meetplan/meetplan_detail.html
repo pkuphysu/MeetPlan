@@ -15,10 +15,10 @@
                 <div class="box-header">
                     <div class="box-tools">
                         <button type="button" class="btn btn-primary"
-                                onclick="window.location.href='{% url 'meet_plan:tea-plan-add' %}'"> 新增
+                                onclick="window.location.href='{% url 'cmsadmin:meetplanorder_create' %}'"> 新增预约
                         </button>
                         <button type="button" class="btn btn-primary"
-                                onclick="window.location.href='{% url 'meet_plan:tea-plan-update' plan.pk %}'">编辑
+                                onclick="window.location.href='{% url 'cmsadmin:meetplan_update' plan.pk %}'">编辑
                         </button>
                     </div>
                 </div>
@@ -93,9 +93,9 @@
                                     <tr>
                                         <th>操作</th>
                                         {% if not mto.completed %}
-                                            <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">确认</a></td>
+                                            <td><a href="{% url 'cmsadmin:meetplanorder_update' mto.id %}">确认</a></td>
                                         {% else %}
-                                            <td><a href="{% url 'meet_plan:tea-order-update' mto.id %}">已确认</a></td>
+                                            <td><a href="{% url 'cmsadmin:meetplanorder_update' mto.id %}">已确认</a></td>
                                         {% endif %}
                                     </tr>
                                     </tbody>

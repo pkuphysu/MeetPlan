@@ -30,7 +30,8 @@ class BaseProfileForm(forms.ModelForm, FormMixin):
             'gender': forms.Select(attrs={'class': 'form-control'},
                                    choices=BaseProfile.GenderChoices),
             'birth': forms.TextInput(attrs={'class': 'form-control',
-                                            'id': 'datepicker'}),
+                                            'id': 'datepicker',
+                                            'readonly': 'readonly'}),
         }
 
 

@@ -20,8 +20,10 @@ urlpatterns += [
     path('user_confirm_delete/<int:pk>/', user_view.UserDeleteView.as_view(), name='user-confirm-delete'),
 
     path('user_base_profile_update/<int:pk>/', user_view.BaseProfileUpdateView.as_view(), name='base-profile-update'),
-    path('user_student_profile_update/<int:pk>/', user_view.StudentProfileUpdateView.as_view(), name='student-profile-update'),
-    path('user_teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(), name='teacher-profile-update'),
+    path('user_student_profile_update/<int:pk>/', user_view.StudentProfileUpdateView.as_view(),
+         name='student-profile-update'),
+    path('user_teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(),
+         name='teacher-profile-update'),
 
 ]
 
@@ -29,6 +31,7 @@ urlpatterns += [
     path('meetplan_all/', meetplan_view.MeetPlanListView.as_view(), name='meetplan_all'),
     path('meetplan_create/', meetplan_view.MeetPlanCreateView.as_view(), name='meetplan_create'),
     path('meetplan_update/<int:pk>/', meetplan_view.MeetPlanUpdateView.as_view(), name='meetplan_update'),
+    path('meetplan_detail/<int:pk>/', meetplan_view.MeetPlanDetailView.as_view(), name='meetplan-detail'),
     path('meetplan_confirm_delete/<int:pk>/', meetplan_view.MeetPlanDeleteView.as_view(),
          name='meetplan-confirm-delete'),
 
