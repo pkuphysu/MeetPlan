@@ -94,6 +94,9 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
             'office': '办公室',
             'introduce': '个人简介',
         }
+        help_texts = {
+            'phone_number': '（区号+座机号，例如0106275***）或（手机号 158********)'
+        }
         widgets = {
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
