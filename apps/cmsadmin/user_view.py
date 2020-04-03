@@ -121,7 +121,7 @@ class BaseProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/base_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:base-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})
 
 
 class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
@@ -130,7 +130,7 @@ class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/student_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:student-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})
 
 
 class TeacherProfileUpdateView(AdminRequiredMixin, UpdateView):
@@ -139,4 +139,4 @@ class TeacherProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/teacher_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:teacher-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})

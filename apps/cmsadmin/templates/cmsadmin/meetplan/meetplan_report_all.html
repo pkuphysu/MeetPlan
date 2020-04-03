@@ -41,11 +41,11 @@
                         <tbody>
                         {% for report_file in report_file_list %}
                             <tr>
-                                <th>{{ report_file.id }}</th>
-                                <th>{{ report_file.user.user_name }}</th>
-                                <th>{{ report_file.file.name }}</th>
-                                <th>{{ report_file.remark }}</th>
-                                <th><a href="{{ report_file.file.url }}">下载</a></th>
+                                <td>{{ report_file.id }}</td>
+                                <td>{{ report_file.user.user_name }}</td>
+                                <td>{{ report_file.file.name }}</td>
+                                <td>{{ report_file.remark }}</td>
+                                <td><a href="{{ report_file.file.url }}">下载</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
