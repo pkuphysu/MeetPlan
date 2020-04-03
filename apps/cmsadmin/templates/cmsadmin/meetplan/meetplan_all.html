@@ -39,14 +39,14 @@
                         <tbody>
                         {% for meetplan in meetplan_list %}
                             <tr>
-                                <th>{{ meetplan.id }}</th>
-                                <th>{{ meetplan.teacher.identity_id }}</th>
-                                <th>{{ meetplan.teacher.user_name }}</th>
-                                <th>{{ meetplan.place }}</th>
-                                <th>{{ meetplan.start_time }}</th>
-                                <th>{{ meetplan.end_time }}</th>
-                                <th>{{ meetplan.allow_other }}</th>
-                                <th><a href="{% url 'cmsadmin:meetplan_update' meetplan.id %}">编辑</a></th>
+                                <td>{{ meetplan.id }}</td>
+                                <td>{{ meetplan.teacher.identity_id }}</td>
+                                <td>{{ meetplan.teacher.user_name }}</td>
+                                <td>{{ meetplan.place }}</td>
+                                <td>{{ meetplan.start_time }}</td>
+                                <td>{{ meetplan.end_time }}</td>
+                                <td>{{ meetplan.allow_other }}</td>
+                                <td><a href="{% url 'cmsadmin:meetplan_update' meetplan.id %}">编辑</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
