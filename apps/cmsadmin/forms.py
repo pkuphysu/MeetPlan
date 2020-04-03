@@ -113,7 +113,7 @@ class MeetPlanOrderForm(forms.ModelForm, FormMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         date_range = get_term_date()
-        self.fields['meet_plan'].queryset = MeetPlan.objects.filter(start_time__gt=date_range[0]).order_by('-id')
+        self.fields['meet_plan'].queryset = MeetPlan.objects.filter(create_time__gt=date_range[0]).order_by('-id')
 
 
 class FeedBackForm(forms.ModelForm, FormMixin):
