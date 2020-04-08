@@ -20,7 +20,7 @@ class TeacherListView(StuViewMixin, ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        return User.objects.filter(is_teacher=True).order_by('identity_id')
+        return User.objects.filter(is_teacher=True, is_active=True).order_by('identity_id')
 
 
 class TeacherPlanListView(StuViewMixin, ListView):

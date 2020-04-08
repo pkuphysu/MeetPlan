@@ -35,19 +35,24 @@
 
 {% block footjs %}
     <script>
-    $("#id_department").change(function () {
-      var url = '{% url 'account_auth:major_ajax' %}';
-      var departmentId = $(this).val();
+        $("#id_department").change(function () {
+            var url = '{% url 'account_auth:major_ajax' %}';
+            var departmentId = $(this).val();
 
-      $.ajax({
-        url: url,
-        data: {
-          'department': departmentId
-        },
-        success: function (data) {
-          $("#id_major").html(data);
-        }
-      });
-    });
-  </script>
+            $.ajax({
+                url: url,
+                data: {
+                    'department': departmentId
+                },
+                success: function (data) {
+                    $("#id_major").html(data);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $('input[required]').before('<span style="color:red">*</span>');
+    </script>
+
 {% endblock %}

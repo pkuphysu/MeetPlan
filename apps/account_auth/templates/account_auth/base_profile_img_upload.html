@@ -47,3 +47,8 @@
         </div>
     </div>
 {% endblock %}
+{% block footjs %}
+    <script>
+        $('input[required]').before('<span style="color:red">*</span>');
+    </script>
+{% endblock %}
