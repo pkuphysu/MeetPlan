@@ -101,7 +101,7 @@ class BaseProfile(BaseModel):
     user = models.OneToOneField(verbose_name='用户', to=User, on_delete=models.DO_NOTHING, db_index=True)
     gender = models.BooleanField(default=False, choices=GenderChoices, verbose_name='性别')
 
-    birth = models.DateField(verbose_name='生日')
+    birth = models.DateField(verbose_name='生日', null=True, blank=True)
     from apps.filemanager.models import MyImg
     head_picture = models.ForeignKey(to=MyImg, on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 

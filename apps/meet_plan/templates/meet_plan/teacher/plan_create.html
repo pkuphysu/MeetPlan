@@ -38,9 +38,6 @@
     </div>
 {% endblock %}
 
-{% block headcss %}
-{% endblock %}
-
 {% block footjs %}
     <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
     <script>
@@ -60,5 +57,9 @@
             min: '{{term_start_date}}',
             max: '{{term_end_date}}'
         });
+    </script>
+
+    <script>
+        $('input[required]').before('<span style="color:red">*</span>');
     </script>
 {% endblock %}

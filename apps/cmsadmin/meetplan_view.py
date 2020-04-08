@@ -106,7 +106,7 @@ class FeedBackListView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(teacher=self.request.user).order_by('-create_time')
+        return qs.order_by('-id')
 
 
 class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
