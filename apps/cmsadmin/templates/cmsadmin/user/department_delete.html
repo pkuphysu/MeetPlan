@@ -1,11 +1,11 @@
 {% extends 'cmsadmin/index.html' %}
 
 {% block title %}
-    删除用户
+    删除系所、办公室
 {% endblock %}
 
 {% block content-header %}
-    <h1>删除用户</h1>
+    <h1>删除系所、办公室</h1>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
                 <form role="form" method="post">
                     <div class="box-body">
                         {% csrf_token %}
-                         <p>确定要删除"{{ object }}"?</p>
+                        <p>确定要删除"{{ object }}"?</p>
                         <input type="submit" value="Confirm">
                     </div>
                 </form>

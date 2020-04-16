@@ -1,6 +1,6 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from ..account_auth.models import User, Grade
+from ..account_auth.models import User, Grade, Department, Major
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..meet_plan.utils import get_term_date
 
@@ -146,6 +146,51 @@ class FeedBackForm(forms.ModelForm, FormMixin):
         widgets = {
             'have_checked': forms.Select(attrs={'class': 'form-control'},
                                          choices=FeedBack.FeedBackChoices)
+        }
+
+
+class GradeForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Grade
+        fields = [
+            'grade'
+        ]
+        labels = {
+            'grade': '入学年份'
+        }
+        widgets = {
+            'grade': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class DepartmentForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Department
+        fields = [
+            'department'
+        ]
+        labels = {
+            'department': '系所/办公室'
+        }
+        widgets = {
+            'department': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class MajorForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Major
+        fields = [
+            'major',
+            'department'
+        ]
+        labels = {
+            'major': '专业',
+            'department': '所属系所'
+        }
+        widgets = {
+            'major': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-control'})
         }
 
 
