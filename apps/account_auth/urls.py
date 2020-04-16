@@ -11,6 +11,7 @@ urlpatterns = [
     re_path('^active/(?P<token>.*)$', views.ActiveView.as_view(), name='active-account'),
 
     path('baseprofile_add/', views.BaseProfileAddView.as_view(), name='baseprofile_add'),
+    path('baseprofile_update/<int:pk>/', views.BaseProfileUpdateView.as_view(), name='baseprofile-update'),
 
     path('student_profile_create_ajax/', views.LoadMajorView.as_view(), name='major_ajax'),
     path('student_profile_create/', views.StudentProfileCreateView.as_view(), name='student-profile-create'),

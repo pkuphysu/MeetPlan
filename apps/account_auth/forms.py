@@ -26,6 +26,9 @@ class BaseProfileForm(forms.ModelForm, FormMixin):
             'gender': '性别',
             'birth': '生日',
         }
+        help_texts = {
+            'birth': '非必填',
+        }
         widgets = {
             'gender': forms.Select(attrs={'class': 'form-control'},
                                    choices=BaseProfile.GenderChoices),

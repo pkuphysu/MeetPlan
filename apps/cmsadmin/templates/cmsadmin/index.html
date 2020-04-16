@@ -61,6 +61,13 @@
                 <span>管理员后台</span>
             </a>
         </li>
+        {% if user.is_superuser %}
+            <li>
+                <a href="{% url 'admin:index' %}"><i class="fa  fa-user-secret"></i>
+                    <span>超级管理员后台</span>
+                </a>
+            </li>
+        {% endif %}
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-users"></i> <span>人员管理</span>
