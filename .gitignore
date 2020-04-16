@@ -8,8 +8,10 @@ PKU_PHY_SU/secret_config.ini
 uwsgi.ini
 /apps/*/migrations/*
 !/apps/*/migrations/__init__.py
+!/apps/*/migrations/0001_initial.py
+!/apps/account_auth/migrations/0002_auto_20200401_1937.py
 .python-version
-
+/.venv/
 
 ### Linux ###
 *~

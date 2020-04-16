@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
 
-    'rest_framework',
+    #'rest_framework',
 
     'apps.account_auth.apps.AccountAuthConfig',
     'apps.filemanager.apps.FilemanagerConfig',

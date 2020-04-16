@@ -74,10 +74,19 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
         }
 
     def __init__(self, *args, **kwargs):
+        if 'teacher' in kwargs:
+            flag = True
+            teacher = kwargs.pop('teacher')
+        else:
+            flag = False
+
         super().__init__(*args, **kwargs)
         from db.base_model import Convert
         self.fields['teacher'].queryset = User.objects.filter(is_teacher=True).order_by(
             Convert('user_name', 'gbk').asc())
+
+        if flag:
+            self.fields['teacher'].initial = teacher
 
 
 class MeetPlanOrderForm(forms.ModelForm, FormMixin):
@@ -111,9 +120,18 @@ class MeetPlanOrderForm(forms.ModelForm, FormMixin):
         }
 
     def __init__(self, *args, **kwargs):
+        if 'student' in kwargs:
+            flag = True
+            student = kwargs.pop('student')
+        else:
+            flag = False
+
         super().__init__(*args, **kwargs)
         date_range = get_term_date()
         self.fields['meet_plan'].queryset = MeetPlan.objects.filter(create_time__gt=date_range[0]).order_by('-id')
+
+        if flag:
+            self.fields['student'].initial = student
 
 
 class FeedBackForm(forms.ModelForm, FormMixin):
