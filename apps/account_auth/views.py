@@ -97,10 +97,23 @@ class BaseProfileAddView(LoginRequiredMixin, CreateView):
         if not hasattr(request.user, 'baseprofile'):
             return super().get(request, *args, **kwargs)
         else:
-            if request.user.is_teacher:
-                return HttpResponseRedirect(reverse('account_auth:teacher-profile-create'))
-            else:
-                return HttpResponseRedirect(reverse('account_auth:student-profile-create'))
+            return HttpResponseRedirect(reverse('account_auth:baseprofile-update',
+                                                kwargs={'pk': request.user.baseprofile.id}))
+
+
+class BaseProfileUpdateView(ViewMixin, UpdateView):
+    model = BaseProfile
+    form_class = BaseProfileForm
+    template_name = 'account_auth/base_profile_update.html'
+
+    def get_success_url(self):
+        return reverse('portal:index')
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(BaseProfile, id=self.kwargs['pk'])
+        if obj != self.request.user.baseprofile:
+            raise PermissionDenied('你只能更改自己的基本信息！')
+        return obj
 
 
 class BaseProfileImgUpdateView(ViewMixin, ImgUploadViewMixin):
