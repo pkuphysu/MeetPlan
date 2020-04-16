@@ -254,11 +254,14 @@
                     <div class="box-tools">
                         {% if object.is_teacher %}
                             <button class="btn btn-primary pull-right"
-                                    onclick="window.location.href='{% url 'cmsadmin:meetplan_create' %}'">
+                                    onclick="window.location.href='{% url 'cmsadmin:meetplan-create-from-teacher' object.pk %}'">
                                 新增安排
                             </button>
-
                         {% else %}
+                            <button class="btn btn-primary pull-right"
+                                    onclick="window.location.href='{% url 'cmsadmin:meetplanorder-create-from-student' object.pk %}'">
+                                新增预约
+                            </button>
                         {% endif %}
                     </div>
                 </div>

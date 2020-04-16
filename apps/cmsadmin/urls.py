@@ -30,6 +30,8 @@ urlpatterns += [
 urlpatterns += [
     path('meetplan_all/', meetplan_view.MeetPlanListView.as_view(), name='meetplan_all'),
     path('meetplan_create/', meetplan_view.MeetPlanCreateView.as_view(), name='meetplan_create'),
+    path('meetplan_create/<int:pk>/', meetplan_view.MeetPlanCreateFromTeacherView.as_view(),
+         name='meetplan-create-from-teacher'),
     path('meetplan_update/<int:pk>/', meetplan_view.MeetPlanUpdateView.as_view(), name='meetplan_update'),
     path('meetplan_detail/<int:pk>/', meetplan_view.MeetPlanDetailView.as_view(), name='meetplan-detail'),
     path('meetplan_confirm_delete/<int:pk>/', meetplan_view.MeetPlanDeleteView.as_view(),
@@ -37,6 +39,8 @@ urlpatterns += [
 
     path('meetplanorder_all/', meetplan_view.MeetPlanOrderListView.as_view(), name='meetplanorder_all'),
     path('meetplanorder_create/', meetplan_view.MeetPlanOrderCreateView.as_view(), name='meetplanorder_create'),
+    path('meetplanorder_create/<int:pk>/', meetplan_view.MeetPlanOrderCreateFromStudentView.as_view(),
+         name='meetplanorder-create-from-student'),
     path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderViewUpdate.as_view(),
          name='meetplanorder_update'),
     path('meetplanorder_confirm_delete/<int:pk>/', meetplan_view.MeetPlanOrderDeleteView.as_view(),

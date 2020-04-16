@@ -194,7 +194,6 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
-        self.ori_obj = super().get_object(queryset=queryset)
         if obj.meet_plan.teacher != self.request.user:
             raise PermissionDenied('您只能修改属于您创建的综合指导课的预约！')
         return obj
@@ -202,8 +201,8 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
     def form_valid(self, form):
         from .tasks import send_meetplan_order_update_email
         domain = self.request.get_host()
-        if self.object.completed != self.ori_obj.completed or self.object.is_delete != self.ori_obj.is_delete:
-            send_meetplan_order_update_email.delay(self.object.id, domain, self.object.is_delete)
+        if form.has_changed():
+            send_meetplan_order_update_email.delay(self.object.id, domain, False)
 
         response = super().form_valid(form)
         return response
@@ -219,16 +218,20 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
             raise PermissionDenied('您只能删除您创建的综合指导课的预约！')
         return obj
 
-    def get_success_url(self):
-        return reverse('meet_plan:tea-index')
-
     def delete(self, request, *args, **kwargs):
         from django.core.cache import cache
         from django.core.cache.utils import make_template_fragment_key
         key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
         cache.delete(key)
 
-        return super().delete(request, *args, **kwargs)
+        response = super().delete(request, args, kwargs)
+        from .tasks import send_meetplan_order_update_email
+        domain = self.request.get_host()
+        send_meetplan_order_update_email.delay(self.object.id, domain, True)
+        return response
+
+    def get_success_url(self):
+        return reverse('meet_plan:tea-index')
 
 
 class FeedBackCreateView(TeaViewMixin, CreateView):
