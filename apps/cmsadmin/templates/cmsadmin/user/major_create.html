@@ -1,11 +1,11 @@
 {% extends 'cmsadmin/index.html' %}
 
 {% block title %}
-    删除用户
+    新增专业
 {% endblock %}
 
 {% block content-header %}
-    <h1>删除用户</h1>
+    <h1>新增专业</h1>
 {% endblock %}
 
 {% block content %}
@@ -16,11 +16,20 @@
                 <form role="form" method="post">
                     <div class="box-body">
                         {% csrf_token %}
-                         <p>确定要删除"{{ object }}"?</p>
-                        <input type="submit" value="Confirm">
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Save">提交</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block footjs %}
+    <script>
+        $('input[required]').before('<span style="color:red">*</span>');
+    </script>
 {% endblock %}
