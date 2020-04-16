@@ -2,44 +2,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{% block title %}{% endblock %} | {% block subtitle %}{% endblock %}</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}"/>
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/font-awesome/css/font-awesome.min.css' %}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/Ionicons/css/ionicons.min.css' %}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{% static 'adminlte-2.4.18/dist/css/AdminLTE.min.css' %}">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="{% static 'adminlte-2.4.18/dist/css/skins/_all-skins.min.css' %}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock %} | {% block subtitle %}{% endblock %}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}"/>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.18/bower_components/Ionicons/css/ionicons.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.18/dist/css/AdminLTE.min.css' %}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.18/dist/css/skins/_all-skins.min.css' %}">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="{% static 'js/html5shiv/3.7.3/html5shiv.js' %}"></script>
-  <script src="{% static 'js/respond/1.4.2/respond.min.js' %}"></script>
-  <![endif]-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="{% static 'js/html5shiv/3.7.3/html5shiv.js' %}"></script>
+    <script src="{% static 'js/respond/1.4.2/respond.min.js' %}"></script>
+    <![endif]-->
 
-  <!-- Google Font -->
-{#  <link rel="stylesheet" href="{% static 'css/fonts_googleapis_com/css.css' %}">#}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.css' %}">
+    <!-- Google Font -->
+    {#  <link rel="stylesheet" href="{% static 'css/fonts_googleapis_com/css.css' %}">#}
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.css' %}">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162034331-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-162034331-2');
+    </script>
     {% block headcss %}{% endblock %}
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini layout-boxed">
 <div class="wrapper">
-
     <header class="main-header">
         <!-- Logo -->
-    {% block logo %}{% endblock %}
-
+        {% block logo %}{% endblock %}
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
 
@@ -51,7 +62,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
-                    {% block usermenu %}{% endblock %}
+                        {% block usermenu %}{% endblock %}
                     </li>
                 </ul>
             </div>
@@ -63,17 +74,17 @@
             <div class="user-panel">
                 <div class="pull-left image">
                     {% if user.baseprofile and user.baseprofile.head_picture %}
-                  <img src="{{user.baseprofile.head_picture.img.url}}" class="img-circle" alt="User Image">
+                        <img src="{{ user.baseprofile.head_picture.img.url }}" class="img-circle" alt="User Image">
                     {% else %}
-                    <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
+                        <img src="{% static 'images/headpicture/default.jpg' %}" class="img-circle" alt="User Image">
                     {% endif %}
                 </div>
                 <div class="pull-left info">
-                  <p>{{ user.user_name }}</p>
-                  <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <p>{{ user.user_name }}</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-        {% block sidebarmenu %}{% endblock %}
+            {% block sidebarmenu %}{% endblock %}
         </section>
     </aside>
 

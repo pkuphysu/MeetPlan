@@ -1,6 +1,6 @@
 from django import forms
 from utils.mixin.form import FormMixin
-from ..account_auth.models import User, Grade
+from ..account_auth.models import User, Grade, Department, Major
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..meet_plan.utils import get_term_date
 
@@ -74,10 +74,19 @@ class MeetPlanForm(forms.ModelForm, FormMixin):
         }
 
     def __init__(self, *args, **kwargs):
+        if 'teacher' in kwargs:
+            flag = True
+            teacher = kwargs.pop('teacher')
+        else:
+            flag = False
+
         super().__init__(*args, **kwargs)
         from db.base_model import Convert
         self.fields['teacher'].queryset = User.objects.filter(is_teacher=True).order_by(
             Convert('user_name', 'gbk').asc())
+
+        if flag:
+            self.fields['teacher'].initial = teacher
 
 
 class MeetPlanOrderForm(forms.ModelForm, FormMixin):
@@ -111,9 +120,18 @@ class MeetPlanOrderForm(forms.ModelForm, FormMixin):
         }
 
     def __init__(self, *args, **kwargs):
+        if 'student' in kwargs:
+            flag = True
+            student = kwargs.pop('student')
+        else:
+            flag = False
+
         super().__init__(*args, **kwargs)
         date_range = get_term_date()
         self.fields['meet_plan'].queryset = MeetPlan.objects.filter(create_time__gt=date_range[0]).order_by('-id')
+
+        if flag:
+            self.fields['student'].initial = student
 
 
 class FeedBackForm(forms.ModelForm, FormMixin):
@@ -128,6 +146,51 @@ class FeedBackForm(forms.ModelForm, FormMixin):
         widgets = {
             'have_checked': forms.Select(attrs={'class': 'form-control'},
                                          choices=FeedBack.FeedBackChoices)
+        }
+
+
+class GradeForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Grade
+        fields = [
+            'grade'
+        ]
+        labels = {
+            'grade': '入学年份'
+        }
+        widgets = {
+            'grade': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class DepartmentForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Department
+        fields = [
+            'department'
+        ]
+        labels = {
+            'department': '系所/办公室'
+        }
+        widgets = {
+            'department': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class MajorForm(forms.ModelForm, FormMixin):
+    class Meta:
+        model = Major
+        fields = [
+            'major',
+            'department'
+        ]
+        labels = {
+            'major': '专业',
+            'department': '所属系所'
+        }
+        widgets = {
+            'major': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-control'})
         }
 
 

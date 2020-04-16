@@ -26,6 +26,9 @@ class BaseProfileForm(forms.ModelForm, FormMixin):
             'gender': '性别',
             'birth': '生日',
         }
+        help_texts = {
+            'birth': '非必填',
+        }
         widgets = {
             'gender': forms.Select(attrs={'class': 'form-control'},
                                    choices=BaseProfile.GenderChoices),
@@ -95,7 +98,9 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
             'introduce': '个人简介',
         }
         help_texts = {
-            'phone_number': '（区号+座机号，例如0106275***）或（手机号 158********)'
+            'phone_number': """（区号+座机号，例如0106275***）或（手机号 158********) <br/>
+            注意不要增加空格和加号，至少9位数字
+            """
         }
         widgets = {
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),

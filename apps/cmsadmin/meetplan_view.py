@@ -7,6 +7,7 @@ from utils.mixin.permission import AdminRequiredMixin
 from .tasks import meetplan_create_teacher_report, meetplan_create_student_report
 from ..meet_plan.utils import get_term_date
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
+from ..account_auth.models import User
 from ..filemanager.models import MyFile
 from .forms import MeetPlanForm, MeetPlanOrderForm, FeedBackForm, OptionForm, MeetPlanReportTeacherForm, \
     MeetPlanReportStudentForm
@@ -34,6 +35,21 @@ class MeetPlanCreateView(AdminRequiredMixin, CreateView):
     model = MeetPlan
     template_name = 'cmsadmin/meetplan/meetplan_create.html'
     form_class = MeetPlanForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplan_all')
+
+
+class MeetPlanCreateFromTeacherView(AdminRequiredMixin, CreateView):
+    model = MeetPlan
+    template_name = 'cmsadmin/meetplan/meetplan_create.html'
+    form_class = MeetPlanForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        teacher = User.objects.get(id=self.kwargs['pk'])
+        kwargs.update({'teacher': teacher})
+        return kwargs
 
     def get_success_url(self):
         return reverse('cmsadmin:meetplan_all')
@@ -81,6 +97,21 @@ class MeetPlanOrderCreateView(AdminRequiredMixin, CreateView):
         return reverse('cmsadmin:meetplanorder_all')
 
 
+class MeetPlanOrderCreateFromStudentView(AdminRequiredMixin, CreateView):
+    model = MeetPlanOrder
+    template_name = 'cmsadmin/meetplan/meetplanorder_create.html'
+    form_class = MeetPlanOrderForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        student = User.objects.get(id=self.kwargs['pk'])
+        kwargs.update({'student': student})
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplanorder_all')
+
+
 class MeetPlanOrderViewUpdate(AdminRequiredMixin, UpdateView):
     model = MeetPlanOrder
     form_class = MeetPlanOrderForm
@@ -106,7 +137,7 @@ class FeedBackListView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(teacher=self.request.user).order_by('-create_time')
+        return qs.order_by('-id')
 
 
 class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
@@ -119,13 +150,13 @@ class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
-        self.ori_obj = super().get_object(queryset=queryset)
         return obj
 
     def form_valid(self, form):
         from apps.meet_plan.tasks import send_meetplan_feedback_update_email
         domain = self.request.get_host()
-        if self.object.have_checked != self.ori_obj.have_checked:
+
+        if form.has_changed():
             send_meetplan_feedback_update_email.delay(self.object.id, domain)
 
         response = super().form_valid(form)

@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import DetailView
 from django.views.generic.base import View
@@ -9,9 +10,9 @@ from utils.mixin.permission import AdminRequiredMixin
 from utils.mixin.view import FileUploadViewMixin
 
 from . import urls
-from .forms import UserForm
+from .forms import UserForm, GradeForm, DepartmentForm, MajorForm
 from .tasks import account_create_many_user
-from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile
+from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile, Major, Department, Grade
 from ..account_auth.tasks import send_account_active_email
 from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherProfileForm
 
@@ -121,7 +122,7 @@ class BaseProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/base_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:base-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})
 
 
 class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
@@ -130,7 +131,7 @@ class StudentProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/student_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:student-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})
 
 
 class TeacherProfileUpdateView(AdminRequiredMixin, UpdateView):
@@ -139,4 +140,110 @@ class TeacherProfileUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'cmsadmin/user/teacher_profile_update.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:teacher-profile-all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.user_id})
+
+
+class OtherManagementView(AdminRequiredMixin, View):
+    def get(self, request):
+        context = {
+            'total_department_num': Department.objects.all().count(),
+            'total_major_num': Major.objects.all().count(),
+            'total_grade_num': Grade.objects.all().count(),
+        }
+        return TemplateResponse(request, template='cmsadmin/user/other_management.html', context=context)
+
+
+class GradeListView(AdminRequiredMixin, ListView):
+    model = Grade
+    template_name = 'cmsadmin/user/grade_all.html'
+    context_object_name = 'grade_list'
+
+
+class GradeCreateView(AdminRequiredMixin, CreateView):
+    model = Grade
+    template_name = 'cmsadmin/user/grade_create.html'
+    form_class = GradeForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-grade-all')
+
+
+class GradeUpdateView(AdminRequiredMixin, UpdateView):
+    model = Grade
+    template_name = 'cmsadmin/user/grade_update.html'
+    form_class = GradeForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-grade-all')
+
+
+class GradeDeleteView(AdminRequiredMixin, DeleteView):
+    model = Grade
+    template_name = 'cmsadmin/user/grade_delete.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-grade-all')
+
+
+class DepartmentListView(AdminRequiredMixin, ListView):
+    model = Department
+    template_name = 'cmsadmin/user/department_all.html'
+    context_object_name = 'department_list'
+
+
+class DepartmentCreateView(AdminRequiredMixin, CreateView):
+    model = Department
+    template_name = 'cmsadmin/user/department_create.html'
+    form_class = DepartmentForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-department-all')
+
+
+class DepartmentUpdateView(AdminRequiredMixin, UpdateView):
+    model = Department
+    template_name = 'cmsadmin/user/department_update.html'
+    form_class = DepartmentForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-department-all')
+
+
+class DepartmentDeleteView(AdminRequiredMixin, DeleteView):
+    model = Department
+    template_name = 'cmsadmin/user/department_delete.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-department-all')
+
+
+class MajorListView(AdminRequiredMixin, ListView):
+    model = Major
+    template_name = 'cmsadmin/user/major_all.html'
+    context_object_name = 'major_list'
+
+
+class MajorCreateView(AdminRequiredMixin, CreateView):
+    model = Major
+    template_name = 'cmsadmin/user/major_create.html'
+    form_class = MajorForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-major-all')
+
+
+class MajorUpdateView(AdminRequiredMixin, UpdateView):
+    model = Major
+    template_name = 'cmsadmin/user/major_update.html'
+    form_class = MajorForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-major-all')
+
+
+class MajorDeleteView(AdminRequiredMixin, DeleteView):
+    model = Major
+    template_name = 'cmsadmin/user/major_delete.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:user-major-all')

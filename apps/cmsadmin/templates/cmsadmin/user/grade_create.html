@@ -1,17 +1,16 @@
-{% extends 'index.html' %}
-{% load staticfiles %}
+{% extends 'cmsadmin/index.html' %}
 
 {% block title %}
-    设置学期起止日期
+    新增年级
 {% endblock %}
 
 {% block content-header %}
-    <h1>设置学期起止日期</h1>
+    <h1>新增年级</h1>
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <!-- form start -->
                 <form role="form" method="post">
@@ -29,23 +28,8 @@
     </div>
 {% endblock %}
 
-{% block headcss %}
-{% endblock %}
-
 {% block footjs %}
-    <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
     <script>
-        laydate.render({
-            elem: '#startdatepicker',
-            type: 'date',
-            theme: 'molv',
-            format: 'yyyy/M/d'
-        });
-        laydate.render({
-            elem: '#enddatepicker',
-            type: 'date',
-            theme: 'molv',
-            format: 'yyyy/M/d'
-        });
+        $('input[required]').before('<span style="color:red">*</span>');
     </script>
 {% endblock %}

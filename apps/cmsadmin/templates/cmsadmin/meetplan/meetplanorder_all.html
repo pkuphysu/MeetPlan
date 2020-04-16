@@ -36,12 +36,12 @@
                         <tbody>
                         {% for meetplanorder in meetplanorder_list %}
                             <tr>
-                                <th>{{ meetplanorder.id }}</th>
-                                <th>{{ meetplanorder.meet_plan_id }}</th>
-                                <th>{{ meetplanorder.student.identity_id }}</th>
-                                <th>{{ meetplanorder.student.user_name }}</th>
-                                <th>{{ meetplanorder.completed }}</th>
-                                <th><a href="{% url 'cmsadmin:meetplanorder_update' meetplanorder.id %}">编辑</a></th>
+                                <td>{{ meetplanorder.id }}</td>
+                                <td>{{ meetplanorder.meet_plan_id }}</td>
+                                <td>{{ meetplanorder.student.identity_id }}</td>
+                                <td>{{ meetplanorder.student.user_name }}</td>
+                                <td>{{ meetplanorder.completed }}</td>
+                                <td><a href="{% url 'cmsadmin:meetplanorder_update' meetplanorder.id %}">编辑</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

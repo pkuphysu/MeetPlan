@@ -53,16 +53,16 @@
                                 </td>
                                 <td>
                                     {% if user.is_active %}
-                                        <img src="{% static 'admin/img/icon-yes.svg' %}" alt="True">
+                                        已激活
                                     {% else %}
-                                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="No">
+                                        未激活
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if user.is_admin %}
-                                        <img src="{% static 'admin/img/icon-yes.svg' %}" alt="True">
+                                        是
                                     {% else %}
-                                        <img src="{% static 'admin/img/icon-no.svg' %}" alt="No">
+                                        否
                                     {% endif %}
                                 </td>
                                 <td><a href="{% url 'cmsadmin:user-detail' user.pk %}">查看</a></td>
@@ -104,7 +104,7 @@
             $('#tea_table').DataTable({
                 "scrollY": '50vh',
                 "scrollCollapse": true,
-                "paging": false,
+                "paging": true,
                 "language": {
                     "search": "搜索：",
                     "zeroRecords": "抱歉，没有任何记录。",

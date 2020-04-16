@@ -1,0 +1,26 @@
+{% extends 'cmsadmin/index.html' %}
+
+{% block title %}
+    删除专业
+{% endblock %}
+
+{% block content-header %}
+    <h1>删除专业</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        <p>确定要删除"{{ object }}"?</p>
+                        <input type="submit" value="Confirm">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

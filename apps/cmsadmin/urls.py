@@ -25,11 +25,27 @@ urlpatterns += [
     path('user_teacher_profile_update/<int:pk>/', user_view.TeacherProfileUpdateView.as_view(),
          name='teacher-profile-update'),
 
+    path('user_management/', user_view.OtherManagementView.as_view(), name='user-other-management'),
+    path('user_major_all/', user_view.MajorListView.as_view(), name='user-major-all'),
+    path('user_major_create/', user_view.MajorCreateView.as_view(), name='user-major-create'),
+    path('user_major_update/<int:pk>/', user_view.MajorUpdateView.as_view(), name='user-major-update'),
+    path('user_major_delete/<int:pk>/', user_view.MajorDeleteView.as_view(), name='user-major-delete'),
+    path('user_department_all/', user_view.DepartmentListView.as_view(), name='user-department-all'),
+    path('user_department_create/', user_view.DepartmentCreateView.as_view(), name='user-department-create'),
+    path('user_department_update/<int:pk>/', user_view.DepartmentUpdateView.as_view(), name='user-department-update'),
+    path('user_department_delete/<int:pk>/', user_view.DepartmentDeleteView.as_view(), name='user-department-delete'),
+    path('user_grade_all/', user_view.GradeListView.as_view(), name='user-grade-all'),
+    path('user_grade_create/', user_view.GradeCreateView.as_view(), name='user-grade-create'),
+    path('user_grade_update/<int:pk>/', user_view.GradeUpdateView.as_view(), name='user-grade-update'),
+    path('user_grade_delete/<int:pk>/', user_view.GradeDeleteView.as_view(), name='user-grade-delete'),
+
 ]
 
 urlpatterns += [
     path('meetplan_all/', meetplan_view.MeetPlanListView.as_view(), name='meetplan_all'),
     path('meetplan_create/', meetplan_view.MeetPlanCreateView.as_view(), name='meetplan_create'),
+    path('meetplan_create/<int:pk>/', meetplan_view.MeetPlanCreateFromTeacherView.as_view(),
+         name='meetplan-create-from-teacher'),
     path('meetplan_update/<int:pk>/', meetplan_view.MeetPlanUpdateView.as_view(), name='meetplan_update'),
     path('meetplan_detail/<int:pk>/', meetplan_view.MeetPlanDetailView.as_view(), name='meetplan-detail'),
     path('meetplan_confirm_delete/<int:pk>/', meetplan_view.MeetPlanDeleteView.as_view(),
@@ -37,6 +53,8 @@ urlpatterns += [
 
     path('meetplanorder_all/', meetplan_view.MeetPlanOrderListView.as_view(), name='meetplanorder_all'),
     path('meetplanorder_create/', meetplan_view.MeetPlanOrderCreateView.as_view(), name='meetplanorder_create'),
+    path('meetplanorder_create/<int:pk>/', meetplan_view.MeetPlanOrderCreateFromStudentView.as_view(),
+         name='meetplanorder-create-from-student'),
     path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderViewUpdate.as_view(),
          name='meetplanorder_update'),
     path('meetplanorder_confirm_delete/<int:pk>/', meetplan_view.MeetPlanOrderDeleteView.as_view(),

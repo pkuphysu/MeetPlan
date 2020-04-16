@@ -31,24 +31,24 @@
                         <tbody>
                         {% for feedback in feedback_list %}
                             <tr>
-                                <th>{{ feedback.id }}</th>
-                                <th>{{ feedback.teacher.user_name }}</th>
-                                <th>{{ feedback.teacher.identity_id }}</th>
-                                <th>{{ feedback.message }}</th>
-                                <th>
+                                <td>{{ feedback.id }}</td>
+                                <td>{{ feedback.teacher.user_name }}</td>
+                                <td>{{ feedback.teacher.identity_id }}</td>
+                                <td>{{ feedback.message }}</td>
+                                <td>
                                     {% if feedback.have_checked %}
                                         <span class="label label-success">已回应</span>
                                     {% else %}
                                         <span class="label label-warning">待处理</span>
                                     {% endif %}
-                                </th>
-                                <th>
+                                </td>
+                                <td>
                                     {% if feedback.have_checked %}
                                         <a href="#">无法更改</a>
                                     {% else %}
                                         <a href="{% url 'cmsadmin:feedback_update' feedback.id %}">处理</a>
                                     {% endif %}
-                                </th>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
