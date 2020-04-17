@@ -15,6 +15,7 @@ django-celery-beat = "*"
 requests = "*"
 pillow = "*"
 django-redis = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
