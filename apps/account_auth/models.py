@@ -154,7 +154,7 @@ class StudentProfile(BaseModel):
     )
     user = models.OneToOneField(verbose_name='学生', to=User, on_delete=models.DO_NOTHING, db_index=True)
 
-    is_graduate = models.BooleanField(verbose_name='研究生\\本科生', default=False, choices=GRADUATE_CHOICES)
+    is_graduate = models.BooleanField(verbose_name='研究生\\本科生', choices=GRADUATE_CHOICES)
 
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',message="号码格式错误。")
     phone_number = models.CharField(validators=[phone_regex], max_length=17)

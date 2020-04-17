@@ -12,7 +12,7 @@ from django.conf import settings
 from utils.mixin.permission import TeaViewMixin, StuViewMixin, ViewMixin, LoginRequiredMixin, TeacherRequiredMixin
 from utils.mixin.view import ImgUploadViewMixin
 
-from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile
+from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile, Department
 from .forms import UserEmailForm, BaseProfileForm, StudentProfileForm, TeacherProfileForm
 from . import urls
 
@@ -140,6 +140,8 @@ class StudentProfileCreateView(ViewMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         try:
+            if request.user.studentprofile.is_delete:
+                return super().get(request, *args, **kwargs)
             id = request.user.studentprofile.id
             return HttpResponseRedirect(reverse('account_auth:student-profile-update',
                                                 kwargs={'pk': id}))
@@ -171,6 +173,20 @@ class StudentProfileUpdateView(StuViewMixin, UpdateView):
         if obj != self.request.user.studentprofile:
             raise PermissionDenied('你只能更改自己的个人资料！')
         return obj
+
+
+class LoadDepartmentView(ViewMixin, View):
+    def get(self, request):
+        if request.is_ajax:
+            is_graduate = request.GET.get('is_graduate')
+            if is_graduate == 'True':
+                departments = Department.objects.all()
+            else:
+                departments = Department.objects.filter(department__contains='本科')
+            return TemplateResponse(request, 'account_auth/ajax/department_dropdown_list_options.html',
+                                    {'departments': departments})
+        else:
+            raise PermissionDenied('本接口只允许ajax请求')
 
 
 class LoadMajorView(ViewMixin, View):
