@@ -26,7 +26,7 @@ DATABASES = {
         'NAME': 'pku_phy_su_dev',
         'USER': 'pku_phy_su_dev',
         'PASSWORD': 'pku_phy_su_dev',
-        'HOST': '192.168.1.84',
+        'HOST': '10.211.55.4',
         'PORT': 3306,
     }
 }
@@ -51,7 +51,7 @@ EMAIL_FROM = config.get('Email', 'FROM')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.1.84:6379/1",
+        "LOCATION": "redis://10.211.55.4:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -61,7 +61,7 @@ CACHES = {
 
 # Broker配置，使用Redis作为消息中间件
 #CELERY_BROKER_URL = 'redis://192.168.1.13:6379/2'
-CELERY_BROKER_URL = 'amqp://dev:dev@192.168.1.84:5672/dev'
+CELERY_BROKER_URL = 'amqp://dev:dev@10.211.55.4:5672/dev'
 
 
 print('DEVELOP')
