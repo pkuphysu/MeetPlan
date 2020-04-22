@@ -14,10 +14,9 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h4 class="box-title">选择 <b>{{ teacher_name }}</b> 老师本学期的时间安排</h4>
-                    <div class="box-tools">
-                        {#                    <button type="button" class="btn btn-block btn-primary" onclick="window.location.href='{% url 'meet_plan:tea-plan-add' %}'">增加综合指导课</button>#}
-                    </div>
+                    <h4 class="box-title">选择 <a
+                            href="{% url 'account_auth:tea-detail' teacher_id %}"><b>{{ teacher_name }}</b></a>
+                        老师本学期的时间安排</h4>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">

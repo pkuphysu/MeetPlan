@@ -99,7 +99,8 @@
                                             <span class="time"><i
                                                     class="fa fa-clock-o"></i>于{{ order.create_time }}预约</span>
 
-                                            <h3 class="timeline-header"><a href="#">{{ order.student.user_name }}</a>
+                                            <h3 class="timeline-header"><a
+                                                    href="{% url 'account_auth:stu-detail' order.student_id %}">{{ order.student.user_name }}</a>
                                             </h3>
 
                                             <div class="timeline-body">
@@ -144,7 +145,7 @@
                                                     class="fa fa-clock-o"></i>于{{ order.create_time }}预约</span>
 
                                                 <h3 class="timeline-header"><a
-                                                        href="#">{{ order.student.user_name }}</a>
+                                                        href="{% url 'account_auth:stu-detail' order.student_id %}">{{ order.student.user_name }}</a>
                                                 </h3>
 
                                                 <div class="timeline-body">

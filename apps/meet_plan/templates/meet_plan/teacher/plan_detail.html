@@ -72,7 +72,9 @@
                                     </tr>
                                     <tr>
                                         <th>学生姓名</th>
-                                        <td>{{ mto.student.user_name }}</td>
+                                        <td>
+                                            <a href="{% url 'account_auth:stu-detail' mto.student_id %}">{{ mto.student.user_name }}</a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>学号</th>

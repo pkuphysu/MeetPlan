@@ -22,6 +22,9 @@ urlpatterns = [
     path('baseprofileimg_upload/', views.BaseProfileImgUpdateView.as_view(), name='baseprofileimg_add'),
     path('useremail_update/<int:pk>/', views.UserEmailUpdateView.as_view(), name='useremail_update'),
 
+    path('student/<int:pk>/', views.StudentDetailView.as_view(), name='stu-detail'),
+    path('teacher/<int:pk>/', views.TeacherDetailView.as_view(), name='tea-detail'),
+
 ]
 
 urlpatterns += [
