@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth import logout
+from django.views.generic import DetailView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadData
@@ -250,3 +251,27 @@ class TeacherProfileUpdateView(TeaViewMixin, UpdateView):
         key = make_template_fragment_key('meetplan_teacher_name_and_department', [self.request.user.id])
         cache.delete(key)
         return super().form_valid(form)
+
+
+class StudentDetailView(TeaViewMixin, DetailView):
+    model = User
+    template_name = 'account_auth/student_show.html'
+    context_object_name = 'student'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if obj.is_teacher:
+            raise PermissionDenied('您只能查看学生的信息！')
+        return obj
+
+
+class TeacherDetailView(StuViewMixin, DetailView):
+    model = User
+    template_name = 'account_auth/teacher_show.html'
+    context_object_name = 'teacher'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if not obj.is_teacher:
+            raise PermissionDenied('您只能查看教师的信息！')
+        return obj
