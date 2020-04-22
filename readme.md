@@ -5,12 +5,14 @@ sudo yum install supervisor
 curl https://pyenv.run | bash
 ```
 
-### 进入虚拟环境
+### 创建虚拟环境
 ```
 pyenv install 3.8.2
-pyenv virtualenv 3.8.2 PKU_PHY_SU
-pyenv activate PKU_PHY_SU
-pip install -r requirements.txt
+pyenv global 3.8.2
+pip install pipenv
+
+cd /path/to/project
+pipenv install
 ```
 ### 生成运行脚本
 ```

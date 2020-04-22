@@ -13,7 +13,6 @@ urlpatterns = [
     path('baseprofile_add/', views.BaseProfileAddView.as_view(), name='baseprofile_add'),
     path('baseprofile_update/<int:pk>/', views.BaseProfileUpdateView.as_view(), name='baseprofile-update'),
 
-    path('student_profile_create_ajax/', views.LoadMajorView.as_view(), name='major_ajax'),
     path('student_profile_create/', views.StudentProfileCreateView.as_view(), name='student-profile-create'),
     path('student_profile_update/<int:pk>/', views.StudentProfileUpdateView.as_view(), name='student-profile-update'),
 
@@ -23,4 +22,12 @@ urlpatterns = [
     path('baseprofileimg_upload/', views.BaseProfileImgUpdateView.as_view(), name='baseprofileimg_add'),
     path('useremail_update/<int:pk>/', views.UserEmailUpdateView.as_view(), name='useremail_update'),
 
+    path('student/<int:pk>/', views.StudentDetailView.as_view(), name='stu-detail'),
+    path('teacher/<int:pk>/', views.TeacherDetailView.as_view(), name='tea-detail'),
+
+]
+
+urlpatterns += [
+    path('ajax_student_profile_department/', views.LoadDepartmentView.as_view(), name='department-ajax'),
+    path('ajax_student_profile_major/', views.LoadMajorView.as_view(), name='major_ajax'),
 ]

@@ -35,7 +35,9 @@
                         {% for teacher in teacher_list %}
                             <tr>
                                 {% cache 2592000 meetplan_teacher_name_and_department teacher.id %}
-                                    <td>{{ teacher.user_name }}</td>
+                                    <td>
+                                        <a href="{% url 'account_auth:tea-detail' teacher.id %}">{{ teacher.user_name }}</a>
+                                    </td>
                                     <td>{{ teacher.teacherprofile.department }}</td>
                                 {% endcache %}
 

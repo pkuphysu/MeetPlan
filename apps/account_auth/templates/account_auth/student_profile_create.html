@@ -35,6 +35,20 @@
 
 {% block footjs %}
     <script>
+        $("#id_is_graduate").change(function () {
+            var url = '{% url 'account_auth:department-ajax' %}';
+            var is_graduate = $(this).val();
+
+            $.ajax({
+                url: url,
+                data: {
+                    'is_graduate': is_graduate
+                },
+                success: function (data) {
+                    $("#id_department").html(data);
+                }
+            });
+        });
         $("#id_department").change(function () {
             var url = '{% url 'account_auth:major_ajax' %}';
             var departmentId = $(this).val();
