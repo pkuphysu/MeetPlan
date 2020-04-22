@@ -1,8 +1,9 @@
 {% load staticfiles %}
 
 <div style="width: 550px;height: auto;border-radius: 5px;margin:0 auto;border:1px solid #ffb0b0;box-shadow: 0px 0px 20px #888888;position: relative;padding-bottom: 5px;">
-    <div style="background-image: url(https://ae01.alicdn.com/kf/H5409eaf547d74ea2b4752d279d79a092Z.jpg);width:550px;height: 300px;background-size: cover;background-repeat: no-repeat;border-radius: 5px 5px 0px 0px;"></div>
-    <div style="width: 200px;height: 40px;background-color: rgb(26,77,128);margin-top: -20px;margin-left: 20px;box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);color: rgb(255, 255, 255);text-align: center;line-height: 40px;">尊敬的: {{ user_name }}</div>
+    <div style="background-image: url({% static 'images/email/email_head2.jpg' %});width:550px;height:400px;background-size: cover;background-repeat: no-repeat;border-radius: 5px 5px 0px 0px;"></div>
+    <div style="width: 200px;height: 40px;background-color: rgb(26,77,128);margin-top: -20px;margin-left: 20px;box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);color: rgb(255, 255, 255);text-align: center;line-height: 40px;">
+        尊敬的: {{ user_name }}</div>
     <div style="background-color:white;line-height:180%;padding:0 15px 12px;width:520px;margin:30px auto;color:#555555;font-family:'Century Gothic','Trebuchet MS','Hiragino Sans GB',微软雅黑,'Microsoft Yahei',Tahoma,Helvetica,Arial,'SimSun',sans-serif;font-size:12px;margin-bottom: 0px;">
         {% block content %}
         {% endblock %}
@@ -10,7 +11,8 @@
     <div style="color:#8c8c8c;;font-family: 'Century Gothic','Trebuchet MS','Hiragino Sans GB',微软雅黑,'Microsoft Yahei',Tahoma,Helvetica,Arial,'SimSun',sans-serif;font-size: 10px;width: 100%;text-align: center;word-wrap:break-word;margin-top: -30px;">
         <p style="padding:20px;">萤火虫消失之后，那光的轨迹仍久久地印在我的脑际。那微弱浅淡的光点，仿佛迷失方向的魂灵，在漆黑厚重的夜幕中彷徨。——《挪威的森林》村上春树</p>
     </div>
-    <a style="text-decoration:none; color:#FFF;width: 40%;text-align: center;background-color:#1a4d80;height: 40px;line-height: 35px;box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.30);margin: -10px auto;display: block;" href="http://{{ domain }}" target="_blank">点击跳转网站首页</a>
+    <a style="text-decoration:none; color:#FFF;width: 40%;text-align: center;background-color:#1a4d80;height: 40px;line-height: 35px;box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.30);margin: -10px auto;display: block;"
+       href="http://{{ domain }}" target="_blank">点击跳转网站首页</a>
     <div style="color:#8c8c8c;;font-family: 'Century Gothic','Trebuchet MS','Hiragino Sans GB',微软雅黑,'Microsoft Yahei',Tahoma,Helvetica,Arial,'SimSun',sans-serif;font-size: 10px;width: 100%;text-align: center;margin-top: 30px;">
         <p>本邮件为系统自动发送，请勿直接回复~</p>
         <p>若此邮件不是您请求的，请忽略并删除！</p>
