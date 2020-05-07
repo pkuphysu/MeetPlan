@@ -60,6 +60,9 @@ urlpatterns += [
     path('meetplanorder_confirm_delete/<int:pk>/', meetplan_view.MeetPlanOrderDeleteView.as_view(),
          name='meetplanorder-confirm-delete'),
 
+    path('meetplanorder_create_many/', meetplan_view.MeetPlanUndergraduateResearch.as_view(),
+         name='meetplanorder-undergraduate-research'),
+
     path('meetplan_feedback_all/', meetplan_view.FeedBackListView.as_view(), name='feedback_all'),
     path('meetplan_feedback_update/<int:pk>/', meetplan_view.FeedBackUpdateView.as_view(), name='feedback_update'),
 

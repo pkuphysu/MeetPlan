@@ -74,11 +74,11 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
     def post(self, request, *args, **kwargs):
         date_range = get_term_date()
         self.meet_plan = get_object_or_404(MeetPlan, pk=self.kwargs['pk'])
-        if MeetPlanOrder.objects.filter(student=self.request.user,
-                                        meet_plan__start_time__gt=date_range[0],
-                                        meet_plan__end_time__lt=date_range[1]
-                                        ).count() >= 2:
-            raise PermissionDenied('您本学期已达2次选课上限！')
+        # if MeetPlanOrder.objects.filter(student=self.request.user,
+        #                                 meet_plan__start_time__gt=date_range[0],
+        #                                 meet_plan__end_time__lt=date_range[1]
+        #                                 ).count() >= 2:
+        #     raise PermissionDenied('您本学期已达2次选课上限！')
         if not self.meet_plan.available_choice or self.meet_plan.start_time < timezone.now():
             raise PermissionDenied('该安排已满或该安排已过期！')
 
