@@ -4,7 +4,8 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import AdminRequiredMixin
-from .tasks import meetplan_create_teacher_report, meetplan_create_student_report
+from utils.mixin.view import FileUploadViewMixin
+from .tasks import meetplan_create_teacher_report, meetplan_create_student_report, meetplanorder_create_many
 from ..meet_plan.utils import get_term_date
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..account_auth.models import User
@@ -223,5 +224,19 @@ class MeetPlanReportStudentCreateView(AdminRequiredMixin, FormView):
                                              end_date=form.cleaned_data['end_date'],
                                              grades=list(form.cleaned_data['grade'].values_list('id', flat=True)),
                                              date_or_grade=form.cleaned_data['use'],
-                                             detail = form.cleaned_data['detail'])
+                                             detail=form.cleaned_data['detail'])
         return super().form_valid(form)
+
+
+class MeetPlanUndergraduateResearch(AdminRequiredMixin, FileUploadViewMixin):
+    template_name = 'cmsadmin/meetplan/meetplanorder_create_many.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:meetplanorder_all')
+
+    def form_valid(self, form):
+        form.instance.app = urls.app_name
+        response = super().form_valid(form)
+        # 创建任务
+        meetplanorder_create_many.delay(self.object.id)
+        return response

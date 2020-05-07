@@ -74,6 +74,7 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
                         end_time=s_time+duration,
                         allow_other=allow_other,
                         message=message,
+                        available_choice=2 if allow_other else 1
                     )
                 )
                 s_time += duration

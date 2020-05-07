@@ -44,6 +44,62 @@ def account_create_many_user(file_id, domain):
 
 
 @shared_task(base=TransactionAwareTask)
+def meetplanorder_create_many(file_id):
+    from apps.filemanager.models import MyFile
+    file = MyFile.objects.get(id=file_id).file
+
+    import os
+    ext = os.path.splitext(file.name)[1]
+    if ext == '.csv':
+        import csv
+        from apps.meet_plan.models import MeetPlan, MeetPlanOrder
+        from django.utils import timezone
+        try:
+            with open(file.path, 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                from apps.account_auth.models import User
+                for [identity, name] in reader:
+                    if reader.line_num == 1:
+                        # 跳过首行
+                        continue
+                    student = User.objects.get(identity_id=identity)
+                    teacher = User.objects.get(identity_id='0000000000')
+                    mt = MeetPlan.objects.create(teacher=teacher,
+                                                 place='补录',
+                                                 start_time=timezone.now(),
+                                                 end_time=timezone.now(),
+                                                 message='本科生科研替代',
+                                                 available_choice=3,
+                                                 )
+                    mt.save()
+                    mto = MeetPlanOrder.objects.create(meet_plan=mt,
+                                                       student=student,
+                                                       completed=True,
+                                                       message='本科生科研替代')
+                    mto.save()
+                    mto = MeetPlanOrder.objects.create(meet_plan=mt,
+                                                       student=student,
+                                                       completed=True,
+                                                       message='本科生科研替代')
+                    mto.save()
+                    mto = MeetPlanOrder.objects.create(meet_plan=mt,
+                                                       student=student,
+                                                       completed=True,
+                                                       message='本科生科研替代')
+                    mto.save()
+
+        except Exception as e:
+            print(e)
+    elif ext == '.xlsx':
+        # TODO： 补充其他拓展格式
+        pass
+    elif ext == '.xls':
+        pass
+    else:
+        pass
+
+
+@shared_task(base=TransactionAwareTask)
 def meetplan_create_teacher_report(user_id, app_name, start_date, end_date):
     import csv
     import os
