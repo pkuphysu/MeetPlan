@@ -10,9 +10,10 @@ from PKU_PHY_SU.tools.celery import TransactionAwareTask, my_send_mail
 
 
 @shared_task(base=TransactionAwareTask, bind=True)
-def send_account_active_email(self, user_id, domain):
+def send_account_active_email(self, user_id):
     """发送激活邮件"""
     # 加密用户信息
+    domain = settings.CUSTOMER_SITE_URL
     serializer = Serializer(settings.SECRET_KEY, expires_in=60 * 60 * 24 * 7)
     user_model = get_user_model()
     user = user_model.objects.get(identity_id=user_id)
@@ -21,7 +22,7 @@ def send_account_active_email(self, user_id, domain):
     info = {'active': user_id}
     token = serializer.dumps(info).decode()
     active_path = reverse('account_auth:active-account', kwargs={'token': token})
-    active_url = 'http://{}{}'.format(domain, active_path)
+    active_url = '{}{}'.format(domain, active_path)
 
     print('-----尝试发送邮件-------')
     subject, from_email, to = '物理学院账户激活', settings.EMAIL_FROM, [to_email]

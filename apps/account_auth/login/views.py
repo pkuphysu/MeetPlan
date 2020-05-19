@@ -30,6 +30,12 @@ class IAAALoginView(View):
             user_model = get_user_model()
             user = user_model.objects.filter(identity_id=identity_id)
             if user.count():
+                if not user[0].is_active:
+                    send_account_active_email.delay(user[0].identity_id)
+                    raise PermissionDenied("""<div class="callout callout-success">
+                        <h4>验证成功，但您还没有激活账号!</h4>
+                        <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
+                        </div>""")
                 login(request, user[0])
                 return HttpResponseRedirect(reverse('portal:index'))
             else:
@@ -81,8 +87,7 @@ class IAAALoginAuth(View):
                     else:
                         return HttpResponseRedirect(reverse('portal:index'))
                 else:
-                    domain = request.get_host()
-                    send_account_active_email.delay(user[0].identity_id, domain)
+                    send_account_active_email.delay(user[0].identity_id)
                     raise PermissionDenied("""<div class="callout callout-success">
                     <h4>验证成功，但您还没有激活账号!</h4>
                     <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>

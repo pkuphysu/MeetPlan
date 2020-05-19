@@ -61,8 +61,7 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
         response = super().form_valid(form)
 
         from .tasks import send_meetplan_order_create_email
-        domain = self.request.get_host()
-        send_meetplan_order_create_email.delay(self.object.id, domain)
+        send_meetplan_order_create_email.delay(self.object.id)
 
         from django.core.cache import cache
         from django.core.cache.utils import make_template_fragment_key

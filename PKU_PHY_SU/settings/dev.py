@@ -23,10 +23,10 @@ SECRET_KEY = '$l!yy=1_6r%fq8h+@n^p0gteowo&g=e*bct93&tz6a)giohgfp'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pku_phy_su_dev',
-        'USER': 'pku_phy_su_dev',
-        'PASSWORD': 'pku_phy_su_dev',
-        'HOST': '10.211.55.4',
+        'NAME': 'meetplan',
+        'USER': 'meetplan',
+        'PASSWORD': 'meetplan',
+        'HOST': 'localhost',
         'PORT': 3306,
     }
 }
@@ -51,7 +51,7 @@ EMAIL_FROM = config.get('Email', 'FROM')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://10.211.55.4:6379/1",
+        "LOCATION": "redis://localhost:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -61,7 +61,7 @@ CACHES = {
 
 # Broker配置，使用Redis作为消息中间件
 #CELERY_BROKER_URL = 'redis://192.168.1.13:6379/2'
-CELERY_BROKER_URL = 'amqp://dev:dev@10.211.55.4:5672/dev'
+CELERY_BROKER_URL = 'amqp://phy:phy@localhost:5672/phy'
 
 
 print('DEVELOP')

@@ -6,6 +6,8 @@ __pycache__
 /log/
 PKU_PHY_SU/secret_config.ini
 uwsgi.ini
+uwsgi.pid
+uwsgi.log
 /apps/*/migrations/*
 !/apps/*/migrations/__init__.py
 !/apps/*/migrations/0001_initial.py
@@ -124,6 +126,7 @@ GitHub.sublime-settings
 
 
 ### Code ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
