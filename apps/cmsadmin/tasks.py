@@ -7,7 +7,7 @@ from apps.account_auth.tasks import send_account_active_email
 
 
 @shared_task(base=TransactionAwareTask)
-def account_create_many_user(file_id, domain):
+def account_create_many_user(file_id):
     from apps.filemanager.models import MyFile
     file = MyFile.objects.get(id=file_id).file
 
@@ -30,7 +30,7 @@ def account_create_many_user(file_id, domain):
                         user[0].is_teacher = True if is_teacher == '教职工' else False
                         user[0].save()
                         # 发送激活邮件
-                        send_account_active_email.delay(user_id=identity, domain=domain)
+                        send_account_active_email.delay(user_id=identity)
 
         except Exception as e:
             print(e)

@@ -155,10 +155,8 @@ class FeedBackUpdateView(AdminRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         from apps.meet_plan.tasks import send_meetplan_feedback_update_email
-        domain = self.request.get_host()
-
         if form.has_changed():
-            send_meetplan_feedback_update_email.delay(self.object.id, domain)
+            send_meetplan_feedback_update_email.delay(self.object.id)
 
         response = super().form_valid(form)
         return response

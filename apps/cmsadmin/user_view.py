@@ -48,9 +48,8 @@ class UserCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        domain = self.request.get_host()
         # 发邮件
-        send_account_active_email.delay(self.object.identity_id, domain)
+        send_account_active_email.delay(self.object.identity_id)
         return response
 
 
@@ -63,9 +62,8 @@ class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
     def form_valid(self, form):
         form.instance.app = urls.app_name
         response = super().form_valid(form)
-        domain = self.request.get_host()
         # 创建任务
-        account_create_many_user.delay(self.object.id, domain)
+        account_create_many_user.delay(self.object.id)
         return response
 
 

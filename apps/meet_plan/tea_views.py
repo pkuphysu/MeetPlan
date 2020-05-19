@@ -201,9 +201,8 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
 
     def form_valid(self, form):
         from .tasks import send_meetplan_order_update_email
-        domain = self.request.get_host()
         if form.has_changed():
-            send_meetplan_order_update_email.delay(self.object.id, domain, False)
+            send_meetplan_order_update_email.delay(self.object.id, False)
 
         response = super().form_valid(form)
         return response
@@ -227,8 +226,7 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
 
         response = super().delete(request, args, kwargs)
         from .tasks import send_meetplan_order_update_email
-        domain = self.request.get_host()
-        send_meetplan_order_update_email.delay(self.object.id, domain, True)
+        send_meetplan_order_update_email.delay(self.object.id, True)
         return response
 
     def get_success_url(self):
@@ -245,8 +243,7 @@ class FeedBackCreateView(TeaViewMixin, CreateView):
         response = super().form_valid(form)
 
         from .tasks import send_meetplan_feedback_create_email
-        domain = self.request.get_host()
-        send_meetplan_feedback_create_email.delay(self.object.id, domain)
+        send_meetplan_feedback_create_email.delay(self.object.id)
 
         return response
 

@@ -109,15 +109,19 @@ USE_L10N = True
 
 USE_TZ = True
 
+# CUSTOMER_SITE_DOMAIN = 'http://moack.ruixiaolu.com/meetplan'
+# CUSTOMER_BASE_URL = 'meetplan/'
+# CUSTOMER_BASE_URL = ''
+# CUSTOMER_SITE_URL = CUSTOMER_SITE_DOMAIN + CUSTOMER_BASE_URL
+CUSTOMER_SITE_URL = 'http://moack.ruixiaolu.com/meetplan'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-
-MEDIA_URL = '/media/'
+MEDIA_URL = '/meetplan/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media") # 项目目录下的media目录 需要在项目目录下创建media目录
 
-STATIC_URL = '/static/'
+STATIC_URL = '/meetplan/static/'
 # 开发阶段放置项目自己的静态文件
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles"), ]
 
@@ -129,7 +133,7 @@ AUTH_USER_MODEL = 'account_auth.User'
 
 # 配置登录url地址
 # LOGIN_URL = '/account/login/iaaa'  # /user/login/iaaa?next=
-LOGIN_URL = '/account_auth/login/iaaa'
+LOGIN_URL = '/meetplan/account_auth/login/iaaa'
 
 # Django Session 使用 Redis 缓存
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -150,3 +154,6 @@ REDIS_TIMEOUT = 7*24*60*60
 CUBES_REDIS_TIMEOUT = 60*60
 NEVER_REDIS_TIMEOUT = 365*24*60*60
 
+# HTTPS 设置
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
