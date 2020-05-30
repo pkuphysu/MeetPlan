@@ -1,5 +1,6 @@
 {% extends 'cmsadmin/index.html' %}
 {% load staticfiles %}
+{% load cache %}
 
 {% block title %}
     教师列表
@@ -26,6 +27,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                {% cache 300 cmsadmin__teacher_list %}
                     <table id="tea_table" class="table table-bordered table-striped">
                         <thead>
                         <tr>
@@ -81,6 +83,7 @@
                         </tr>
                         </tfoot>
                     </table>
+                    {% endcache %}
                 </div>
             </div>
             <!-- /.box -->

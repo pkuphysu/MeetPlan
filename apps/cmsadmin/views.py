@@ -18,7 +18,8 @@ class IndexView(AdminRequiredMixin, View):
     def get(self, request):
         date_range = get_term_date()
         ctx = {
-            'total_user_num': User.objects.count(),
+            'total_teacher_num': User.objects.filter(is_teacher=True).count(),
+            'total_student_num': User.objects.filter(is_teacher=False).count(),
             'term_start_date': date_range[0].strftime("%Y-%m-%d"),
             'term_end_date': date_range[1].strftime("%Y-%m-%d"),
             'meetplan_total_num': MeetPlan.objects.count(),
