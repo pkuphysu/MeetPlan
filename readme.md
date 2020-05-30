@@ -1,4 +1,4 @@
-
+## 部署网站
 ### 安装软件
 ```
 sudo yum install supervisor
@@ -14,27 +14,25 @@ pip install pipenv
 cd /path/to/project
 pipenv install
 ```
-### 生成运行脚本
+### 生成配置文件
 ```
-cd webserver
-cp start.sample.sh start.sh
-vim start.sh
+cp webserver/uwsgi.sample.ini ./uwsgi.ini
 ```
-更改`start.sh`里的`DIR`为项目的实际路径后运行`chmod u+x start.sh`
+更改`uwsgi.ini`里的`chdir`为项目的实际路径，合理修改其它选项
+
+### 测试网站
+启动
 ```
-cp supervisor.sample.conf supervisor.conf
-vim supervisor.conf
+pipenv shell
+uwsgi --ini uwsgi.ini
 ```
-更改`supervisor.conf`里的`command`，然后保存退出做软连接
+重启
 ```
-sudo ln -s /your/path/supervisor.conf   /etc/supervisor/conf.d/
+uwsgi --reload uwsgi.pid
+```
+停止
+```
+uwsgi --stop uwsgi.pid
 ```
 
-### 使用supervisor运行django
-
-```
-sudo supervisorctl reread
-sudo supervisorctl update
-sudo supervisorctl status djangopro
-```
-
+### 使用supervisor管理网站

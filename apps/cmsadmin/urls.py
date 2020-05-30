@@ -55,7 +55,7 @@ urlpatterns += [
     path('meetplanorder_create/', meetplan_view.MeetPlanOrderCreateView.as_view(), name='meetplanorder_create'),
     path('meetplanorder_create/<int:pk>/', meetplan_view.MeetPlanOrderCreateFromStudentView.as_view(),
          name='meetplanorder-create-from-student'),
-    path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderViewUpdate.as_view(),
+    path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderUpdateView.as_view(),
          name='meetplanorder_update'),
     path('meetplanorder_confirm_delete/<int:pk>/', meetplan_view.MeetPlanOrderDeleteView.as_view(),
          name='meetplanorder-confirm-delete'),

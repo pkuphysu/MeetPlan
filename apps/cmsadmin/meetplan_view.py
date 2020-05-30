@@ -53,7 +53,7 @@ class MeetPlanCreateFromTeacherView(AdminRequiredMixin, CreateView):
         return kwargs
 
     def get_success_url(self):
-        return reverse('cmsadmin:meetplan_all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.teacher_id})
 
 
 class MeetPlanDetailView(AdminRequiredMixin, DetailView):
@@ -113,7 +113,7 @@ class MeetPlanOrderCreateFromStudentView(AdminRequiredMixin, CreateView):
         return reverse('cmsadmin:meetplanorder_all')
 
 
-class MeetPlanOrderViewUpdate(AdminRequiredMixin, UpdateView):
+class MeetPlanOrderUpdateView(AdminRequiredMixin, UpdateView):
     model = MeetPlanOrder
     form_class = MeetPlanOrderForm
     template_name = 'cmsadmin/meetplan/meetplanorder_update.html'
@@ -127,7 +127,7 @@ class MeetPlanOrderDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'cmsadmin/meetplan/meetplanorder_confirm_delete.html'
 
     def get_success_url(self):
-        return reverse('cmsadmin:meetplanorder_all')
+        return reverse('cmsadmin:user-detail', kwargs={'pk': self.object.student_id})
 
 
 class FeedBackListView(AdminRequiredMixin, ListView):
