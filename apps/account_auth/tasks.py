@@ -6,7 +6,7 @@ from django.template import loader
 from django.urls import reverse
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
-from PKU_PHY_SU.tools.celery import TransactionAwareTask, my_send_mail
+from MeetPlan.tools.celery import TransactionAwareTask, my_send_mail
 
 
 @shared_task(base=TransactionAwareTask, bind=True)

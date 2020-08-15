@@ -1,0 +1,24 @@
+[
+  {
+    "model": "options.option",
+    "pk": 3,
+    "fields": {
+      "app": "options",
+      "name": "site_domain",
+      "value": "http://server.phy.ruixiaolu.com",
+      "create_time": "2019-12-31T16:00:00Z",
+      "update_time": "2019-12-31T16:00:00Z"
+    }
+  },
+  {
+    "model": "options.option",
+    "pk": 4,
+    "fields": {
+      "app": "options",
+      "name": "site_domain_path",
+      "value": "/meetplan",
+      "create_time": "2019-12-31T16:00:00Z",
+      "update_time": "2019-12-31T16:00:00Z"
+    }
+  }
+]

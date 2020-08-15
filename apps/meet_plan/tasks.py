@@ -4,8 +4,9 @@ from django.contrib.auth import get_user_model
 from django.template import loader
 from django.conf import settings
 
-from PKU_PHY_SU.tools.celery import TransactionAwareTask, my_send_mail
+from MeetPlan.tools.celery import TransactionAwareTask, my_send_mail
 from apps.meet_plan.models import MeetPlanOrder, FeedBack
+from apps.options.models import Option
 
 
 @shared_task(base=TransactionAwareTask, bind=True)
