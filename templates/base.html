@@ -31,18 +31,6 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.css' %}">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162034331-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', 'UA-162034331-2');
-    </script>
     {% block headcss %}{% endblock %}
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini layout-boxed">
@@ -117,8 +105,6 @@
 <script src="{% static 'adminlte-2.4.18/bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
 
 <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
-<script src="{% static 'sweetalert/grxalert.js' %}"></script>
-<script src="{% static 'js/grxajax.js' %}"></script>
 <script src="{% static 'js/message.js' %}"></script>
 <script src="{% static 'js/base.js' %}"></script>
 {% block footjs %}{% endblock %}

@@ -38,7 +38,7 @@ class TransactionAwareTask(Task, ABC):
 @shared_task(base=TransactionAwareTask, bind=True)
 def my_send_mail(self, subject, html_content, from_email, to):
     if settings.DEBUG:
-        to = ['598049186@qq.com']
+        to = ['rxg@live.com']
 
     msg = EmailMessage(subject=subject, body=html_content, from_email=from_email, to=to)
     msg.content_subtype = "html"

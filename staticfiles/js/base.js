@@ -1,7 +1,6 @@
 // cms页面内容选中active选中显示功能的实现
 
 $(function () {
-    // 完整域名：http://127.0.0.1:8000/cms/staffs
     var url = window.location.href.split('?')[0]; // 返回本地地址
     // http:
     var protocol = window.location.protocol;

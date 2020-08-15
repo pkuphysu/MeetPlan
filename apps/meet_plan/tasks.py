@@ -6,12 +6,11 @@ from django.conf import settings
 
 from MeetPlan.tools.celery import TransactionAwareTask, my_send_mail
 from apps.meet_plan.models import MeetPlanOrder, FeedBack
-from apps.options.models import Option
 
 
 @shared_task(base=TransactionAwareTask, bind=True)
 def send_meetplan_order_create_email(self, meetplanorder_id):
-    domain = settings.CUSTOMER_SITE_URL
+    domain = settings.SITE_URL
     order = MeetPlanOrder.objects.get(id=meetplanorder_id)
     meetplan = order.meet_plan
     teacher = meetplan.teacher
@@ -67,7 +66,7 @@ def send_meetplan_order_update_email(self, meetplanorder_id, is_delete):
         order = MeetPlanOrder.objects.get_queryset(is_delete=True).filter(id=meetplanorder_id)[0]
     else:
         order = MeetPlanOrder.objects.get(id=meetplanorder_id)
-    domain = settings.CUSTOMER_SITE_URL
+    domain = settings.SITE_URL
     meetplan = order.meet_plan
     student = order.student
     stu_email = [student.email]
@@ -95,7 +94,7 @@ def send_meetplan_order_update_email(self, meetplanorder_id, is_delete):
 
 @shared_task(base=TransactionAwareTask, bind=True)
 def send_meetplan_feedback_create_email(self, feedback_id):
-    domain = settings.CUSTOMER_SITE_URL
+    domain = settings.SITE_URL
     feedback = FeedBack.objects.get(id=feedback_id)
     teacher = feedback.teacher
     message = feedback.message
@@ -122,7 +121,7 @@ def send_meetplan_feedback_create_email(self, feedback_id):
 
 @shared_task(base=TransactionAwareTask, bind=True)
 def send_meetplan_feedback_update_email(self, feedback_id):
-    domain = settings.CUSTOMER_SITE_URL
+    domain = settings.SITE_URL
     feedback = FeedBack.objects.get(id=feedback_id)
     teacher = feedback.teacher
     message = feedback.message
@@ -149,7 +148,7 @@ def send_meetplan_feedback_update_email(self, feedback_id):
 
 @shared_task
 def send_meetplan_alert_everyday():
-    domain = settings.CUSTOMER_SITE_URL
+    domain = settings.SITE_URL
     from django.utils import timezone
     import datetime
     mto_qs = MeetPlanOrder.objects.filter(meet_plan__start_time__gte=timezone.now(),
