@@ -178,7 +178,7 @@ class StudentProfileUpdateView(StuViewMixin, UpdateView):
 
 class LoadDepartmentView(ViewMixin, View):
     def get(self, request):
-        if request.is_ajax:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             is_graduate = request.GET.get('is_graduate')
             if is_graduate == 'True':
                 departments = Department.objects.all()
@@ -192,7 +192,7 @@ class LoadDepartmentView(ViewMixin, View):
 
 class LoadMajorView(ViewMixin, View):
     def get(self, request):
-        if request.is_ajax:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             department_id = request.GET.get('department')
             majors = Major.objects.filter(department_id=department_id)
             return TemplateResponse(request, 'account_auth/ajax/major_dropdown_list_options.html', {'majors': majors})
