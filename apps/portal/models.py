@@ -1,8 +1,8 @@
 from django.db import models
 
+from apps.filemanager.models import MyImg
 # Create your models here.
 from db.base_model import BaseModel
-from apps.filemanager.models import MyImg
 
 
 class FriendLink(BaseModel):
@@ -17,4 +17,3 @@ class FriendLink(BaseModel):
 
     def __str__(self):
         return self.name
-

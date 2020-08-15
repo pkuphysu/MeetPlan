@@ -1,5 +1,6 @@
-from apps.options.models import Option
 import dateutil.parser
+
+from apps.options.models import Option
 
 
 def get_term_date():

@@ -1,8 +1,9 @@
 from __future__ import absolute_import, unicode_literals
+
 from celery import shared_task
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template import loader
-from django.conf import settings
 
 from MeetPlan.tools.celery import TransactionAwareTask, my_send_mail
 from apps.meet_plan.models import MeetPlanOrder, FeedBack
@@ -152,7 +153,7 @@ def send_meetplan_alert_everyday():
     from django.utils import timezone
     import datetime
     mto_qs = MeetPlanOrder.objects.filter(meet_plan__start_time__gte=timezone.now(),
-                                          meet_plan__end_time__lte=timezone.now()+datetime.timedelta(days=1))
+                                          meet_plan__end_time__lte=timezone.now() + datetime.timedelta(days=1))
     subject = '物理学院综合指导课预约提醒'
     from_email = settings.EMAIL_FROM
     for mto in mto_qs:

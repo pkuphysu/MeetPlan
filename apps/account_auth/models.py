@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from db.base_model import BaseModel, SoftDeletableQuerySet
 from django.core.validators import RegexValidator
+from django.db import models
+
+from db.base_model import BaseModel, SoftDeletableQuerySet
 
 
 # Create your models here.
@@ -156,7 +157,7 @@ class StudentProfile(BaseModel):
 
     is_graduate = models.BooleanField(verbose_name='研究生\\本科生', choices=GRADUATE_CHOICES)
 
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',message="号码格式错误。")
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="号码格式错误。")
     phone_number = models.CharField(validators=[phone_regex], max_length=17)
 
     department = models.ForeignKey(to=Department, on_delete=models.DO_NOTHING, verbose_name='系所')

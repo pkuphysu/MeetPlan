@@ -1,6 +1,7 @@
 from django import forms
+
 from utils.mixin.form import FormMixin
-from .models import User, BaseProfile, StudentProfile, TeacherProfile, Department, Major
+from .models import User, BaseProfile, StudentProfile, TeacherProfile, Major
 
 
 class UserEmailForm(forms.ModelForm, FormMixin):
@@ -63,7 +64,7 @@ class StudentProfileForm(forms.ModelForm, FormMixin):
             'grade': '年级',
         }
         widgets = {
-            'department': forms.Select(attrs={'class':'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-control'}),
             'major': forms.Select(attrs={'class': 'form-control'}),
             'is_graduate': forms.Select(attrs={'class': 'form-control'},
                                         choices=StudentProfile.GRADUATE_CHOICES),
@@ -111,4 +112,3 @@ class TeacherProfileForm(forms.ModelForm, FormMixin):
                                                'placeholder': 'Enter...'}
                                         )
         }
-

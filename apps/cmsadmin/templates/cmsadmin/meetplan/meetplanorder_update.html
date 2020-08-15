@@ -15,7 +15,10 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">编辑{{ object }}</h3>
                     <div class="pull-right">
-                        <button class="btn btn-danger" onclick="window.location.href='{% url 'cmsadmin:meetplanorder-confirm-delete' object.pk %}'">删除</button>
+                        <button class="btn btn-danger"
+                                onclick="window.location.href='{% url 'cmsadmin:meetplanorder-confirm-delete' object.pk %}'">
+                            删除
+                        </button>
                     </div>
                 </div>
                 <!-- form start -->

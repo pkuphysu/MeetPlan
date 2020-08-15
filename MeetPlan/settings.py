@@ -91,6 +91,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.options.context_processors.sys_setting',
+                'apps.meet_plan.context_processors.sys_setting',
             ],
             'builtins': ['django.templatetags.static'],
         },

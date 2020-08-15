@@ -1,17 +1,15 @@
-from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.urls import reverse
 from django.utils.html import escape, mark_safe
 
 from . import models
 
+
 # Register your models here.
 
 
 class PHYUserAdmin(UserAdmin):
-
     list_display = [
         'identity_id',
         'user_name',

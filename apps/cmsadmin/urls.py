@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views, user_view, meetplan_view
 
 app_name = 'cmsadmin'
