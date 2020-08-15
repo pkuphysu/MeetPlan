@@ -1,8 +1,8 @@
 from __future__ import absolute_import, unicode_literals
+
 from celery import shared_task
 
 from MeetPlan.tools.celery import TransactionAwareTask
-
 from apps.account_auth.tasks import send_account_active_email
 
 

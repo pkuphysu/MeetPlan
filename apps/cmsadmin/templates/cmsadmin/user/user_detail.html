@@ -328,7 +328,9 @@
                                         {% else %}
                                             <td><span class="label label-warning">待确认</span></td>
                                         {% endif %}
-                                        <td><a href='{% url 'cmsadmin:meetplanorder-confirm-delete' meetplanorder.id %}'>删除</a></td>
+                                        <td>
+                                            <a href='{% url 'cmsadmin:meetplanorder-confirm-delete' meetplanorder.id %}'>删除</a>
+                                        </td>
                                     </tr>
 
                                 {% endfor %}

@@ -16,4 +16,3 @@ class Option(BaseModel):
 
     def __str__(self):
         return '{}-{}'.format(self.app, self.name)
-

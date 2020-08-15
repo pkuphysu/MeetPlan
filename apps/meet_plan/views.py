@@ -2,8 +2,8 @@ from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.views.generic import View
 from django.utils import timezone
+from django.views.generic import View
 
 from apps.meet_plan.utils import get_term_date
 from utils.mixin.permission import ViewMixin, StuViewMixin, TeaViewMixin
@@ -26,8 +26,6 @@ class TeaIndexView(TeaViewMixin, View):
         current_user = request.user
         queryset = MeetPlan.objects.filter(teacher=current_user)
         context = {
-            'term_start_date': date_range[0].strftime("%Y-%m-%d"),
-            'term_end_date': date_range[1].strftime("%Y-%m-%d"),
             'this_term_plan': queryset.filter(start_time__gt=date_range[0],
                                               end_time__lt=date_range[1]).order_by('start_time'),
             'history_plan_num': queryset.count(),
@@ -47,8 +45,6 @@ class StuIndexView(StuViewMixin, View):
         current_user = request.user
         queryset = MeetPlanOrder.objects.filter(student=current_user)
         context = {
-            'term_start_date': date_range[0].strftime("%Y-%m-%d"),
-            'term_end_date': date_range[1].strftime("%Y-%m-%d"),
             'this_meetplanorder_list': queryset.filter(meet_plan__start_time__gt=date_range[0],
                                                        meet_plan__end_time__lt=date_range[1]).order_by(
                 'meet_plan__start_time'),

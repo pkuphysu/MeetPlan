@@ -4,8 +4,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import TeaViewMixin
-from .models import MeetPlan, MeetPlanOrder, FeedBack
 from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm, MeetPlanFastCreateForm
+from .models import MeetPlan, MeetPlanOrder, FeedBack
 from .utils import get_term_date
 
 
@@ -21,7 +21,6 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
         return reverse('meet_plan:tea-plan-detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-
         from django.core.cache import cache
         from django.core.cache.utils import make_template_fragment_key
         key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
@@ -33,13 +32,6 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
 
         form.instance.teacher = self.request.user
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['term_start_date'] = date_range[0].strftime("%Y-%m-%d")
-        context['term_end_date'] = date_range[1].strftime("%Y-%m-%d")
-        return context
 
 
 class MeetPlanFastCreateView(TeaViewMixin, FormView):
@@ -71,7 +63,7 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
                         teacher=self.request.user,
                         place=place,
                         start_time=s_time,
-                        end_time=s_time+duration,
+                        end_time=s_time + duration,
                         allow_other=allow_other,
                         message=message,
                         available_choice=2 if allow_other else 1
@@ -92,13 +84,6 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
 
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['term_start_date'] = date_range[0].strftime("%Y-%m-%d")
-        context['term_end_date'] = date_range[1].strftime("%Y-%m-%d")
-        return context
-
 
 class MeetPlanUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlan
@@ -113,13 +98,6 @@ class MeetPlanUpdateView(TeaViewMixin, UpdateView):
         if obj.teacher != self.request.user:
             raise PermissionDenied('您只能更改您创建的综合指导课安排！')
         return obj
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['semesterstartdate'] = date_range[0].strftime("%Y-%m-%d")
-        context['semesterenddate'] = date_range[1].strftime("%Y-%m-%d")
-        return context
 
     def form_valid(self, form):
         from django.core.cache import cache
@@ -260,3 +238,7 @@ class FeedBackListView(TeaViewMixin, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(teacher=self.request.user).order_by('-create_time')
+
+
+class MeetPlanOrderAddView(TeaViewMixin, FormView):
+    pass

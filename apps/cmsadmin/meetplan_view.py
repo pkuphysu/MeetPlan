@@ -1,18 +1,17 @@
 from django.urls import reverse
 from django.views.generic import DetailView
-from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.list import ListView
 
 from utils.mixin.permission import AdminRequiredMixin
 from utils.mixin.view import FileUploadViewMixin
-from .tasks import meetplan_create_teacher_report, meetplan_create_student_report, meetplanorder_create_many
-from ..meet_plan.utils import get_term_date
-from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
-from ..account_auth.models import User
-from ..filemanager.models import MyFile
+from . import urls
 from .forms import MeetPlanForm, MeetPlanOrderForm, FeedBackForm, OptionForm, MeetPlanReportTeacherForm, \
     MeetPlanReportStudentForm
-from . import urls
+from .tasks import meetplan_create_teacher_report, meetplan_create_student_report, meetplanorder_create_many
+from ..account_auth.models import User
+from ..filemanager.models import MyFile
+from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 
 
 class MeetPlanListView(AdminRequiredMixin, ListView):
@@ -23,13 +22,6 @@ class MeetPlanListView(AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().order_by('-create_time')
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        ctx['term_start_date'] = date_range[0]
-        ctx['term_end_date'] = date_range[1]
-        return ctx
 
 
 class MeetPlanCreateView(AdminRequiredMixin, CreateView):

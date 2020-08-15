@@ -1,21 +1,21 @@
+from django.conf import settings
+from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.contrib.auth import logout
 from django.views.generic import DetailView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadData
-from django.conf import settings
 
 from utils.mixin.permission import TeaViewMixin, StuViewMixin, ViewMixin, LoginRequiredMixin, TeacherRequiredMixin
 from utils.mixin.view import ImgUploadViewMixin
-
-from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile, Department
-from .forms import UserEmailForm, BaseProfileForm, StudentProfileForm, TeacherProfileForm
 from . import urls
+from .forms import UserEmailForm, BaseProfileForm, StudentProfileForm, TeacherProfileForm
+from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile, Department
+
 
 # Create your views here.
 
@@ -64,7 +64,6 @@ class ActiveView(View):
 
 
 class UserEmailUpdateView(ViewMixin, UpdateView):
-
     model = User
     form_class = UserEmailForm
     template_name = 'account_auth/user_email_update.html'
@@ -212,7 +211,7 @@ class TeacherProfileCreateView(ViewMixin, TeacherRequiredMixin, CreateView):
         try:
             id = request.user.teacherprofile.id
             return HttpResponseRedirect(reverse('account_auth:teacher-profile-update',
-                                            kwargs={'pk': id}))
+                                                kwargs={'pk': id}))
         except TeacherProfile.DoesNotExist:
             return super().get(request, *args, **kwargs)
 

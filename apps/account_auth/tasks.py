@@ -1,4 +1,5 @@
 from __future__ import absolute_import, unicode_literals
+
 from celery import shared_task
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -26,12 +27,12 @@ def send_account_active_email(self, user_id):
     print('-----尝试发送邮件-------')
     subject, from_email, to = '物理学院账户激活', settings.EMAIL_FROM, [to_email]
     html_content = loader.render_to_string(
-        'email/account_auth/account_active_email.html',               #需要渲染的html模板
-                        {
-                            'user_name': user_name,
-                            'domain': domain,
-                            'active_url': active_path
-                        }
-                   )
+        'email/account_auth/account_active_email.html',  # 需要渲染的html模板
+        {
+            'user_name': user_name,
+            'domain': domain,
+            'active_url': active_path
+        }
+    )
 
     my_send_mail.delay(subject, html_content, from_email, to)

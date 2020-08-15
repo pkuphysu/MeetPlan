@@ -45,10 +45,10 @@
             type: 'datetime',
             theme: 'molv',
             format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
+            min: '{{term_start_date}}',
+            max: '{{term_end_date}}',
             ready: function () {
-                startdatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
+                startdatetimepicker.hint('日期可选值设定在 <br> {{term_start_date}} 到 {{term_end_date}}');
             }
         });
         var enddatetimepicker = laydate.render({
@@ -56,10 +56,10 @@
             type: 'datetime',
             theme: 'molv',
             format: 'yyyy/M/d H:m',
-            min: '{{semesterstartdate}}',
-            max: '{{semesterenddate}}',
+            min: '{{term_start_date}}',
+            max: '{{term_end_date}}',
             ready: function () {
-                enddatetimepicker.hint('日期可选值设定在 <br> {{semesterstartdate}} 到 {{semesterenddate}}');
+                enddatetimepicker.hint('日期可选值设定在 <br> {{term_start_date}} 到 {{term_end_date}}');
             }
         });
     </script>

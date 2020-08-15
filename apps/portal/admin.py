@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.utils.html import mark_safe, escape
 
 from . import models
+
+
 # Register your models here.
 
 

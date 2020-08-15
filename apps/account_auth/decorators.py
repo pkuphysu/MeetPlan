@@ -1,7 +1,8 @@
-from django.shortcuts import redirect
 from functools import wraps
+
 from django.contrib.auth.models import Permission, ContentType
 from django.http import Http404
+from django.shortcuts import redirect
 
 from utils import rest
 
