@@ -38,14 +38,12 @@ APPREDIRECTURL = CONFIG.get('IAAA', 'APPREDIRECTURL')
 LOG_DIR = BASE_DIR / 'log'
 if not LOG_DIR.exists():
     LOG_DIR.mkdir()
-# if os.path.exists(LOG_DIR) is False:
-#     os.makedirs(LOG_DIR)
 
 logger.add(LOG_DIR / 'error.log', rotation='1 days', retention='30 days', encoding='utf-8')
 
 ALLOWED_HOSTS = ['*']
 
-VERSIONS = '2.0.0'
+VERSIONS = '0.1.0'
 
 # Application definition
 
@@ -92,6 +90,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.options.context_processors.sys_setting',
             ],
             'builtins': ['django.templatetags.static'],
         },
@@ -168,8 +167,11 @@ USE_TZ = True
 # Django 认证系统使用的模型类
 AUTH_USER_MODEL = 'account_auth.User'
 
+HOST_DOMAIN = CONFIG.get('DJANGO', 'HOST_DOMAIN')
+SUBPATH = CONFIG.get('DJANGO', 'SUBPATH')
+SITE_URL = '{}{}'.format(HOST_DOMAIN, SUBPATH)
 # 配置登录url地址
-LOGIN_URL = '/account_auth/login/iaaa'
+LOGIN_URL = '{}/account_auth/login/iaaa/'.format(SUBPATH)
 
 STATIC_URL = 'static/'
 # 开发阶段放置项目自己的静态文件
@@ -195,12 +197,20 @@ EMAIL_FROM = CONFIG.get('EMAIL', 'FROM')
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
+LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
+
 # Redis 缓存配置
-REDIS_ADDRESS = '{}:{}'.format(CONFIG.get('REDIS', 'HOST'), CONFIG.get('REDIS', 'PORT'))
+if CONFIG.get('REDIS', 'PWD'):
+    REDIS_ADDRESS = ':{}@{}:{}'.format(CONFIG.get('REDIS', 'PWD'),
+                                       CONFIG.get('REDIS', 'HOST'),
+                                       CONFIG.get('REDIS', 'PORT'))
+else:
+    REDIS_ADDRESS = '{}:{}'.format(CONFIG.get('REDIS', 'HOST'),
+                                   CONFIG.get('REDIS', 'PORT'))
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:123123@{}/{}".format(REDIS_ADDRESS, CONFIG.get('REDIS', 'NUM')),
+        "LOCATION": "redis://{}/{}".format(REDIS_ADDRESS, CONFIG.get('REDIS', 'NUM')),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
