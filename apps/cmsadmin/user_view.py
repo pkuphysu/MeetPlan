@@ -3,18 +3,17 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import DetailView
 from django.views.generic.base import View
-from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.list import ListView
 
 from utils.mixin.permission import AdminRequiredMixin
 from utils.mixin.view import FileUploadViewMixin
-
 from . import urls
 from .forms import UserForm, GradeForm, DepartmentForm, MajorForm
 from .tasks import account_create_many_user
+from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherProfileForm
 from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile, Major, Department, Grade
 from ..account_auth.tasks import send_account_active_email
-from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherProfileForm
 
 
 class TeacherListView(AdminRequiredMixin, ListView):
@@ -48,9 +47,8 @@ class UserCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        domain = self.request.get_host()
         # 发邮件
-        send_account_active_email.delay(self.object.identity_id, domain)
+        send_account_active_email.delay(self.object.identity_id)
         return response
 
 
@@ -63,9 +61,8 @@ class CreateManyUserView(AdminRequiredMixin, FileUploadViewMixin):
     def form_valid(self, form):
         form.instance.app = urls.app_name
         response = super().form_valid(form)
-        domain = self.request.get_host()
         # 创建任务
-        account_create_many_user.delay(self.object.id, domain)
+        account_create_many_user.delay(self.object.id)
         return response
 
 

@@ -8,6 +8,7 @@ from utils.mixin.permission import ViewMixin
 from .models import FriendLink
 from ..account_auth.models import User
 
+
 # Create your views here.
 
 
@@ -34,4 +35,3 @@ class FriendLinkView(ViewMixin, ListView):
     model = FriendLink
     template_name = 'portal/friendlink.html'
     context_object_name = 'friendlink_list'
-

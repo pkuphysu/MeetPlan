@@ -1,5 +1,4 @@
 {% extends 'cmsadmin/index.html' %}
-{% load staticfiles %}
 
 {% block title %}
     编辑综合指导课安排
@@ -15,7 +14,10 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div class="pull-right">
-                        <button class="btn btn-danger" onclick="window.location.href='{% url 'cmsadmin:meetplan-confirm-delete' object.pk %}'">删除</button>
+                        <button class="btn btn-danger"
+                                onclick="window.location.href='{% url 'cmsadmin:meetplan-confirm-delete' object.pk %}'">
+                            删除
+                        </button>
                     </div>
                 </div>
                 <!-- form start -->

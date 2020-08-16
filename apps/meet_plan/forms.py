@@ -79,7 +79,7 @@ class MeetPlanFastCreateForm(forms.Form, FormMixin):
                                    label='每周安排',
                                    help_text='选否则只安排上面所选日期，选是则会自动安排本学期内每周该时间段')
 
-    field_order = [date, time, place, long, allow_other, every_week]
+    field_order = [date, time, place, long, allow_other, every_week, message]
 
 
 class MeetPlanOrderCreateForm(forms.ModelForm, FormMixin):
@@ -131,3 +131,46 @@ class FeedBackCreateForm(forms.ModelForm, FormMixin):
                                              'placeholder': 'Enter...'
                                              }),
         }
+
+
+class TeacherAddMeetPlanOrderForm(forms.Form, FormMixin):
+    from django.core.validators import RegexValidator
+    id_regex = RegexValidator(regex=r'^\d{10}$', message="学号格式错误！")
+    LONG_CHOICES = (
+        (1, '半小时'),
+        (2, '一小时'),
+    )
+    date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'date',
+                                                         'readonly': 'readonly'}),
+                           label='日期')
+    time = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'time',
+                                                         'readonly': 'readonly'}),
+                           label='开始时间')
+    place = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            max_length=128,
+                            label='地点')
+    long = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                             label='持续时间',
+                             help_text='默认一次谈话半小时，可选择一小时',
+                             choices=LONG_CHOICES)
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
+                                                           'row': '5',
+                                                           'placeholder': 'Enter...'}),
+                              label='备注', required=False)
+    stu_id = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                             max_length=20,
+                             validators=[id_regex],
+                             label='学生学号')
+
+    field_order = [date, time, place, long, stu_id, message]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        stu_id = cleaned_data.get("stu_id")
+        from apps.account_auth.models import User
+        student = User.objects.filter(identity_id=stu_id)
+        if student.count() != 1:
+            msg = "学生学号错误，请再次核对！"
+            self.add_error('stu_id', msg)

@@ -8,11 +8,11 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.db import transaction
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PKU_PHY_SU.settings.base')  # 设置django环境
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MeetPlan.settings')  # 设置django环境
 
-platforms.C_FORCE_ROOT = True   # 允许用root用户启动celery
+# platforms.C_FORCE_ROOT = True   # 允许用root用户启动celery
 
-app = Celery('PKU_PHY_SU')
+app = Celery('meetplan')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')  # 使用CELERY_ 作为前缀，在settings中写配置
 
@@ -38,7 +38,7 @@ class TransactionAwareTask(Task, ABC):
 @shared_task(base=TransactionAwareTask, bind=True)
 def my_send_mail(self, subject, html_content, from_email, to):
     if settings.DEBUG:
-        to = ['598049186@qq.com']
+        to = ['rxg@live.com']
 
     msg = EmailMessage(subject=subject, body=html_content, from_email=from_email, to=to)
     msg.content_subtype = "html"

@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    本科生科研替代综合指导课
+{% endblock %}
+
+{% block content-header %}
+    <h1>本科生科研替代综合指导课</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-bullhorn"></i>
+
+                    <h3 class="box-title">注意！</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="callout callout-warning">
+                        <h4>请注意上传文件格式!</h4>
+
+                        <p>目前仅支持.csv文件，后续会考虑支持.xlsx,.xls文件！</p>
+                        <p>点击<a href="{% static 'files/meetplan/本科生科研替代名单导入模板.csv' %}">示例文件</a>下载导入模板。</p>
+                        <p>.csv文件是一种简化的excel表格，可使用微软Excel打开，也可以使用Keynote打开。已有的excel表格也可以通过
+                            “另存为”操作保存为csv文件，注意编码为UTF-8（默认）。</p>
+                    </div>
+                    <div class="callout callout-info">
+                        <h4>请注意上传文件内容!</h4>
+
+                        <p>首行可以不用改动。</p>
+                        <p>第一列为学号，第二列为姓名</p>
+                        <p>不可以包含已申请过替代的同学！</p>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form" method="post" enctype="multipart/form-data">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Save">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

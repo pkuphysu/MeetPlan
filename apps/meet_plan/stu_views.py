@@ -1,17 +1,16 @@
 from django.core.exceptions import PermissionDenied
+from django.db.models import When, Case, BooleanField
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-
-from django.views.generic import ListView
-from django.db.models import When, Case, BooleanField
 from django.utils import timezone
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
 from utils.mixin.permission import StuViewMixin
-from ..account_auth.models import User
-from .models import MeetPlan, MeetPlanOrder
 from .forms import MeetPlanOrderCreateForm
+from .models import MeetPlan, MeetPlanOrder
 from .utils import get_term_date
+from ..account_auth.models import User
 
 
 class TeacherListView(StuViewMixin, ListView):
@@ -33,7 +32,7 @@ class TeacherPlanListView(StuViewMixin, ListView):
         date_range = get_term_date()
         self.teacher = get_object_or_404(User, pk=self.kwargs['pk'])
         if not self.teacher.is_teacher:
-            raise PermissionDenied('您将要查看的用户身份为学生，这是不合理的！')
+            raise PermissionDenied('您将要查看的用户身份为学生，这是不合理的，请向管理员反馈！')
         return MeetPlan.objects.filter(teacher=self.teacher,
                                        start_time__gt=date_range[0],
                                        end_time__lt=date_range[1]) \
@@ -61,8 +60,7 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
         response = super().form_valid(form)
 
         from .tasks import send_meetplan_order_create_email
-        domain = self.request.get_host()
-        send_meetplan_order_create_email.delay(self.object.id, domain)
+        send_meetplan_order_create_email.delay(self.object.id)
 
         from django.core.cache import cache
         from django.core.cache.utils import make_template_fragment_key
@@ -72,13 +70,7 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
         return response
 
     def post(self, request, *args, **kwargs):
-        date_range = get_term_date()
         self.meet_plan = get_object_or_404(MeetPlan, pk=self.kwargs['pk'])
-        if MeetPlanOrder.objects.filter(student=self.request.user,
-                                        meet_plan__start_time__gt=date_range[0],
-                                        meet_plan__end_time__lt=date_range[1]
-                                        ).count() >= 2:
-            raise PermissionDenied('您本学期已达2次选课上限！')
         if not self.meet_plan.available_choice or self.meet_plan.start_time < timezone.now():
             raise PermissionDenied('该安排已满或该安排已过期！')
 

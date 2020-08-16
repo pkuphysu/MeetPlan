@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views, user_view, meetplan_view
 
 app_name = 'cmsadmin'
@@ -55,10 +56,13 @@ urlpatterns += [
     path('meetplanorder_create/', meetplan_view.MeetPlanOrderCreateView.as_view(), name='meetplanorder_create'),
     path('meetplanorder_create/<int:pk>/', meetplan_view.MeetPlanOrderCreateFromStudentView.as_view(),
          name='meetplanorder-create-from-student'),
-    path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderViewUpdate.as_view(),
+    path('meetplanorder_update/<int:pk>/', meetplan_view.MeetPlanOrderUpdateView.as_view(),
          name='meetplanorder_update'),
     path('meetplanorder_confirm_delete/<int:pk>/', meetplan_view.MeetPlanOrderDeleteView.as_view(),
          name='meetplanorder-confirm-delete'),
+
+    path('meetplanorder_create_many/', meetplan_view.MeetPlanUndergraduateResearch.as_view(),
+         name='meetplanorder-undergraduate-research'),
 
     path('meetplan_feedback_all/', meetplan_view.FeedBackListView.as_view(), name='feedback_all'),
     path('meetplan_feedback_update/<int:pk>/', meetplan_view.FeedBackUpdateView.as_view(), name='feedback_update'),

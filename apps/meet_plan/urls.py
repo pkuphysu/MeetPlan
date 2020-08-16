@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views, tea_views, stu_views
 
 app_name = 'meet_plan'
@@ -27,6 +28,7 @@ urlpatterns += [
 
     path('my_planorder_confirm/<int:pk>/', tea_views.MeetPlanOrderUpdateView.as_view(), name='tea-order-update'),
     path('my_planorder_delete/<int:pk>/', tea_views.MeetPlanOrderDeleteView.as_view(), name='tea-order-delete'),
+    path('my_planorder_add/', tea_views.TeacherAddMeetPlanOrderView.as_view(), name='tea-order-add'),
 
     path('myfeedbacklist/', tea_views.FeedBackListView.as_view(), name='tea-feedback-list'),
     path('myfeedbackadd/', tea_views.FeedBackCreateView.as_view(), name='tea-feedback-add'),

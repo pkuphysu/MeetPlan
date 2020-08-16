@@ -1,12 +1,14 @@
+import hashlib
+import requests
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template.response import TemplateResponse
-from django.views.generic import View
-import requests, hashlib
-from django.contrib.auth import get_user_model
-from django.contrib.auth import login
 from django.urls import reverse
-from django.conf import settings
+from django.views.generic import View
+
 from ..tasks import send_account_active_email
 
 
@@ -30,6 +32,12 @@ class IAAALoginView(View):
             user_model = get_user_model()
             user = user_model.objects.filter(identity_id=identity_id)
             if user.count():
+                if not user[0].is_active:
+                    send_account_active_email.delay(user[0].identity_id)
+                    raise PermissionDenied("""<div class="callout callout-success">
+                        <h4>验证成功，但您还没有激活账号!</h4>
+                        <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
+                        </div>""")
                 login(request, user[0])
                 return HttpResponseRedirect(reverse('portal:index'))
             else:
@@ -81,11 +89,11 @@ class IAAALoginAuth(View):
                     else:
                         return HttpResponseRedirect(reverse('portal:index'))
                 else:
-                    domain = request.get_host()
-                    send_account_active_email.delay(user[0].identity_id, domain)
+                    send_account_active_email.delay(user[0].identity_id)
                     raise PermissionDenied("""<div class="callout callout-success">
                     <h4>验证成功，但您还没有激活账号!</h4>
                     <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
+                    <p>邮件发送可能有延时，请耐心等待～</p>
                     </div>""")
             else:
                 raise PermissionDenied('本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请联系网站管理员帮您注册。'.format(name, identity_id))

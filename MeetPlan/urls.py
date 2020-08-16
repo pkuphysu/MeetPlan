@@ -1,7 +1,7 @@
-"""PKU_PHY_SU URL Configuration
+"""MeetPlan URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -28,10 +28,3 @@ urlpatterns = [
     # 网站首页页面
     path('', include('apps.portal.urls')),
 ]
-
-
-from django.conf import settings
-from django.conf.urls.static import static
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

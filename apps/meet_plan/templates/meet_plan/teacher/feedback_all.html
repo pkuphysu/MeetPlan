@@ -53,28 +53,28 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    {% if page_obj.has_previous %}
-                        <li><a href="?page=1">&laquo; 首页</a></li>
-                        <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
-                    {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
-                        <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
-                    {% endif %}
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page=1">&laquo; 首页</a></li>
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">&laquo; 首页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">上一页</a></li>
+                        {% endif %}
 
-                    <li class="active">
-                        <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
-                    </li>
+                        <li class="active">
+                            <a href="?page={{ page_obj.number }}">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a>
+                        </li>
 
-                    {% if page_obj.has_next %}
-                        <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
-                        <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
-                        <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                            <li><a href="?page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="disabled"><a href="javascript:void(0)">末页 &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
             <!-- /.box -->
         </div>

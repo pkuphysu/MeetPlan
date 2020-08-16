@@ -4,8 +4,9 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import TeaViewMixin
+from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm, MeetPlanFastCreateForm, \
+    TeacherAddMeetPlanOrderForm
 from .models import MeetPlan, MeetPlanOrder, FeedBack
-from .forms import MeetPlanForm, MeetPlanOrderUpdateForm, FeedBackCreateForm, MeetPlanFastCreateForm
 from .utils import get_term_date
 
 
@@ -21,7 +22,6 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
         return reverse('meet_plan:tea-plan-detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-
         from django.core.cache import cache
         from django.core.cache.utils import make_template_fragment_key
         key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
@@ -33,13 +33,6 @@ class MeetPlanCreateView(TeaViewMixin, CreateView):
 
         form.instance.teacher = self.request.user
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['term_start_date'] = date_range[0].strftime("%Y-%m-%d")
-        context['term_end_date'] = date_range[1].strftime("%Y-%m-%d")
-        return context
 
 
 class MeetPlanFastCreateView(TeaViewMixin, FormView):
@@ -71,9 +64,10 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
                         teacher=self.request.user,
                         place=place,
                         start_time=s_time,
-                        end_time=s_time+duration,
+                        end_time=s_time + duration,
                         allow_other=allow_other,
                         message=message,
+                        available_choice=2 if allow_other else 1
                     )
                 )
                 s_time += duration
@@ -91,13 +85,6 @@ class MeetPlanFastCreateView(TeaViewMixin, FormView):
 
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['term_start_date'] = date_range[0].strftime("%Y-%m-%d")
-        context['term_end_date'] = date_range[1].strftime("%Y-%m-%d")
-        return context
-
 
 class MeetPlanUpdateView(TeaViewMixin, UpdateView):
     model = MeetPlan
@@ -112,13 +99,6 @@ class MeetPlanUpdateView(TeaViewMixin, UpdateView):
         if obj.teacher != self.request.user:
             raise PermissionDenied('您只能更改您创建的综合指导课安排！')
         return obj
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        date_range = get_term_date()
-        context['semesterstartdate'] = date_range[0].strftime("%Y-%m-%d")
-        context['semesterenddate'] = date_range[1].strftime("%Y-%m-%d")
-        return context
 
     def form_valid(self, form):
         from django.core.cache import cache
@@ -200,9 +180,8 @@ class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
 
     def form_valid(self, form):
         from .tasks import send_meetplan_order_update_email
-        domain = self.request.get_host()
         if form.has_changed():
-            send_meetplan_order_update_email.delay(self.object.id, domain, False)
+            send_meetplan_order_update_email.delay(self.object.id, False)
 
         response = super().form_valid(form)
         return response
@@ -226,8 +205,7 @@ class MeetPlanOrderDeleteView(TeaViewMixin, DeleteView):
 
         response = super().delete(request, args, kwargs)
         from .tasks import send_meetplan_order_update_email
-        domain = self.request.get_host()
-        send_meetplan_order_update_email.delay(self.object.id, domain, True)
+        send_meetplan_order_update_email.delay(self.object.id, True)
         return response
 
     def get_success_url(self):
@@ -244,8 +222,7 @@ class FeedBackCreateView(TeaViewMixin, CreateView):
         response = super().form_valid(form)
 
         from .tasks import send_meetplan_feedback_create_email
-        domain = self.request.get_host()
-        send_meetplan_feedback_create_email.delay(self.object.id, domain)
+        send_meetplan_feedback_create_email.delay(self.object.id)
 
         return response
 
@@ -262,3 +239,51 @@ class FeedBackListView(TeaViewMixin, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(teacher=self.request.user).order_by('-create_time')
+
+
+class TeacherAddMeetPlanOrderView(TeaViewMixin, FormView):
+    form_class = TeacherAddMeetPlanOrderForm
+    template_name = 'meet_plan/teacher/planorder_add.html'
+
+    def get_success_url(self):
+        return reverse('meet_plan:tea-index')
+
+    def form_valid(self, form):
+        import dateutil.parser, datetime
+        from apps.account_auth.models import User
+        data = form.cleaned_data
+        end_time = start_time = dateutil.parser.parse('{}T{}+08:00'.format(data['date'], data['time']))
+        long = int(data['long'])
+        place = data['place']
+        message = data['message']
+        sid = data['stu_id']
+        student = User.objects.get(identity_id=sid)
+        duration = datetime.timedelta(hours=0.5)
+
+        for i in range(long):
+            end_time += duration
+
+        meetplan = MeetPlan.objects.create(teacher=self.request.user,
+                                           place=place,
+                                           start_time=start_time,
+                                           end_time=end_time,
+                                           allow_other=False,
+                                           message=message)
+        meetplan.save()
+
+        meetplan_order = MeetPlanOrder.objects.create(meet_plan=meetplan,
+                                                      student=student,
+                                                      completed=True,
+                                                      message=message)
+        meetplan_order.save()
+
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
+        return super().form_valid(form)
