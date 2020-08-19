@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 from configparser import RawConfigParser
 from pathlib import Path
-from loguru import logger
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -33,13 +32,6 @@ DEBUG = CONFIG.getboolean('SITE', 'DEBUG')
 APPID = CONFIG.get('IAAA', 'APPID')
 APPKEY = CONFIG.get('IAAA', 'APPKEY')
 APPREDIRECTURL = CONFIG.get('IAAA', 'APPREDIRECTURL')
-
-# 日志文件配置
-LOG_DIR = BASE_DIR / 'log'
-if not LOG_DIR.exists():
-    LOG_DIR.mkdir()
-
-logger.add(LOG_DIR / 'error.log', rotation='1 days', retention='30 days', encoding='utf-8')
 
 ALLOWED_HOSTS = ['*']
 
@@ -201,7 +193,7 @@ SESSION_CACHE_ALIAS = "default"
 LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
 
 # Redis 缓存配置
-if CONFIG.get('REDIS', 'PWD'):
+if CONFIG.get('REDIS', 'PWD') != '':
     REDIS_ADDRESS = ':{}@{}:{}'.format(CONFIG.get('REDIS', 'PWD'),
                                        CONFIG.get('REDIS', 'HOST'),
                                        CONFIG.get('REDIS', 'PORT'))
