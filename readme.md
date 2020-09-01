@@ -9,10 +9,10 @@
 [![](https://img.shields.io/badge/Email-rxg-red.svg?style=plastic)](mailto:rxg@live.com)
 
 ## 说明文档
-[说明文档](https://wiki.server.phy.ruixiaolu.com/server/meetplan)
+[说明文档](https://wiki.pkuphy.cn/zh/server/meetplan)
 
 ## 开发文档
-[开发文档](https://wiki.server.phy.ruixiaolu.com/server/meetplan/develop)
+[开发文档](https://wiki.pkuphy.cn/zh/server/meetplan/develop)
 
 
 
