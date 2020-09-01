@@ -147,10 +147,39 @@
 
 {% block content %}
     <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-body">
+                    <div class="alert alert-success">
+                        <h4><i class="icon fa fa-check"></i>欢迎！</h4>
+                        如您在使用过程中遇到任何问题，都可以与学工办<a href="mailto:zhangfanpku@pku.edu.cn">张帆</a>
+                        或16级<a href="mailto:rxgao@pku.edu.cn">郜瑞啸</a>联系，再次感谢您的支持！
+                        <ul>
+                            <li>您可以点击左边个人中心更改您的邮件地址（默认为职工号|学号邮箱）</li>
+                            <li>您可以点击右上方头像上传您的照片或退出登录</li>
+                            <li>您可以在左侧菜单栏中点击综合指导课进入相关页面</li>
+                            <li>您可以在左侧联系我们页面找到本站全部管理员的联系方式</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-info">
+                        <h4><i class="icon fa fa-info"></i> 新增功能!</h4>
+                        <li>教职工现已可以自助完成学生综合指导课预约记录的补录！</li>
+                        {% if user.is_teacher %}
+                            <li>点击<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>填写相关信息即可！</li>
+                        {% else %}
+                            <li>请谈话老师到<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>填写相关信息即可！</li>
+                            <li>该页面学生是无法访问的哦T^T，你可以右击选择复制链接地址，并将该链接地址发送给老师:)。</li>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">综合指导课说明 For Students</h3>
+                    <h3 class="box-title">综合指导课说明 For 学生</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -168,7 +197,7 @@
 
                     <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
 
-                    <p>未在网上完成选课的同学可通过提交纸质版《综合指导课选课证明》到物理学院学生工作办公室进行补录。</p>
+                    <p>未在网上完成选课的同学可通过选课教师在后台补录，具体方法参见上面通知。</p>
 
                     <hr/>
 
@@ -183,7 +212,7 @@
 
                     <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
 
-                    <p><a href="{% static 'files/meetplan/综合指导课选课证明.pdf' %}">《综合指导课选课证明》下载</a></p>
+                    {#                    <p><a href="{% static 'files/meetplan/综合指导课选课证明.pdf' %}">《综合指导课选课证明》下载</a></p>#}
                     <p><a href="{% static 'files/meetplan/本科生科研训练证明.pdf' %}">《本科生科研训练证明》下载</a></p>
 
                 </div>
@@ -193,7 +222,7 @@
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">综合指导课说明 For Teachers</h3>
+                    <h3 class="box-title">综合指导课说明 For 教师</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -202,57 +231,33 @@
                     <ul>
                         <li>添加时间安排</li>
                         <li>如有同学选择了您的预约谈话，您将收到电子邮件通知，您也可以在综合指导课概览页面右侧看到具体的预约TimeLine</li>
-                        <li>和学生谈话完成后，请再次及时登录系统“确认”与相应同学的谈话</li>
+                        <li>和学生谈话完成后，请及时登录系统“确认”与相应同学的谈话</li>
                     </ul>
                     <hr/>
                     <strong><i class="fa fa-file-text-o margin-r-5"></i>有同学参与了谈话，但没有经过网上预约，如果添加记录？</strong>
                     <ul>
                         <li>记录同学姓名、日期、时间、地点</li>
-                        <li>登录选课系统，使用“使用反馈”功能，提交以上信息</li>
-                        <li>或者发Email给管理员，注明添加选课指导谈话记录</li>
+                        <li>登录选课系统，点击综合指导课-概览页面的补录预约按钮</li>
+                        <li>填写相关信息即可补录成功。</li>
                     </ul>
                     <hr/>
                     <strong><i class="fa fa-file-text-o margin-r-5"></i>误删了同学记录怎么办？</strong>
                     <ul>
                         <li>找到同学预约时收到的Email，复制内容</li>
                         <li>如果找不到预约Email，记录同学姓名、日期、时间、地点</li>
-                        <li>登录选课系统，点击“使用反馈”链接，注明找回记录，粘贴以上信息提交</li>
+                        <li>登录选课系统，点击"综合指导课"-"概览"页面的"<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>"按钮</li>
+                        <li>填写相关信息即可补录成功。</li>
                     </ul>
-
+                    <hr/>
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i>数据有问题怎么办？</strong>
+                    <ul>
+                        <li>找到同学预约时收到的Email，复制内容。</li>
+                        <li>如果找不到预约Email，记录同学姓名、日期、时间、地点。</li>
+                        <li>登录选课系统，点击综合指导课-使用反馈页面，新增反馈。</li>
+                        <li>或直接与管理员邮件联系。</li>
+                    </ul>
                 </div>
                 <!-- /.box-body -->
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-default">
-                <div class="box-body">
-                    <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i>欢迎！</h4>
-                        如您在使用过程中遇到任何问题，都可以与学工办<a href="mailto:zhangfanpku@pku.edu.cn">张帆</a>
-                        或16级<a href="mailto:rxgao@pku.edu.cn">郜瑞啸</a>联系，再次感谢您的支持！
-                        <ul>
-                            <li>您可以点击左边个人中心更改您的邮件地址（默认为职工号|学号邮箱）</li>
-                            <li>您可以点击右上方头像上传您的照片或退出登录</li>
-                            <li>您可以在左侧菜单栏中点击综合指导课进入相关页面</li>
-                            {% if user.is_teacher %}
-                                <li>默认已导入旧网站的数据，如有异常请联系技术人员</li>
-                                <li>您可以使用综合指导课栏目下的教师反馈与技术人员取得联系</li>
-                            {% else %}
-                                <li>默认已导入旧网站数据，如有异常请联系技术人员</li>
-                            {% endif %}
-                            <li>您可以在左侧联系我们页面找到本站全部管理员的联系方式</li>
-                        </ul>
-                    </div>
-                    <div class="alert alert-warning alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-warning"></i> 注意!</h4>
-                        公测期间<a href="http://zhzdk.phy.ruixiaolu.com">原综合指导课</a>网站不再使用，数据也不会再同步，原网站已禁止
-                        新增和更新操作，仅支持查询已有数据供您与本系统内数据进行对比。
-                    </div>
-                </div>
             </div>
         </div>
     </div>
