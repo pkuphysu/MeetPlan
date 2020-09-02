@@ -1,4 +1,5 @@
 import hashlib
+
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -23,7 +24,8 @@ class IAAALoginView(View):
         }
         response = TemplateResponse(request, template='account_auth/login/iaaa_login.html', context=ctx)
         if request.META.get('QUERY_STRING'):
-            response.set_cookie(key='next', value=request.META.get('QUERY_STRING'), expires=5 * 60)
+            response.set_cookie(key='next', value=request.META.get('QUERY_STRING'), expires=5 * 60,
+                                path=settings.SUBPATH if settings.SUBPATH != '' else '/')
         return response
 
     def post(self, request):
@@ -84,7 +86,7 @@ class IAAALoginAuth(View):
                     if request.COOKIES.get('next'):
                         cookie_next = request.COOKIES.get('next')
                         response = HttpResponseRedirect(cookie_next.split('=')[1])
-                        response.delete_cookie('next')
+                        response.delete_cookie('next', path=settings.SUBPATH if settings.SUBPATH != '' else '/')
                         return response
                     else:
                         return HttpResponseRedirect(reverse('portal:index'))
