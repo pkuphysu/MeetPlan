@@ -29,7 +29,10 @@ class TeaIndexView(TeaViewMixin, View):
             'this_term_plan': queryset.filter(start_time__gt=date_range[0],
                                               end_time__lt=date_range[1]).order_by('start_time'),
             'history_plan_num': queryset.count(),
-            'this_term_planorder_num': queryset.aggregate(num=Count('meetplanorder'))['num'],
+            'this_term_planorder_num': queryset.filter(start_time__gt=date_range[0],
+                                                       end_time__lt=date_range[1]).aggregate(
+                num=Count('meetplanorder'))['num'],
+            'history_planorder_num': queryset.aggregate(num=Count('meetplanorder'))['num'],
             'this_term_plan_before_now': queryset.filter(start_time__lt=timezone.now(),
                                                          start_time__gte=date_range[0]).order_by('-start_time'),
             'this_term_plan_after_now': queryset.filter(start_time__gte=timezone.now(),
