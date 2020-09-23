@@ -10,6 +10,7 @@ uwsgi.*
 !/apps/*/migrations/__init__.py
 .python-version
 /.venv/
+/venv/
 
 ### Linux ###
 *~
