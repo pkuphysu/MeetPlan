@@ -38,7 +38,8 @@
             elem: '#date',
             type: 'date',
             theme: 'molv',
-            format: 'yyyy-MM-dd'
+            format: 'yyyy-MM-dd',
+            max: '{% now "Y-m-d" %}'
         });
         laydate.render({
             elem: '#time',

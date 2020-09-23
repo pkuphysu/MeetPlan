@@ -79,7 +79,10 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         if self.email is None:
-            self.email = '%s@pku.edu.cn' % self.identity_id
+            if self.is_teacher:
+                self.email = '%s@pku.edu.cn' % self.identity_id
+            else:
+                self.email = '%s@stu.pku.edu.cn' % self.identity_id
         super(User, self).save(*args, **kwargs)
 
     def __str__(self):
