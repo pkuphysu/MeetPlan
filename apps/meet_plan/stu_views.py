@@ -4,10 +4,10 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, FormView
 
 from utils.mixin.permission import StuViewMixin
-from .forms import MeetPlanOrderCreateForm
+from .forms import MeetPlanOrderCreateForm, StudentAddMeetPlanOrderForm
 from .models import MeetPlan, MeetPlanOrder
 from .utils import get_term_date
 from ..account_auth.models import User
@@ -82,3 +82,52 @@ class MeetPlanOrderCreateView(StuViewMixin, CreateView):
 
     def get_success_url(self):
         return reverse('meet_plan:stu-index')
+
+
+class MeetPlanOrderAddView(StuViewMixin, FormView):
+    form_class = StudentAddMeetPlanOrderForm
+    template_name = 'meet_plan/student/planorder_add.html'
+
+    def get_success_url(self):
+        return reverse('meet_plan:stu-index')
+
+    def form_valid(self, form):
+        import dateutil.parser, datetime
+        from apps.account_auth.models import User
+        data = form.cleaned_data
+        end_time = start_time = dateutil.parser.parse('{}T{}+08:00'.format(data['date'], data['time']))
+        long = int(data['long'])
+        place = data['place']
+        message = data['message']
+        teacher = data['teacher']
+        duration = datetime.timedelta(hours=0.5)
+        for i in range(long):
+            end_time += duration
+
+        meetplan = MeetPlan.objects.create(teacher=teacher,
+                                           place=place,
+                                           start_time=start_time,
+                                           end_time=end_time,
+                                           allow_other=False,
+                                           message=message)
+        meetplan.save()
+        print(meetplan.id)
+
+        meetplan_order = MeetPlanOrder.objects.create(meet_plan=meetplan,
+                                                      student=self.request.user,
+                                                      completed=False,
+                                                      message=message)
+        meetplan_order.save()
+        from .tasks import send_apply_for_add_meetplan_order_email
+        send_apply_for_add_meetplan_order_email.delay(meetplan_order.id)
+
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+
+        return super().form_valid(form)

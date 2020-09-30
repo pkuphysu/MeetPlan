@@ -1,0 +1,22 @@
+{% extends 'email/base.html' %}
+
+{% block content %}
+    <h2 style="border-bottom:1px solid #DDD;font-size:14px;font-weight:normal;padding:13px 0 10px 8px;">
+        <span style="color: #12ADDB;font-weight: bold;">&gt; </span>
+        有同学申请补录综合指导课预约呐~
+    </h2>
+    <div style="padding:0 12px 0 12px;margin-top:18px">
+        <p>现在时间：<span style="border-bottom:1px dashed #ccc;" t="5" times=" 20:42">{% now "Y-m-d H:i" %}</span></p>
+        <p>{{ stu_name }}申请补录{{ tea_name }}老师的综合指导课安排：</p>
+        <p style="background-color: #f5f5f5;border: 0px solid #DDD;padding: 10px 15px;margin:18px 0">
+            时间：{{ start_time|date }}{{ start_time|time }}-{{ end_time|time }}<br>
+            地点：{{ place }}<br>
+        </p>
+        <p>下面是学生填写的谈话内容：</p>
+        <p style="background-color: #f5f5f5;border: 0px solid #DDD;padding: 10px 15px;margin:18px 0">{{ stu_message }}</p>
+        <p>备注：</p>
+        <p style="background-color: #f5f5f5;border: 0px solid #DDD;padding: 10px 15px;margin:18px 0">
+            {{ stu_name }}同学的邮箱是{{ stu_email }}。
+        </p>
+    </div>
+{% endblock %}

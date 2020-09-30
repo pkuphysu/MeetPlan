@@ -2,6 +2,7 @@ from django import forms
 
 from utils.mixin.form import FormMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
+from ..account_auth.models import User
 
 
 class MeetPlanForm(forms.ModelForm, FormMixin):
@@ -174,3 +175,36 @@ class TeacherAddMeetPlanOrderForm(forms.Form, FormMixin):
         if student.count() != 1:
             msg = "学生学号错误，请再次核对！"
             self.add_error('stu_id', msg)
+
+
+class StudentAddMeetPlanOrderForm(forms.Form, FormMixin):
+    LONG_CHOICES = (
+        (1, '半小时'),
+        (2, '一小时'),
+    )
+
+    teacher = forms.ModelChoiceField(
+        queryset=User.objects.filter(is_teacher=True).order_by('-identity_id'),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='教师')
+    date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'date',
+                                                         'readonly': 'readonly'}),
+                           label='日期')
+    time = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'time',
+                                                         'readonly': 'readonly'}),
+                           label='开始时间')
+    place = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            max_length=128,
+                            label='地点')
+    long = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}),
+                             label='持续时间',
+                             help_text='默认一次谈话半小时，可选择一小时',
+                             choices=LONG_CHOICES)
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control',
+                                                           'row': '5',
+                                                           'placeholder': 'Enter...'}),
+                              label='备注', required=False)
+
+    field_order = [teacher, date, time, place, long, message]

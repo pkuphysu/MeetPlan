@@ -162,9 +162,15 @@ AUTH_USER_MODEL = 'account_auth.User'
 
 HOST_DOMAIN = CONFIG.get('DJANGO', 'HOST_DOMAIN')
 SUBPATH = CONFIG.get('DJANGO', 'SUBPATH')
-SITE_URL = '{}{}'.format(HOST_DOMAIN, SUBPATH)
+if SUBPATH == '/':
+    SITE_URL = HOST_DOMAIN
+else:
+    SITE_URL = '{}{}'.format(HOST_DOMAIN, SUBPATH)
 # 配置登录url地址
-LOGIN_URL = '{}/account_auth/login/iaaa/'.format(SUBPATH)
+if SUBPATH == '/':
+    LOGIN_URL = '/account_auth/login/iaaa/'
+else:
+    LOGIN_URL = '{}/account_auth/login/iaaa/'.format(SUBPATH)
 
 STATIC_URL = 'static/'
 # 开发阶段放置项目自己的静态文件
@@ -189,8 +195,8 @@ EMAIL_FROM = CONFIG.get('EMAIL', 'FROM')
 # Django Session 使用 Redis 缓存
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-
-LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
+if SUBPATH != '/':
+    LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
 
 # Redis 缓存配置
 if CONFIG.get('REDIS', 'PWD') != '':

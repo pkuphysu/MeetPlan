@@ -72,7 +72,10 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
         verbose_name_plural = verbose_name
 
     def get_full_name(self):
-        return self.user_name + self.identity_id
+        if self.is_teacher:
+            return self.user_name
+        else:
+            return self.user_name + self.identity_id
 
     def get_short_name(self):
         return self.user_name

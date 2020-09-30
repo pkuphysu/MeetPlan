@@ -15,6 +15,7 @@ urlpatterns += [
     path('teacherlist/', stu_views.TeacherListView.as_view(), name='stu-all-tea-all-plan-list'),
     path('teacherplanlist/<int:pk>/', stu_views.TeacherPlanListView.as_view(), name='stu-tea-plan-list'),
     path('planordercreate/<int:pk>/', stu_views.MeetPlanOrderCreateView.as_view(), name='stu-order-create'),
+    path('planorderadd/', stu_views.MeetPlanOrderAddView.as_view(), name='stu-order-add'),
 ]
 
 # 教师相关

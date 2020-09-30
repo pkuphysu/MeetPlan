@@ -177,3 +177,32 @@ def send_meetplan_alert_everyday():
             }
         )
         my_send_mail.delay(subject, html, from_email, [student.email])
+
+
+@shared_task(base=TransactionAwareTask, bind=True)
+def send_apply_for_add_meetplan_order_email(self, meetplanorder_id):
+    domain = settings.SITE_URL
+    order = MeetPlanOrder.objects.get(id=meetplanorder_id)
+    meetplan = order.meet_plan
+    teacher = meetplan.teacher
+    tea_email = [teacher.email]
+    student = order.student
+    stu_message = order.message
+
+    subject = '综合指导课补录申请'
+    from_email = settings.EMAIL_FROM
+    html = loader.render_to_string(
+        'email/meetplan/stu_meetplan_order_add.html',
+        {
+            'domain': domain,
+            'user_name': teacher.user_name,
+            'stu_message': stu_message,
+            'tea_name': teacher.user_name,
+            'stu_name': student.user_name,
+            'start_time': meetplan.start_time,
+            'end_time': meetplan.end_time,
+            'place': meetplan.place,
+            'stu_email': student.email,
+        }
+    )
+    my_send_mail.delay(subject, html, from_email, tea_email)
