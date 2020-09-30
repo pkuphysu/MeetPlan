@@ -27,6 +27,7 @@ urlpatterns += [
     path('my_plan_detail/<int:pk>/', tea_views.MeetPlanDetailView.as_view(), name='tea-plan-detail'),
     path('my_plan_confirm_delete/<int:pk>/', tea_views.MeetPlanDeleteView.as_view(), name='tea-plan-confirm-delete'),
 
+    path('my_planorder_all/', tea_views.MeetPlanOrderListView.as_view(), name='tea-planorder-list-all'),
     path('my_planorder_confirm/<int:pk>/', tea_views.MeetPlanOrderUpdateView.as_view(), name='tea-order-update'),
     path('my_planorder_delete/<int:pk>/', tea_views.MeetPlanOrderDeleteView.as_view(), name='tea-order-delete'),
     path('my_planorder_add/', tea_views.TeacherAddMeetPlanOrderView.as_view(), name='tea-order-add'),

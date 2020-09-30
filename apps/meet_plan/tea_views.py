@@ -123,7 +123,20 @@ class MeetPlanListView(TeaViewMixin, ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(teacher=self.request.user).order_by('-create_time')
+        return qs.filter(teacher=self.request.user).order_by('-start_time')
+
+
+class MeetPlanOrderListView(TeaViewMixin, ListView):
+    model = MeetPlanOrder
+    template_name = 'meet_plan/teacher/planorder_all.html'
+    paginate_by = 50
+    context_object_name = 'meetplanorder_list'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        print(len(qs))
+        print(len(qs.filter(meet_plan__teacher=self.request.user)))
+        return qs.filter(meet_plan__teacher=self.request.user).order_by('-id')
 
 
 class MeetPlanDetailView(TeaViewMixin, DetailView):
