@@ -36,3 +36,28 @@ def send_account_active_email(self, user_id):
     )
 
     my_send_mail.delay(subject, html_content, from_email, to)
+
+
+@shared_task
+def deactivate_user_every_eight_weeks():
+    domain = settings.SITE_URL
+    from_email = settings.EMAIL_FROM
+    from django.utils import timezone
+    import datetime
+    from .models import User
+    users = User.objects.filter(is_active=True)
+    duration = datetime.timedelta(weeks=8)
+    for user in users:
+        if user.last_login is None or user.last_login + duration < timezone.now():
+            user.is_active = False
+            user.save()
+            subject = '综合指导课账户锁定通知'
+            html = loader.render_to_string(
+                'email/account_auth/account_deactive_email.html',
+                {
+                    'domain': domain,
+                    'user_name': user.user_name,
+                    'last_login': user.last_login,
+                }
+            )
+            my_send_mail.delay(subject, html, from_email, [user.email])

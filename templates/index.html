@@ -165,12 +165,13 @@
                     </div>
                     <div class="alert alert-info">
                         <h4><i class="icon fa fa-info"></i> 新增功能!</h4>
-                        <li>教职工现已可以自助完成学生综合指导课预约记录的补录！</li>
                         {% if user.is_teacher %}
+                            <li>教职工现已可以自助完成学生综合指导课预约记录的补录！</li>
                             <li>点击<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>填写相关信息即可！</li>
                         {% else %}
-                            <li>请谈话老师到<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>填写相关信息即可！</li>
-                            <li>该页面学生是无法访问的哦T^T，你可以右击选择复制链接地址，并将该链接地址发送给老师:)。</li>
+                            <li>学生现已可以自助申请补录综合指导课预约！</li>
+                            <li>点击<a href="{% url 'meet_plan:stu-order-add' %}">补录预约</a>填写相关信息即可！</li>
+                            <li>当然不要忘了提醒老师确认你的预约哦～</li>
                         {% endif %}
                     </div>
                 </div>

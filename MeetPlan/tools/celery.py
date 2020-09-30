@@ -35,7 +35,7 @@ class TransactionAwareTask(Task, ABC):
                 *args, **kwargs))
 
 
-@shared_task(base=TransactionAwareTask, bind=True)
+@shared_task(base=TransactionAwareTask, bind=True, rate_limit='4/m')
 def my_send_mail(self, subject, html_content, from_email, to):
     if settings.DEBUG:
         to = ['rxg@live.com']
