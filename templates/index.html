@@ -164,7 +164,7 @@
                         </ul>
                     </div>
                     <div class="alert alert-info">
-                        <h4><i class="icon fa fa-info"></i> 新增功能!</h4>
+                        <h4><i class="icon fa fa-info"></i> 新增功能!(2020/09/30)</h4>
                         {% if user.is_teacher %}
                             <li>教职工现已可以自助完成学生综合指导课预约记录的补录！</li>
                             <li>点击<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>填写相关信息即可！</li>
@@ -174,89 +174,78 @@
                             <li>当然不要忘了提醒老师确认你的预约哦～</li>
                         {% endif %}
                     </div>
+                    <div class="alert alert-warning">
+                        <h4><i class="icon fa fa-warning"></i> 本项目现已开源在<a
+                                href="https://github.com/RainshawGao/MeetPlan">Github</a>中，
+                            欢迎有能力的同学参与开发～</h4>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">综合指导课说明 For 学生</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
-
-                    <p><a href="{% static 'files/meetplan/物理学院综合指导课手册.pdf' %}">《物理学院综合指导课手册》下载</a></p>
-
-                    <hr/>
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
-
-                    <p>如果你身边有转系同学无法访问本网站，请让其辅导员提供学生姓名学号向学工办申请账号。</p>
-
-                    <hr/>
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
-
-                    <p>未在网上完成选课的同学可通过选课教师在后台补录，具体方法参见上面通知。</p>
-
-                    <hr/>
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
-
-                    <p>建议物理学院本科生低年级每学期选课2次，有助于尽早确定科研方向。高年级可以用本研指导代替不超过3次的综合指导课课程。
-                        毕业前要求完成8次选课，记一个必修学分。每学期完成课程次数不设上限。
-                        如需多次选课请手动提交纸质版证明到物理学院学生工作办公室。
-                    </p>
-
-                    <hr/>
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i></strong>
-
-                    {#                    <p><a href="{% static 'files/meetplan/综合指导课选课证明.pdf' %}">《综合指导课选课证明》下载</a></p>#}
-                    <p><a href="{% static 'files/meetplan/本科生科研训练证明.pdf' %}">《本科生科研训练证明》下载</a></p>
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">综合指导课说明 For 教师</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i> 使用流程</strong>
-                    <ul>
-                        <li>添加时间安排</li>
-                        <li>如有同学选择了您的预约谈话，您将收到电子邮件通知，您也可以在综合指导课概览页面右侧看到具体的预约TimeLine</li>
-                        <li>和学生谈话完成后，请及时登录系统“确认”与相应同学的谈话</li>
-                    </ul>
-                    <hr/>
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i>有同学参与了谈话，但没有经过网上预约，如果添加记录？</strong>
-                    <ul>
-                        <li>记录同学姓名、日期、时间、地点</li>
-                        <li>登录选课系统，点击"综合指导课"-"概览"页面的"<a href="{% url 'meet_plan:tea-order-add' %}">补录预约</a>"按钮</li>
-                        <li>填写相关信息即可补录成功。</li>
-                    </ul>
-                    <hr/>
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i>误删了同学记录怎么办？</strong>
-                    <ul>
-                        <li>同上</li>
-                    </ul>
-                    <hr/>
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i>数据有问题怎么办？</strong>
-                    <ul>
-                        <li>登录选课系统，点击综合指导课-使用反馈页面，新增反馈。</li>
-                        <li>或直接与管理员邮件联系。</li>
-                    </ul>
-                </div>
-                <!-- /.box-body -->
-            </div>
+        <div class="col-md-12">
+            <ul class="timeline">
+                <li class="time-label">
+                    <span class="bg-red">
+                        2020-09-30
+                    </span>
+                </li>
+                <li>
+                    <i class="fa fa-comment-o bg-blue"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
+                        <div class="timeline-body">
+                            <ul>
+                                <li> feat: 增加非活跃账户自动封锁功能</li>
+                                <li> feat: 增加发邮件频率限制</li>
+                                <li> feat: 增加学生自助申请补录功能</li>
+                                <li> feat: 提供 requirements.txt</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-footer">
+                        </div>
+                    </div>
+                </li>
+                <li class="time-label">
+                    <span class="bg-red">
+                        2020-09-23
+                    </span>
+                </li>
+                <li>
+                    <i class="fa fa-comment-o bg-blue"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
+                        <div class="timeline-body">
+                            <ul>
+                                <li> fix: 新生邮箱后缀改为 stu.pku.edu.cn</li>
+                                <li> feat: 修改教师补录时间限制</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-footer">
+                        </div>
+                    </div>
+                </li>
+                <li class="time-label">
+                    <span class="bg-green">
+                        2020-09-17
+                    </span>
+                </li>
+                <li>
+                    <i class="fa fa-comment-o bg-green"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
+                        <div class="timeline-body">
+                            <ul>
+                                <li> 正式上线测试</li>
+                                <li> 以往 commits 请前往<a href="https://github.com/RainshawGao/MeetPlan">Github</a>查看</li>
+                            </ul>
+                        </div>
+                        <div class="timeline-footer">
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}
