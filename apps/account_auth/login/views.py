@@ -98,7 +98,8 @@ class IAAALoginAuth(View):
                     <p>邮件发送可能有延时，请耐心等待～</p>
                     </div>""")
             else:
-                raise PermissionDenied('本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请联系网站管理员帮您注册。'.format(name, identity_id))
+                raise PermissionDenied(
+                    '本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请发送邮件到phyxgb@pku.edu.cn申请注册。'.format(name, identity_id))
         else:
             err_msg = iaaa_response.json()['errMsg']
             return HttpResponse('errMsg:%s\n%s' % (err_msg, '请联系网站管理员'))
