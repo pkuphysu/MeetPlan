@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    # django 默认后台, 仅限技术管理人员登录
-    path('superadmin/', admin.site.urls),
-    # 管理员内容管理页面
-    path('cmsadmin/', include('apps.cmsadmin.urls')),
-    # 综合指导课相关页面
-    path('meetplan/', include('apps.meet_plan.urls')),
-    # 账户管理相关页面
-    path('account_auth/', include('apps.account_auth.urls')),
-    # 网站首页页面
-    path('', include('apps.portal.urls')),
-]
+                  # django 默认后台, 仅限技术管理人员登录
+                  path('superadmin/', admin.site.urls),
+                  # 管理员内容管理页面
+                  path('cmsadmin/', include('apps.cmsadmin.urls')),
+                  # 综合指导课相关页面
+                  path('meetplan/', include('apps.meet_plan.urls')),
+                  # 账户管理相关页面
+                  path('account_auth/', include('apps.account_auth.urls')),
+                  # 网站首页页面
+                  path('', include('apps.portal.urls')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

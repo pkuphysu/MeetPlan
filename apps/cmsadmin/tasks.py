@@ -1,9 +1,15 @@
 from __future__ import absolute_import, unicode_literals
 
+import chardet
 from celery import shared_task
 
 from MeetPlan.tools.celery import TransactionAwareTask
-from apps.account_auth.tasks import send_account_active_email
+from apps.account_auth.tasks import send_account_register_email
+
+
+def get_encoding(file):
+    with open(file, 'rb') as f:
+        return chardet.detect(f.readline())['encoding']
 
 
 @shared_task(base=TransactionAwareTask)
@@ -16,7 +22,7 @@ def account_create_many_user(file_id):
     if ext == '.csv':
         import csv
         try:
-            with open(file.path, 'r', encoding='utf-8') as f:
+            with open(file.path, 'r', encoding=get_encoding(file.path)) as f:
                 reader = csv.reader(f)
                 from apps.account_auth.models import User
                 for [identity, name, is_teacher] in reader:
@@ -30,7 +36,7 @@ def account_create_many_user(file_id):
                         user[0].is_teacher = True if is_teacher == '教职工' else False
                         user[0].save()
                         # 发送激活邮件
-                        send_account_active_email.delay(user_id=identity)
+                        send_account_register_email.delay(user_id=identity)
 
         except Exception as e:
             print(e)
@@ -55,7 +61,7 @@ def meetplanorder_create_many(file_id):
         from apps.meet_plan.models import MeetPlan, MeetPlanOrder
         from django.utils import timezone
         try:
-            with open(file.path, 'r', encoding='utf-8') as f:
+            with open(file.path, 'r', encoding=get_encoding(file.path)) as f:
                 reader = csv.reader(f)
                 from apps.account_auth.models import User
                 for [identity, name] in reader:

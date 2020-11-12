@@ -40,6 +40,48 @@ def user_student_required(viewfunc):
     return _wrapper
 
 
+def have_email_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME,
+                        redirect_filed_url='account_auth:useremail_update'):
+    """
+    Decorator for views that checks that the user is logged in and is a admin
+    member, redirecting to the login page if necessary.
+    """
+
+    def user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+        def decorator(view_func):
+            @wraps(view_func)
+            def _wrapped_view(request, *args, **kwargs):
+                if test_func(request.user):
+                    return view_func(request, *args, **kwargs)
+                path = request.build_absolute_uri()
+                from django.shortcuts import resolve_url
+                resolved_login_url = resolve_url(login_url, request.user.id)
+                # If the login url is the same scheme and net location then just
+                # use the path as the "next" url.
+                from urllib.parse import urlparse
+                login_scheme, login_netloc = urlparse(resolved_login_url)[:2]
+                current_scheme, current_netloc = urlparse(path)[:2]
+                if ((not login_scheme or login_scheme == current_scheme) and
+                        (not login_netloc or login_netloc == current_netloc)):
+                    path = request.get_full_path()
+                from django.contrib.auth.views import redirect_to_login
+                return redirect_to_login(
+                    path, resolved_login_url, redirect_field_name)
+
+            return _wrapped_view
+
+        return decorator
+
+    actual_decorator = user_passes_test(
+        lambda u: u.email is not None,
+        login_url=redirect_filed_url,
+        redirect_field_name=redirect_field_name
+    )
+    if view_func:
+        return actual_decorator(view_func)
+    return actual_decorator
+
+
 def have_base_profile_required(view_func=None, redirect_field_name=REDIRECT_FIELD_NAME,
                                redirect_filed_url='account_auth:baseprofile_add'):
     """
@@ -126,11 +168,24 @@ class LoginRequiredMixin:
     """
     登录验证类
     """
+
     @classmethod
     def as_view(cls, **initkwargs):
         # 调用父类的as_view
         view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
         return login_required(function=view, login_url=settings.LOGIN_URL)
+
+
+class EmailRequiredMixin:
+    """
+    email 所需类
+    """
+
+    @classmethod
+    def as_view(cls, **initkwargs):
+        # 调用父类的as_view
+        view = super(EmailRequiredMixin, cls).as_view(**initkwargs)
+        return have_email_required(view_func=view)
 
 
 class BaseProfileRequiredMixin:
@@ -157,14 +212,13 @@ class TeaProfileRequiredMixin:
         return have_tea_profile_required(view_func=view)
 
 
-class ViewMixin(LoginRequiredMixin, BaseProfileRequiredMixin):
+class ViewMixin(LoginRequiredMixin, EmailRequiredMixin, BaseProfileRequiredMixin):
     pass
 
 
-class StuViewMixin(LoginRequiredMixin, BaseProfileRequiredMixin, StudentRequiredMixin, StuProfileRequiredMixin):
+class StuViewMixin(ViewMixin, StudentRequiredMixin, StuProfileRequiredMixin):
     pass
 
 
-class TeaViewMixin(LoginRequiredMixin, BaseProfileRequiredMixin, TeacherRequiredMixin, TeaProfileRequiredMixin):
+class TeaViewMixin(ViewMixin, TeacherRequiredMixin, TeaProfileRequiredMixin):
     pass
-

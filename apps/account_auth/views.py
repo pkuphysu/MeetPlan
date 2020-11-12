@@ -63,7 +63,7 @@ class ActiveView(View):
             raise PermissionDenied('激活链接错误！ 请复制粘贴完整的激活链接')
 
 
-class UserEmailUpdateView(ViewMixin, UpdateView):
+class UserEmailUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserEmailForm
     template_name = 'account_auth/user_email_update.html'

@@ -13,7 +13,7 @@ from .forms import UserForm, GradeForm, DepartmentForm, MajorForm
 from .tasks import account_create_many_user
 from ..account_auth.forms import BaseProfileForm, StudentProfileForm, TeacherProfileForm
 from ..account_auth.models import User, BaseProfile, StudentProfile, TeacherProfile, Major, Department, Grade
-from ..account_auth.tasks import send_account_active_email
+from ..account_auth.tasks import send_account_register_email
 
 
 class TeacherListView(AdminRequiredMixin, ListView):
@@ -48,7 +48,7 @@ class UserCreateView(AdminRequiredMixin, CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         # 发邮件
-        send_account_active_email.delay(self.object.identity_id)
+        send_account_register_email.delay(self.object.identity_id)
         return response
 
 
