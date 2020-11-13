@@ -279,7 +279,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% with meetplans=object.meetplan_set.all|in_this_term %}
+                            {% with meetplans=object.meetplan_set.all|desc_by_starttime %}
                                 {% for meetplan in meetplans %}
                                     <tr>
                                         <td>{{ meetplan.id }}</td>

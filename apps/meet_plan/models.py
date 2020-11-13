@@ -64,7 +64,7 @@ class MeetPlanOrder(BaseModel):
         super(MeetPlanOrder, self).delete(using, keep_parents, soft)
 
     def __str__(self):
-        return 'id:%d tea:%s' % (self.id, self.student.user_name)
+        return 'id:%d tea:%s stu:%s' % (self.id, self.meet_plan.teacher, self.student.user_name)
 
 
 class FeedBack(BaseModel):

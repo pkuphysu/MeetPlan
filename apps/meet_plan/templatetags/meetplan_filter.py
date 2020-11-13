@@ -14,6 +14,11 @@ def in_this_term(meetplan):
 
 
 @register.filter
+def desc_by_starttime(meetplan):
+    return meetplan.order_by('-start_time')
+
+
+@register.filter
 def in_this_term_after_now(meetplan):
     date_range = get_term_date()
     return meetplan.filter(start_time__gte=timezone.now(), end_time__lte=date_range[1])
