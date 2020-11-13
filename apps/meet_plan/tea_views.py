@@ -1,6 +1,8 @@
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
 from utils.mixin.permission import TeaViewMixin
@@ -175,6 +177,27 @@ class MeetPlanDeleteView(TeaViewMixin, DeleteView):
         cache.delete(key)
 
         return super().delete(request, *args, **kwargs)
+
+
+class MeetPlanMultiDeleteView(TeaViewMixin, View):
+
+    def get(self, request):
+        variables = request.GET['id']
+        for item in variables.split(','):
+            from django.shortcuts import get_object_or_404
+            meetplan = get_object_or_404(MeetPlan, pk=int(item))
+            if meetplan.teacher != self.request.user:
+                raise PermissionDenied('您只能删除您创建的综合指导课安排！')
+            meetplan.delete()
+        from django.core.cache import cache
+        from django.core.cache.utils import make_template_fragment_key
+        key = make_template_fragment_key('meetplan_meetplan_total_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_avail_num', [self.request.user.id])
+        cache.delete(key)
+        key = make_template_fragment_key('meetplan_meetplan_order_avail_num', [self.request.user.id])
+        cache.delete(key)
+        return HttpResponseRedirect(reverse('meet_plan:tea-index'))
 
 
 class MeetPlanOrderUpdateView(TeaViewMixin, UpdateView):
