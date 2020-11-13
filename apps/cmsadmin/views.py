@@ -1,12 +1,15 @@
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import View
 
 from utils.mixin.permission import AdminRequiredMixin
+from .forms import UpdateRecordForm
 from ..account_auth.models import User
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..meet_plan.utils import get_term_date
+from ..portal.models import UpdateRecord
 
 
 def noindex(request):
@@ -29,3 +32,35 @@ class IndexView(AdminRequiredMixin, View):
         }
 
         return TemplateResponse(request, template='cmsadmin/index.html', context=ctx)
+
+
+class UpdateRecordListView(AdminRequiredMixin, ListView):
+    model = UpdateRecord
+    template_name = 'cmsadmin/site/updaterecord_all.html'
+    context_object_name = 'record_list'
+
+
+class UpdateRecordCreateView(AdminRequiredMixin, CreateView):
+    model = UpdateRecord
+    template_name = 'cmsadmin/site/updaterecord_create.html'
+    form_class = UpdateRecordForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:site-updaterecord-all')
+
+
+class UpdateRecordUpdateView(AdminRequiredMixin, UpdateView):
+    model = UpdateRecord
+    template_name = 'cmsadmin/site/updaterecord_update.html'
+    form_class = UpdateRecordForm
+
+    def get_success_url(self):
+        return reverse('cmsadmin:site-updaterecord-all')
+
+
+class UpdateRecordDeleteView(AdminRequiredMixin, DeleteView):
+    model = UpdateRecord
+    template_name = 'cmsadmin/site/updaterecord_delete.html'
+
+    def get_success_url(self):
+        return reverse('cmsadmin:site-updaterecord-all')

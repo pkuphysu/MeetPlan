@@ -100,6 +100,18 @@
                 <li><a href="{% url 'cmsadmin:meetplan-report-all' %}"><i class="fa fa-circle-o"></i> 导出报表文件 </a></li>
             </ul>
         </li>
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-tv"></i> <span>站点信息管理</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="{% url 'cmsadmin:site-updaterecord-all' %}"><i class="fa fa-circle-o"></i> 更新日志表 </a></li>
+            </ul>
+        </li>
     </ul>
 {% endblock %}
 

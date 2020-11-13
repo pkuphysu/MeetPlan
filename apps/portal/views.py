@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from django.views.generic.base import View
 
 from utils.mixin.permission import ViewMixin
-from .models import FriendLink
+from .models import FriendLink, UpdateRecord
 from ..account_auth.models import User
 
 
@@ -19,7 +19,10 @@ def noindex(request):
 
 class IndexView(ViewMixin, View):
     def get(self, request):
-        return TemplateResponse(request, 'index.html')
+        ctx = {
+            'update_record_list': UpdateRecord.objects.order_by('-time')[:5]
+        }
+        return TemplateResponse(request, 'index.html', context=ctx)
 
 
 class ContactView(ViewMixin, ListView):

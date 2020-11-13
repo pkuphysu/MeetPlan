@@ -4,6 +4,7 @@ from utils.mixin.form import FormMixin
 from ..account_auth.models import User, Grade, Department, Major
 from ..meet_plan.models import MeetPlan, MeetPlanOrder, FeedBack
 from ..meet_plan.utils import get_term_date
+from ..portal.models import UpdateRecord
 
 
 class UserForm(forms.ModelForm, FormMixin):
@@ -274,3 +275,29 @@ class MeetPlanReportStudentForm(forms.Form, FormMixin):
         date_range = get_term_date()
         self.fields['start_date'].initial = date_range[0].strftime('%Y-%m-%d')
         self.fields['end_date'].initial = date_range[1].strftime('%Y-%m-%d')
+
+
+class UpdateRecordForm(forms.ModelForm, FormMixin):
+    field_order = ['time', 'author', 'url', 'info']
+
+    class Meta:
+        model = UpdateRecord
+        fields = ['time', 'author', 'url', 'info']
+        labels = {
+            'time': '时间',
+            'author': '作者',
+            'url': '链接地址',
+            'info': '更新内容',
+        }
+        help_texts = {}
+        widgets = {
+            'time': forms.DateInput(attrs={'class': 'form-control',
+                                           'id': 'timepicker',
+                                           'placeholder': 'yyyy/MM/dd',
+                                           'readonly': 'readonly'}),
+            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'url': forms.URLInput(attrs={'class': 'form-control'}),
+            'info': forms.Textarea(attrs={'class': 'form-control',
+                                          'row': '5',
+                                          'placeholder': 'Enter...'})
+        }

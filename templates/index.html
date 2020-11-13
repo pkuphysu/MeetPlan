@@ -186,50 +186,32 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="timeline">
-                <li class="time-label">
-                    <span class="bg-yellow">
-                        2020-10-14
-                    </span>
-                </li>
-                <li>
-                    <i class="fa fa-comment-o bg-yellow"></i>
-                    <div class="timeline-item">
-                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
-                        <div class="timeline-body">
-                            <ul>
-                                <li> fix: 修改404、403页面相关描述</li>
-                            </ul>
+                {% for record in update_record_list %}
+                    <li class="time-label">
+                        <span class="bg-red">
+                            {{ record.time }}
+                        </span>
+                    </li>
+                    <li>
+                        <i class="fa fa-comment-o bg-yellow"></i>
+                        <div class="timeline-item">
+                            <h3 class="timeline-header"><a href="{{ record.url }}">{{ record.author }}</a>
+                            </h3>
+                            <div class="timeline-body">
+                                <ul>
+                                    {{ record.info|safe }}
+                                </ul>
+                            </div>
+                            <div class="timeline-footer">
+                            </div>
                         </div>
-                        <div class="timeline-footer">
-                        </div>
-                    </div>
-                </li>
+                    </li>
 
-                <li class="time-label">
-                    <span class="bg-red">
-                        2020-09-30
-                    </span>
-                </li>
-                <li>
-                    <i class="fa fa-comment-o bg-blue"></i>
-                    <div class="timeline-item">
-                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
-                        <div class="timeline-body">
-                            <ul>
-                                <li> feat: 增加非活跃账户自动封锁功能</li>
-                                <li> feat: 增加发邮件频率限制</li>
-                                <li> feat: 增加学生自助申请补录功能</li>
-                                <li> feat: 提供 requirements.txt</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-footer">
-                        </div>
-                    </div>
-                </li>
+                {% endfor %}
 
                 <li class="time-label">
                     <span class="bg-blue">
-                        2020-09-23
+                        更早。。。
                     </span>
                 </li>
                 <li>
@@ -238,27 +220,6 @@
                         <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
                         <div class="timeline-body">
                             <ul>
-                                <li> fix: 新生邮箱后缀改为 stu.pku.edu.cn</li>
-                                <li> feat: 修改教师补录时间限制</li>
-                            </ul>
-                        </div>
-                        <div class="timeline-footer">
-                        </div>
-                    </div>
-                </li>
-
-                <li class="time-label">
-                    <span class="bg-green">
-                        2020-09-17
-                    </span>
-                </li>
-                <li>
-                    <i class="fa fa-comment-o bg-green"></i>
-                    <div class="timeline-item">
-                        <h3 class="timeline-header"><a href="https://github.com/RainshawGao/MeetPlan">Rainshaw</a></h3>
-                        <div class="timeline-body">
-                            <ul>
-                                <li> 正式上线</li>
                                 <li> 以往 commits 请前往<a href="https://github.com/RainshawGao/MeetPlan">Github</a>查看</li>
                             </ul>
                         </div>

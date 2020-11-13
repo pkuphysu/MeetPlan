@@ -74,3 +74,10 @@ urlpatterns += [
          name='meetplan-report-student-create'),
     path('meetplan_term_date_setting/', meetplan_view.TermDateUpdateView.as_view(), name='meetplan-termdate-update')
 ]
+
+urlpatterns += [
+    path('site_updaterecord_all/', views.UpdateRecordListView.as_view(), name='site-updaterecord-all'),
+    path('site_updaterecord_create/', views.UpdateRecordCreateView.as_view(), name='site-updaterecord-create'),
+    path('site_updaterecord_update/<int:pk>/', views.UpdateRecordUpdateView.as_view(), name='site-updaterecord-update'),
+    path('site_updaterecord_delete/<int:pk>/', views.UpdateRecordDeleteView.as_view(), name='site-updaterecord-delete'),
+]

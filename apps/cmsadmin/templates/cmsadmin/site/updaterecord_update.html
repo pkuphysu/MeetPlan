@@ -1,0 +1,51 @@
+{% extends 'cmsadmin/index.html' %}
+
+{% block title %}
+    编辑更新日志
+{% endblock %}
+
+{% block content-header %}
+    <h1>编辑更新日志</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ object }}</h3>
+                    <div class="pull-right">
+                        <button class="btn btn-danger"
+                                onclick="window.location.href='{% url 'cmsadmin:site-updaterecord-delete' object.pk %}'">
+                            删除
+                        </button>
+                    </div>
+                </div>
+                <!-- form start -->
+                <form role="form" method="post">
+                    <div class="box-body">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary" value="Update">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footjs %}
+    <script src="{% static 'laydate5.0.9/laydate.js' %}"></script>
+    <script>
+        laydate.render({
+            elem: '#timepicker',
+            type: 'date',
+            theme: 'molv',
+            format: 'yyyy/MM/dd'
+        });
+        $('input[required]').before('<span style="color:red">*</span>');
+    </script>
+{% endblock %}
