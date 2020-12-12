@@ -1,5 +1,6 @@
 from django import forms
 
+from db.base_model import Convert
 from utils.mixin.form import FormMixin
 from .models import MeetPlan, MeetPlanOrder, FeedBack
 from ..account_auth.models import User
@@ -184,7 +185,7 @@ class StudentAddMeetPlanOrderForm(forms.Form, FormMixin):
     )
 
     teacher = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_teacher=True).order_by('-identity_id'),
+        queryset=User.objects.filter(is_teacher=True).order_by(Convert('user_name', 'gbk').asc()),
         widget=forms.Select(attrs={'class': 'form-control'}),
         label='教师')
     date = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
