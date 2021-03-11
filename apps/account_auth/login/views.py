@@ -22,11 +22,7 @@ class IAAALoginView(View):
             'app_id': settings.APPID,
             'redirect_url': settings.APPREDIRECTURL
         }
-        response = TemplateResponse(request, template='account_auth/login/iaaa_login.html', context=ctx)
-        if request.META.get('QUERY_STRING'):
-            response.set_cookie(key='next', value=request.META.get('QUERY_STRING'), expires=5 * 60,
-                                path=settings.SUBPATH if settings.SUBPATH != '' else '/')
-        return response
+        return TemplateResponse(request, template='account_auth/login/iaaa_login.html', context=ctx)
 
     def post(self, request):
         if settings.DEBUG:
@@ -83,13 +79,7 @@ class IAAALoginAuth(View):
             if user.count():
                 if user[0].is_active:
                     login(request=request, user=user[0])
-                    if request.COOKIES.get('next'):
-                        cookie_next = request.COOKIES.get('next')
-                        response = HttpResponseRedirect(cookie_next.split('=')[1])
-                        response.delete_cookie('next', path=settings.SUBPATH if settings.SUBPATH != '' else '/')
-                        return response
-                    else:
-                        return HttpResponseRedirect(reverse('portal:index'))
+                    return HttpResponseRedirect(reverse('portal:index'))
                 else:
                     send_account_active_email.delay(user[0].identity_id)
                     raise PermissionDenied("""<div class="callout callout-success">
