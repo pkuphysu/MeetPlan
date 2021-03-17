@@ -13,7 +13,7 @@ django==3.1
 idna==2.10
 itsdangerous==1.1.0
 kombu==4.6.11
-loguru==0.5.1
+loguru==0.5.3
 mysqlclient==2.0.1
 pillow==8.1.2
 python-crontab==2.5.1
