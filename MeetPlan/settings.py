@@ -198,10 +198,15 @@ EMAIL_HOST_PASSWORD = CONFIG.get('EMAIL', 'PASSWORD')
 EMAIL_FROM = CONFIG.get('EMAIL', 'FROM')
 
 # Django Session 使用 Redis 缓存
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_COOKIE_AGE = 259200
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 SESSION_CACHE_ALIAS = "default"
 if SUBPATH != '/':
     LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+
+    CSRF_COOKIE_SECURE = True
 
 # Redis 缓存配置
 if CONFIG.get('REDIS', 'PWD') != '':
@@ -215,6 +220,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://{}/{}".format(REDIS_ADDRESS, CONFIG.get('REDIS', 'NUM')),
+        "KEY_PREFIX": "MeetPlan",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
