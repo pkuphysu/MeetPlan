@@ -1,11 +1,9 @@
-import hashlib
-
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import View
@@ -13,16 +11,12 @@ from django.views.generic import View
 from ..tasks import send_account_active_email
 
 
-class IAAALoginView(View):
-
+class PHYLoginView(View):
     def get(self, request):
         if settings.DEBUG:
             return TemplateResponse(request, template='account_auth/login/local_login.html')
-        ctx = {
-            'app_id': settings.APPID,
-            'redirect_url': settings.APPREDIRECTURL
-        }
-        return TemplateResponse(request, template='account_auth/login/iaaa_login.html', context=ctx)
+        return HttpResponseRedirect("https://auth.phy.pku.edu.cn/oidc/authorize/?response_type=code&scope=openid pku&"
+                                    f"client_id={settings.CLIENT_ID}&redirect_uri={settings.REDIRECT_URL}")
 
     def post(self, request):
         if settings.DEBUG:
@@ -39,57 +33,45 @@ class IAAALoginView(View):
                 login(request, user[0])
                 return HttpResponseRedirect(reverse('portal:index'))
             else:
-                return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
+                return HttpResponseRedirect(reverse('account_auth:phy-login'))
         else:
             raise Http404()
 
 
-class IAAALoginAuth(View):
+class PHYAuthView(View):
     def get(self, request):
-        rand = request.GET.get('rand')
-        token = request.GET.get('token')
+        code = request.GET.get('code', '')
+        if code == '':
+            raise Http404()
 
-        if request.META.get('HTTP_X_FORWARDED_FOR'):
-            remote_ip = request.META.get('HTTP_X_FORWARDED_FOR')
-        else:
-            remote_ip = request.META.get('REMOTE_ADDR')
+        res = requests.post(
+            settings.TOKEN_ENDPOINT,
+            data={
+                "code": code,
+                "client_id": settings.CLIENT_ID,
+                "client_secret": settings.CLIENT_SECRET,
+                "grant_type": "authorization_code",
+                "redirect_uri": settings.REDIRECT_URL,
+            },
+        )
+        token = res.json()["access_token"]
 
-        PARA_STR = "appId=%s&remoteAddr=%s&token=%s" % (settings.APPID, remote_ip, token) + settings.APPKEY
+        res = requests.get(settings.USERINFO_ENDPOINT, headers={"Authorization": f"Bearer {token}"})
+        pku_id = res.json()['pku_id']
 
-        msgAbs = hashlib.md5()
-        msgAbs.update(PARA_STR.encode('utf-8'))
+        user_model = get_user_model()
+        user = user_model.objects.filter(identity_id=pku_id)
 
-        url = "https://iaaa.pku.edu.cn/iaaa/svc/token/validate.do?remoteAddr=%s&appId=%s&token=%s&msgAbs=%s" % \
-              (remote_ip, settings.APPID, token, msgAbs.hexdigest())
-        try:
-            iaaa_response = requests.get(url=url)
-        except requests.exceptions.ConnectionError:
-            return HttpResponse('服务器网络错误, 请稍后重新登录!\n如果您可以联系管理员, 感激不尽!')
-
-        status = iaaa_response.json()['success']
-        if status:
-            user_info = iaaa_response.json()['userInfo']
-            identity_id = user_info['identityId']
-            name = user_info['name']
-            dept_id = user_info['deptId']
-            identity_type = user_info['identityType']
-
-            user_model = get_user_model()
-            user = user_model.objects.filter(identity_id=identity_id)
-            if user.count():
-                if user[0].is_active:
-                    login(request=request, user=user[0])
-                    return HttpResponseRedirect(reverse('portal:index'))
-                else:
-                    send_account_active_email.delay(user[0].identity_id)
-                    raise PermissionDenied("""<div class="callout callout-success">
-                    <h4>验证成功，但您还没有激活账号!</h4>
-                    <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
-                    <p>邮件发送可能有延时，请耐心等待～</p>
-                    </div>""")
+        if user.count():
+            if user[0].is_active:
+                login(request=request, user=user[0])
+                return HttpResponseRedirect(reverse('portal:index'))
             else:
-                raise PermissionDenied(
-                    '本应用仅对物理学院学生与教职工开放，若您{}{}符合上述条件，请发送邮件到phyxgb@pku.edu.cn申请注册。'.format(name, identity_id))
+                send_account_active_email.delay(user[0].identity_id)
+                raise PermissionDenied("""<div class="callout callout-success">
+                <h4>验证成功，但您还没有激活账号!</h4>
+                <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
+                <p>邮件发送可能有延时，请耐心等待～</p>
+                </div>""")
         else:
-            err_msg = iaaa_response.json()['errMsg']
-            return HttpResponse('errMsg:%s\n%s' % (err_msg, '请联系网站管理员'))
+            raise PermissionDenied('本应用仅对物理学院学生与教职工开放，若您符合上述条件，请发送邮件到phyxgb@pku.edu.cn申请注册。')

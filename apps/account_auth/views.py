@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -23,7 +23,7 @@ from .models import User, BaseProfile, StudentProfile, Major, TeacherProfile, De
 def logout_view(request):
     """退出登录"""
     logout(request)
-    return HttpResponseRedirect(reverse('account_auth:iaaa_login'))
+    return HttpResponseRedirect(reverse('account_auth:phy-login'))
 
 
 # /user 或 /user/ 重定向至 /user/index/
@@ -51,12 +51,8 @@ class ActiveView(View):
             user = User.objects.get(identity_id=user_id)
             user.is_active = True
             user.save()
-            # 跳转到登录页面
-            ctx = {
-                'app_id': settings.APPID,
-                'redirect_url': settings.APPREDIRECTURL
-            }
-            return TemplateResponse(request, template='account_auth/login/active.html', context=ctx)
+            login(request, user)
+            return TemplateResponse(request, template='account_auth/login/active.html')
         except SignatureExpired:
             raise PermissionDenied('激活链接已过期！ 请登录或联系管理员获取新的激活链接')
         except BadData:

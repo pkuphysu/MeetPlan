@@ -28,10 +28,12 @@ SECRET_KEY = CONFIG.get('DJANGO', 'SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = CONFIG.getboolean('SITE', 'DEBUG')
 
-# 在北大计算中心注册 app 的信息
-APPID = CONFIG.get('IAAA', 'APPID')
-APPKEY = CONFIG.get('IAAA', 'APPKEY')
-APPREDIRECTURL = CONFIG.get('IAAA', 'APPREDIRECTURL')
+# 在物理学院统一身份认证平台注册 app 的信息
+CLIENT_ID = CONFIG.get('PHY', 'CLIENT_ID')
+CLIENT_SECRET = CONFIG.get('PHY', 'CLIENT_SECRET')
+REDIRECT_URL = CONFIG.get('PHY', 'REDIRECT_URL')
+TOKEN_ENDPOINT = CONFIG.get('PHY', 'TOKEN_ENDPOINT')
+USERINFO_ENDPOINT = CONFIG.get('PHY', 'USERINFO_ENDPOINT')
 
 ALLOWED_HOSTS = ['*']
 
@@ -173,9 +175,9 @@ else:
     SITE_URL = '{}{}'.format(HOST_DOMAIN, SUBPATH)
 # 配置登录url地址
 if SUBPATH == '/':
-    LOGIN_URL = '/account_auth/login/iaaa/'
+    LOGIN_URL = '/account_auth/login/phy/'
 else:
-    LOGIN_URL = '{}/account_auth/login/iaaa/'.format(SUBPATH)
+    LOGIN_URL = '{}/account_auth/login/phy/'.format(SUBPATH)
 
 STATIC_URL = 'static/'
 # 开发阶段放置项目自己的静态文件

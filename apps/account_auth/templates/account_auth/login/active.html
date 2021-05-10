@@ -15,22 +15,12 @@
             <h3><i class="fa fa-check text-green"></i> 您已经成功激活您的账户! </h3>
 
             <p>
-                正在重定向至登录界面！ 欢迎您的加入～
+                欢迎您的加入～
             </p>
             <p>
-                若您的浏览器没有跳转，您可以点击<a href="{% url 'portal:index' %}">链接</a>返回主页。
+                请点击<a href="{% url 'portal:index' %}">链接</a>返回主页。
             </p>
         </div>
         <!-- /.error-content -->
     </div>
-{% endblock %}
-
-{% block footjs %}
-    <script language=javascript>
-        document.write("<form action='https://iaaa.pku.edu.cn/iaaa/oauth.jsp' method=post name='formx1' style='display:none'>");
-        document.write("<input type=hidden name='appID' value='{{ app_id }}'>");
-        document.write("<input type=hidden name='redirectUrl' value='{{ redirect_url }}'>");
-        document.write("</form>");
-        setTimeout("document.formx1.submit();", 1000);
-    </script>
 {% endblock %}
