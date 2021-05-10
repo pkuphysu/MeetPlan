@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "meetplan"
+version = "0.1.0"
+description = ""
+authors = ["Rainshaw <rxg@live.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^3.2.2"
+django-redis = "^4.12.1"
+celery = "^5.0.5"
+django-celery-results = "^2.0.1"
+django-celery-beat = "^2.2.0"
+itsdangerous = "^1.1.0"
+requests = "^2.25.1"
+mysqlclient = "^2.0.3"
+Pillow = "^8.2.0"
+uWSGI = "^2.0.19"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
