@@ -160,6 +160,11 @@ USE_TZ = True
 # Django 认证系统使用的模型类
 AUTH_USER_MODEL = 'account_auth.User'
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 HOST_DOMAIN = CONFIG.get('DJANGO', 'HOST_DOMAIN')
 SUBPATH = CONFIG.get('DJANGO', 'SUBPATH')
 if SUBPATH == '/':
