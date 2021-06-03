@@ -6,7 +6,7 @@ authors = ["Rainshaw <rxg@live.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^3.2.3"
+Django = "^3.2.4"
 django-redis = "^5.0.0"
 celery = "^5.1.0"
 django-celery-results = "^2.0.1"
