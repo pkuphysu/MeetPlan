@@ -39,6 +39,17 @@ func (p *User) IsValid() error {
 			return fmt.Errorf("field PkuId pattern rule failed, current value: %v", *p.PkuId)
 		}
 	}
+	if p.Email != nil {
+		_src1 := "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$"
+		if ok, _ := regexp.MatchString(_src1, *p.Email); !ok {
+			return fmt.Errorf("field Email pattern rule failed, current value: %v", *p.Email)
+		}
+	}
+	if p.Gender != nil {
+		if p.Gender.String() == "<UNSET>" {
+			return fmt.Errorf("field Gender defined_only rule failed")
+		}
+	}
 	return nil
 }
 func (p *LoginReq) IsValid() error {

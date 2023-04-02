@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/base"
-	"github.com/pkuphysu/meetplan/kitex_gen/user"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
 )
 
 type QueryUserServiceI interface {

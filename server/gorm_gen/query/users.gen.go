@@ -42,7 +42,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Grade = field.NewInt8(tableName, "grade")
 	_user.Dorm = field.NewString(tableName, "dorm")
 	_user.Office = field.NewString(tableName, "office")
-	_user.Introduce = field.NewString(tableName, "introduce")
+	_user.Introduction = field.NewString(tableName, "introduction")
 
 	_user.fillFieldMap()
 
@@ -52,23 +52,23 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 type user struct {
 	userDo
 
-	ALL        field.Asterisk
-	ID         field.Int64
-	PkuID      field.String
-	Name       field.String
-	Email      field.String
-	IsActive   field.Bool
-	IsTeacher  field.Bool
-	IsAdmin    field.Bool
-	Gender     field.Bool
-	Avatar     field.String
-	Department field.String
-	Phone      field.String
-	Major      field.String
-	Grade      field.Int8
-	Dorm       field.String
-	Office     field.String
-	Introduce  field.String
+	ALL          field.Asterisk
+	ID           field.Int64
+	PkuID        field.String
+	Name         field.String
+	Email        field.String
+	IsActive     field.Bool
+	IsTeacher    field.Bool
+	IsAdmin      field.Bool
+	Gender       field.Bool
+	Avatar       field.String
+	Department   field.String
+	Phone        field.String
+	Major        field.String
+	Grade        field.Int8
+	Dorm         field.String
+	Office       field.String
+	Introduction field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -100,7 +100,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Grade = field.NewInt8(table, "grade")
 	u.Dorm = field.NewString(table, "dorm")
 	u.Office = field.NewString(table, "office")
-	u.Introduce = field.NewString(table, "introduce")
+	u.Introduction = field.NewString(table, "introduction")
 
 	u.fillFieldMap()
 
@@ -133,7 +133,7 @@ func (u *user) fillFieldMap() {
 	u.fieldMap["grade"] = u.Grade
 	u.fieldMap["dorm"] = u.Dorm
 	u.fieldMap["office"] = u.Office
-	u.fieldMap["introduce"] = u.Introduce
+	u.fieldMap["introduction"] = u.Introduction
 }
 
 func (u user) clone(db *gorm.DB) user {

@@ -3,7 +3,7 @@ package errno
 import (
 	"errors"
 	"fmt"
-	"github.com/pkuphysu/meetplan/kitex_gen/base"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
 )
 
 type ErrNo struct {
@@ -24,6 +24,11 @@ func NewErrNo(code int64, msg string) ErrNo {
 
 func (e ErrNo) WithMessage(msg string) ErrNo {
 	e.ErrMsg = msg
+	return e
+}
+
+func (e ErrNo) WithError(err error) ErrNo {
+	e.ErrMsg = err.Error()
 	return e
 }
 

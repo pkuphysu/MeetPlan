@@ -8,7 +8,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/pkuphysu/meetplan/kitex_gen/base"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
 	"strings"
 )
 
@@ -55,22 +55,22 @@ func (p *Gender) Value() (driver.Value, error) {
 }
 
 type User struct {
-	Id         *int64  `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
-	PkuId      *string `thrift:"pku_id,2,optional" frugal:"2,optional,string" json:"pku_id,omitempty"`
-	Name       *string `thrift:"name,3,optional" frugal:"3,optional,string" json:"name,omitempty"`
-	Email      *string `thrift:"email,4,optional" frugal:"4,optional,string" json:"email,omitempty"`
-	IsActive   *bool   `thrift:"is_active,5,optional" frugal:"5,optional,bool" json:"is_active,omitempty"`
-	IsTeacher  *bool   `thrift:"is_teacher,6,optional" frugal:"6,optional,bool" json:"is_teacher,omitempty"`
-	IsAdmin    *bool   `thrift:"is_admin,7,optional" frugal:"7,optional,bool" json:"is_admin,omitempty"`
-	Gender     *Gender `thrift:"gender,8,optional" frugal:"8,optional,Gender" json:"gender,omitempty"`
-	Avatar     *string `thrift:"avatar,9,optional" frugal:"9,optional,string" json:"avatar,omitempty"`
-	Department *string `thrift:"department,10,optional" frugal:"10,optional,string" json:"department,omitempty"`
-	Phone      *string `thrift:"phone,11,optional" frugal:"11,optional,string" json:"phone,omitempty"`
-	Major      *string `thrift:"major,12,optional" frugal:"12,optional,string" json:"major,omitempty"`
-	Grade      *int8   `thrift:"grade,13,optional" frugal:"13,optional,i8" json:"grade,omitempty"`
-	Dorm       *string `thrift:"dorm,14,optional" frugal:"14,optional,string" json:"dorm,omitempty"`
-	Office     *string `thrift:"office,15,optional" frugal:"15,optional,string" json:"office,omitempty"`
-	Introduce  *string `thrift:"introduce,16,optional" frugal:"16,optional,string" json:"introduce,omitempty"`
+	Id           *int64  `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
+	PkuId        *string `thrift:"pku_id,2,optional" frugal:"2,optional,string" json:"pku_id,omitempty"`
+	Name         *string `thrift:"name,3,optional" frugal:"3,optional,string" json:"name,omitempty"`
+	Email        *string `thrift:"email,4,optional" frugal:"4,optional,string" json:"email,omitempty"`
+	IsActive     *bool   `thrift:"is_active,5,optional" frugal:"5,optional,bool" json:"is_active,omitempty"`
+	IsTeacher    *bool   `thrift:"is_teacher,6,optional" frugal:"6,optional,bool" json:"is_teacher,omitempty"`
+	IsAdmin      *bool   `thrift:"is_admin,7,optional" frugal:"7,optional,bool" json:"is_admin,omitempty"`
+	Gender       *Gender `thrift:"gender,8,optional" frugal:"8,optional,Gender" json:"gender,omitempty"`
+	Avatar       *string `thrift:"avatar,9,optional" frugal:"9,optional,string" json:"avatar,omitempty"`
+	Department   *string `thrift:"department,10,optional" frugal:"10,optional,string" json:"department,omitempty"`
+	Phone        *string `thrift:"phone,11,optional" frugal:"11,optional,string" json:"phone,omitempty"`
+	Major        *string `thrift:"major,12,optional" frugal:"12,optional,string" json:"major,omitempty"`
+	Grade        *int8   `thrift:"grade,13,optional" frugal:"13,optional,i8" json:"grade,omitempty"`
+	Dorm         *string `thrift:"dorm,14,optional" frugal:"14,optional,string" json:"dorm,omitempty"`
+	Office       *string `thrift:"office,15,optional" frugal:"15,optional,string" json:"office,omitempty"`
+	Introduction *string `thrift:"introduction,16,optional" frugal:"16,optional,string" json:"introduction,omitempty"`
 }
 
 func NewUser() *User {
@@ -216,13 +216,13 @@ func (p *User) GetOffice() (v string) {
 	return *p.Office
 }
 
-var User_Introduce_DEFAULT string
+var User_Introduction_DEFAULT string
 
-func (p *User) GetIntroduce() (v string) {
-	if !p.IsSetIntroduce() {
-		return User_Introduce_DEFAULT
+func (p *User) GetIntroduction() (v string) {
+	if !p.IsSetIntroduction() {
+		return User_Introduction_DEFAULT
 	}
-	return *p.Introduce
+	return *p.Introduction
 }
 func (p *User) SetId(val *int64) {
 	p.Id = val
@@ -269,8 +269,8 @@ func (p *User) SetDorm(val *string) {
 func (p *User) SetOffice(val *string) {
 	p.Office = val
 }
-func (p *User) SetIntroduce(val *string) {
-	p.Introduce = val
+func (p *User) SetIntroduction(val *string) {
+	p.Introduction = val
 }
 
 var fieldIDToName_User = map[int16]string{
@@ -289,7 +289,7 @@ var fieldIDToName_User = map[int16]string{
 	13: "grade",
 	14: "dorm",
 	15: "office",
-	16: "introduce",
+	16: "introduction",
 }
 
 func (p *User) IsSetId() bool {
@@ -352,8 +352,8 @@ func (p *User) IsSetOffice() bool {
 	return p.Office != nil
 }
 
-func (p *User) IsSetIntroduce() bool {
-	return p.Introduce != nil
+func (p *User) IsSetIntroduction() bool {
+	return p.Introduction != nil
 }
 
 func (p *User) Read(iprot thrift.TProtocol) (err error) {
@@ -705,7 +705,7 @@ func (p *User) ReadField16(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Introduce = &v
+		p.Introduction = &v
 	}
 	return nil
 }
@@ -1085,11 +1085,11 @@ WriteFieldEndError:
 }
 
 func (p *User) writeField16(oprot thrift.TProtocol) (err error) {
-	if p.IsSetIntroduce() {
-		if err = oprot.WriteFieldBegin("introduce", thrift.STRING, 16); err != nil {
+	if p.IsSetIntroduction() {
+		if err = oprot.WriteFieldBegin("introduction", thrift.STRING, 16); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Introduce); err != nil {
+		if err := oprot.WriteString(*p.Introduction); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -1161,7 +1161,7 @@ func (p *User) DeepEqual(ano *User) bool {
 	if !p.Field15DeepEqual(ano.Office) {
 		return false
 	}
-	if !p.Field16DeepEqual(ano.Introduce) {
+	if !p.Field16DeepEqual(ano.Introduction) {
 		return false
 	}
 	return true
@@ -1349,12 +1349,12 @@ func (p *User) Field15DeepEqual(src *string) bool {
 }
 func (p *User) Field16DeepEqual(src *string) bool {
 
-	if p.Introduce == src {
+	if p.Introduction == src {
 		return true
-	} else if p.Introduce == nil || src == nil {
+	} else if p.Introduction == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Introduce, *src) != 0 {
+	if strings.Compare(*p.Introduction, *src) != 0 {
 		return false
 	}
 	return true

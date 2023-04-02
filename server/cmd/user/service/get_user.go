@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"errors"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/user"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
 	"github.com/pkuphysu/meetplan/pkg/errno"
+	"gorm.io/gorm"
 )
 
 type GetUserServiceI interface {
@@ -24,11 +26,13 @@ func (s *getUserService) GetUser(ctx context.Context, req *user.GetUserReq) (*us
 	} else if req.PkuId != nil {
 		dao = dao.Where(query.Q.User.PkuID.Eq(*req.PkuId))
 	} else {
-		return nil, errno.ParamErr
+		return nil, errno.ParamErr.WithMessage("id_or_pku_id_is_required")
 	}
 
 	u, err := dao.First()
-	if err != nil {
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, errno.UserNotFoundErr
+	} else if err != nil {
 		return nil, err
 	}
 	return packUser(u), nil

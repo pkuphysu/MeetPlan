@@ -1,4 +1,4 @@
-namespace go base
+namespace go pkuphy.meetplan.base
 
 enum ErrCode {
     SuccessCode = 0

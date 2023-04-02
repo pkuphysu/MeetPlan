@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/user"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
 	"github.com/pkuphysu/meetplan/pkg/errno"
 )
 
@@ -29,14 +29,50 @@ func (s *updateUserService) UpdateUser(ctx context.Context, req *user.UpdateUser
 	} else if req.User.PkuId != nil {
 		dao = dao.Where(query.Q.User.PkuID.Eq(*req.User.PkuId))
 	} else {
-		return errno.ParamErr
+		return errno.ParamErr.WithMessage("id_or_pku_id_is_required")
 	}
 
+	if req.User.Name != nil {
+		updateMap["name"] = *req.User.Name
+	}
+	if req.User.Email != nil {
+		updateMap["email"] = *req.User.Email
+	}
 	if req.User.IsActive != nil {
 		updateMap["is_active"] = *req.User.IsActive
 	}
 	if req.User.IsAdmin != nil {
 		updateMap["is_admin"] = *req.User.IsAdmin
+	}
+	if req.User.IsTeacher != nil {
+		updateMap["is_teacher"] = *req.User.IsTeacher
+	}
+	if req.User.Gender != nil {
+		updateMap["gender"] = *req.User.Gender
+	}
+	if req.User.Avatar != nil {
+		updateMap["avatar"] = *req.User.Avatar
+	}
+	if req.User.Department != nil {
+		updateMap["department"] = *req.User.Department
+	}
+	if req.User.Phone != nil {
+		updateMap["phone"] = *req.User.Phone
+	}
+	if req.User.Major != nil {
+		updateMap["major"] = *req.User.Major
+	}
+	if req.User.Grade != nil {
+		updateMap["grade"] = *req.User.Grade
+	}
+	if req.User.Dorm != nil {
+		updateMap["dorm"] = *req.User.Dorm
+	}
+	if req.User.Office != nil {
+		updateMap["office"] = *req.User.Office
+	}
+	if req.User.Introduction != nil {
+		updateMap["introduction"] = *req.User.Introduction
 	}
 
 	if len(updateMap) == 0 {

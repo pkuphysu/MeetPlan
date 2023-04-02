@@ -3,11 +3,11 @@ package service
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user "github.com/pkuphysu/meetplan/kitex_gen/user"
+	plan "github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 // NewServer creates a server.Server with the given handler and options.
-func NewServer(handler user.Service, opts ...server.Option) server.Server {
+func NewServer(handler plan.Service, opts ...server.Option) server.Server {
 	var options []server.Option
 
 	options = append(options, opts...)
