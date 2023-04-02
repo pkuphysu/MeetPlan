@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	user "github.com/pkuphysu/meetplan/kitex_gen/user/userservice"
+	user "github.com/pkuphysu/meetplan/kitex_gen/user/service"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -15,7 +15,7 @@ func main() {
 	}
 	query.SetDefault(db)
 
-	svr := user.NewServer(new(AuthImpl))
+	svr := user.NewServer(new(ServiceImpl))
 
 	err = svr.Run()
 

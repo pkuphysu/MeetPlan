@@ -1,6 +1,6 @@
-namespace go user
-
 include 'base.thrift'
+
+namespace go user
 
 enum Gender {
     Male = 0
@@ -50,13 +50,23 @@ struct GetUserResp{
 }
 
 struct MGetUserReq{
+    1: optional list<i64> ids
+    2: optional list<string> pku_ids
+}
+
+struct MGetUserResp{
+    1: list<User> users
+    255: base.BaseResp base_resp
+}
+
+struct QueryUserReq{
     1: optional base.PageParam page_param
     2: optional bool is_active
     3: optional bool is_teacher
     4: optional bool is_admin
 }
 
-struct MGetUserResp{
+struct QueryUserResp{
     1: base.PageParam page_param
     2: list<User> users
     255: base.BaseResp base_resp
@@ -71,10 +81,11 @@ struct UpdateUserResp{
 }
 
 
-service UserService {
+service Service {
     LoginResp Login(1: LoginReq req)
 
     GetUserResp GetUser(1: GetUserReq req)
     MGetUserResp MGetUser(1: MGetUserReq req)
+    QueryUserResp QueryUser(1: QueryUserReq req)
     UpdateUserResp UpdateUser(1: UpdateUserReq req)
 }

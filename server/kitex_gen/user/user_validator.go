@@ -86,6 +86,17 @@ func (p *GetUserResp) IsValid() error {
 	return nil
 }
 func (p *MGetUserReq) IsValid() error {
+	return nil
+}
+func (p *MGetUserResp) IsValid() error {
+	if p.BaseResp != nil {
+		if err := p.BaseResp.IsValid(); err != nil {
+			return fmt.Errorf("filed BaseResp not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *QueryUserReq) IsValid() error {
 	if p.PageParam != nil {
 		if err := p.PageParam.IsValid(); err != nil {
 			return fmt.Errorf("filed PageParam not valid, %w", err)
@@ -93,7 +104,7 @@ func (p *MGetUserReq) IsValid() error {
 	}
 	return nil
 }
-func (p *MGetUserResp) IsValid() error {
+func (p *QueryUserResp) IsValid() error {
 	if p.PageParam != nil {
 		if err := p.PageParam.IsValid(); err != nil {
 			return fmt.Errorf("filed PageParam not valid, %w", err)
