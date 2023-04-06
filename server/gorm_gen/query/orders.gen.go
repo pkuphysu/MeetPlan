@@ -28,7 +28,7 @@ func newOrder(db *gorm.DB, opts ...gen.DOOption) order {
 	tableName := _order.orderDo.TableName()
 	_order.ALL = field.NewAsterisk(tableName)
 	_order.ID = field.NewInt64(tableName, "id")
-	_order.Completed = field.NewBool(tableName, "completed")
+	_order.Completed = field.NewInt8(tableName, "completed")
 	_order.Message = field.NewString(tableName, "message")
 	_order.PlanID = field.NewInt64(tableName, "plan_id")
 	_order.StudentID = field.NewInt64(tableName, "student_id")
@@ -43,7 +43,7 @@ type order struct {
 
 	ALL       field.Asterisk
 	ID        field.Int64
-	Completed field.Bool
+	Completed field.Int8
 	Message   field.String
 	PlanID    field.Int64
 	StudentID field.Int64
@@ -64,7 +64,7 @@ func (o order) As(alias string) *order {
 func (o *order) updateTableName(table string) *order {
 	o.ALL = field.NewAsterisk(table)
 	o.ID = field.NewInt64(table, "id")
-	o.Completed = field.NewBool(table, "completed")
+	o.Completed = field.NewInt8(table, "completed")
 	o.Message = field.NewString(table, "message")
 	o.PlanID = field.NewInt64(table, "plan_id")
 	o.StudentID = field.NewInt64(table, "student_id")
