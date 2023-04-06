@@ -67,12 +67,34 @@ func (s *ServiceImpl) QueryPlan(ctx context.Context, req *plan.QueryPlanReq) (re
 
 // CreatePlan implements the ServiceImpl interface.
 func (s *ServiceImpl) CreatePlan(ctx context.Context, req *plan.CreatePlanReq) (resp *plan.CreatePlanResp, err error) {
-	// TODO: Your code here...
-	return
+	resp = plan.NewCreatePlanResp()
+	if err = req.IsValid(); err != nil {
+		resp.BaseResp = errno.BuildBaseResp(errno.ParamErr.WithError(err))
+		return resp, nil
+	}
+	p, err := service.NewCreatePlanService(ctx).CreatePlan(req)
+	if err != nil {
+		resp.BaseResp = errno.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = errno.BuildBaseResp(errno.Success)
+	resp.Plan = p
+	return resp, nil
 }
 
 // MCreatePlan implements the ServiceImpl interface.
 func (s *ServiceImpl) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq) (resp *plan.MCreatePlanResp, err error) {
-	// TODO: Your code here...
-	return
+	resp = plan.NewMCreatePlanResp()
+	if err = req.IsValid(); err != nil {
+		resp.BaseResp = errno.BuildBaseResp(errno.ParamErr.WithError(err))
+		return resp, nil
+	}
+	plans, err := service.NewMCreatePlanService(ctx).MCreatePlan(req)
+	if err != nil {
+		resp.BaseResp = errno.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.BaseResp = errno.BuildBaseResp(errno.Success)
+	resp.PlanList = plans
+	return resp, nil
 }

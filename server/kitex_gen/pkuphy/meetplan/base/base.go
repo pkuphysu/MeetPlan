@@ -10,62 +10,62 @@ import (
 	"strings"
 )
 
-type ErrCode int64
+type StatusCode int64
 
 const (
-	ErrCode_SuccessCode                ErrCode = 0
-	ErrCode_ServiceErrCode             ErrCode = 10001
-	ErrCode_ParamErrCode               ErrCode = 10002
-	ErrCode_AuthorizationFailedErrCode ErrCode = 10003
-	ErrCode_UserNotFoundErrCode        ErrCode = 10004
-	ErrCode_UserCannotLoginErrCode     ErrCode = 10005
+	StatusCode_SuccessCode                StatusCode = 0
+	StatusCode_ServiceErrCode             StatusCode = 10001
+	StatusCode_ParamErrCode               StatusCode = 10002
+	StatusCode_AuthorizationFailedErrCode StatusCode = 10003
+	StatusCode_UserNotFoundErrCode        StatusCode = 10004
+	StatusCode_UserCannotLoginErrCode     StatusCode = 10005
 )
 
-func (p ErrCode) String() string {
+func (p StatusCode) String() string {
 	switch p {
-	case ErrCode_SuccessCode:
+	case StatusCode_SuccessCode:
 		return "SuccessCode"
-	case ErrCode_ServiceErrCode:
+	case StatusCode_ServiceErrCode:
 		return "ServiceErrCode"
-	case ErrCode_ParamErrCode:
+	case StatusCode_ParamErrCode:
 		return "ParamErrCode"
-	case ErrCode_AuthorizationFailedErrCode:
+	case StatusCode_AuthorizationFailedErrCode:
 		return "AuthorizationFailedErrCode"
-	case ErrCode_UserNotFoundErrCode:
+	case StatusCode_UserNotFoundErrCode:
 		return "UserNotFoundErrCode"
-	case ErrCode_UserCannotLoginErrCode:
+	case StatusCode_UserCannotLoginErrCode:
 		return "UserCannotLoginErrCode"
 	}
 	return "<UNSET>"
 }
 
-func ErrCodeFromString(s string) (ErrCode, error) {
+func StatusCodeFromString(s string) (StatusCode, error) {
 	switch s {
 	case "SuccessCode":
-		return ErrCode_SuccessCode, nil
+		return StatusCode_SuccessCode, nil
 	case "ServiceErrCode":
-		return ErrCode_ServiceErrCode, nil
+		return StatusCode_ServiceErrCode, nil
 	case "ParamErrCode":
-		return ErrCode_ParamErrCode, nil
+		return StatusCode_ParamErrCode, nil
 	case "AuthorizationFailedErrCode":
-		return ErrCode_AuthorizationFailedErrCode, nil
+		return StatusCode_AuthorizationFailedErrCode, nil
 	case "UserNotFoundErrCode":
-		return ErrCode_UserNotFoundErrCode, nil
+		return StatusCode_UserNotFoundErrCode, nil
 	case "UserCannotLoginErrCode":
-		return ErrCode_UserCannotLoginErrCode, nil
+		return StatusCode_UserCannotLoginErrCode, nil
 	}
-	return ErrCode(0), fmt.Errorf("not a valid ErrCode string")
+	return StatusCode(0), fmt.Errorf("not a valid StatusCode string")
 }
 
-func ErrCodePtr(v ErrCode) *ErrCode { return &v }
-func (p *ErrCode) Scan(value interface{}) (err error) {
+func StatusCodePtr(v StatusCode) *StatusCode { return &v }
+func (p *StatusCode) Scan(value interface{}) (err error) {
 	var result sql.NullInt64
 	err = result.Scan(value)
-	*p = ErrCode(result.Int64)
+	*p = StatusCode(result.Int64)
 	return
 }
 
-func (p *ErrCode) Value() (driver.Value, error) {
+func (p *StatusCode) Value() (driver.Value, error) {
 	if p == nil {
 		return nil, nil
 	}
@@ -73,8 +73,8 @@ func (p *ErrCode) Value() (driver.Value, error) {
 }
 
 type BaseResp struct {
-	StatusCode int64  `thrift:"status_code,1" frugal:"1,default,i64" json:"status_code"`
-	Message    string `thrift:"message,2" frugal:"2,default,string" json:"message"`
+	StatusCode StatusCode `thrift:"status_code,1" frugal:"1,default,StatusCode" json:"status_code"`
+	Message    string     `thrift:"message,2" frugal:"2,default,string" json:"message"`
 }
 
 func NewBaseResp() *BaseResp {
@@ -85,14 +85,14 @@ func (p *BaseResp) InitDefault() {
 	*p = BaseResp{}
 }
 
-func (p *BaseResp) GetStatusCode() (v int64) {
+func (p *BaseResp) GetStatusCode() (v StatusCode) {
 	return p.StatusCode
 }
 
 func (p *BaseResp) GetMessage() (v string) {
 	return p.Message
 }
-func (p *BaseResp) SetStatusCode(val int64) {
+func (p *BaseResp) SetStatusCode(val StatusCode) {
 	p.StatusCode = val
 }
 func (p *BaseResp) SetMessage(val string) {
@@ -124,7 +124,7 @@ func (p *BaseResp) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -174,10 +174,10 @@ ReadStructEndError:
 }
 
 func (p *BaseResp) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI64(); err != nil {
+	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		p.StatusCode = v
+		p.StatusCode = StatusCode(v)
 	}
 	return nil
 }
@@ -225,10 +225,10 @@ WriteStructEndError:
 }
 
 func (p *BaseResp) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status_code", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("status_code", thrift.I32, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.StatusCode); err != nil {
+	if err := oprot.WriteI32(int32(p.StatusCode)); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -280,7 +280,7 @@ func (p *BaseResp) DeepEqual(ano *BaseResp) bool {
 	return true
 }
 
-func (p *BaseResp) Field1DeepEqual(src int64) bool {
+func (p *BaseResp) Field1DeepEqual(src StatusCode) bool {
 
 	if p.StatusCode != src {
 		return false

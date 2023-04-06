@@ -53,7 +53,7 @@ struct CreatePlanResp{
 }
 
 struct MCreatePlanReq {
-    1: list<Plan> plan_list
+    1: list<Plan> plan_list (vt.min_size = "1")
 }
 
 struct MCreatePlanResp {

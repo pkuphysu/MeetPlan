@@ -7,15 +7,23 @@ import (
 )
 
 type ErrNo struct {
-	ErrCode int64
+	ErrCode base.StatusCode
 	ErrMsg  string
+}
+
+func (e ErrNo) Is(target error) bool {
+	t, ok := target.(ErrNo)
+	if !ok {
+		return false
+	}
+	return e.ErrCode == t.ErrCode
 }
 
 func (e ErrNo) Error() string {
 	return fmt.Sprintf("err_code=%d, err_msg=%s", e.ErrCode, e.ErrMsg)
 }
 
-func NewErrNo(code int64, msg string) ErrNo {
+func NewErrNo(code base.StatusCode, msg string) ErrNo {
 	return ErrNo{
 		ErrCode: code,
 		ErrMsg:  msg,
@@ -33,12 +41,12 @@ func (e ErrNo) WithError(err error) ErrNo {
 }
 
 var (
-	Success                = NewErrNo(int64(base.ErrCode_SuccessCode), "Success")
-	ServiceErr             = NewErrNo(int64(base.ErrCode_ServiceErrCode), "Service is unable to start successfully")
-	ParamErr               = NewErrNo(int64(base.ErrCode_ParamErrCode), "Wrong Parameter has been given")
-	AuthorizationFailedErr = NewErrNo(int64(base.ErrCode_AuthorizationFailedErrCode), "Authorization failed")
-	UserNotFoundErr        = NewErrNo(int64(base.ErrCode_UserNotFoundErrCode), "User not found")
-	UserCannotLoginErr     = NewErrNo(int64(base.ErrCode_UserCannotLoginErrCode), "User cannot login")
+	Success                = NewErrNo(base.StatusCode_SuccessCode, "Success")
+	ServiceErr             = NewErrNo(base.StatusCode_ServiceErrCode, "Service is unable to start successfully")
+	ParamErr               = NewErrNo(base.StatusCode_ParamErrCode, "Wrong Parameter has been given")
+	AuthorizationFailedErr = NewErrNo(base.StatusCode_AuthorizationFailedErrCode, "Authorization failed")
+	UserNotFoundErr        = NewErrNo(base.StatusCode_UserNotFoundErrCode, "User not found")
+	UserCannotLoginErr     = NewErrNo(base.StatusCode_UserCannotLoginErrCode, "User cannot login")
 )
 
 // ConvertErr convert error to Errno

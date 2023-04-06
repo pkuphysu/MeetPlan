@@ -139,6 +139,9 @@ func (p *CreatePlanResp) IsValid() error {
 	return nil
 }
 func (p *MCreatePlanReq) IsValid() error {
+	if len(p.PlanList) < int(1) {
+		return fmt.Errorf("field PlanList MinLen rule failed, current value: %v", p.PlanList)
+	}
 	return nil
 }
 func (p *MCreatePlanResp) IsValid() error {

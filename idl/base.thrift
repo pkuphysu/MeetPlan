@@ -1,6 +1,6 @@
 namespace go pkuphy.meetplan.base
 
-enum ErrCode {
+enum StatusCode {
     SuccessCode = 0
     ServiceErrCode = 10001
     ParamErrCode = 10002
@@ -11,7 +11,7 @@ enum ErrCode {
 }
 
 struct BaseResp{
-    1: i64 status_code
+    1: StatusCode status_code
     2: string message
 }
 
