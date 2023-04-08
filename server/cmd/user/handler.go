@@ -34,7 +34,7 @@ func (s *ServiceImpl) GetUser(ctx context.Context, req *user.GetUserReq) (resp *
 		return resp, nil
 	}
 
-	u, err := service.NewGetUserService(ctx).GetUser(ctx, req)
+	u, err := service.NewGetUserService(ctx).GetUser(req)
 	if err != nil {
 		resp.BaseResp = errno.BuildBaseResp(err)
 		return resp, nil
@@ -52,7 +52,7 @@ func (s *ServiceImpl) MGetUser(ctx context.Context, req *user.MGetUserReq) (resp
 		return resp, nil
 	}
 
-	users, err := service.NewMGetUserService(ctx).MGetUser(ctx, req)
+	users, err := service.NewMGetUserService(ctx).MGetUser(req)
 	if err != nil {
 		resp.BaseResp = errno.BuildBaseResp(err)
 		return resp, nil
@@ -70,7 +70,7 @@ func (s *ServiceImpl) QueryUser(ctx context.Context, req *user.QueryUserReq) (re
 		return resp, nil
 	}
 
-	users, pageParam, err := service.NewQueryUserService(ctx).QueryUser(ctx, req)
+	users, pageParam, err := service.NewQueryUserService(ctx).QueryUser(req)
 	if err != nil {
 		resp.BaseResp = errno.BuildBaseResp(err)
 		return resp, nil
@@ -90,6 +90,6 @@ func (s *ServiceImpl) UpdateUser(ctx context.Context, req *user.UpdateUserReq) (
 		return resp, nil
 	}
 
-	err = service.NewUpdateUserService(ctx).UpdateUser(ctx, req)
+	err = service.NewUpdateUserService(ctx).UpdateUser(req)
 	return resp, err
 }

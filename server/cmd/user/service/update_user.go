@@ -8,17 +8,23 @@ import (
 )
 
 type UpdateUserServiceI interface {
-	UpdateUser(ctx context.Context, req *user.UpdateUserReq) error
+	UpdateUser(req *user.UpdateUserReq) error
 }
 
 func NewUpdateUserService(ctx context.Context) UpdateUserServiceI {
-	return &updateUserService{}
+	return &updateUserService{
+		ctx: ctx,
+		dao: query.Q.WithContext(ctx).User,
+	}
 }
 
-type updateUserService struct{}
+type updateUserService struct {
+	ctx context.Context
+	dao query.IUserDo
+}
 
-func (s *updateUserService) UpdateUser(ctx context.Context, req *user.UpdateUserReq) error {
-	dao := query.Q.WithContext(ctx).User
+func (s *updateUserService) UpdateUser(req *user.UpdateUserReq) error {
+	dao := s.dao
 
 	updateMap := map[string]interface{}{}
 	if req.User.Id != nil {

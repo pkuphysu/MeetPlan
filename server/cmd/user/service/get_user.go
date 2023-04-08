@@ -10,17 +10,23 @@ import (
 )
 
 type GetUserServiceI interface {
-	GetUser(ctx context.Context, req *user.GetUserReq) (*user.User, error)
+	GetUser(req *user.GetUserReq) (*user.User, error)
 }
 
 func NewGetUserService(ctx context.Context) GetUserServiceI {
-	return &getUserService{}
+	return &getUserService{
+		ctx: ctx,
+		dao: query.Q.WithContext(ctx).User,
+	}
 }
 
-type getUserService struct{}
+type getUserService struct {
+	ctx context.Context
+	dao query.IUserDo
+}
 
-func (s *getUserService) GetUser(ctx context.Context, req *user.GetUserReq) (*user.User, error) {
-	dao := query.Q.WithContext(ctx).User
+func (s *getUserService) GetUser(req *user.GetUserReq) (*user.User, error) {
+	dao := s.dao
 	if req.Id != nil {
 		dao = dao.Where(query.Q.User.ID.Eq(*req.Id))
 	} else if req.PkuId != nil {

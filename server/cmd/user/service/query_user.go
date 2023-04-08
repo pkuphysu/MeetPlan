@@ -8,17 +8,23 @@ import (
 )
 
 type QueryUserServiceI interface {
-	QueryUser(ctx context.Context, req *user.QueryUserReq) ([]*user.User, *base.PageParam, error)
+	QueryUser(req *user.QueryUserReq) ([]*user.User, *base.PageParam, error)
 }
 
 func NewQueryUserService(ctx context.Context) QueryUserServiceI {
-	return &queryUserService{}
+	return &queryUserService{
+		ctx: ctx,
+		dao: query.Q.WithContext(ctx).User,
+	}
 }
 
-type queryUserService struct{}
+type queryUserService struct {
+	ctx context.Context
+	dao query.IUserDo
+}
 
-func (s *queryUserService) QueryUser(ctx context.Context, req *user.QueryUserReq) ([]*user.User, *base.PageParam, error) {
-	dao := query.Q.WithContext(ctx).User
+func (s *queryUserService) QueryUser(req *user.QueryUserReq) ([]*user.User, *base.PageParam, error) {
+	dao := s.dao
 	if req.IsActive != nil {
 		dao = dao.Where(query.Q.User.IsActive.Is(*req.IsActive))
 	}

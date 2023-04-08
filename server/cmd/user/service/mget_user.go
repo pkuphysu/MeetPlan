@@ -8,17 +8,23 @@ import (
 )
 
 type MGetUserServiceI interface {
-	MGetUser(ctx context.Context, req *user.MGetUserReq) ([]*user.User, error)
+	MGetUser(req *user.MGetUserReq) ([]*user.User, error)
 }
 
 func NewMGetUserService(ctx context.Context) MGetUserServiceI {
-	return &mGetUserService{}
+	return &mGetUserService{
+		ctx: ctx,
+		dao: query.Q.WithContext(ctx).User,
+	}
 }
 
-type mGetUserService struct{}
+type mGetUserService struct {
+	ctx context.Context
+	dao query.IUserDo
+}
 
-func (s *mGetUserService) MGetUser(ctx context.Context, req *user.MGetUserReq) ([]*user.User, error) {
-	dao := query.Q.WithContext(ctx).User
+func (s *mGetUserService) MGetUser(req *user.MGetUserReq) ([]*user.User, error) {
+	dao := s.dao
 
 	if len(req.Ids) == 0 && len(req.PkuIds) == 0 {
 		return nil, errno.ParamErr.WithMessage("ids_or_pku_ids_is_required")
