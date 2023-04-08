@@ -40,7 +40,7 @@ func (p *User) IsValid() error {
 		}
 	}
 	if p.Email != nil {
-		_src1 := "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$"
+		_src1 := "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"
 		if ok, _ := regexp.MatchString(_src1, *p.Email); !ok {
 			return fmt.Errorf("field Email pattern rule failed, current value: %v", *p.Email)
 		}

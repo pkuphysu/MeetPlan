@@ -11,7 +11,7 @@ struct User{
     1: optional i64 id (vt.ge = "1")
     2: optional string pku_id (vt.min_size = "10", vt.max_size = "10", vt.pattern = "^[0-9]+$")
     3: optional string name
-    4: optional string email (vt.pattern = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$")
+    4: optional string email (vt.pattern = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")
     5: optional bool is_active
     6: optional bool is_teacher
     7: optional bool is_admin
