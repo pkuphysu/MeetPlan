@@ -19,11 +19,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "Service"
 	handlerType := (*plan.Service)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreatePlan":  kitex.NewMethodInfo(createPlanHandler, newServiceCreatePlanArgs, newServiceCreatePlanResult, false),
-		"MCreatePlan": kitex.NewMethodInfo(mCreatePlanHandler, newServiceMCreatePlanArgs, newServiceMCreatePlanResult, false),
 		"GetPlan":     kitex.NewMethodInfo(getPlanHandler, newServiceGetPlanArgs, newServiceGetPlanResult, false),
 		"MGetPlan":    kitex.NewMethodInfo(mGetPlanHandler, newServiceMGetPlanArgs, newServiceMGetPlanResult, false),
 		"QueryPlan":   kitex.NewMethodInfo(queryPlanHandler, newServiceQueryPlanArgs, newServiceQueryPlanResult, false),
+		"CreatePlan":  kitex.NewMethodInfo(createPlanHandler, newServiceCreatePlanArgs, newServiceCreatePlanResult, false),
+		"MCreatePlan": kitex.NewMethodInfo(mCreatePlanHandler, newServiceMCreatePlanArgs, newServiceMCreatePlanResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "plan",
@@ -37,42 +37,6 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		Extra:           extra,
 	}
 	return svcInfo
-}
-
-func createPlanHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*plan.ServiceCreatePlanArgs)
-	realResult := result.(*plan.ServiceCreatePlanResult)
-	success, err := handler.(plan.Service).CreatePlan(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newServiceCreatePlanArgs() interface{} {
-	return plan.NewServiceCreatePlanArgs()
-}
-
-func newServiceCreatePlanResult() interface{} {
-	return plan.NewServiceCreatePlanResult()
-}
-
-func mCreatePlanHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*plan.ServiceMCreatePlanArgs)
-	realResult := result.(*plan.ServiceMCreatePlanResult)
-	success, err := handler.(plan.Service).MCreatePlan(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newServiceMCreatePlanArgs() interface{} {
-	return plan.NewServiceMCreatePlanArgs()
-}
-
-func newServiceMCreatePlanResult() interface{} {
-	return plan.NewServiceMCreatePlanResult()
 }
 
 func getPlanHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -129,6 +93,42 @@ func newServiceQueryPlanResult() interface{} {
 	return plan.NewServiceQueryPlanResult()
 }
 
+func createPlanHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceCreatePlanArgs)
+	realResult := result.(*plan.ServiceCreatePlanResult)
+	success, err := handler.(plan.Service).CreatePlan(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceCreatePlanArgs() interface{} {
+	return plan.NewServiceCreatePlanArgs()
+}
+
+func newServiceCreatePlanResult() interface{} {
+	return plan.NewServiceCreatePlanResult()
+}
+
+func mCreatePlanHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceMCreatePlanArgs)
+	realResult := result.(*plan.ServiceMCreatePlanResult)
+	success, err := handler.(plan.Service).MCreatePlan(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceMCreatePlanArgs() interface{} {
+	return plan.NewServiceMCreatePlanArgs()
+}
+
+func newServiceMCreatePlanResult() interface{} {
+	return plan.NewServiceMCreatePlanResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -137,26 +137,6 @@ func newServiceClient(c client.Client) *kClient {
 	return &kClient{
 		c: c,
 	}
-}
-
-func (p *kClient) CreatePlan(ctx context.Context, req *plan.CreatePlanReq) (r *plan.CreatePlanResp, err error) {
-	var _args plan.ServiceCreatePlanArgs
-	_args.Req = req
-	var _result plan.ServiceCreatePlanResult
-	if err = p.c.Call(ctx, "CreatePlan", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq) (r *plan.MCreatePlanResp, err error) {
-	var _args plan.ServiceMCreatePlanArgs
-	_args.Req = req
-	var _result plan.ServiceMCreatePlanResult
-	if err = p.c.Call(ctx, "MCreatePlan", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
 }
 
 func (p *kClient) GetPlan(ctx context.Context, req *plan.GetPlanReq) (r *plan.GetPlanResp, err error) {
@@ -184,6 +164,26 @@ func (p *kClient) QueryPlan(ctx context.Context, req *plan.QueryPlanReq) (r *pla
 	_args.Req = req
 	var _result plan.ServiceQueryPlanResult
 	if err = p.c.Call(ctx, "QueryPlan", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreatePlan(ctx context.Context, req *plan.CreatePlanReq) (r *plan.CreatePlanResp, err error) {
+	var _args plan.ServiceCreatePlanArgs
+	_args.Req = req
+	var _result plan.ServiceCreatePlanResult
+	if err = p.c.Call(ctx, "CreatePlan", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq) (r *plan.MCreatePlanResp, err error) {
+	var _args plan.ServiceMCreatePlanArgs
+	_args.Req = req
+	var _result plan.ServiceMCreatePlanResult
+	if err = p.c.Call(ctx, "MCreatePlan", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

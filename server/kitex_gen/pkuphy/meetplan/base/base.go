@@ -19,6 +19,7 @@ const (
 	StatusCode_AuthorizationFailedErrCode StatusCode = 10003
 	StatusCode_UserNotFoundErrCode        StatusCode = 10004
 	StatusCode_UserCannotLoginErrCode     StatusCode = 10005
+	StatusCode_OrderNotFoundErrCode       StatusCode = 10006
 )
 
 func (p StatusCode) String() string {
@@ -35,6 +36,8 @@ func (p StatusCode) String() string {
 		return "UserNotFoundErrCode"
 	case StatusCode_UserCannotLoginErrCode:
 		return "UserCannotLoginErrCode"
+	case StatusCode_OrderNotFoundErrCode:
+		return "OrderNotFoundErrCode"
 	}
 	return "<UNSET>"
 }
@@ -53,6 +56,8 @@ func StatusCodeFromString(s string) (StatusCode, error) {
 		return StatusCode_UserNotFoundErrCode, nil
 	case "UserCannotLoginErrCode":
 		return StatusCode_UserCannotLoginErrCode, nil
+	case "OrderNotFoundErrCode":
+		return StatusCode_OrderNotFoundErrCode, nil
 	}
 	return StatusCode(0), fmt.Errorf("not a valid StatusCode string")
 }

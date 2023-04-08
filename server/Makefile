@@ -10,7 +10,8 @@ gen-all: gen-gorm gen-kitex
 	mkdir -p cmd/user && cd cmd/user && kitex -service user -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../../idl/user.thrift
 
 .PHONY: gen-gorm
-gen-gorm:
+gen-gorm: docker-reup
+	sleep 10
 	go run cmd/gormgen/main.go
 
 .PHONY: gen-kitex
@@ -33,3 +34,6 @@ gen-kitex-order:
 	kitex --thrift-plugin validator -module github.com/pkuphysu/meetplan ../idl/order.thrift
 	if [ ! -d "./cmd/order" ]; then mkdir cmd/order; fi
 	cd cmd/order && kitex -service order -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../../idl/order.thrift
+
+docker-reup:
+	docker-compose down && docker-compose up -d

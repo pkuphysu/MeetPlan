@@ -8,6 +8,8 @@ enum StatusCode {
     // User
     UserNotFoundErrCode = 10004
     UserCannotLoginErrCode = 10005
+    // Order
+    OrderNotFoundErrCode = 10006
 }
 
 struct BaseResp{

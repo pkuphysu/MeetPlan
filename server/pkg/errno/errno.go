@@ -47,6 +47,7 @@ var (
 	AuthorizationFailedErr = NewErrNo(base.StatusCode_AuthorizationFailedErrCode, "Authorization failed")
 	UserNotFoundErr        = NewErrNo(base.StatusCode_UserNotFoundErrCode, "User not found")
 	UserCannotLoginErr     = NewErrNo(base.StatusCode_UserCannotLoginErrCode, "User cannot login")
+	OrderNotFoundErr       = NewErrNo(base.StatusCode_OrderNotFoundErrCode, "Order not found")
 )
 
 // ConvertErr convert error to Errno

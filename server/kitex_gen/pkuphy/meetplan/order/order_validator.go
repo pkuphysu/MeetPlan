@@ -86,20 +86,23 @@ func (p *QueryOrderReq) IsValid() error {
 	if len(p.PlanIds) < int(1) {
 		return fmt.Errorf("field PlanIds MinLen rule failed, current value: %v", p.PlanIds)
 	}
-	if len(p.StudentId) < int(1) {
-		return fmt.Errorf("field StudentId MinLen rule failed, current value: %v", p.StudentId)
+	if len(p.StudentIds) < int(1) {
+		return fmt.Errorf("field StudentIds MinLen rule failed, current value: %v", p.StudentIds)
 	}
 	if p.Status != nil {
 		if p.Status.String() == "<UNSET>" {
 			return fmt.Errorf("field Status defined_only rule failed")
 		}
 	}
+	if len(p.TeacherIds) < int(1) {
+		return fmt.Errorf("field TeacherIds MinLen rule failed, current value: %v", p.TeacherIds)
+	}
 	return nil
 }
 func (p *QueryOrderResp) IsValid() error {
-	if p.PageResult_ != nil {
-		if err := p.PageResult_.IsValid(); err != nil {
-			return fmt.Errorf("filed PageResult_ not valid, %w", err)
+	if p.PageParam != nil {
+		if err := p.PageParam.IsValid(); err != nil {
+			return fmt.Errorf("filed PageParam not valid, %w", err)
 		}
 	}
 	if p.BaseResp != nil {

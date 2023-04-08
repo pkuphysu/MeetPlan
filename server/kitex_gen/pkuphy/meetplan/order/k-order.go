@@ -1098,6 +1098,20 @@ func (p *QueryOrderReq) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 5:
+			if fieldTypeId == thrift.LIST {
+				l, err = p.FastReadField5(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -1184,7 +1198,7 @@ func (p *QueryOrderReq) FastReadField3(buf []byte) (int, error) {
 	if err != nil {
 		return offset, err
 	}
-	p.StudentId = make([]int64, 0, size)
+	p.StudentIds = make([]int64, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem int64
 		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -1196,7 +1210,7 @@ func (p *QueryOrderReq) FastReadField3(buf []byte) (int, error) {
 
 		}
 
-		p.StudentId = append(p.StudentId, _elem)
+		p.StudentIds = append(p.StudentIds, _elem)
 	}
 	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
 		return offset, err
@@ -1221,6 +1235,36 @@ func (p *QueryOrderReq) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *QueryOrderReq) FastReadField5(buf []byte) (int, error) {
+	offset := 0
+
+	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	offset += l
+	if err != nil {
+		return offset, err
+	}
+	p.TeacherIds = make([]int64, 0, size)
+	for i := 0; i < size; i++ {
+		var _elem int64
+		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+
+			_elem = v
+
+		}
+
+		p.TeacherIds = append(p.TeacherIds, _elem)
+	}
+	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *QueryOrderReq) FastWrite(buf []byte) int {
 	return 0
@@ -1234,6 +1278,7 @@ func (p *QueryOrderReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryW
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField4(buf[offset:], binaryWriter)
+		offset += p.fastWriteField5(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -1248,6 +1293,7 @@ func (p *QueryOrderReq) BLength() int {
 		l += p.field2Length()
 		l += p.field3Length()
 		l += p.field4Length()
+		l += p.field5Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -1285,12 +1331,12 @@ func (p *QueryOrderReq) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryW
 
 func (p *QueryOrderReq) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	if p.IsSetStudentId() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "student_id", thrift.LIST, 3)
+	if p.IsSetStudentIds() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "student_ids", thrift.LIST, 3)
 		listBeginOffset := offset
 		offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
 		var length int
-		for _, v := range p.StudentId {
+		for _, v := range p.StudentIds {
 			length++
 			offset += bthrift.Binary.WriteI64(buf[offset:], v)
 
@@ -1308,6 +1354,25 @@ func (p *QueryOrderReq) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryW
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I32, 4)
 		offset += bthrift.Binary.WriteI32(buf[offset:], int32(*p.Status))
 
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
+	return offset
+}
+
+func (p *QueryOrderReq) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	if p.IsSetTeacherIds() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "teacher_ids", thrift.LIST, 5)
+		listBeginOffset := offset
+		offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+		var length int
+		for _, v := range p.TeacherIds {
+			length++
+			offset += bthrift.Binary.WriteI64(buf[offset:], v)
+
+		}
+		bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
+		offset += bthrift.Binary.WriteListEnd(buf[offset:])
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
 	return offset
@@ -1338,11 +1403,11 @@ func (p *QueryOrderReq) field2Length() int {
 
 func (p *QueryOrderReq) field3Length() int {
 	l := 0
-	if p.IsSetStudentId() {
-		l += bthrift.Binary.FieldBeginLength("student_id", thrift.LIST, 3)
-		l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.StudentId))
+	if p.IsSetStudentIds() {
+		l += bthrift.Binary.FieldBeginLength("student_ids", thrift.LIST, 3)
+		l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.StudentIds))
 		var tmpV int64
-		l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.StudentId)
+		l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.StudentIds)
 		l += bthrift.Binary.ListEndLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
@@ -1355,6 +1420,19 @@ func (p *QueryOrderReq) field4Length() int {
 		l += bthrift.Binary.FieldBeginLength("status", thrift.I32, 4)
 		l += bthrift.Binary.I32Length(int32(*p.Status))
 
+		l += bthrift.Binary.FieldEndLength()
+	}
+	return l
+}
+
+func (p *QueryOrderReq) field5Length() int {
+	l := 0
+	if p.IsSetTeacherIds() {
+		l += bthrift.Binary.FieldBeginLength("teacher_ids", thrift.LIST, 5)
+		l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.TeacherIds))
+		var tmpV int64
+		l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.TeacherIds)
+		l += bthrift.Binary.ListEndLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
 	return l
@@ -1468,7 +1546,7 @@ func (p *QueryOrderResp) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 	}
-	p.PageResult_ = tmp
+	p.PageParam = tmp
 	return offset, nil
 }
 
@@ -1545,8 +1623,8 @@ func (p *QueryOrderResp) BLength() int {
 
 func (p *QueryOrderResp) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "page_result", thrift.STRUCT, 1)
-	offset += p.PageResult_.FastWriteNocopy(buf[offset:], binaryWriter)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "page_param", thrift.STRUCT, 1)
+	offset += p.PageParam.FastWriteNocopy(buf[offset:], binaryWriter)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
@@ -1577,8 +1655,8 @@ func (p *QueryOrderResp) fastWriteField255(buf []byte, binaryWriter bthrift.Bina
 
 func (p *QueryOrderResp) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("page_result", thrift.STRUCT, 1)
-	l += p.PageResult_.BLength()
+	l += bthrift.Binary.FieldBeginLength("page_param", thrift.STRUCT, 1)
+	l += p.PageParam.BLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }

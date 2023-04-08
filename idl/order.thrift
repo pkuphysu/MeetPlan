@@ -5,7 +5,7 @@ namespace go pkuphy.meetplan.order
 enum OrderStatus {
     CREATED = 1
     FINISHED = 2
-    Canceled = 3
+    CANCELLED = 3
 }
 
 struct Order {
@@ -37,12 +37,13 @@ struct MGetOrderResp {
 struct QueryOrderReq {
     1: optional base.PageParam page_param
     2: optional list<i64> plan_ids (vt.min_size = "1")
-    3: optional list<i64> student_id (vt.min_size = "1")
+    3: optional list<i64> student_ids (vt.min_size = "1")
     4: optional OrderStatus status (vt.defined_only = "true")
+    5: optional list<i64> teacher_ids (vt.min_size = "1")
 }
 
 struct QueryOrderResp {
-    1: base.PageParam page_result
+    1: base.PageParam page_param
     2: list<Order> orders
     255: base.BaseResp base_resp
 }

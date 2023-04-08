@@ -3090,16 +3090,188 @@ func (p *MCreatePlanResp) Field255DeepEqual(src *base.BaseResp) bool {
 	return true
 }
 
+type UpdatePlanReq struct {
+	Plan *Plan `thrift:"plan,1" frugal:"1,default,Plan" json:"plan"`
+}
+
+func NewUpdatePlanReq() *UpdatePlanReq {
+	return &UpdatePlanReq{}
+}
+
+func (p *UpdatePlanReq) InitDefault() {
+	*p = UpdatePlanReq{}
+}
+
+var UpdatePlanReq_Plan_DEFAULT *Plan
+
+func (p *UpdatePlanReq) GetPlan() (v *Plan) {
+	if !p.IsSetPlan() {
+		return UpdatePlanReq_Plan_DEFAULT
+	}
+	return p.Plan
+}
+func (p *UpdatePlanReq) SetPlan(val *Plan) {
+	p.Plan = val
+}
+
+var fieldIDToName_UpdatePlanReq = map[int16]string{
+	1: "plan",
+}
+
+func (p *UpdatePlanReq) IsSetPlan() bool {
+	return p.Plan != nil
+}
+
+func (p *UpdatePlanReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdatePlanReq[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UpdatePlanReq) ReadField1(iprot thrift.TProtocol) error {
+	p.Plan = NewPlan()
+	if err := p.Plan.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UpdatePlanReq) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UpdatePlanReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UpdatePlanReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("plan", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Plan.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UpdatePlanReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UpdatePlanReq(%+v)", *p)
+}
+
+func (p *UpdatePlanReq) DeepEqual(ano *UpdatePlanReq) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Plan) {
+		return false
+	}
+	return true
+}
+
+func (p *UpdatePlanReq) Field1DeepEqual(src *Plan) bool {
+
+	if !p.Plan.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type Service interface {
-	CreatePlan(ctx context.Context, req *CreatePlanReq) (r *CreatePlanResp, err error)
-
-	MCreatePlan(ctx context.Context, req *MCreatePlanReq) (r *MCreatePlanResp, err error)
-
 	GetPlan(ctx context.Context, req *GetPlanReq) (r *GetPlanResp, err error)
 
 	MGetPlan(ctx context.Context, req *MGetPlanReq) (r *MGetPlanResp, err error)
 
 	QueryPlan(ctx context.Context, req *QueryPlanReq) (r *QueryPlanResp, err error)
+
+	CreatePlan(ctx context.Context, req *CreatePlanReq) (r *CreatePlanResp, err error)
+
+	MCreatePlan(ctx context.Context, req *MCreatePlanReq) (r *MCreatePlanResp, err error)
 }
 
 type ServiceClient struct {
@@ -3128,24 +3300,6 @@ func (p *ServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *ServiceClient) CreatePlan(ctx context.Context, req *CreatePlanReq) (r *CreatePlanResp, err error) {
-	var _args ServiceCreatePlanArgs
-	_args.Req = req
-	var _result ServiceCreatePlanResult
-	if err = p.Client_().Call(ctx, "CreatePlan", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-func (p *ServiceClient) MCreatePlan(ctx context.Context, req *MCreatePlanReq) (r *MCreatePlanResp, err error) {
-	var _args ServiceMCreatePlanArgs
-	_args.Req = req
-	var _result ServiceMCreatePlanResult
-	if err = p.Client_().Call(ctx, "MCreatePlan", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
 func (p *ServiceClient) GetPlan(ctx context.Context, req *GetPlanReq) (r *GetPlanResp, err error) {
 	var _args ServiceGetPlanArgs
 	_args.Req = req
@@ -3173,6 +3327,24 @@ func (p *ServiceClient) QueryPlan(ctx context.Context, req *QueryPlanReq) (r *Qu
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *ServiceClient) CreatePlan(ctx context.Context, req *CreatePlanReq) (r *CreatePlanResp, err error) {
+	var _args ServiceCreatePlanArgs
+	_args.Req = req
+	var _result ServiceCreatePlanResult
+	if err = p.Client_().Call(ctx, "CreatePlan", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *ServiceClient) MCreatePlan(ctx context.Context, req *MCreatePlanReq) (r *MCreatePlanResp, err error) {
+	var _args ServiceMCreatePlanArgs
+	_args.Req = req
+	var _result ServiceMCreatePlanResult
+	if err = p.Client_().Call(ctx, "MCreatePlan", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type ServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -3194,11 +3366,11 @@ func (p *ServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction {
 
 func NewServiceProcessor(handler Service) *ServiceProcessor {
 	self := &ServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("CreatePlan", &serviceProcessorCreatePlan{handler: handler})
-	self.AddToProcessorMap("MCreatePlan", &serviceProcessorMCreatePlan{handler: handler})
 	self.AddToProcessorMap("GetPlan", &serviceProcessorGetPlan{handler: handler})
 	self.AddToProcessorMap("MGetPlan", &serviceProcessorMGetPlan{handler: handler})
 	self.AddToProcessorMap("QueryPlan", &serviceProcessorQueryPlan{handler: handler})
+	self.AddToProcessorMap("CreatePlan", &serviceProcessorCreatePlan{handler: handler})
+	self.AddToProcessorMap("MCreatePlan", &serviceProcessorMCreatePlan{handler: handler})
 	return self
 }
 func (p *ServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -3217,102 +3389,6 @@ func (p *ServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TPro
 	oprot.WriteMessageEnd()
 	oprot.Flush(ctx)
 	return false, x
-}
-
-type serviceProcessorCreatePlan struct {
-	handler Service
-}
-
-func (p *serviceProcessorCreatePlan) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := ServiceCreatePlanArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("CreatePlan", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := ServiceCreatePlanResult{}
-	var retval *CreatePlanResp
-	if retval, err2 = p.handler.CreatePlan(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreatePlan: "+err2.Error())
-		oprot.WriteMessageBegin("CreatePlan", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("CreatePlan", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
-}
-
-type serviceProcessorMCreatePlan struct {
-	handler Service
-}
-
-func (p *serviceProcessorMCreatePlan) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := ServiceMCreatePlanArgs{}
-	if err = args.Read(iprot); err != nil {
-		iprot.ReadMessageEnd()
-		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("MCreatePlan", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return false, err
-	}
-
-	iprot.ReadMessageEnd()
-	var err2 error
-	result := ServiceMCreatePlanResult{}
-	var retval *MCreatePlanResp
-	if retval, err2 = p.handler.MCreatePlan(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing MCreatePlan: "+err2.Error())
-		oprot.WriteMessageBegin("MCreatePlan", thrift.EXCEPTION, seqId)
-		x.Write(oprot)
-		oprot.WriteMessageEnd()
-		oprot.Flush(ctx)
-		return true, err2
-	} else {
-		result.Success = retval
-	}
-	if err2 = oprot.WriteMessageBegin("MCreatePlan", thrift.REPLY, seqId); err2 != nil {
-		err = err2
-	}
-	if err2 = result.Write(oprot); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-		err = err2
-	}
-	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-		err = err2
-	}
-	if err != nil {
-		return
-	}
-	return true, err
 }
 
 type serviceProcessorGetPlan struct {
@@ -3459,696 +3535,100 @@ func (p *serviceProcessorQueryPlan) Process(ctx context.Context, seqId int32, ip
 	return true, err
 }
 
-type ServiceCreatePlanArgs struct {
-	Req *CreatePlanReq `thrift:"req,1" frugal:"1,default,CreatePlanReq" json:"req"`
+type serviceProcessorCreatePlan struct {
+	handler Service
 }
 
-func NewServiceCreatePlanArgs() *ServiceCreatePlanArgs {
-	return &ServiceCreatePlanArgs{}
+func (p *serviceProcessorCreatePlan) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := ServiceCreatePlanArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("CreatePlan", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := ServiceCreatePlanResult{}
+	var retval *CreatePlanResp
+	if retval, err2 = p.handler.CreatePlan(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreatePlan: "+err2.Error())
+		oprot.WriteMessageBegin("CreatePlan", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("CreatePlan", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
 }
 
-func (p *ServiceCreatePlanArgs) InitDefault() {
-	*p = ServiceCreatePlanArgs{}
+type serviceProcessorMCreatePlan struct {
+	handler Service
 }
 
-var ServiceCreatePlanArgs_Req_DEFAULT *CreatePlanReq
-
-func (p *ServiceCreatePlanArgs) GetReq() (v *CreatePlanReq) {
-	if !p.IsSetReq() {
-		return ServiceCreatePlanArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-func (p *ServiceCreatePlanArgs) SetReq(val *CreatePlanReq) {
-	p.Req = val
-}
-
-var fieldIDToName_ServiceCreatePlanArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *ServiceCreatePlanArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *ServiceCreatePlanArgs) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
+func (p *serviceProcessorMCreatePlan) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := ServiceMCreatePlanArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("MCreatePlan", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
 	}
 
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := ServiceMCreatePlanResult{}
+	var retval *MCreatePlanResp
+	if retval, err2 = p.handler.MCreatePlan(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing MCreatePlan: "+err2.Error())
+		oprot.WriteMessageBegin("MCreatePlan", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
 	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
+	if err2 = oprot.WriteMessageBegin("MCreatePlan", thrift.REPLY, seqId); err2 != nil {
+		err = err2
 	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceCreatePlanArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCreatePlanReq()
-	if err := p.Req.Read(iprot); err != nil {
-		return err
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
 	}
-	return nil
-}
-
-func (p *ServiceCreatePlanArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("CreatePlan_args"); err != nil {
-		goto WriteStructBeginError
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
 	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
 	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
+	if err != nil {
+		return
 	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ServiceCreatePlanArgs(%+v)", *p)
-}
-
-func (p *ServiceCreatePlanArgs) DeepEqual(ano *ServiceCreatePlanArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *ServiceCreatePlanArgs) Field1DeepEqual(src *CreatePlanReq) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
-type ServiceCreatePlanResult struct {
-	Success *CreatePlanResp `thrift:"success,0,optional" frugal:"0,optional,CreatePlanResp" json:"success,omitempty"`
-}
-
-func NewServiceCreatePlanResult() *ServiceCreatePlanResult {
-	return &ServiceCreatePlanResult{}
-}
-
-func (p *ServiceCreatePlanResult) InitDefault() {
-	*p = ServiceCreatePlanResult{}
-}
-
-var ServiceCreatePlanResult_Success_DEFAULT *CreatePlanResp
-
-func (p *ServiceCreatePlanResult) GetSuccess() (v *CreatePlanResp) {
-	if !p.IsSetSuccess() {
-		return ServiceCreatePlanResult_Success_DEFAULT
-	}
-	return p.Success
-}
-func (p *ServiceCreatePlanResult) SetSuccess(x interface{}) {
-	p.Success = x.(*CreatePlanResp)
-}
-
-var fieldIDToName_ServiceCreatePlanResult = map[int16]string{
-	0: "success",
-}
-
-func (p *ServiceCreatePlanResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *ServiceCreatePlanResult) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceCreatePlanResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewCreatePlanResp()
-	if err := p.Success.Read(iprot); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *ServiceCreatePlanResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("CreatePlan_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Success.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *ServiceCreatePlanResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ServiceCreatePlanResult(%+v)", *p)
-}
-
-func (p *ServiceCreatePlanResult) DeepEqual(ano *ServiceCreatePlanResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *ServiceCreatePlanResult) Field0DeepEqual(src *CreatePlanResp) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
-type ServiceMCreatePlanArgs struct {
-	Req *MCreatePlanReq `thrift:"req,1" frugal:"1,default,MCreatePlanReq" json:"req"`
-}
-
-func NewServiceMCreatePlanArgs() *ServiceMCreatePlanArgs {
-	return &ServiceMCreatePlanArgs{}
-}
-
-func (p *ServiceMCreatePlanArgs) InitDefault() {
-	*p = ServiceMCreatePlanArgs{}
-}
-
-var ServiceMCreatePlanArgs_Req_DEFAULT *MCreatePlanReq
-
-func (p *ServiceMCreatePlanArgs) GetReq() (v *MCreatePlanReq) {
-	if !p.IsSetReq() {
-		return ServiceMCreatePlanArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-func (p *ServiceMCreatePlanArgs) SetReq(val *MCreatePlanReq) {
-	p.Req = val
-}
-
-var fieldIDToName_ServiceMCreatePlanArgs = map[int16]string{
-	1: "req",
-}
-
-func (p *ServiceMCreatePlanArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *ServiceMCreatePlanArgs) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceMCreatePlanArgs[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewMCreatePlanReq()
-	if err := p.Req.Read(iprot); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *ServiceMCreatePlanArgs) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("MCreatePlan_args"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.Req.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanArgs) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ServiceMCreatePlanArgs(%+v)", *p)
-}
-
-func (p *ServiceMCreatePlanArgs) DeepEqual(ano *ServiceMCreatePlanArgs) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field1DeepEqual(ano.Req) {
-		return false
-	}
-	return true
-}
-
-func (p *ServiceMCreatePlanArgs) Field1DeepEqual(src *MCreatePlanReq) bool {
-
-	if !p.Req.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-
-type ServiceMCreatePlanResult struct {
-	Success *MCreatePlanResp `thrift:"success,0,optional" frugal:"0,optional,MCreatePlanResp" json:"success,omitempty"`
-}
-
-func NewServiceMCreatePlanResult() *ServiceMCreatePlanResult {
-	return &ServiceMCreatePlanResult{}
-}
-
-func (p *ServiceMCreatePlanResult) InitDefault() {
-	*p = ServiceMCreatePlanResult{}
-}
-
-var ServiceMCreatePlanResult_Success_DEFAULT *MCreatePlanResp
-
-func (p *ServiceMCreatePlanResult) GetSuccess() (v *MCreatePlanResp) {
-	if !p.IsSetSuccess() {
-		return ServiceMCreatePlanResult_Success_DEFAULT
-	}
-	return p.Success
-}
-func (p *ServiceMCreatePlanResult) SetSuccess(x interface{}) {
-	p.Success = x.(*MCreatePlanResp)
-}
-
-var fieldIDToName_ServiceMCreatePlanResult = map[int16]string{
-	0: "success",
-}
-
-func (p *ServiceMCreatePlanResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *ServiceMCreatePlanResult) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 0:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField0(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceMCreatePlanResult[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewMCreatePlanResp()
-	if err := p.Success.Read(iprot); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *ServiceMCreatePlanResult) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("MCreatePlan_result"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField0(oprot); err != nil {
-			fieldId = 0
-			goto WriteFieldError
-		}
-
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanResult) writeField0(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSuccess() {
-		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Success.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
-}
-
-func (p *ServiceMCreatePlanResult) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("ServiceMCreatePlanResult(%+v)", *p)
-}
-
-func (p *ServiceMCreatePlanResult) DeepEqual(ano *ServiceMCreatePlanResult) bool {
-	if p == ano {
-		return true
-	} else if p == nil || ano == nil {
-		return false
-	}
-	if !p.Field0DeepEqual(ano.Success) {
-		return false
-	}
-	return true
-}
-
-func (p *ServiceMCreatePlanResult) Field0DeepEqual(src *MCreatePlanResp) bool {
-
-	if !p.Success.DeepEqual(src) {
-		return false
-	}
-	return true
+	return true, err
 }
 
 type ServiceGetPlanArgs struct {
@@ -5182,6 +4662,698 @@ func (p *ServiceQueryPlanResult) DeepEqual(ano *ServiceQueryPlanResult) bool {
 }
 
 func (p *ServiceQueryPlanResult) Field0DeepEqual(src *QueryPlanResp) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type ServiceCreatePlanArgs struct {
+	Req *CreatePlanReq `thrift:"req,1" frugal:"1,default,CreatePlanReq" json:"req"`
+}
+
+func NewServiceCreatePlanArgs() *ServiceCreatePlanArgs {
+	return &ServiceCreatePlanArgs{}
+}
+
+func (p *ServiceCreatePlanArgs) InitDefault() {
+	*p = ServiceCreatePlanArgs{}
+}
+
+var ServiceCreatePlanArgs_Req_DEFAULT *CreatePlanReq
+
+func (p *ServiceCreatePlanArgs) GetReq() (v *CreatePlanReq) {
+	if !p.IsSetReq() {
+		return ServiceCreatePlanArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *ServiceCreatePlanArgs) SetReq(val *CreatePlanReq) {
+	p.Req = val
+}
+
+var fieldIDToName_ServiceCreatePlanArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *ServiceCreatePlanArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *ServiceCreatePlanArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceCreatePlanArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewCreatePlanReq()
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ServiceCreatePlanArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreatePlan_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ServiceCreatePlanArgs(%+v)", *p)
+}
+
+func (p *ServiceCreatePlanArgs) DeepEqual(ano *ServiceCreatePlanArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *ServiceCreatePlanArgs) Field1DeepEqual(src *CreatePlanReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type ServiceCreatePlanResult struct {
+	Success *CreatePlanResp `thrift:"success,0,optional" frugal:"0,optional,CreatePlanResp" json:"success,omitempty"`
+}
+
+func NewServiceCreatePlanResult() *ServiceCreatePlanResult {
+	return &ServiceCreatePlanResult{}
+}
+
+func (p *ServiceCreatePlanResult) InitDefault() {
+	*p = ServiceCreatePlanResult{}
+}
+
+var ServiceCreatePlanResult_Success_DEFAULT *CreatePlanResp
+
+func (p *ServiceCreatePlanResult) GetSuccess() (v *CreatePlanResp) {
+	if !p.IsSetSuccess() {
+		return ServiceCreatePlanResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *ServiceCreatePlanResult) SetSuccess(x interface{}) {
+	p.Success = x.(*CreatePlanResp)
+}
+
+var fieldIDToName_ServiceCreatePlanResult = map[int16]string{
+	0: "success",
+}
+
+func (p *ServiceCreatePlanResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *ServiceCreatePlanResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceCreatePlanResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewCreatePlanResp()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ServiceCreatePlanResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreatePlan_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *ServiceCreatePlanResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ServiceCreatePlanResult(%+v)", *p)
+}
+
+func (p *ServiceCreatePlanResult) DeepEqual(ano *ServiceCreatePlanResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *ServiceCreatePlanResult) Field0DeepEqual(src *CreatePlanResp) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type ServiceMCreatePlanArgs struct {
+	Req *MCreatePlanReq `thrift:"req,1" frugal:"1,default,MCreatePlanReq" json:"req"`
+}
+
+func NewServiceMCreatePlanArgs() *ServiceMCreatePlanArgs {
+	return &ServiceMCreatePlanArgs{}
+}
+
+func (p *ServiceMCreatePlanArgs) InitDefault() {
+	*p = ServiceMCreatePlanArgs{}
+}
+
+var ServiceMCreatePlanArgs_Req_DEFAULT *MCreatePlanReq
+
+func (p *ServiceMCreatePlanArgs) GetReq() (v *MCreatePlanReq) {
+	if !p.IsSetReq() {
+		return ServiceMCreatePlanArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *ServiceMCreatePlanArgs) SetReq(val *MCreatePlanReq) {
+	p.Req = val
+}
+
+var fieldIDToName_ServiceMCreatePlanArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *ServiceMCreatePlanArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *ServiceMCreatePlanArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceMCreatePlanArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewMCreatePlanReq()
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ServiceMCreatePlanArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("MCreatePlan_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ServiceMCreatePlanArgs(%+v)", *p)
+}
+
+func (p *ServiceMCreatePlanArgs) DeepEqual(ano *ServiceMCreatePlanArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *ServiceMCreatePlanArgs) Field1DeepEqual(src *MCreatePlanReq) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type ServiceMCreatePlanResult struct {
+	Success *MCreatePlanResp `thrift:"success,0,optional" frugal:"0,optional,MCreatePlanResp" json:"success,omitempty"`
+}
+
+func NewServiceMCreatePlanResult() *ServiceMCreatePlanResult {
+	return &ServiceMCreatePlanResult{}
+}
+
+func (p *ServiceMCreatePlanResult) InitDefault() {
+	*p = ServiceMCreatePlanResult{}
+}
+
+var ServiceMCreatePlanResult_Success_DEFAULT *MCreatePlanResp
+
+func (p *ServiceMCreatePlanResult) GetSuccess() (v *MCreatePlanResp) {
+	if !p.IsSetSuccess() {
+		return ServiceMCreatePlanResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *ServiceMCreatePlanResult) SetSuccess(x interface{}) {
+	p.Success = x.(*MCreatePlanResp)
+}
+
+var fieldIDToName_ServiceMCreatePlanResult = map[int16]string{
+	0: "success",
+}
+
+func (p *ServiceMCreatePlanResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *ServiceMCreatePlanResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ServiceMCreatePlanResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewMCreatePlanResp()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *ServiceMCreatePlanResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("MCreatePlan_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *ServiceMCreatePlanResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ServiceMCreatePlanResult(%+v)", *p)
+}
+
+func (p *ServiceMCreatePlanResult) DeepEqual(ano *ServiceMCreatePlanResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *ServiceMCreatePlanResult) Field0DeepEqual(src *MCreatePlanResp) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

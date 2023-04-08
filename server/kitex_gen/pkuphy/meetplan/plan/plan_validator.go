@@ -152,3 +152,12 @@ func (p *MCreatePlanResp) IsValid() error {
 	}
 	return nil
 }
+func (p *UpdatePlanReq) IsValid() error {
+	if p.Plan == nil {
+		return fmt.Errorf("field Plan not_nil rule failed")
+	}
+	if err := p.Plan.IsValid(); err != nil {
+		return fmt.Errorf("filed Plan not valid, %w", err)
+	}
+	return nil
+}

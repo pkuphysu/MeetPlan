@@ -11,11 +11,11 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	CreatePlan(ctx context.Context, req *plan.CreatePlanReq, callOptions ...callopt.Option) (r *plan.CreatePlanResp, err error)
-	MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error)
 	GetPlan(ctx context.Context, req *plan.GetPlanReq, callOptions ...callopt.Option) (r *plan.GetPlanResp, err error)
 	MGetPlan(ctx context.Context, req *plan.MGetPlanReq, callOptions ...callopt.Option) (r *plan.MGetPlanResp, err error)
 	QueryPlan(ctx context.Context, req *plan.QueryPlanReq, callOptions ...callopt.Option) (r *plan.QueryPlanResp, err error)
+	CreatePlan(ctx context.Context, req *plan.CreatePlanReq, callOptions ...callopt.Option) (r *plan.CreatePlanResp, err error)
+	MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -47,16 +47,6 @@ type kServiceClient struct {
 	*kClient
 }
 
-func (p *kServiceClient) CreatePlan(ctx context.Context, req *plan.CreatePlanReq, callOptions ...callopt.Option) (r *plan.CreatePlanResp, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CreatePlan(ctx, req)
-}
-
-func (p *kServiceClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.MCreatePlan(ctx, req)
-}
-
 func (p *kServiceClient) GetPlan(ctx context.Context, req *plan.GetPlanReq, callOptions ...callopt.Option) (r *plan.GetPlanResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetPlan(ctx, req)
@@ -70,4 +60,14 @@ func (p *kServiceClient) MGetPlan(ctx context.Context, req *plan.MGetPlanReq, ca
 func (p *kServiceClient) QueryPlan(ctx context.Context, req *plan.QueryPlanReq, callOptions ...callopt.Option) (r *plan.QueryPlanResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.QueryPlan(ctx, req)
+}
+
+func (p *kServiceClient) CreatePlan(ctx context.Context, req *plan.CreatePlanReq, callOptions ...callopt.Option) (r *plan.CreatePlanResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CreatePlan(ctx, req)
+}
+
+func (p *kServiceClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.MCreatePlan(ctx, req)
 }

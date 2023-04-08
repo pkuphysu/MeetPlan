@@ -61,10 +61,15 @@ struct MCreatePlanResp {
     255: base.BaseResp base_resp
 }
 
+struct UpdatePlanReq{
+    1: Plan plan (vt.not_nil = "true")
+}
+
 service Service {
-    CreatePlanResp CreatePlan(1: CreatePlanReq req)
-    MCreatePlanResp MCreatePlan(1: MCreatePlanReq req)
     GetPlanResp GetPlan(1: GetPlanReq req)
     MGetPlanResp MGetPlan(1: MGetPlanReq req)
     QueryPlanResp QueryPlan(1: QueryPlanReq req)
+
+    CreatePlanResp CreatePlan(1: CreatePlanReq req)
+    MCreatePlanResp MCreatePlan(1: MCreatePlanReq req)
 }

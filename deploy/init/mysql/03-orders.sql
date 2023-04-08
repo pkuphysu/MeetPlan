@@ -3,7 +3,7 @@ create table if not exists orders
     id          bigint auto_increment primary key,
     create_time timestamp  not null default current_timestamp,
     update_time timestamp  not null default current_timestamp on update current_timestamp,
-    completed   tinyint(2) not null,
+    status      tinyint(2) not null,
     message     longtext   null,
     plan_id     bigint     not null,
     student_id  bigint     not null,

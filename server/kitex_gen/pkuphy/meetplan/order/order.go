@@ -15,9 +15,9 @@ import (
 type OrderStatus int64
 
 const (
-	OrderStatus_CREATED  OrderStatus = 1
-	OrderStatus_FINISHED OrderStatus = 2
-	OrderStatus_Canceled OrderStatus = 3
+	OrderStatus_CREATED   OrderStatus = 1
+	OrderStatus_FINISHED  OrderStatus = 2
+	OrderStatus_CANCELLED OrderStatus = 3
 )
 
 func (p OrderStatus) String() string {
@@ -26,8 +26,8 @@ func (p OrderStatus) String() string {
 		return "CREATED"
 	case OrderStatus_FINISHED:
 		return "FINISHED"
-	case OrderStatus_Canceled:
-		return "Canceled"
+	case OrderStatus_CANCELLED:
+		return "CANCELLED"
 	}
 	return "<UNSET>"
 }
@@ -38,8 +38,8 @@ func OrderStatusFromString(s string) (OrderStatus, error) {
 		return OrderStatus_CREATED, nil
 	case "FINISHED":
 		return OrderStatus_FINISHED, nil
-	case "Canceled":
-		return OrderStatus_Canceled, nil
+	case "CANCELLED":
+		return OrderStatus_CANCELLED, nil
 	}
 	return OrderStatus(0), fmt.Errorf("not a valid OrderStatus string")
 }
@@ -1391,10 +1391,11 @@ func (p *MGetOrderResp) Field255DeepEqual(src *base.BaseResp) bool {
 }
 
 type QueryOrderReq struct {
-	PageParam *base.PageParam `thrift:"page_param,1,optional" frugal:"1,optional,base.PageParam" json:"page_param,omitempty"`
-	PlanIds   []int64         `thrift:"plan_ids,2,optional" frugal:"2,optional,list<i64>" json:"plan_ids,omitempty"`
-	StudentId []int64         `thrift:"student_id,3,optional" frugal:"3,optional,list<i64>" json:"student_id,omitempty"`
-	Status    *OrderStatus    `thrift:"status,4,optional" frugal:"4,optional,OrderStatus" json:"status,omitempty"`
+	PageParam  *base.PageParam `thrift:"page_param,1,optional" frugal:"1,optional,base.PageParam" json:"page_param,omitempty"`
+	PlanIds    []int64         `thrift:"plan_ids,2,optional" frugal:"2,optional,list<i64>" json:"plan_ids,omitempty"`
+	StudentIds []int64         `thrift:"student_ids,3,optional" frugal:"3,optional,list<i64>" json:"student_ids,omitempty"`
+	Status     *OrderStatus    `thrift:"status,4,optional" frugal:"4,optional,OrderStatus" json:"status,omitempty"`
+	TeacherIds []int64         `thrift:"teacher_ids,5,optional" frugal:"5,optional,list<i64>" json:"teacher_ids,omitempty"`
 }
 
 func NewQueryOrderReq() *QueryOrderReq {
@@ -1423,13 +1424,13 @@ func (p *QueryOrderReq) GetPlanIds() (v []int64) {
 	return p.PlanIds
 }
 
-var QueryOrderReq_StudentId_DEFAULT []int64
+var QueryOrderReq_StudentIds_DEFAULT []int64
 
-func (p *QueryOrderReq) GetStudentId() (v []int64) {
-	if !p.IsSetStudentId() {
-		return QueryOrderReq_StudentId_DEFAULT
+func (p *QueryOrderReq) GetStudentIds() (v []int64) {
+	if !p.IsSetStudentIds() {
+		return QueryOrderReq_StudentIds_DEFAULT
 	}
-	return p.StudentId
+	return p.StudentIds
 }
 
 var QueryOrderReq_Status_DEFAULT OrderStatus
@@ -1440,24 +1441,37 @@ func (p *QueryOrderReq) GetStatus() (v OrderStatus) {
 	}
 	return *p.Status
 }
+
+var QueryOrderReq_TeacherIds_DEFAULT []int64
+
+func (p *QueryOrderReq) GetTeacherIds() (v []int64) {
+	if !p.IsSetTeacherIds() {
+		return QueryOrderReq_TeacherIds_DEFAULT
+	}
+	return p.TeacherIds
+}
 func (p *QueryOrderReq) SetPageParam(val *base.PageParam) {
 	p.PageParam = val
 }
 func (p *QueryOrderReq) SetPlanIds(val []int64) {
 	p.PlanIds = val
 }
-func (p *QueryOrderReq) SetStudentId(val []int64) {
-	p.StudentId = val
+func (p *QueryOrderReq) SetStudentIds(val []int64) {
+	p.StudentIds = val
 }
 func (p *QueryOrderReq) SetStatus(val *OrderStatus) {
 	p.Status = val
+}
+func (p *QueryOrderReq) SetTeacherIds(val []int64) {
+	p.TeacherIds = val
 }
 
 var fieldIDToName_QueryOrderReq = map[int16]string{
 	1: "page_param",
 	2: "plan_ids",
-	3: "student_id",
+	3: "student_ids",
 	4: "status",
+	5: "teacher_ids",
 }
 
 func (p *QueryOrderReq) IsSetPageParam() bool {
@@ -1468,12 +1482,16 @@ func (p *QueryOrderReq) IsSetPlanIds() bool {
 	return p.PlanIds != nil
 }
 
-func (p *QueryOrderReq) IsSetStudentId() bool {
-	return p.StudentId != nil
+func (p *QueryOrderReq) IsSetStudentIds() bool {
+	return p.StudentIds != nil
 }
 
 func (p *QueryOrderReq) IsSetStatus() bool {
 	return p.Status != nil
+}
+
+func (p *QueryOrderReq) IsSetTeacherIds() bool {
+	return p.TeacherIds != nil
 }
 
 func (p *QueryOrderReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1528,6 +1546,16 @@ func (p *QueryOrderReq) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -1600,7 +1628,7 @@ func (p *QueryOrderReq) ReadField3(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.StudentId = make([]int64, 0, size)
+	p.StudentIds = make([]int64, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem int64
 		if v, err := iprot.ReadI64(); err != nil {
@@ -1609,7 +1637,7 @@ func (p *QueryOrderReq) ReadField3(iprot thrift.TProtocol) error {
 			_elem = v
 		}
 
-		p.StudentId = append(p.StudentId, _elem)
+		p.StudentIds = append(p.StudentIds, _elem)
 	}
 	if err := iprot.ReadListEnd(); err != nil {
 		return err
@@ -1623,6 +1651,28 @@ func (p *QueryOrderReq) ReadField4(iprot thrift.TProtocol) error {
 	} else {
 		tmp := OrderStatus(v)
 		p.Status = &tmp
+	}
+	return nil
+}
+
+func (p *QueryOrderReq) ReadField5(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.TeacherIds = make([]int64, 0, size)
+	for i := 0; i < size; i++ {
+		var _elem int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		p.TeacherIds = append(p.TeacherIds, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1647,6 +1697,10 @@ func (p *QueryOrderReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 
@@ -1715,14 +1769,14 @@ WriteFieldEndError:
 }
 
 func (p *QueryOrderReq) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStudentId() {
-		if err = oprot.WriteFieldBegin("student_id", thrift.LIST, 3); err != nil {
+	if p.IsSetStudentIds() {
+		if err = oprot.WriteFieldBegin("student_ids", thrift.LIST, 3); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteListBegin(thrift.I64, len(p.StudentId)); err != nil {
+		if err := oprot.WriteListBegin(thrift.I64, len(p.StudentIds)); err != nil {
 			return err
 		}
-		for _, v := range p.StudentId {
+		for _, v := range p.StudentIds {
 			if err := oprot.WriteI64(v); err != nil {
 				return err
 			}
@@ -1760,6 +1814,33 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
+func (p *QueryOrderReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetTeacherIds() {
+		if err = oprot.WriteFieldBegin("teacher_ids", thrift.LIST, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.I64, len(p.TeacherIds)); err != nil {
+			return err
+		}
+		for _, v := range p.TeacherIds {
+			if err := oprot.WriteI64(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
 func (p *QueryOrderReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1779,10 +1860,13 @@ func (p *QueryOrderReq) DeepEqual(ano *QueryOrderReq) bool {
 	if !p.Field2DeepEqual(ano.PlanIds) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.StudentId) {
+	if !p.Field3DeepEqual(ano.StudentIds) {
 		return false
 	}
 	if !p.Field4DeepEqual(ano.Status) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.TeacherIds) {
 		return false
 	}
 	return true
@@ -1810,10 +1894,10 @@ func (p *QueryOrderReq) Field2DeepEqual(src []int64) bool {
 }
 func (p *QueryOrderReq) Field3DeepEqual(src []int64) bool {
 
-	if len(p.StudentId) != len(src) {
+	if len(p.StudentIds) != len(src) {
 		return false
 	}
-	for i, v := range p.StudentId {
+	for i, v := range p.StudentIds {
 		_src := src[i]
 		if v != _src {
 			return false
@@ -1833,11 +1917,24 @@ func (p *QueryOrderReq) Field4DeepEqual(src *OrderStatus) bool {
 	}
 	return true
 }
+func (p *QueryOrderReq) Field5DeepEqual(src []int64) bool {
+
+	if len(p.TeacherIds) != len(src) {
+		return false
+	}
+	for i, v := range p.TeacherIds {
+		_src := src[i]
+		if v != _src {
+			return false
+		}
+	}
+	return true
+}
 
 type QueryOrderResp struct {
-	PageResult_ *base.PageParam `thrift:"page_result,1" frugal:"1,default,base.PageParam" json:"page_result"`
-	Orders      []*Order        `thrift:"orders,2" frugal:"2,default,list<Order>" json:"orders"`
-	BaseResp    *base.BaseResp  `thrift:"base_resp,255" frugal:"255,default,base.BaseResp" json:"base_resp"`
+	PageParam *base.PageParam `thrift:"page_param,1" frugal:"1,default,base.PageParam" json:"page_param"`
+	Orders    []*Order        `thrift:"orders,2" frugal:"2,default,list<Order>" json:"orders"`
+	BaseResp  *base.BaseResp  `thrift:"base_resp,255" frugal:"255,default,base.BaseResp" json:"base_resp"`
 }
 
 func NewQueryOrderResp() *QueryOrderResp {
@@ -1848,13 +1945,13 @@ func (p *QueryOrderResp) InitDefault() {
 	*p = QueryOrderResp{}
 }
 
-var QueryOrderResp_PageResult__DEFAULT *base.PageParam
+var QueryOrderResp_PageParam_DEFAULT *base.PageParam
 
-func (p *QueryOrderResp) GetPageResult_() (v *base.PageParam) {
-	if !p.IsSetPageResult_() {
-		return QueryOrderResp_PageResult__DEFAULT
+func (p *QueryOrderResp) GetPageParam() (v *base.PageParam) {
+	if !p.IsSetPageParam() {
+		return QueryOrderResp_PageParam_DEFAULT
 	}
-	return p.PageResult_
+	return p.PageParam
 }
 
 func (p *QueryOrderResp) GetOrders() (v []*Order) {
@@ -1869,8 +1966,8 @@ func (p *QueryOrderResp) GetBaseResp() (v *base.BaseResp) {
 	}
 	return p.BaseResp
 }
-func (p *QueryOrderResp) SetPageResult_(val *base.PageParam) {
-	p.PageResult_ = val
+func (p *QueryOrderResp) SetPageParam(val *base.PageParam) {
+	p.PageParam = val
 }
 func (p *QueryOrderResp) SetOrders(val []*Order) {
 	p.Orders = val
@@ -1880,13 +1977,13 @@ func (p *QueryOrderResp) SetBaseResp(val *base.BaseResp) {
 }
 
 var fieldIDToName_QueryOrderResp = map[int16]string{
-	1:   "page_result",
+	1:   "page_param",
 	2:   "orders",
 	255: "base_resp",
 }
 
-func (p *QueryOrderResp) IsSetPageResult_() bool {
-	return p.PageResult_ != nil
+func (p *QueryOrderResp) IsSetPageParam() bool {
+	return p.PageParam != nil
 }
 
 func (p *QueryOrderResp) IsSetBaseResp() bool {
@@ -1973,8 +2070,8 @@ ReadStructEndError:
 }
 
 func (p *QueryOrderResp) ReadField1(iprot thrift.TProtocol) error {
-	p.PageResult_ = base.NewPageParam()
-	if err := p.PageResult_.Read(iprot); err != nil {
+	p.PageParam = base.NewPageParam()
+	if err := p.PageParam.Read(iprot); err != nil {
 		return err
 	}
 	return nil
@@ -2046,10 +2143,10 @@ WriteStructEndError:
 }
 
 func (p *QueryOrderResp) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("page_result", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("page_param", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.PageResult_.Write(oprot); err != nil {
+	if err := p.PageParam.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2117,7 +2214,7 @@ func (p *QueryOrderResp) DeepEqual(ano *QueryOrderResp) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.PageResult_) {
+	if !p.Field1DeepEqual(ano.PageParam) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.Orders) {
@@ -2131,7 +2228,7 @@ func (p *QueryOrderResp) DeepEqual(ano *QueryOrderResp) bool {
 
 func (p *QueryOrderResp) Field1DeepEqual(src *base.PageParam) bool {
 
-	if !p.PageResult_.DeepEqual(src) {
+	if !p.PageParam.DeepEqual(src) {
 		return false
 	}
 	return true
