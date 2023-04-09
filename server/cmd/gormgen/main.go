@@ -3,6 +3,7 @@ package main
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
+	"gorm.io/gen/field"
 	"gorm.io/gorm"
 	"strings"
 )
@@ -34,10 +35,16 @@ func main() {
 
 	g.WithDataTypeMap(dataMap)
 
+	order := g.GenerateModel("orders", gen.FieldIgnore("create_time", "update_time"))
 	g.ApplyBasic(
 		g.GenerateModel("users", gen.FieldIgnore("create_time", "update_time")),
-		g.GenerateModel("plans", gen.FieldIgnore("create_time", "update_time")),
-		g.GenerateModel("orders", gen.FieldIgnore("create_time", "update_time")),
+		g.GenerateModel("plans",
+			gen.FieldIgnore("create_time", "update_time"),
+			gen.FieldRelate(field.HasMany, "Orders", order, &field.RelateConfig{
+				RelateSlicePointer: true,
+			}),
+		),
+		order,
 		g.GenerateModel("plan_view",
 			gen.FieldIgnore("create_time", "update_time"),
 			gen.FieldType("is_valid", "bool"),

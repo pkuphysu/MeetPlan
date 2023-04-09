@@ -34,6 +34,11 @@ func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 	_plan.Place = field.NewString(tableName, "place")
 	_plan.Quota = field.NewInt8(tableName, "quota")
 	_plan.Message = field.NewString(tableName, "message")
+	_plan.Orders = planHasManyOrders{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Orders", "model.Order"),
+	}
 
 	_plan.fillFieldMap()
 
@@ -51,6 +56,7 @@ type plan struct {
 	Place     field.String
 	Quota     field.Int8
 	Message   field.String
+	Orders    planHasManyOrders
 
 	fieldMap map[string]field.Expr
 }
@@ -90,7 +96,7 @@ func (p *plan) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plan) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 7)
+	p.fieldMap = make(map[string]field.Expr, 8)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["teacher_id"] = p.TeacherID
 	p.fieldMap["start_time"] = p.StartTime
@@ -98,6 +104,7 @@ func (p *plan) fillFieldMap() {
 	p.fieldMap["place"] = p.Place
 	p.fieldMap["quota"] = p.Quota
 	p.fieldMap["message"] = p.Message
+
 }
 
 func (p plan) clone(db *gorm.DB) plan {
@@ -108,6 +115,72 @@ func (p plan) clone(db *gorm.DB) plan {
 func (p plan) replaceDB(db *gorm.DB) plan {
 	p.planDo.ReplaceDB(db)
 	return p
+}
+
+type planHasManyOrders struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a planHasManyOrders) Where(conds ...field.Expr) *planHasManyOrders {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a planHasManyOrders) WithContext(ctx context.Context) *planHasManyOrders {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a planHasManyOrders) Model(m *model.Plan) *planHasManyOrdersTx {
+	return &planHasManyOrdersTx{a.db.Model(m).Association(a.Name())}
+}
+
+type planHasManyOrdersTx struct{ tx *gorm.Association }
+
+func (a planHasManyOrdersTx) Find() (result []*model.Order, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a planHasManyOrdersTx) Append(values ...*model.Order) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a planHasManyOrdersTx) Replace(values ...*model.Order) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a planHasManyOrdersTx) Delete(values ...*model.Order) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a planHasManyOrdersTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a planHasManyOrdersTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type planDo struct{ gen.DO }
