@@ -13,6 +13,9 @@ func main() {
 	config.InitDB()
 
 	reg, err := config.NewRegistry()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	svr := plan.NewServer(new(ServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: constants.PlanRpcServiceName,

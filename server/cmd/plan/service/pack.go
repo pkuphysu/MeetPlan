@@ -47,3 +47,20 @@ func packPlanView(p *model.PlanView) *plan.Plan {
 		RemainingQuota: lo.ToPtr(p.QuotaLeft),
 	}
 }
+func packOrders(orders []*model.Order) []*plan.Order {
+	var resp []*plan.Order
+	for _, o := range orders {
+		resp = append(resp, packOrder(o))
+	}
+	return resp
+}
+
+func packOrder(o *model.Order) *plan.Order {
+	return &plan.Order{
+		Id:        &o.ID,
+		PlanId:    &o.PlanID,
+		StudentId: &o.StudentID,
+		Message:   o.Message,
+		Status:    lo.ToPtr(plan.OrderStatus(o.Status)),
+	}
+}

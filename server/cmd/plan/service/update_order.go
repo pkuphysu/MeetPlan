@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/order"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
 	"github.com/pkuphysu/meetplan/pkg/errno"
 )
 
 type UpdateOrderServiceI interface {
-	UpdateOrder(req *order.UpdateOrderReq) (*order.Order, error)
+	UpdateOrder(req *plan.UpdateOrderReq) (*plan.Order, error)
 }
 
 func NewUpdateOrderService(ctx context.Context) UpdateOrderServiceI {
@@ -23,7 +23,7 @@ type updateOrderService struct {
 	ctx context.Context
 }
 
-func (s *updateOrderService) UpdateOrder(req *order.UpdateOrderReq) (*order.Order, error) {
+func (s *updateOrderService) UpdateOrder(req *plan.UpdateOrderReq) (*plan.Order, error) {
 	updateMap := make(map[string]interface{})
 	if req.Message != nil {
 		updateMap["message"] = *req.Message

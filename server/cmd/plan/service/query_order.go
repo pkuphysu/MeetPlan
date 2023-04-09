@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
 	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/order"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 type QueryOrderServiceI interface {
-	QueryOrder(req *order.QueryOrderReq) ([]*order.Order, *base.PageParam, error)
+	QueryOrder(req *plan.QueryOrderReq) ([]*plan.Order, *base.PageParam, error)
 }
 
 func NewQueryOrderService(ctx context.Context) QueryOrderServiceI {
@@ -25,7 +25,7 @@ type queryOrderService struct {
 	plan query.IPlanDo
 }
 
-func (s *queryOrderService) QueryOrder(req *order.QueryOrderReq) ([]*order.Order, *base.PageParam, error) {
+func (s *queryOrderService) QueryOrder(req *plan.QueryOrderReq) ([]*plan.Order, *base.PageParam, error) {
 	dao := s.dao
 
 	if len(req.PlanIds) > 0 {
@@ -51,10 +51,10 @@ func (s *queryOrderService) QueryOrder(req *order.QueryOrderReq) ([]*order.Order
 	}
 	dao = dao.Limit(int(pageParam.PageSize)).Offset(int(pageParam.PageSize * (pageParam.PageNum - 1)))
 
-	orders, err := dao.Find()
+	plans, err := dao.Find()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return packOrders(orders), pageParam, nil
+	return packOrders(plans), pageParam, nil
 }

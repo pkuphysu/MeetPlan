@@ -28,7 +28,7 @@ func (s *mGetUserService) MGetUser(req *user.MGetUserReq) ([]*user.User, error) 
 
 	if len(req.Ids) == 0 && len(req.PkuIds) == 0 {
 		return nil, errno.ParamErr.WithMessage("ids_or_pku_ids_is_required")
-	} else if len(req.Ids) != 0 && len(req.Ids) != 0 {
+	} else if len(req.Ids) != 0 && len(req.PkuIds) != 0 {
 		dao = dao.Where(query.Q.User.ID.In(req.Ids...)).Or(query.Q.User.PkuID.In(req.PkuIds...))
 	} else if len(req.Ids) != 0 {
 		dao = dao.Where(query.Q.User.ID.In(req.Ids...))

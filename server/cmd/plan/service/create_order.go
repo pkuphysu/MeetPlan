@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/pkuphysu/meetplan/gorm_gen/model"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/order"
+	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 type CreateOrderServiceI interface {
-	CreateOrder(req *order.CreateOrderReq) (*order.Order, error)
+	CreateOrder(req *plan.CreateOrderReq) (*plan.Order, error)
 }
 
 func NewCreateOrderService(ctx context.Context) CreateOrderServiceI {
@@ -23,12 +23,12 @@ type createOrderService struct {
 	ctx context.Context
 }
 
-func (s *createOrderService) CreateOrder(req *order.CreateOrderReq) (*order.Order, error) {
+func (s *createOrderService) CreateOrder(req *plan.CreateOrderReq) (*plan.Order, error) {
 	o := model.Order{
 		PlanID:    req.PlanId,
 		StudentID: req.StudentId,
 		Message:   req.Message,
-		Status:    int8(order.OrderStatus_CREATED),
+		Status:    int8(plan.OrderStatus_CREATED),
 	}
 	if req.Status != nil {
 		o.Status = int8(*req.Status)

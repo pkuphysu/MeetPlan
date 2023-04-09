@@ -19,11 +19,17 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "Service"
 	handlerType := (*plan.Service)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetPlan":     kitex.NewMethodInfo(getPlanHandler, newServiceGetPlanArgs, newServiceGetPlanResult, false),
-		"MGetPlan":    kitex.NewMethodInfo(mGetPlanHandler, newServiceMGetPlanArgs, newServiceMGetPlanResult, false),
-		"QueryPlan":   kitex.NewMethodInfo(queryPlanHandler, newServiceQueryPlanArgs, newServiceQueryPlanResult, false),
-		"CreatePlan":  kitex.NewMethodInfo(createPlanHandler, newServiceCreatePlanArgs, newServiceCreatePlanResult, false),
-		"MCreatePlan": kitex.NewMethodInfo(mCreatePlanHandler, newServiceMCreatePlanArgs, newServiceMCreatePlanResult, false),
+		"GetPlan":      kitex.NewMethodInfo(getPlanHandler, newServiceGetPlanArgs, newServiceGetPlanResult, false),
+		"MGetPlan":     kitex.NewMethodInfo(mGetPlanHandler, newServiceMGetPlanArgs, newServiceMGetPlanResult, false),
+		"QueryPlan":    kitex.NewMethodInfo(queryPlanHandler, newServiceQueryPlanArgs, newServiceQueryPlanResult, false),
+		"CreatePlan":   kitex.NewMethodInfo(createPlanHandler, newServiceCreatePlanArgs, newServiceCreatePlanResult, false),
+		"MCreatePlan":  kitex.NewMethodInfo(mCreatePlanHandler, newServiceMCreatePlanArgs, newServiceMCreatePlanResult, false),
+		"GetOrder":     kitex.NewMethodInfo(getOrderHandler, newServiceGetOrderArgs, newServiceGetOrderResult, false),
+		"MGetOrder":    kitex.NewMethodInfo(mGetOrderHandler, newServiceMGetOrderArgs, newServiceMGetOrderResult, false),
+		"QueryOrder":   kitex.NewMethodInfo(queryOrderHandler, newServiceQueryOrderArgs, newServiceQueryOrderResult, false),
+		"CreateOrder":  kitex.NewMethodInfo(createOrderHandler, newServiceCreateOrderArgs, newServiceCreateOrderResult, false),
+		"MCreateOrder": kitex.NewMethodInfo(mCreateOrderHandler, newServiceMCreateOrderArgs, newServiceMCreateOrderResult, false),
+		"UpdateOrder":  kitex.NewMethodInfo(updateOrderHandler, newServiceUpdateOrderArgs, newServiceUpdateOrderResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "plan",
@@ -129,6 +135,114 @@ func newServiceMCreatePlanResult() interface{} {
 	return plan.NewServiceMCreatePlanResult()
 }
 
+func getOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceGetOrderArgs)
+	realResult := result.(*plan.ServiceGetOrderResult)
+	success, err := handler.(plan.Service).GetOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceGetOrderArgs() interface{} {
+	return plan.NewServiceGetOrderArgs()
+}
+
+func newServiceGetOrderResult() interface{} {
+	return plan.NewServiceGetOrderResult()
+}
+
+func mGetOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceMGetOrderArgs)
+	realResult := result.(*plan.ServiceMGetOrderResult)
+	success, err := handler.(plan.Service).MGetOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceMGetOrderArgs() interface{} {
+	return plan.NewServiceMGetOrderArgs()
+}
+
+func newServiceMGetOrderResult() interface{} {
+	return plan.NewServiceMGetOrderResult()
+}
+
+func queryOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceQueryOrderArgs)
+	realResult := result.(*plan.ServiceQueryOrderResult)
+	success, err := handler.(plan.Service).QueryOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceQueryOrderArgs() interface{} {
+	return plan.NewServiceQueryOrderArgs()
+}
+
+func newServiceQueryOrderResult() interface{} {
+	return plan.NewServiceQueryOrderResult()
+}
+
+func createOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceCreateOrderArgs)
+	realResult := result.(*plan.ServiceCreateOrderResult)
+	success, err := handler.(plan.Service).CreateOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceCreateOrderArgs() interface{} {
+	return plan.NewServiceCreateOrderArgs()
+}
+
+func newServiceCreateOrderResult() interface{} {
+	return plan.NewServiceCreateOrderResult()
+}
+
+func mCreateOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceMCreateOrderArgs)
+	realResult := result.(*plan.ServiceMCreateOrderResult)
+	success, err := handler.(plan.Service).MCreateOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceMCreateOrderArgs() interface{} {
+	return plan.NewServiceMCreateOrderArgs()
+}
+
+func newServiceMCreateOrderResult() interface{} {
+	return plan.NewServiceMCreateOrderResult()
+}
+
+func updateOrderHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*plan.ServiceUpdateOrderArgs)
+	realResult := result.(*plan.ServiceUpdateOrderResult)
+	success, err := handler.(plan.Service).UpdateOrder(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newServiceUpdateOrderArgs() interface{} {
+	return plan.NewServiceUpdateOrderArgs()
+}
+
+func newServiceUpdateOrderResult() interface{} {
+	return plan.NewServiceUpdateOrderResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -184,6 +298,66 @@ func (p *kClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq) (r 
 	_args.Req = req
 	var _result plan.ServiceMCreatePlanResult
 	if err = p.c.Call(ctx, "MCreatePlan", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetOrder(ctx context.Context, req *plan.GetOrderReq) (r *plan.GetOrderResp, err error) {
+	var _args plan.ServiceGetOrderArgs
+	_args.Req = req
+	var _result plan.ServiceGetOrderResult
+	if err = p.c.Call(ctx, "GetOrder", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MGetOrder(ctx context.Context, req *plan.MGetOrderReq) (r *plan.MGetOrderResp, err error) {
+	var _args plan.ServiceMGetOrderArgs
+	_args.Req = req
+	var _result plan.ServiceMGetOrderResult
+	if err = p.c.Call(ctx, "MGetOrder", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) QueryOrder(ctx context.Context, req *plan.QueryOrderReq) (r *plan.QueryOrderResp, err error) {
+	var _args plan.ServiceQueryOrderArgs
+	_args.Req = req
+	var _result plan.ServiceQueryOrderResult
+	if err = p.c.Call(ctx, "QueryOrder", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreateOrder(ctx context.Context, req *plan.CreateOrderReq) (r *plan.CreateOrderResp, err error) {
+	var _args plan.ServiceCreateOrderArgs
+	_args.Req = req
+	var _result plan.ServiceCreateOrderResult
+	if err = p.c.Call(ctx, "CreateOrder", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MCreateOrder(ctx context.Context, req *plan.MCreateOrderReq) (r *plan.MCreateOrderResp, err error) {
+	var _args plan.ServiceMCreateOrderArgs
+	_args.Req = req
+	var _result plan.ServiceMCreateOrderResult
+	if err = p.c.Call(ctx, "MCreateOrder", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateOrder(ctx context.Context, req *plan.UpdateOrderReq) (r *plan.UpdateOrderResp, err error) {
+	var _args plan.ServiceUpdateOrderArgs
+	_args.Req = req
+	var _result plan.ServiceUpdateOrderResult
+	if err = p.c.Call(ctx, "UpdateOrder", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

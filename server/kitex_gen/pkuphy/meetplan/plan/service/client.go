@@ -16,6 +16,12 @@ type Client interface {
 	QueryPlan(ctx context.Context, req *plan.QueryPlanReq, callOptions ...callopt.Option) (r *plan.QueryPlanResp, err error)
 	CreatePlan(ctx context.Context, req *plan.CreatePlanReq, callOptions ...callopt.Option) (r *plan.CreatePlanResp, err error)
 	MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error)
+	GetOrder(ctx context.Context, req *plan.GetOrderReq, callOptions ...callopt.Option) (r *plan.GetOrderResp, err error)
+	MGetOrder(ctx context.Context, req *plan.MGetOrderReq, callOptions ...callopt.Option) (r *plan.MGetOrderResp, err error)
+	QueryOrder(ctx context.Context, req *plan.QueryOrderReq, callOptions ...callopt.Option) (r *plan.QueryOrderResp, err error)
+	CreateOrder(ctx context.Context, req *plan.CreateOrderReq, callOptions ...callopt.Option) (r *plan.CreateOrderResp, err error)
+	MCreateOrder(ctx context.Context, req *plan.MCreateOrderReq, callOptions ...callopt.Option) (r *plan.MCreateOrderResp, err error)
+	UpdateOrder(ctx context.Context, req *plan.UpdateOrderReq, callOptions ...callopt.Option) (r *plan.UpdateOrderResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -70,4 +76,34 @@ func (p *kServiceClient) CreatePlan(ctx context.Context, req *plan.CreatePlanReq
 func (p *kServiceClient) MCreatePlan(ctx context.Context, req *plan.MCreatePlanReq, callOptions ...callopt.Option) (r *plan.MCreatePlanResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MCreatePlan(ctx, req)
+}
+
+func (p *kServiceClient) GetOrder(ctx context.Context, req *plan.GetOrderReq, callOptions ...callopt.Option) (r *plan.GetOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetOrder(ctx, req)
+}
+
+func (p *kServiceClient) MGetOrder(ctx context.Context, req *plan.MGetOrderReq, callOptions ...callopt.Option) (r *plan.MGetOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.MGetOrder(ctx, req)
+}
+
+func (p *kServiceClient) QueryOrder(ctx context.Context, req *plan.QueryOrderReq, callOptions ...callopt.Option) (r *plan.QueryOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.QueryOrder(ctx, req)
+}
+
+func (p *kServiceClient) CreateOrder(ctx context.Context, req *plan.CreateOrderReq, callOptions ...callopt.Option) (r *plan.CreateOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CreateOrder(ctx, req)
+}
+
+func (p *kServiceClient) MCreateOrder(ctx context.Context, req *plan.MCreateOrderReq, callOptions ...callopt.Option) (r *plan.MCreateOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.MCreateOrder(ctx, req)
+}
+
+func (p *kServiceClient) UpdateOrder(ctx context.Context, req *plan.UpdateOrderReq, callOptions ...callopt.Option) (r *plan.UpdateOrderResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateOrder(ctx, req)
 }
