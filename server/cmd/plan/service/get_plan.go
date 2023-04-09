@@ -12,18 +12,18 @@ type GetPlanServiceI interface {
 
 func NewGetPlanService(ctx context.Context) GetPlanServiceI {
 	return &getPlanService{
-		dao: query.Q.WithContext(ctx).Plan,
+		dao: query.Q.WithContext(ctx).PlanView,
 	}
 }
 
 type getPlanService struct {
-	dao query.IPlanDo
+	dao query.IPlanViewDo
 }
 
 func (s *getPlanService) GetPlan(req *plan.GetPlanReq) (*plan.Plan, error) {
-	p, err := s.dao.Where(query.Q.Plan.ID.Eq(req.Id)).First()
+	p, err := s.dao.Where(query.Q.PlanView.ID.Eq(req.Id)).First()
 	if err != nil {
 		return nil, err
 	}
-	return packPlan(p), nil
+	return packPlanView(p), nil
 }

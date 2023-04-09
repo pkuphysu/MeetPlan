@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"github.com/pkuphysu/meetplan/cmd/plan/constants"
 	"github.com/pkuphysu/meetplan/cmd/plan/rpc"
 	"github.com/pkuphysu/meetplan/gorm_gen/model"
 	"github.com/pkuphysu/meetplan/gorm_gen/query"
@@ -61,9 +62,8 @@ func (s *createPlanService) CreatePlan(req *plan.CreatePlanReq) (*plan.Plan, err
 	if req.Plan.Quota != nil {
 		p.Quota = *req.Plan.Quota
 	} else {
-		p.Quota = 1
+		p.Quota = constants.DefaultQuota
 	}
-	p.RemainingQuota = p.Quota
 
 	err = s.dao.Create(&p)
 	if err != nil {

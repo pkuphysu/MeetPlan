@@ -8,20 +8,22 @@ import (
 	"time"
 )
 
-const TableNamePlan = "plans"
+const TableNamePlanView = "plan_view"
 
-// Plan mapped from table <plans>
-type Plan struct {
-	ID        int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+// PlanView mapped from table <plan_view>
+type PlanView struct {
+	ID        int64     `gorm:"column:id;not null" json:"id"`
 	TeacherID int64     `gorm:"column:teacher_id;not null" json:"teacher_id"`
 	StartTime time.Time `gorm:"column:start_time;not null" json:"start_time"`
 	Duration  int64     `gorm:"column:duration;not null" json:"duration"`
 	Place     string    `gorm:"column:place;not null" json:"place"`
 	Quota     int8      `gorm:"column:quota;not null" json:"quota"`
 	Message   *string   `gorm:"column:message" json:"message"`
+	IsValid   int32     `gorm:"column:is_valid;not null" json:"is_valid"`
+	QuotaLeft int64     `gorm:"column:quota_left;not null" json:"quota_left"`
 }
 
-// TableName Plan's table name
-func (*Plan) TableName() string {
-	return TableNamePlan
+// TableName PlanView's table name
+func (*PlanView) TableName() string {
+	return TableNamePlanView
 }

@@ -14,21 +14,21 @@ type QueryPlanServiceI interface {
 
 func NewQueryPlanService(ctx context.Context) QueryPlanServiceI {
 	return &queryPlanService{
-		dao: query.Q.WithContext(ctx).Plan,
+		dao: query.Q.WithContext(ctx).PlanView,
 	}
 }
 
 type queryPlanService struct {
-	dao query.IPlanDo
+	dao query.IPlanViewDo
 }
 
 func (s *queryPlanService) QueryPlan(req *plan.QueryPlanReq) ([]*plan.Plan, *base.PageParam, error) {
 	dao := s.dao
 	if len(req.TeacherIdList) > 0 {
-		dao = dao.Where(query.Q.Plan.TeacherID.In(req.TeacherIdList...))
+		dao = dao.Where(query.Q.PlanView.TeacherID.In(req.TeacherIdList...))
 	}
 	if req.StartTime != nil {
-		dao = dao.Where(query.Q.Plan.StartTime.Gte(time.Unix(*req.StartTime, 0)))
+		dao = dao.Where(query.Q.PlanView.StartTime.Gte(time.Unix(*req.StartTime, 0)))
 	}
 
 	var pageParam *base.PageParam
@@ -46,5 +46,5 @@ func (s *queryPlanService) QueryPlan(req *plan.QueryPlanReq) ([]*plan.Plan, *bas
 	if err != nil {
 		return nil, nil, err
 	}
-	return packPlans(plans), pageParam, nil
+	return packPlanViews(plans), pageParam, nil
 }

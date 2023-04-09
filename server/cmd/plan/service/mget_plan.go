@@ -12,18 +12,18 @@ type MGetPlanServiceI interface {
 
 func NewMGetPlanService(ctx context.Context) MGetPlanServiceI {
 	return &mGetPlanService{
-		dao: query.Q.WithContext(ctx).Plan,
+		dao: query.Q.WithContext(ctx).PlanView,
 	}
 }
 
 type mGetPlanService struct {
-	dao query.IPlanDo
+	dao query.IPlanViewDo
 }
 
 func (s *mGetPlanService) MGetPlan(req *plan.MGetPlanReq) ([]*plan.Plan, error) {
-	plans, err := s.dao.Where(query.Q.Plan.ID.In(req.IdList...)).Find()
+	plans, err := s.dao.Where(query.Q.PlanView.ID.In(req.IdList...)).Find()
 	if err != nil {
 		return nil, err
 	}
-	return packPlans(plans), nil
+	return packPlanViews(plans), nil
 }

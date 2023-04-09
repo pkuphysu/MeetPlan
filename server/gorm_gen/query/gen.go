@@ -16,44 +16,49 @@ import (
 )
 
 var (
-	Q     = new(Query)
-	Order *order
-	Plan  *plan
-	User  *user
+	Q        = new(Query)
+	Order    *order
+	Plan     *plan
+	PlanView *planView
+	User     *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Order = &Q.Order
 	Plan = &Q.Plan
+	PlanView = &Q.PlanView
 	User = &Q.User
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:    db,
-		Order: newOrder(db, opts...),
-		Plan:  newPlan(db, opts...),
-		User:  newUser(db, opts...),
+		db:       db,
+		Order:    newOrder(db, opts...),
+		Plan:     newPlan(db, opts...),
+		PlanView: newPlanView(db, opts...),
+		User:     newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Order order
-	Plan  plan
-	User  user
+	Order    order
+	Plan     plan
+	PlanView planView
+	User     user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Order: q.Order.clone(db),
-		Plan:  q.Plan.clone(db),
-		User:  q.User.clone(db),
+		db:       db,
+		Order:    q.Order.clone(db),
+		Plan:     q.Plan.clone(db),
+		PlanView: q.PlanView.clone(db),
+		User:     q.User.clone(db),
 	}
 }
 
@@ -67,24 +72,27 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:    db,
-		Order: q.Order.replaceDB(db),
-		Plan:  q.Plan.replaceDB(db),
-		User:  q.User.replaceDB(db),
+		db:       db,
+		Order:    q.Order.replaceDB(db),
+		Plan:     q.Plan.replaceDB(db),
+		PlanView: q.PlanView.replaceDB(db),
+		User:     q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Order IOrderDo
-	Plan  IPlanDo
-	User  IUserDo
+	Order    IOrderDo
+	Plan     IPlanDo
+	PlanView IPlanViewDo
+	User     IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Order: q.Order.WithContext(ctx),
-		Plan:  q.Plan.WithContext(ctx),
-		User:  q.User.WithContext(ctx),
+		Order:    q.Order.WithContext(ctx),
+		Plan:     q.Plan.WithContext(ctx),
+		PlanView: q.PlanView.WithContext(ctx),
+		User:     q.User.WithContext(ctx),
 	}
 }
 

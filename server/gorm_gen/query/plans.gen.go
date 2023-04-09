@@ -33,7 +33,6 @@ func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 	_plan.Duration = field.NewInt64(tableName, "duration")
 	_plan.Place = field.NewString(tableName, "place")
 	_plan.Quota = field.NewInt8(tableName, "quota")
-	_plan.RemainingQuota = field.NewInt8(tableName, "remaining_quota")
 	_plan.Message = field.NewString(tableName, "message")
 
 	_plan.fillFieldMap()
@@ -44,15 +43,14 @@ func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 type plan struct {
 	planDo
 
-	ALL            field.Asterisk
-	ID             field.Int64
-	TeacherID      field.Int64
-	StartTime      field.Time
-	Duration       field.Int64
-	Place          field.String
-	Quota          field.Int8
-	RemainingQuota field.Int8
-	Message        field.String
+	ALL       field.Asterisk
+	ID        field.Int64
+	TeacherID field.Int64
+	StartTime field.Time
+	Duration  field.Int64
+	Place     field.String
+	Quota     field.Int8
+	Message   field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -75,7 +73,6 @@ func (p *plan) updateTableName(table string) *plan {
 	p.Duration = field.NewInt64(table, "duration")
 	p.Place = field.NewString(table, "place")
 	p.Quota = field.NewInt8(table, "quota")
-	p.RemainingQuota = field.NewInt8(table, "remaining_quota")
 	p.Message = field.NewString(table, "message")
 
 	p.fillFieldMap()
@@ -93,14 +90,13 @@ func (p *plan) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plan) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 8)
+	p.fieldMap = make(map[string]field.Expr, 7)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["teacher_id"] = p.TeacherID
 	p.fieldMap["start_time"] = p.StartTime
 	p.fieldMap["duration"] = p.Duration
 	p.fieldMap["place"] = p.Place
 	p.fieldMap["quota"] = p.Quota
-	p.fieldMap["remaining_quota"] = p.RemainingQuota
 	p.fieldMap["message"] = p.Message
 }
 

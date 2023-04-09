@@ -38,6 +38,7 @@ func main() {
 		g.GenerateModel("users", gen.FieldIgnore("create_time", "update_time")),
 		g.GenerateModel("plans", gen.FieldIgnore("create_time", "update_time")),
 		g.GenerateModel("orders", gen.FieldIgnore("create_time", "update_time")),
+		g.GenerateModel("plan_view", gen.FieldIgnore("create_time", "update_time")),
 	)
 	g.Execute()
 }
