@@ -7,6 +7,7 @@ require (
 	github.com/cloudwego/kitex v0.4.4
 	github.com/kitex-contrib/registry-etcd v0.1.0
 	github.com/samber/lo v1.38.1
+	github.com/wneessen/go-mail v0.3.9
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gen v0.3.21
