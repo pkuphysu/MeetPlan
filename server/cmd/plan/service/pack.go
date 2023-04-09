@@ -44,6 +44,6 @@ func packPlanView(p *model.PlanView) *plan.Plan {
 		Place:          &p.Place,
 		Message:        p.Message,
 		Quota:          &p.Quota,
-		RemainingQuota: lo.ToPtr(int8(p.QuotaLeft)),
+		RemainingQuota: lo.ToPtr(p.QuotaLeft),
 	}
 }

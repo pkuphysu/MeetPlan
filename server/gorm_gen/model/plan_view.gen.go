@@ -19,8 +19,8 @@ type PlanView struct {
 	Place     string    `gorm:"column:place;not null" json:"place"`
 	Quota     int8      `gorm:"column:quota;not null" json:"quota"`
 	Message   *string   `gorm:"column:message" json:"message"`
-	IsValid   int32     `gorm:"column:is_valid;not null" json:"is_valid"`
-	QuotaLeft int64     `gorm:"column:quota_left;not null" json:"quota_left"`
+	IsValid   bool      `gorm:"column:is_valid;not null" json:"is_valid"`
+	QuotaLeft int8      `gorm:"column:quota_left;not null" json:"quota_left"`
 }
 
 // TableName PlanView's table name

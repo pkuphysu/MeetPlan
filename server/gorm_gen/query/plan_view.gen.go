@@ -34,8 +34,8 @@ func newPlanView(db *gorm.DB, opts ...gen.DOOption) planView {
 	_planView.Place = field.NewString(tableName, "place")
 	_planView.Quota = field.NewInt8(tableName, "quota")
 	_planView.Message = field.NewString(tableName, "message")
-	_planView.IsValid = field.NewInt32(tableName, "is_valid")
-	_planView.QuotaLeft = field.NewInt64(tableName, "quota_left")
+	_planView.IsValid = field.NewBool(tableName, "is_valid")
+	_planView.QuotaLeft = field.NewInt8(tableName, "quota_left")
 
 	_planView.fillFieldMap()
 
@@ -53,8 +53,8 @@ type planView struct {
 	Place     field.String
 	Quota     field.Int8
 	Message   field.String
-	IsValid   field.Int32
-	QuotaLeft field.Int64
+	IsValid   field.Bool
+	QuotaLeft field.Int8
 
 	fieldMap map[string]field.Expr
 }
@@ -78,8 +78,8 @@ func (p *planView) updateTableName(table string) *planView {
 	p.Place = field.NewString(table, "place")
 	p.Quota = field.NewInt8(table, "quota")
 	p.Message = field.NewString(table, "message")
-	p.IsValid = field.NewInt32(table, "is_valid")
-	p.QuotaLeft = field.NewInt64(table, "quota_left")
+	p.IsValid = field.NewBool(table, "is_valid")
+	p.QuotaLeft = field.NewInt8(table, "quota_left")
 
 	p.fillFieldMap()
 
