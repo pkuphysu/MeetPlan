@@ -5,9 +5,8 @@ api:
 	mkdir -p cmd/api
 	cd cmd/api && hz new
 
-.PHONY: gen
+.PHONY: gen-all
 gen-all: gen-gorm gen-kitex
-	mkdir -p cmd/user && cd cmd/user && kitex -service user -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../../idl/user.thrift
 
 .PHONY: gen-gorm
 gen-gorm: docker-reup
@@ -19,15 +18,15 @@ gen-kitex: gen-kitex-user gen-kitex-plan
 
 .PHONY: gen-kitex-user
 gen-kitex-user:
-	kitex --thrift-plugin validator -module github.com/pkuphysu/meetplan ../idl/user.thrift
+	kitex --thrift-plugin validator -module github.com/pkuphysu/meetplan ./idl/user.thrift
 	if [ ! -d "./cmd/user" ]; then mkdir cmd/user; fi
-	cd cmd/user && kitex -service user -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../../idl/user.thrift
+	cd cmd/user && kitex -service user -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../idl/user.thrift
 
 .PHONY: gen-kitex-plan
 gen-kitex-plan:
-	kitex --thrift-plugin validator -module github.com/pkuphysu/meetplan ../idl/plan.thrift
+	kitex --thrift-plugin validator -module github.com/pkuphysu/meetplan ./idl/plan.thrift
 	if [ ! -d "./cmd/plan" ]; then mkdir cmd/plan; fi
-	cd cmd/plan && kitex -service plan -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../../idl/plan.thrift
+	cd cmd/plan && kitex -service plan -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../idl/plan.thrift
 
 docker-reup:
 	docker-compose down && docker-compose up -d
