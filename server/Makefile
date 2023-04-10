@@ -1,15 +1,15 @@
 MODULE=github.com/pkuphysu/meetplan
 
 .PHONY: api
-api:
+api-init:
 	mkdir -p cmd/api
-	cd cmd/api && hz new
+	cd cmd/api && hz new -module ${MODULE}/cmd/api -idl ../../../idl/api.proto && rm go.mod
 
 .PHONY: gen-all
-gen-all: gen-gorm gen-kitex
+gen-all: gen-gorm gen-kitex gen-hertz
 
 .PHONY: gen-gorm
-gen-gorm: docker-reup
+gen-gorm:
 	sleep 10
 	go run cmd/gormgen/main.go
 
@@ -28,5 +28,10 @@ gen-kitex-plan:
 	if [ ! -d "./cmd/plan" ]; then mkdir cmd/plan; fi
 	cd cmd/plan && kitex -service plan -module ${MODULE} -use github.com/pkuphysu/meetplan/kitex_gen/  ../../idl/plan.thrift
 
+.PHONY: gen-hertz
+gen-hertz:
+	cd cmd/api && hz update -idl ../../../idl/api.proto
+
+.PHONY: docker-reup
 docker-reup:
 	docker-compose down && docker-compose up -d
