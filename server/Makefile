@@ -3,7 +3,7 @@ MODULE=github.com/pkuphysu/meetplan
 .PHONY: api
 api-init:
 	mkdir -p cmd/api
-	cd cmd/api && hz new -module ${MODULE}/cmd/api -idl ../../../idl/api.proto && rm go.mod
+	cd cmd/api && hz new -force -module ${MODULE}/cmd/api -I ../../../idl -idl ../../../idl/http/meetplan/service/api.proto && rm go.mod
 
 .PHONY: gen-all
 gen-all: gen-gorm gen-kitex gen-hertz
