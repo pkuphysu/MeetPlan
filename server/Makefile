@@ -3,7 +3,7 @@ MODULE=meetplan
 .PHONY: api
 api-init:
 	mkdir -p cmd/api
-	cd cmd/api && hz new -force -module ${MODULE}/cmd/api -I ../../../idl -idl ../../../idl/http/service/meetplan.proto && rm go.mod
+	cd cmd/api && hz new -force -module ${MODULE}/cmd/api -I ../../../idl -idl ../../../idl/http/service/meetplan.proto --customize_package=../../tpl/hertz/package.yaml && rm go.mod
 
 .PHONY: gen-all
 gen-all: gen-gorm gen-kitex gen-hertz
