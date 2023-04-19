@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
+	"meetplan/gorm_gen/query"
+	"meetplan/kitex_gen/pkuphy/meetplan/base"
+	"meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 type QueryOrderServiceI interface {

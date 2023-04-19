@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
+	"meetplan/gorm_gen/model"
 )
 
 func newOrder(db *gorm.DB, opts ...gen.DOOption) order {

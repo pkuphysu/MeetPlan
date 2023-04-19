@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
-	"github.com/pkuphysu/meetplan/config"
-	plan "github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan/service"
-	"github.com/pkuphysu/meetplan/pkg/constants"
 	"log"
+	"meetplan/config"
+	plan "meetplan/kitex_gen/pkuphy/meetplan/plan/service"
+	"meetplan/pkg/constants"
 )
 
 func main() {

@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm/clause"
+	"meetplan/gorm_gen/model"
 )
 
 func init() {

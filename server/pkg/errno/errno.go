@@ -3,7 +3,7 @@ package errno
 import (
 	"errors"
 	"fmt"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
+	"meetplan/kitex_gen/pkuphy/meetplan/base"
 )
 
 type ErrNo struct {

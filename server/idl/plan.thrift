@@ -9,8 +9,7 @@ struct Plan {
     4: optional i64 duration (vt.ge = "1800") // 30*60
     5: optional string place
     6: optional string message
-    7: optional i8 quota (vt.in = "1", vt.in = "2")
-    8: optional i8 remaining_quota (vt.ge = "0", vt.le = "$quota")
+    7: optional i8 quota (vt.gt = "0")
 }
 
 struct GetPlanReq{
@@ -66,9 +65,9 @@ struct UpdatePlanReq{
 }
 
 enum OrderStatus {
-    CREATED = 1
-    FINISHED = 2
-    CANCELLED = 3
+    CREATED = 0
+    FINISHED = 1
+    CANCELLED = 2
 }
 
 struct Order {

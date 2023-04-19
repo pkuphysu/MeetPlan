@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
 	"github.com/samber/lo"
+	"meetplan/gorm_gen/model"
+	"meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 func packPlans(plans []*model.Plan) []*plan.Plan {

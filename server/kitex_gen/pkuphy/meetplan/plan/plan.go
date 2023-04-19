@@ -8,7 +8,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
+	"meetplan/kitex_gen/pkuphy/meetplan/base"
 	"strings"
 )
 

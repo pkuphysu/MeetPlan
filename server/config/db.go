@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/pkuphysu/meetplan/gorm_gen/query"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"meetplan/gorm_gen/query"
 )
 
 func InitDB() {

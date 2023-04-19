@@ -1,9 +1,9 @@
 syntax = "proto3";
-package pkuphy.meetplan.model;
+package model;
 
 import "http/common/api.proto";
 
-option go_package = "pkuphy/meetplan/model";
+option go_package = "meetplan/cmd/api";
 
 message QueryPageParam {
   uint64 page_no = 1;

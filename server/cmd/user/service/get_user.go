@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
-	"github.com/pkuphysu/meetplan/pkg/errno"
 	"gorm.io/gorm"
+	"meetplan/gorm_gen/query"
+	"meetplan/kitex_gen/pkuphy/meetplan/user"
+	"meetplan/pkg/errno"
 )
 
 type GetUserServiceI interface {

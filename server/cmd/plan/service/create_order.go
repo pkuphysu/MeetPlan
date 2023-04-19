@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
-	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
+	"meetplan/gorm_gen/model"
+	"meetplan/gorm_gen/query"
+	"meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 type CreateOrderServiceI interface {

@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/pkuphysu/meetplan/cmd/user/service"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
-	"github.com/pkuphysu/meetplan/pkg/errno"
+	"meetplan/cmd/user/service"
+	"meetplan/kitex_gen/pkuphy/meetplan/user"
+	"meetplan/pkg/errno"
 )
 
 // ServiceImpl implements the last service interface defined in the IDL.

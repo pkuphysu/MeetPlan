@@ -1,10 +1,10 @@
 syntax = "proto3";
-package pkuphy.meetplan.model;
+package model;
 
 import "http/common/api.proto";
-import "http/meetplan/model/common.proto";
+import "http/model/common.proto";
 
-option go_package = "pkuphy/meetplan/model";
+option go_package = "meetplan/cmd/api";
 
 enum Gender {
   Male = 0;
@@ -12,7 +12,7 @@ enum Gender {
 }
 
 message User {
-  uint64  id = 1;
+  int64  id = 1;
   string pku_id = 2;
   string name = 3;
   string email = 4;
@@ -41,8 +41,15 @@ message LoginResponse {
   string jwt = 3;
 }
 
+message GetSelfRequest {}
+message GetSelfResponse{
+  int32 code = 1;
+  string message = 2;
+  User user = 3;
+}
+
 message GetUserRequest {
-  string jwt = 1[(api.header) = "x-jwt-token"];
+  int64 id = 1[(api.path) = "id"];
 }
 message GetUserResponse{
   int32 code = 1;
@@ -50,14 +57,14 @@ message GetUserResponse{
   User user = 3;
 }
 
-message QueryUserRequest {
-  string jwt = 1[(api.header) = "x-jwt-token"];
-  QueryPageParam page_param = 2;
-  bool is_active = 3;
-  bool is_teacher = 4;
-  bool is_admin = 5;
+message ListUserRequest {
+  QueryPageParam page_param = 1;
+  bool is_active = 2;
+  bool is_teacher = 3;
+  bool is_admin = 4;
+  repeated int64 ids = 5;
 }
-message QueryUserResponse{
+message ListUserResponse{
   int32 code = 1;
   string message = 2;
   Pagination page_param = 3;

@@ -3,14 +3,14 @@ package rpc
 import (
 	"context"
 	"github.com/cloudwego/kitex/client"
-	"github.com/pkuphysu/meetplan/config"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user/service"
-	"github.com/pkuphysu/meetplan/pkg/constants"
-	"github.com/pkuphysu/meetplan/pkg/errno"
 	"github.com/samber/lo"
 	"log"
+	"meetplan/config"
+	"meetplan/kitex_gen/pkuphy/meetplan/base"
+	"meetplan/kitex_gen/pkuphy/meetplan/user"
+	"meetplan/kitex_gen/pkuphy/meetplan/user/service"
+	"meetplan/pkg/constants"
+	"meetplan/pkg/errno"
 )
 
 var userClient service.Client

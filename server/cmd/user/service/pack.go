@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
 	"github.com/samber/lo"
+	"meetplan/gorm_gen/model"
+	"meetplan/kitex_gen/pkuphy/meetplan/user"
 )
 
 func packUsers(users []*model.User) []*user.User {

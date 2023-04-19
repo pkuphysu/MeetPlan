@@ -2,13 +2,13 @@ package service
 
 import (
 	"context"
-	"github.com/pkuphysu/meetplan/cmd/plan/constants"
-	"github.com/pkuphysu/meetplan/cmd/plan/rpc"
-	"github.com/pkuphysu/meetplan/gorm_gen/model"
-	"github.com/pkuphysu/meetplan/gorm_gen/query"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
-	"github.com/pkuphysu/meetplan/pkg/errno"
 	"github.com/samber/lo"
+	"meetplan/cmd/plan/constants"
+	"meetplan/cmd/plan/rpc"
+	"meetplan/gorm_gen/model"
+	"meetplan/gorm_gen/query"
+	"meetplan/kitex_gen/pkuphy/meetplan/plan"
+	"meetplan/pkg/errno"
 	"time"
 )
 

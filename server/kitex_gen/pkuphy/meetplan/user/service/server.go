@@ -3,7 +3,7 @@ package service
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user "github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
+	user "meetplan/kitex_gen/pkuphy/meetplan/user"
 )
 
 // NewServer creates a server.Server with the given handler and options.

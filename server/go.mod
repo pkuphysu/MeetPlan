@@ -1,4 +1,4 @@
-module github.com/pkuphysu/meetplan
+module meetplan
 
 go 1.20
 

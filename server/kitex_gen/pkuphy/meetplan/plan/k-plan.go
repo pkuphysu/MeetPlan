@@ -11,7 +11,7 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 
 	"github.com/cloudwego/kitex/pkg/protocol/bthrift"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/base"
+	"meetplan/kitex_gen/pkuphy/meetplan/base"
 )
 
 // unused protection

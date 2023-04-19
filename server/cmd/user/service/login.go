@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/user"
+	"meetplan/kitex_gen/pkuphy/meetplan/user"
 )
 
 type LoginServiceI interface {

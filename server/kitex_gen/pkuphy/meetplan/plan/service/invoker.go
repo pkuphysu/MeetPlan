@@ -4,7 +4,7 @@ package service
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	plan "github.com/pkuphysu/meetplan/kitex_gen/pkuphy/meetplan/plan"
+	plan "meetplan/kitex_gen/pkuphy/meetplan/plan"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

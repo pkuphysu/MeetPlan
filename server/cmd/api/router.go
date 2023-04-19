@@ -4,7 +4,7 @@ package main
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
-	handler "github.com/pkuphysu/meetplan/cmd/api/biz/handler"
+	handler "meetplan/cmd/api/biz/handler"
 )
 
 // customizeRegister registers customize routers.
