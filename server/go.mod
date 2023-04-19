@@ -12,8 +12,8 @@ require (
 	google.golang.org/protobuf v1.28.1
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/driver/sqlite v1.4.3
-	gorm.io/gen v0.3.21
-	gorm.io/gorm v1.24.6
+	gorm.io/gen v0.3.22
+	gorm.io/gorm v1.25.0
 	gorm.io/plugin/dbresolver v1.4.1
 )
 
@@ -68,7 +68,7 @@ require (
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/datatypes v1.1.1 // indirect
+	gorm.io/datatypes v1.2.0 // indirect
 	gorm.io/hints v1.1.1 // indirect
 )
 

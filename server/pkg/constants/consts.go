@@ -1,7 +1,7 @@
 package constants
 
 const (
-	UserRpcServiceName  = "pkuphy.meetplan.use"
+	UserRpcServiceName  = "pkuphy.meetplan.user"
 	PlanRpcServiceName  = "pkuphy.meetplan.plan"
 	OrderRpcServiceName = "pkuphy.meetplan.order"
 )

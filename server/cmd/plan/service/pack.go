@@ -16,14 +16,13 @@ func packPlans(plans []*model.Plan) []*plan.Plan {
 
 func packPlan(p *model.Plan) *plan.Plan {
 	return &plan.Plan{
-		Id:             &p.ID,
-		TeacherId:      &p.TeacherID,
-		StartTime:      lo.ToPtr(p.StartTime.Unix()),
-		Duration:       &p.Duration,
-		Place:          &p.Place,
-		Message:        p.Message,
-		Quota:          &p.Quota,
-		RemainingQuota: nil,
+		Id:        &p.ID,
+		TeacherId: &p.TeacherID,
+		StartTime: lo.ToPtr(p.StartTime.Unix()),
+		Duration:  &p.Duration,
+		Place:     &p.Place,
+		Message:   p.Message,
+		Quota:     &p.Quota,
 	}
 }
 
@@ -37,14 +36,13 @@ func packPlanViews(plans []*model.PlanView) []*plan.Plan {
 
 func packPlanView(p *model.PlanView) *plan.Plan {
 	return &plan.Plan{
-		Id:             &p.ID,
-		TeacherId:      &p.TeacherID,
-		StartTime:      lo.ToPtr(p.StartTime.Unix()),
-		Duration:       &p.Duration,
-		Place:          &p.Place,
-		Message:        p.Message,
-		Quota:          &p.Quota,
-		RemainingQuota: lo.ToPtr(p.QuotaLeft),
+		Id:        &p.ID,
+		TeacherId: &p.TeacherID,
+		StartTime: lo.ToPtr(p.StartTime.Unix()),
+		Duration:  &p.Duration,
+		Place:     &p.Place,
+		Message:   p.Message,
+		Quota:     &p.Quota,
 	}
 }
 func packOrders(orders []*model.Order) []*plan.Order {

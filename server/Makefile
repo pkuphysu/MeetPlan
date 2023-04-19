@@ -10,7 +10,6 @@ gen-all: gen-gorm gen-kitex gen-hertz
 
 .PHONY: gen-gorm
 gen-gorm:
-	sleep 10
 	go run cmd/gormgen/main.go
 
 .PHONY: gen-kitex

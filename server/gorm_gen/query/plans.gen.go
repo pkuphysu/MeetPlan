@@ -141,6 +141,11 @@ func (a planHasManyOrders) WithContext(ctx context.Context) *planHasManyOrders {
 	return &a
 }
 
+func (a planHasManyOrders) Session(session *gorm.Session) *planHasManyOrders {
+	a.db = a.db.Session(session)
+	return &a
+}
+
 func (a planHasManyOrders) Model(m *model.Plan) *planHasManyOrdersTx {
 	return &planHasManyOrdersTx{a.db.Model(m).Association(a.Name())}
 }

@@ -43,24 +43,8 @@ func (p *Plan) IsValid() error {
 		}
 	}
 	if p.Quota != nil {
-		_src := []int8{int8(1), int8(2)}
-		var _exist bool
-		for _, src := range _src {
-			if *p.Quota == int8(src) {
-				_exist = true
-				break
-			}
-		}
-		if !_exist {
-			return fmt.Errorf("field Quota in rule failed, current value: %v", *p.Quota)
-		}
-	}
-	if p.RemainingQuota != nil {
-		if *p.RemainingQuota < int8(0) {
-			return fmt.Errorf("field RemainingQuota ge rule failed, current value: %v", *p.RemainingQuota)
-		}
-		if *p.RemainingQuota > int8(*p.Quota) {
-			return fmt.Errorf("field RemainingQuota le rule failed, current value: %v", *p.RemainingQuota)
+		if *p.Quota <= int8(0) {
+			return fmt.Errorf("field Quota gt rule failed, current value: %v", *p.Quota)
 		}
 	}
 	return nil

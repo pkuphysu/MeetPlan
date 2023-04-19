@@ -17,6 +17,7 @@ import (
 
 var (
 	Q        = new(Query)
+	Option   *option
 	Order    *order
 	Plan     *plan
 	PlanView *planView
@@ -25,6 +26,7 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Option = &Q.Option
 	Order = &Q.Order
 	Plan = &Q.Plan
 	PlanView = &Q.PlanView
@@ -34,6 +36,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:       db,
+		Option:   newOption(db, opts...),
 		Order:    newOrder(db, opts...),
 		Plan:     newPlan(db, opts...),
 		PlanView: newPlanView(db, opts...),
@@ -44,6 +47,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	Option   option
 	Order    order
 	Plan     plan
 	PlanView planView
@@ -55,6 +59,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:       db,
+		Option:   q.Option.clone(db),
 		Order:    q.Order.clone(db),
 		Plan:     q.Plan.clone(db),
 		PlanView: q.PlanView.clone(db),
@@ -73,6 +78,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:       db,
+		Option:   q.Option.replaceDB(db),
 		Order:    q.Order.replaceDB(db),
 		Plan:     q.Plan.replaceDB(db),
 		PlanView: q.PlanView.replaceDB(db),
@@ -81,6 +87,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	Option   IOptionDo
 	Order    IOrderDo
 	Plan     IPlanDo
 	PlanView IPlanViewDo
@@ -89,6 +96,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		Option:   q.Option.WithContext(ctx),
 		Order:    q.Order.WithContext(ctx),
 		Plan:     q.Plan.WithContext(ctx),
 		PlanView: q.PlanView.WithContext(ctx),
@@ -101,10 +109,14 @@ func (q *Query) Transaction(fc func(tx *Query) error, opts ...*sql.TxOptions) er
 }
 
 func (q *Query) Begin(opts ...*sql.TxOptions) *QueryTx {
-	return &QueryTx{q.clone(q.db.Begin(opts...))}
+	tx := q.db.Begin(opts...)
+	return &QueryTx{Query: q.clone(tx), Error: tx.Error}
 }
 
-type QueryTx struct{ *Query }
+type QueryTx struct {
+	*Query
+	Error error
+}
 
 func (q *QueryTx) Commit() error {
 	return q.db.Commit().Error

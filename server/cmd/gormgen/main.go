@@ -8,13 +8,17 @@ import (
 	"strings"
 )
 
-var dataMap = map[string]func(detailType string) (dataType string){
+var dataMap = map[string]func(columnType gorm.ColumnType) (dataType string){
 	// bool mapping
-	"tinyint": func(detailType string) (dataType string) {
+	"tinyint": func(columnType gorm.ColumnType) (dataType string) {
+		detailType, _ := columnType.ColumnType()
 		if strings.HasPrefix(detailType, "tinyint(1)") {
 			return "bool"
 		}
 		return "int8"
+	},
+	"json": func(columnType gorm.ColumnType) (dataType string) {
+		return "datatypes.JSON"
 	},
 }
 
@@ -50,6 +54,7 @@ func main() {
 			gen.FieldType("is_valid", "bool"),
 			gen.FieldType("quota_left", "int8"),
 		),
+		g.GenerateModel("options", gen.FieldIgnore("create_time", "update_time")),
 	)
 	g.Execute()
 }

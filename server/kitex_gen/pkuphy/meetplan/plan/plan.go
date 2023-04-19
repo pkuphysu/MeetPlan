@@ -15,9 +15,9 @@ import (
 type OrderStatus int64
 
 const (
-	OrderStatus_CREATED   OrderStatus = 1
-	OrderStatus_FINISHED  OrderStatus = 2
-	OrderStatus_CANCELLED OrderStatus = 3
+	OrderStatus_CREATED   OrderStatus = 0
+	OrderStatus_FINISHED  OrderStatus = 1
+	OrderStatus_CANCELLED OrderStatus = 2
 )
 
 func (p OrderStatus) String() string {
@@ -60,14 +60,13 @@ func (p *OrderStatus) Value() (driver.Value, error) {
 }
 
 type Plan struct {
-	Id             *int64  `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
-	TeacherId      *int64  `thrift:"teacher_id,2,optional" frugal:"2,optional,i64" json:"teacher_id,omitempty"`
-	StartTime      *int64  `thrift:"start_time,3,optional" frugal:"3,optional,i64" json:"start_time,omitempty"`
-	Duration       *int64  `thrift:"duration,4,optional" frugal:"4,optional,i64" json:"duration,omitempty"`
-	Place          *string `thrift:"place,5,optional" frugal:"5,optional,string" json:"place,omitempty"`
-	Message        *string `thrift:"message,6,optional" frugal:"6,optional,string" json:"message,omitempty"`
-	Quota          *int8   `thrift:"quota,7,optional" frugal:"7,optional,i8" json:"quota,omitempty"`
-	RemainingQuota *int8   `thrift:"remaining_quota,8,optional" frugal:"8,optional,i8" json:"remaining_quota,omitempty"`
+	Id        *int64  `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
+	TeacherId *int64  `thrift:"teacher_id,2,optional" frugal:"2,optional,i64" json:"teacher_id,omitempty"`
+	StartTime *int64  `thrift:"start_time,3,optional" frugal:"3,optional,i64" json:"start_time,omitempty"`
+	Duration  *int64  `thrift:"duration,4,optional" frugal:"4,optional,i64" json:"duration,omitempty"`
+	Place     *string `thrift:"place,5,optional" frugal:"5,optional,string" json:"place,omitempty"`
+	Message   *string `thrift:"message,6,optional" frugal:"6,optional,string" json:"message,omitempty"`
+	Quota     *int8   `thrift:"quota,7,optional" frugal:"7,optional,i8" json:"quota,omitempty"`
 }
 
 func NewPlan() *Plan {
@@ -140,15 +139,6 @@ func (p *Plan) GetQuota() (v int8) {
 	}
 	return *p.Quota
 }
-
-var Plan_RemainingQuota_DEFAULT int8
-
-func (p *Plan) GetRemainingQuota() (v int8) {
-	if !p.IsSetRemainingQuota() {
-		return Plan_RemainingQuota_DEFAULT
-	}
-	return *p.RemainingQuota
-}
 func (p *Plan) SetId(val *int64) {
 	p.Id = val
 }
@@ -170,9 +160,6 @@ func (p *Plan) SetMessage(val *string) {
 func (p *Plan) SetQuota(val *int8) {
 	p.Quota = val
 }
-func (p *Plan) SetRemainingQuota(val *int8) {
-	p.RemainingQuota = val
-}
 
 var fieldIDToName_Plan = map[int16]string{
 	1: "id",
@@ -182,7 +169,6 @@ var fieldIDToName_Plan = map[int16]string{
 	5: "place",
 	6: "message",
 	7: "quota",
-	8: "remaining_quota",
 }
 
 func (p *Plan) IsSetId() bool {
@@ -211,10 +197,6 @@ func (p *Plan) IsSetMessage() bool {
 
 func (p *Plan) IsSetQuota() bool {
 	return p.Quota != nil
-}
-
-func (p *Plan) IsSetRemainingQuota() bool {
-	return p.RemainingQuota != nil
 }
 
 func (p *Plan) Read(iprot thrift.TProtocol) (err error) {
@@ -299,16 +281,6 @@ func (p *Plan) Read(iprot thrift.TProtocol) (err error) {
 		case 7:
 			if fieldTypeId == thrift.BYTE {
 				if err = p.ReadField7(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 8:
-			if fieldTypeId == thrift.BYTE {
-				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -409,15 +381,6 @@ func (p *Plan) ReadField7(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *Plan) ReadField8(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadByte(); err != nil {
-		return err
-	} else {
-		p.RemainingQuota = &v
-	}
-	return nil
-}
-
 func (p *Plan) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("Plan"); err != nil {
@@ -450,10 +413,6 @@ func (p *Plan) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
-			goto WriteFieldError
-		}
-		if err = p.writeField8(oprot); err != nil {
-			fieldId = 8
 			goto WriteFieldError
 		}
 
@@ -608,25 +567,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
-func (p *Plan) writeField8(oprot thrift.TProtocol) (err error) {
-	if p.IsSetRemainingQuota() {
-		if err = oprot.WriteFieldBegin("remaining_quota", thrift.BYTE, 8); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteByte(*p.RemainingQuota); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
-}
-
 func (p *Plan) String() string {
 	if p == nil {
 		return "<nil>"
@@ -659,9 +599,6 @@ func (p *Plan) DeepEqual(ano *Plan) bool {
 		return false
 	}
 	if !p.Field7DeepEqual(ano.Quota) {
-		return false
-	}
-	if !p.Field8DeepEqual(ano.RemainingQuota) {
 		return false
 	}
 	return true
@@ -747,18 +684,6 @@ func (p *Plan) Field7DeepEqual(src *int8) bool {
 		return false
 	}
 	if *p.Quota != *src {
-		return false
-	}
-	return true
-}
-func (p *Plan) Field8DeepEqual(src *int8) bool {
-
-	if p.RemainingQuota == src {
-		return true
-	} else if p.RemainingQuota == nil || src == nil {
-		return false
-	}
-	if *p.RemainingQuota != *src {
 		return false
 	}
 	return true
