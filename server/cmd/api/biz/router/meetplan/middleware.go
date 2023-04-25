@@ -120,3 +120,33 @@ func _getselfMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _listfriendlinkMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _createfriendlinkMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updatetermdaterangeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _gettermdaterangeMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _createupdaterecordMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listupdaterecordMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

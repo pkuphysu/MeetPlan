@@ -29,7 +29,7 @@ gen-kitex-plan:
 
 .PHONY: gen-hertz
 gen-hertz:
-	cd cmd/api && hz update -idl ../../../idl/api.proto
+	cd cmd/api && hz update -I ../../../idl -idl ../../../idl/http/service/meetplan.proto --customize_package=../../tpl/hertz/package.yaml
 
 .PHONY: docker-reup
 docker-reup:

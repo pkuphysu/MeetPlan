@@ -1,0 +1,86 @@
+syntax = "proto3";
+package model;
+
+import "http/common/api.proto";
+import "http/model/common.proto";
+
+option go_package = "meetplan/cmd/api";
+
+message FriendLink{
+    string name = 1;
+    string url = 2;
+    string description = 3;
+}
+
+message ListFriendLinkRequest{}
+
+message ListFriendLinkResponse{
+    int32 code = 1;
+    string message = 2;
+    repeated FriendLink friend_links = 3;
+}
+
+message CreateFriendLinkRequest{
+    string name = 1;
+    string url = 2;
+    string description = 3;
+}
+
+message CreateFriendLinkResponse{
+    int32 code = 1;
+    string message = 2;
+    FriendLink friend_link = 3;
+}
+
+message UpdateRecord {
+    int64 timestamp = 1;
+    string author = 2;
+    string url = 3;
+    string description = 4;
+}
+
+message ListUpdateRecordRequest{}
+
+message ListUpdateRecordResponse{
+    int32 code = 1;
+    string message = 2;
+    repeated UpdateRecord update_records = 3;
+}
+
+message CreateUpdateRecordRequest{
+    string author = 1;
+    string url = 2;
+    string description = 3;
+}
+
+message CreateUpdateRecordResponse{
+    int32 code = 1;
+    string message = 2;
+    UpdateRecord update_record = 3;
+}
+
+message TermDateRange {
+    int64 start = 1;
+    int64 end = 2;
+}
+
+message GetTermDateRangeRequest{}
+
+message GetTermDateRangeResponse{
+    int32 code = 1;
+    string message = 2;
+    TermDateRange term_date_range = 3;
+}
+
+message UpdateTermDateRangeRequest{
+    int64 start = 1;
+    int64 end = 2;
+}
+
+message UpdateTermDateRangeResponse{
+    int32 code = 1;
+    string message = 2;
+    TermDateRange term_date_range = 3;
+}
+
+
