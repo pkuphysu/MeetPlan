@@ -7,9 +7,8 @@ package query
 import (
 	"context"
 	"fmt"
+	"meetplan/biz/gorm_gen/model"
 	"testing"
-
-	"meetplan/gorm_gen/model"
 
 	"gorm.io/gen"
 	"gorm.io/gen/field"

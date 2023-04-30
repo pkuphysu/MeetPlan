@@ -1,11 +1,12 @@
 package main
 
 import (
+	"strings"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm"
-	"strings"
 )
 
 var dataMap = map[string]func(columnType gorm.ColumnType) (dataType string){
@@ -24,7 +25,7 @@ var dataMap = map[string]func(columnType gorm.ColumnType) (dataType string){
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "./gorm_gen/query",
+		OutPath:           "./biz/gorm_gen/query",
 		WithUnitTest:      true,
 		FieldNullable:     true,
 		FieldCoverable:    false,

@@ -87,6 +87,106 @@ layouts:
           }
           httputil.SendResponse(ctx, c, consts.StatusOK, resp)
       }
+  - path: "{{.HandlerDir}}/{{.GenPackage}}/{{ToSnakeCase .ServiceName}}_test.go"
+    loop_service: true
+    update_behavior:
+      type: "append"
+      append_key: "method"
+      insert_key: "Test{{$.Name}}"
+      append_tpl: |-
+        func Test{{.Name}}(t *testing.T) {
+            h := server.Default()
+            h.GET("{{.Path}}", {{.Name}})
+            w := ut.PerformRequest(h.Engine, "{{.HTTPMethod}}", "{{.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+            ut.Header{})
+            resp := w.Result()
+            assert.DeepEqual(t, 201, resp.StatusCode())
+            assert.DeepEqual(t, "", string(resp.Body()))
+            // todo edit your unit test.
+        }
+    body: |-
+      package {{.FilePackage}}
+      import (
+          "bytes"
+          "testing"
+          "github.com/cloudwego/hertz/pkg/app/server"
+          "github.com/cloudwego/hertz/pkg/common/test/assert"
+          "github.com/cloudwego/hertz/pkg/common/ut"
+      )
+      {{range $_, $MethodInfo := $.Methods}}
+      func Test{{$MethodInfo.Name}}(t *testing.T) {
+          h := server.Default()
+          h.GET("{{$MethodInfo.Path}}", {{$MethodInfo.Name}})
+          w := ut.PerformRequest(h.Engine, "{{$MethodInfo.HTTPMethod}}", "{{$MethodInfo.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
+          ut.Header{})
+          resp := w.Result()
+          assert.DeepEqual(t, 201, resp.StatusCode())
+          assert.DeepEqual(t, "", string(resp.Body()))
+          // todo edit your unit test.
+      }
+      {{end}}
+  - path: "biz/service/{{.HandlerGenPath}}/{{ToSnakeCase .MethodName}}.go"
+    loop_method: true
+    update_behavior:
+      type: "skip"
+    body: |-
+      package {{.FilePackage}}
+      import (
+          "context"
+          "github.com/cloudwego/hertz/pkg/app"
+      {{- range $k, $v := .Models}}
+          {{$k}} "{{$v.Package}}"
+      {{- end}}
+          "meetplan/pkg/errno"
+      )
+      type {{.Name}}Service struct {
+          RequestContext  *app.RequestContext
+          Context         context.Context
+      }
+      
+      func New{{.Name}}Service(ctx context.Context, RequestContext *app.RequestContext) *{{.Name}}Service {
+          return &{{.Name}}Service{RequestContext: RequestContext, Context: ctx}
+      }
+      
+      // Run req should not be nil and resp should not be nil
+      func (h *{{.Name}}Service) Run(req *{{.RequestTypeName}}, resp *{{.ReturnTypeName}}) (err *errno.Err) {
+          if resp == nil{
+              resp = new(model.CreateFriendLinkResponse)
+          }
+          //defer func() {
+          // hlog.CtxInfof(h.Context, "req = %+v", req)
+          // hlog.CtxInfof(h.Context, "resp = %+v", resp)
+          //}()
+          // todo edit your code
+          return
+      }
+  - path: "biz/service/{{.HandlerGenPath}}/{{ToSnakeCase .MethodName}}_test.go"
+    loop_method: true
+    update_behavior:
+      type: "skip"
+    body: |-
+      package {{.FilePackage}}
+      import (
+          "context"
+          "testing"
+          "github.com/cloudwego/hertz/pkg/app"
+          "github.com/cloudwego/hertz/pkg/common/test/assert"
+      {{- range $k, $v := .Models}}
+          {{$k}} "{{$v.Package}}"
+      {{- end}}
+      )
+      func Test{{.Name}}Service_Run(t *testing.T) {
+          ctx := context.Background()
+          c := app.NewContext(1)
+          s := New{{.Name}}Service(ctx, c)
+          // init req and assert value
+          req := &{{.RequestTypeName}}{}
+          resp := &{{.ReturnTypeName}}{}
+          err := s.Run(req, resp)
+          assert.DeepEqual(t, nil, resp)
+          assert.DeepEqual(t, nil, err)
+          // todo edit your unit test.
+      }
   - path: "pkg/errno/errno.go"
     update_behavior:
       type: "skip"
@@ -245,7 +345,7 @@ layouts:
           "context"
 
           "github.com/cloudwego/hertz/pkg/app"         
-        
+
           "{{.GoModule}}/pkg/bytesconv"
       )
 
@@ -276,7 +376,7 @@ layouts:
           /* #nosec G103 */
           return *(*string)(unsafe.Pointer(&b))
       }
-        
+
       // S2b converts string to a byte slice without memory allocation.
       //
       // Note it may break if string and/or slice header will change
@@ -291,104 +391,181 @@ layouts:
           bh.Cap = sh.Len
           return b
       }
-
-  - path: "biz/service/{{.HandlerGenPath}}/{{ToSnakeCase .MethodName}}.go"
-    loop_method: true
+  - path: config/config.go
     update_behavior:
       type: "skip"
     body: |-
-      package {{.FilePackage}}
+      package config
       import (
-          "context"
-          "github.com/cloudwego/hertz/pkg/app"
-      {{- range $k, $v := .Models}}
-          {{$k}} "{{$v.Package}}"
-      {{- end}}
-          "meetplan/pkg/errno"
+          "os"
+          "path/filepath"
+          "sync"
+          "github.com/cloudwego/hertz/pkg/common/hlog"
+          "github.com/kr/pretty"
+          "gopkg.in/validator.v2"
+          "gopkg.in/yaml.v3"
       )
-      type {{.Name}}Service struct {
-          RequestContext  *app.RequestContext
-          Context         context.Context
+      var (
+          conf *Config
+          once sync.Once
+      )
+      type Config struct {
+          Env string
+          Hertz Hertz `yaml:"hertz"`
+        MySQL MySQL `yaml:"mysql"`
+        Redis Redis `yaml:"redis"`
       }
-      
-      func New{{.Name}}Service(ctx context.Context, RequestContext *app.RequestContext) *{{.Name}}Service {
-          return &{{.Name}}Service{RequestContext: RequestContext, Context: ctx}
+      type MySQL struct {
+          DSN string `yaml:"dsn"`
       }
-      
-      // Run req should not be nil and resp should not be nil
-      func (h *{{.Name}}Service) Run(req *{{.RequestTypeName}}, resp *{{.ReturnTypeName}}) (err *errno.Err) {
-          if resp == nil{
-              resp = new(model.CreateFriendLinkResponse)
+      type Redis struct {
+          Address  string `yaml:"address"`
+          Password string `yaml:"password"`
+        Username string `yaml:"username"`
+        DB       int    `yaml:"db"`
+      }
+      type Hertz struct {
+          Address       string `yaml:"address"`
+          EnablePprof   bool   `yaml:"enable_pprof"`
+          EnableGzip    bool   `yaml:"enable_gzip"`
+        EnableAccessLog bool   `yaml:"enable_access_log"`
+          LogLevel      string `yaml:"log_level"`
+          LogFileName   string `yaml:"log_file_name"`
+          LogMaxSize    int    `yaml:"log_max_size"`
+          LogMaxBackups int    `yaml:"log_max_backups"`
+          LogMaxAge     int    `yaml:"log_max_age"`
+      }
+      // GetConf gets configuration instance
+      func GetConf() *Config {
+          once.Do(initConf)
+          return conf
+      }
+      func initConf() {
+          prefix := "conf"
+          confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
+          content, err := os.ReadFile(confFileRelPath)
+          if err != nil {
+              panic(err)
           }
-          //defer func() {
-          // hlog.CtxInfof(h.Context, "req = %+v", req)
-          // hlog.CtxInfof(h.Context, "resp = %+v", resp)
-          //}()
-          // todo edit your code
-          return
+          conf = new(Config)
+          err = yaml.Unmarshal(content, conf)
+          if err != nil {
+              hlog.Error("parse yaml error - %v", err)
+              panic(err)
+          }
+          if err := validator.Validate(conf); err != nil {
+              hlog.Error("validate config error - %v", err)
+              panic(err)
+          }
+          conf.Env = GetEnv()
+          pretty.Printf("%+v\n", conf)
       }
-  - path: "biz/service/{{.HandlerGenPath}}/{{ToSnakeCase .MethodName}}_test.go"
-    loop_method: true
+      func GetEnv() string {
+          e := os.Getenv("GO_ENV")
+          if len(e) == 0 {
+              return "test"
+          }
+          return e
+      }
+      func LogLevel() hlog.Level {
+          level := GetConf().Hertz.LogLevel
+          switch level {
+          case "trace":
+              return hlog.LevelTrace
+          case "debug":
+              return hlog.LevelDebug
+          case "info":
+              return hlog.LevelInfo
+          case "notice":
+              return hlog.LevelNotice
+          case "warn":
+              return hlog.LevelWarn
+          case "error":
+              return hlog.LevelError
+          case "fatal":
+              return hlog.LevelFatal
+          default:
+              return hlog.LevelInfo
+          }
+      }
+  - path: config/dev/conf.yaml
     update_behavior:
       type: "skip"
     body: |-
-      package {{.FilePackage}}
+      hertz:
+        address: ":8080"
+        enable_pprof: true
+        enable_gzip: true
+        enable_access_log: true
+        log_level: info
+        log_file_name: "log/hertz.log"
+        log_max_size: 10
+        log_max_age: 3
+        log_max_backups: 50
+      mysql:
+        dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local"
+      redis:
+        address: "127.0.0.1:6379"
+        username: ""
+        password: ""
+        db: 0
+  - path: biz/dal/init.go
+    update_behavior:
+      type: "skip"
+    body: |-
+      package dal
+      import (
+          "{{.GoModule}}/biz/dal/mysql"
+          "{{.GoModule}}/biz/dal/redis"
+      )
+      func Init() {
+          redis.Init()
+          mysql.Init()
+      }
+  - path: biz/dal/mysql/init.go
+    update_behavior:
+      type: "skip"
+    body: |-
+      package mysql
+      import (
+          "{{.GoModule}}/config"
+          "gorm.io/driver/mysql"
+          "gorm.io/gorm"
+      )
+      var (
+        DB  *gorm.DB
+        err error
+      )
+      func Init() {
+          DB, err = gorm.Open(mysql.Open(config.GetConf().MySQL.DSN),
+              &gorm.Config{
+                  PrepareStmt:            true,
+                  SkipDefaultTransaction: true,
+              },
+          )
+          if err != nil {
+              panic(err)
+          }
+      }
+  - path: biz/dal/redis/init.go
+    update_behavior:
+      type: "skip"
+    body: |-
+      package redis
       import (
           "context"
-          "testing"
-          "github.com/cloudwego/hertz/pkg/app"
-          "github.com/cloudwego/hertz/pkg/common/test/assert"
-      {{- range $k, $v := .Models}}
-          {{$k}} "{{$v.Package}}"
-      {{- end}}
+          "github.com/redis/go-redis/v9"
+          "{{.GoModule}}/config"
       )
-      func Test{{.Name}}Service_Run(t *testing.T) {
-          ctx := context.Background()
-          c := app.NewContext(1)
-          s := New{{.Name}}Service(ctx, c)
-          // init req and assert value
-          req := &{{.RequestTypeName}}{}
-          resp := &{{.ReturnTypeName}}{}
-          err := s.Run(req, resp)
-          assert.DeepEqual(t, nil, resp)
-          assert.DeepEqual(t, nil, err)
-          // todo edit your unit test.
+      var RedisClient *redis.Client
+      func Init() {
+          RedisClient = redis.NewClient(&redis.Options{
+              Addr:     config.GetConf().Redis.Address,
+              Username: config.GetConf().Redis.Username,
+              Password: config.GetConf().Redis.Password,
+              DB:       config.GetConf().Redis.DB,
+          })
+          if err := RedisClient.Ping(context.Background()).Err(); err != nil {
+              panic(err)
+          }
       }
-  - path: "{{.HandlerDir}}/{{.GenPackage}}/{{ToSnakeCase .ServiceName}}_test.go"
-    loop_service: true
-    update_behavior:
-      type: "append"
-      append_key: "method"
-      insert_key: "Test{{$.Name}}"
-      append_tpl: |-
-        func Test{{.Name}}(t *testing.T) {
-            h := server.Default()
-            h.GET("{{.Path}}", {{.Name}})
-            w := ut.PerformRequest(h.Engine, "{{.HTTPMethod}}", "{{.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
-            ut.Header{})
-            resp := w.Result()
-            assert.DeepEqual(t, 201, resp.StatusCode())
-            assert.DeepEqual(t, "", string(resp.Body()))
-            // todo edit your unit test.
-        }
-    body: |-
-      package {{.FilePackage}}
-      import (
-          "bytes"
-          "testing"
-          "github.com/cloudwego/hertz/pkg/app/server"
-          "github.com/cloudwego/hertz/pkg/common/test/assert"
-          "github.com/cloudwego/hertz/pkg/common/ut"
-      )
-      {{range $_, $MethodInfo := $.Methods}}
-      func Test{{$MethodInfo.Name}}(t *testing.T) {
-          h := server.Default()
-          h.GET("{{$MethodInfo.Path}}", {{$MethodInfo.Name}})
-          w := ut.PerformRequest(h.Engine, "{{$MethodInfo.HTTPMethod}}", "{{$MethodInfo.Path}}", &ut.Body{Body: bytes.NewBufferString(""), Len: 1},
-          ut.Header{})
-          resp := w.Result()
-          assert.DeepEqual(t, 201, resp.StatusCode())
-          assert.DeepEqual(t, "", string(resp.Body()))
-          // todo edit your unit test.
-      }
-      {{end}}

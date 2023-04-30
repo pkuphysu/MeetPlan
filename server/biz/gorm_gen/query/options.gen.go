@@ -6,6 +6,7 @@ package query
 
 import (
 	"context"
+	"meetplan/biz/gorm_gen/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -15,8 +16,6 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
-
-	"meetplan/gorm_gen/model"
 )
 
 func newOption(db *gorm.DB, opts ...gen.DOOption) option {
