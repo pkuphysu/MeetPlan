@@ -9,3 +9,8 @@ func Init() {
 	redis.Init()
 	mysql.Init()
 }
+
+func Close() {
+	redis.Close()
+	mysql.Close()
+}

@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"fmt"
 	"meetplan/config"
 
 	"github.com/redis/go-redis/v9"
@@ -18,5 +19,13 @@ func Init() {
 	})
 	if err := RedisClient.Ping(context.Background()).Err(); err != nil {
 		panic(err)
+	}
+}
+
+func Close() {
+	err := RedisClient.Close()
+	if err != nil {
+		fmt.Printf("close redis error - %v\n", err)
+		return
 	}
 }

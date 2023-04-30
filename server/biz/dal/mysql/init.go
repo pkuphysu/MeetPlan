@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"fmt"
 	"meetplan/biz/gorm_gen/query"
 	"meetplan/config"
 
@@ -24,4 +25,16 @@ func Init() {
 		panic(err)
 	}
 	query.SetDefault(DB)
+}
+
+func Close() {
+	sqlDB, err := DB.DB()
+	if err != nil {
+		fmt.Printf("get sqlDB error - %v\n", err)
+		return
+	}
+	if err := sqlDB.Close(); err != nil {
+		fmt.Printf("close sqlDB error - %v\n", err)
+		return
+	}
 }
