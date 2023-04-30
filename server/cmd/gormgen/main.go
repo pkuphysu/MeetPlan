@@ -58,6 +58,8 @@ func main() {
 			gen.FieldType("quota_left", "int8"),
 		),
 		g.GenerateModel("options", gen.FieldIgnore("create_time", "update_time")),
+		g.GenerateModel("friend_links", gen.FieldIgnore("create_time", "update_time")),
+		g.GenerateModel("update_records", gen.FieldIgnore("create_time", "update_time")),
 	)
 	g.Execute()
 }

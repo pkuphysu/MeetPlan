@@ -16,54 +16,64 @@ import (
 )
 
 var (
-	Q        = new(Query)
-	Option   *option
-	Order    *order
-	Plan     *plan
-	PlanView *planView
-	User     *user
+	Q            = new(Query)
+	FriendLink   *friendLink
+	Option       *option
+	Order        *order
+	Plan         *plan
+	PlanView     *planView
+	UpdateRecord *updateRecord
+	User         *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	FriendLink = &Q.FriendLink
 	Option = &Q.Option
 	Order = &Q.Order
 	Plan = &Q.Plan
 	PlanView = &Q.PlanView
+	UpdateRecord = &Q.UpdateRecord
 	User = &Q.User
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:       db,
-		Option:   newOption(db, opts...),
-		Order:    newOrder(db, opts...),
-		Plan:     newPlan(db, opts...),
-		PlanView: newPlanView(db, opts...),
-		User:     newUser(db, opts...),
+		db:           db,
+		FriendLink:   newFriendLink(db, opts...),
+		Option:       newOption(db, opts...),
+		Order:        newOrder(db, opts...),
+		Plan:         newPlan(db, opts...),
+		PlanView:     newPlanView(db, opts...),
+		UpdateRecord: newUpdateRecord(db, opts...),
+		User:         newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Option   option
-	Order    order
-	Plan     plan
-	PlanView planView
-	User     user
+	FriendLink   friendLink
+	Option       option
+	Order        order
+	Plan         plan
+	PlanView     planView
+	UpdateRecord updateRecord
+	User         user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:       db,
-		Option:   q.Option.clone(db),
-		Order:    q.Order.clone(db),
-		Plan:     q.Plan.clone(db),
-		PlanView: q.PlanView.clone(db),
-		User:     q.User.clone(db),
+		db:           db,
+		FriendLink:   q.FriendLink.clone(db),
+		Option:       q.Option.clone(db),
+		Order:        q.Order.clone(db),
+		Plan:         q.Plan.clone(db),
+		PlanView:     q.PlanView.clone(db),
+		UpdateRecord: q.UpdateRecord.clone(db),
+		User:         q.User.clone(db),
 	}
 }
 
@@ -77,30 +87,36 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:       db,
-		Option:   q.Option.replaceDB(db),
-		Order:    q.Order.replaceDB(db),
-		Plan:     q.Plan.replaceDB(db),
-		PlanView: q.PlanView.replaceDB(db),
-		User:     q.User.replaceDB(db),
+		db:           db,
+		FriendLink:   q.FriendLink.replaceDB(db),
+		Option:       q.Option.replaceDB(db),
+		Order:        q.Order.replaceDB(db),
+		Plan:         q.Plan.replaceDB(db),
+		PlanView:     q.PlanView.replaceDB(db),
+		UpdateRecord: q.UpdateRecord.replaceDB(db),
+		User:         q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Option   IOptionDo
-	Order    IOrderDo
-	Plan     IPlanDo
-	PlanView IPlanViewDo
-	User     IUserDo
+	FriendLink   IFriendLinkDo
+	Option       IOptionDo
+	Order        IOrderDo
+	Plan         IPlanDo
+	PlanView     IPlanViewDo
+	UpdateRecord IUpdateRecordDo
+	User         IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Option:   q.Option.WithContext(ctx),
-		Order:    q.Order.WithContext(ctx),
-		Plan:     q.Plan.WithContext(ctx),
-		PlanView: q.PlanView.WithContext(ctx),
-		User:     q.User.WithContext(ctx),
+		FriendLink:   q.FriendLink.WithContext(ctx),
+		Option:       q.Option.WithContext(ctx),
+		Order:        q.Order.WithContext(ctx),
+		Plan:         q.Plan.WithContext(ctx),
+		PlanView:     q.PlanView.WithContext(ctx),
+		UpdateRecord: q.UpdateRecord.WithContext(ctx),
+		User:         q.User.WithContext(ctx),
 	}
 }
 
