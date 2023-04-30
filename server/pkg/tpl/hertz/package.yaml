@@ -150,13 +150,14 @@ layouts:
       
       // Run req should not be nil and resp should not be nil
       func (h *{{.Name}}Service) Run(req *{{.RequestTypeName}}, resp *{{.ReturnTypeName}}) (err *errno.Err) {
+          defer func() {
+              if e := recover(); e != nil {
+                  err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+              }
+          }()
           if resp == nil{
-              resp = new(model.CreateFriendLinkResponse)
+              resp = new({{.ReturnTypeName}})
           }
-          //defer func() {
-          // hlog.CtxInfof(h.Context, "req = %+v", req)
-          // hlog.CtxInfof(h.Context, "resp = %+v", resp)
-          //}()
           // todo edit your code
           return
       }
@@ -461,7 +462,7 @@ layouts:
       func GetEnv() string {
           e := os.Getenv("GO_ENV")
           if len(e) == 0 {
-              return "test"
+              return "dev"
           }
           return e
       }

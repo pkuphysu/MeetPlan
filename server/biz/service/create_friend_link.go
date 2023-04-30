@@ -2,10 +2,11 @@ package service
 
 import (
 	"context"
-	model "meetplan/biz/model"
-	"meetplan/pkg/errno"
 
 	"github.com/cloudwego/hertz/pkg/app"
+
+	model "meetplan/biz/model"
+	"meetplan/pkg/errno"
 )
 
 type CreateFriendLinkService struct {

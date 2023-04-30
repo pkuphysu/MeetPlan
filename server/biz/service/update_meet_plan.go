@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+
 	"github.com/cloudwego/hertz/pkg/app"
+
 	model "meetplan/biz/model"
 	"meetplan/pkg/errno"
 )
@@ -16,11 +18,16 @@ func NewUpdateMeetPlanService(ctx context.Context, RequestContext *app.RequestCo
 	return &UpdateMeetPlanService{RequestContext: RequestContext, Context: ctx}
 }
 
+// Run req should not be nil and resp should not be nil
 func (h *UpdateMeetPlanService) Run(req *model.UpdateMeetPlanRequest, resp *model.UpdateMeetPlanResponse) (err *errno.Err) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
+	defer func() {
+		if e := recover(); e != nil {
+			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+		}
+	}()
+	if resp == nil {
+		resp = new(model.UpdateMeetPlanResponse)
+	}
 	// todo edit your code
 	return
 }

@@ -1,8 +1,9 @@
 package mail
 
 import (
-	gomail "github.com/wneessen/go-mail"
 	"html/template"
+
+	gomail "github.com/wneessen/go-mail"
 )
 
 type Mail struct {
