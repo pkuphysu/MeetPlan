@@ -1,83 +1,143 @@
 package errno
 
 import (
+	"bytes"
 	"errors"
-	"fmt"
-	"meetplan/kitex_gen/pkuphy/meetplan/base"
+	"net/http"
+	"runtime"
+	"strconv"
 )
 
-type ErrNo struct {
-	ErrCode base.StatusCode
-	ErrMsg  string
+type Err struct {
+	err        error
+	errCode    int
+	statusCode int
+
+	pcs        []uintptr
+	stackTrace string
 }
 
-func (e ErrNo) Is(target error) bool {
-	t, ok := target.(ErrNo)
-	if !ok {
-		return false
-	}
-	return e.ErrCode == t.ErrCode
+func (e *Err) Error() string {
+	return e.err.Error()
 }
 
-func (e ErrNo) Error() string {
-	return fmt.Sprintf("err_code=%d, err_msg=%s", e.ErrCode, e.ErrMsg)
+func (e *Err) Unwrap() error {
+	return e.err
 }
 
-func NewErrNo(code base.StatusCode, msg string) ErrNo {
-	return ErrNo{
-		ErrCode: code,
-		ErrMsg:  msg,
-	}
+func (e *Err) StatusCode() int {
+	return e.statusCode
 }
 
-func (e ErrNo) WithMessage(msg string) ErrNo {
-	e.ErrMsg = msg
+func (e *Err) ErrCode() int {
+	return e.errCode
+}
+
+func (e *Err) SetErrCode(errCode int) *Err {
+	e.errCode = errCode
 	return e
 }
 
-func (e ErrNo) WithError(err error) ErrNo {
-	e.ErrMsg = err.Error()
-	return e
-}
-
-var (
-	Success                = NewErrNo(base.StatusCode_SuccessCode, "Success")
-	ServiceErr             = NewErrNo(base.StatusCode_ServiceErrCode, "Service is unable to start successfully")
-	ParamErr               = NewErrNo(base.StatusCode_ParamErrCode, "Wrong Parameter has been given")
-	AuthorizationFailedErr = NewErrNo(base.StatusCode_AuthorizationFailedErrCode, "Authorization failed")
-	UserNotFoundErr        = NewErrNo(base.StatusCode_UserNotFoundErrCode, "User not found")
-	UserCannotLoginErr     = NewErrNo(base.StatusCode_UserCannotLoginErrCode, "User cannot login")
-	OrderNotFoundErr       = NewErrNo(base.StatusCode_OrderNotFoundErrCode, "Order not found")
-)
-
-// ConvertErr convert error to Errno
-func ConvertErr(err error) ErrNo {
-	Err := ErrNo{}
-	if errors.As(err, &Err) {
-		return Err
+func (e *Err) StackTrace() string {
+	if len(e.stackTrace) != 0 {
+		return e.stackTrace
 	}
-	s := ServiceErr
-	s.ErrMsg = err.Error()
-	return s
+	buf := bytes.NewBufferString("Stack Trace:")
+	if len(e.pcs) != 0 {
+		frame := runtime.CallersFrames(e.pcs)
+		for {
+			frame, more := frame.Next()
+			if !more {
+				break
+			}
+			buf.WriteByte('\n')
+			buf.WriteString(frame.Function)
+			buf.WriteByte('\n')
+			buf.WriteByte('\t')
+			buf.WriteString(frame.File)
+			buf.WriteByte(':')
+			buf.WriteString(strconv.Itoa(frame.Line))
+		}
+	}
+	if ierr, ok := e.err.(interface{ StackTrace() string }); ok {
+		buf.WriteByte('\n')
+		buf.WriteString(ierr.StackTrace())
+	} else if ierr, ok := e.err.(*Err); ok {
+		buf.WriteByte('\n')
+		buf.WriteString(ierr.StackTrace())
+	}
+	e.stackTrace = buf.String()
+	return e.stackTrace
 }
 
-func BuildBaseResp(err error) *base.BaseResp {
+func ToInternalErr(err error) *Err {
 	if err == nil {
-		return convert2BaseResp(Success)
+		return nil
 	}
-
-	e := ErrNo{}
-	if errors.As(err, &e) {
-		return convert2BaseResp(e)
-	}
-
-	s := ServiceErr.WithMessage(err.Error())
-	return convert2BaseResp(s)
+	return &Err{err: err, statusCode: http.StatusInternalServerError, pcs: callers(), errCode: -1}
 }
 
-func convert2BaseResp(err ErrNo) *base.BaseResp {
-	resp := base.NewBaseResp()
-	resp.SetStatusCode(err.ErrCode)
-	resp.SetMessage(err.ErrMsg)
-	return resp
+func NewInternalErr(msg string) *Err {
+	return ToInternalErr(errors.New(msg))
+}
+
+func ToValidationErr(err error) *Err {
+	if err == nil {
+		return nil
+	}
+	return &Err{err: err, statusCode: http.StatusBadRequest, pcs: callers(), errCode: -1}
+}
+
+func NewValidationErr(msg string) *Err {
+	return ToValidationErr(errors.New(msg))
+}
+
+func ToPermissionErr(err error) *Err {
+	if err == nil {
+		return nil
+	}
+	return &Err{err: err, statusCode: http.StatusForbidden, pcs: callers(), errCode: -1}
+}
+
+func NewPermissionErr(msg string) *Err {
+	return ToPermissionErr(errors.New(msg))
+}
+
+func ToNotFoundErr(err error) *Err {
+	if err == nil {
+		return nil
+	}
+	return &Err{err: err, statusCode: http.StatusNotFound, pcs: callers(), errCode: -1}
+}
+
+func NewNotFoundErr(msg string) *Err {
+	return ToNotFoundErr(errors.New(msg))
+}
+
+func ToAuthenticationErr(err error) *Err {
+	if err == nil {
+		return nil
+	}
+	return &Err{err: err, statusCode: http.StatusUnauthorized, pcs: callers(), errCode: -1}
+}
+
+func NewAuthenticationErr(msg string) *Err {
+	return ToAuthenticationErr(errors.New(msg))
+}
+
+func ToDependencyErr(err error) *Err {
+	if err == nil {
+		return nil
+	}
+	return &Err{err: err, statusCode: http.StatusFailedDependency, pcs: callers(), errCode: -1}
+}
+
+func NewDependencyErr(msg string) *Err {
+	return ToDependencyErr(errors.New(msg))
+}
+
+func callers() []uintptr {
+	var pcs [64]uintptr
+	n := runtime.Callers(3, pcs[:])
+	return pcs[:n]
 }
