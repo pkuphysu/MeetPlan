@@ -3,12 +3,26 @@
 package main
 
 import (
+	"meetplan/biz/dal"
+	"meetplan/config"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/hertz-contrib/cors"
+	"github.com/hertz-contrib/logger/accesslog"
+	"github.com/hertz-contrib/pprof"
+	"github.com/hertz-contrib/requestid"
 )
 
 func main() {
-	h := server.Default()
-
+	dal.Init()
+	conf := config.GetConf()
+	h := server.Default(server.WithHostPorts(conf.Hertz.Address))
+	if conf.Hertz.EnablePprof {
+		pprof.Register(h)
+	}
+	h.Use(accesslog.New(), cors.Default(), requestid.New())
 	register(h)
+
 	h.Spin()
+	dal.Close()
 }

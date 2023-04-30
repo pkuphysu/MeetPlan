@@ -109,6 +109,7 @@ layouts:
       import (
           "bytes"
           "testing"
+      
           "github.com/cloudwego/hertz/pkg/app/server"
           "github.com/cloudwego/hertz/pkg/common/test/assert"
           "github.com/cloudwego/hertz/pkg/common/ut"
@@ -133,7 +134,9 @@ layouts:
       package {{.FilePackage}}
       import (
           "context"
+      
           "github.com/cloudwego/hertz/pkg/app"
+      
       {{- range $k, $v := .Models}}
           {{$k}} "{{$v.Package}}"
       {{- end}}
@@ -170,8 +173,10 @@ layouts:
       import (
           "context"
           "testing"
+      
           "github.com/cloudwego/hertz/pkg/app"
           "github.com/cloudwego/hertz/pkg/common/test/assert"
+      
       {{- range $k, $v := .Models}}
           {{$k}} "{{$v.Package}}"
       {{- end}}
@@ -401,6 +406,7 @@ layouts:
           "os"
           "path/filepath"
           "sync"
+      
           "github.com/cloudwego/hertz/pkg/common/hlog"
           "github.com/kr/pretty"
           "gopkg.in/validator.v2"
@@ -440,7 +446,7 @@ layouts:
           return conf
       }
       func initConf() {
-          prefix := "conf"
+          prefix := "config"
           confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
           content, err := os.ReadFile(confFileRelPath)
           if err != nil {
@@ -532,10 +538,12 @@ layouts:
       package mysql
       import (
           "fmt"
-          "{{.GoModule}}/config"
-      
+          
           "gorm.io/driver/mysql"
           "gorm.io/gorm"
+          
+          "{{.GoModule}}/biz/gorm_gen/query"
+          "{{.GoModule}}/config"
       )
       var (
         DB  *gorm.DB
@@ -551,6 +559,7 @@ layouts:
           if err != nil {
               panic(err)
           }
+          query.SetDefault(DB)
       }
       
       func Close() {
@@ -574,9 +583,9 @@ layouts:
           "fmt"
           "context"
           
-          "{{.GoModule}}/config"
-          
           "github.com/redis/go-redis/v9"
+      
+          "{{.GoModule}}/config"
       )
       var RedisClient *redis.Client
       func Init() {
@@ -607,14 +616,14 @@ layouts:
       package main
       
       import (
-          "{{.GoModule}}/biz/dal"
-          "{{.GoModule}}/config"
-        
           "github.com/cloudwego/hertz/pkg/app/server"
           "github.com/hertz-contrib/cors"
           "github.com/hertz-contrib/logger/accesslog"
           "github.com/hertz-contrib/pprof"
           "github.com/hertz-contrib/requestid"
+      
+          "{{.GoModule}}/biz/dal"
+          "{{.GoModule}}/config"
       )
       
       func main() {

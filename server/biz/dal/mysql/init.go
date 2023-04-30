@@ -3,10 +3,11 @@ package mysql
 import (
 	"fmt"
 
-	"meetplan/config"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"meetplan/biz/gorm_gen/query"
+	"meetplan/config"
 )
 
 var (
@@ -24,6 +25,7 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+	query.SetDefault(DB)
 }
 
 func Close() {

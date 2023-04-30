@@ -3,7 +3,8 @@ package main
 import (
 	"strings"
 
-	"gorm.io/driver/mysql"
+	"meetplan/biz/dal/mysql"
+
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm"
@@ -35,8 +36,9 @@ func main() {
 		Mode:              gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 
-	db, _ := gorm.Open(mysql.Open("meetplan:meetplan@(127.0.0.1:3306)/meetplan?charset=utf8mb4&parseTime=True&loc=Local"))
-	g.UseDB(db)
+	//db, _ := gorm.Open(mysql.Open("meetplan:meetplan@(127.0.0.1:3306)/meetplan?charset=utf8mb4&parseTime=True&loc=Local"))
+	mysql.Init()
+	g.UseDB(mysql.DB)
 
 	g.WithDataTypeMap(dataMap)
 
