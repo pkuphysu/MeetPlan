@@ -7,8 +7,7 @@ create table if not exists orders
     message     longtext   null,
     plan_id     bigint     not null,
     student_id  bigint     not null,
-    constraint orders_plan_id_fk_plans_id
-        foreign key (plan_id) references plans (id),
-    constraint orders_student_id_fk_users_id
-        foreign key (student_id) references users (id)
-);
+    constraint orders_plan_id_fk_plans_id foreign key (plan_id) references plans (id),
+    constraint orders_student_id_fk_users_id foreign key (student_id) references users (id)
+) engine = innodb
+  default charset = utf8mb4;

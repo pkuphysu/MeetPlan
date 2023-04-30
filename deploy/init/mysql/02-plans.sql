@@ -9,8 +9,8 @@ create table if not exists plans
     place       varchar(255) not null,
     quota       tinyint      not null,
     message     longtext     null,
-    constraint plans_teacher_id_fk_users_id
-        foreign key (teacher_id) references users (id)
-);
+    constraint plans_teacher_id_fk_users_id foreign key (teacher_id) references users (id)
+) engine = innodb
+  default charset = utf8mb4;
 
 create index plans_start_time_index on plans (start_time);

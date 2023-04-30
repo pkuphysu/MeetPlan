@@ -19,4 +19,4 @@ create table if not exists users
     office       varchar(255) null,
     introduction longtext     null
 ) engine = innodb
-  default charset = utf8;
+  default charset = utf8mb4;
