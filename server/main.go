@@ -3,14 +3,14 @@
 package main
 
 import (
-	"meetplan/biz/dal"
-	"meetplan/config"
-
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/cors"
 	"github.com/hertz-contrib/logger/accesslog"
 	"github.com/hertz-contrib/pprof"
 	"github.com/hertz-contrib/requestid"
+
+	"meetplan/biz/dal"
+	"meetplan/config"
 )
 
 func main() {

@@ -21,7 +21,7 @@ func NewGetTermDateRangeService(ctx context.Context, RequestContext *app.Request
 func (h *GetTermDateRangeService) Run(req *model.GetTermDateRangeRequest, resp *model.GetTermDateRangeResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in GetTermDateRangeService.Run")
 		}
 	}()
 	if resp == nil {

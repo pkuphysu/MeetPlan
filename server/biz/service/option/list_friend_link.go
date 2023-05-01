@@ -21,7 +21,7 @@ func NewListFriendLinkService(ctx context.Context, RequestContext *app.RequestCo
 func (h *ListFriendLinkService) Run(req *model.ListFriendLinkRequest, resp *model.ListFriendLinkResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in ListFriendLinkService.Run")
 		}
 	}()
 	if resp == nil {

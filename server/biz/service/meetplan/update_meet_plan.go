@@ -21,7 +21,7 @@ func NewUpdateMeetPlanService(ctx context.Context, RequestContext *app.RequestCo
 func (h *UpdateMeetPlanService) Run(req *model.UpdateMeetPlanRequest, resp *model.UpdateMeetPlanResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in UpdateMeetPlanService.Run")
 		}
 	}()
 	if resp == nil {

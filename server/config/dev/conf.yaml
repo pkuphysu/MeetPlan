@@ -7,7 +7,7 @@ hertz:
   log_max_age: 3
   log_max_backups: 50
 mysql:
-  dsn: "meetplan:meetplan@tcp(127.0.0.1:3306)/meetplan?charset=utf8&parseTime=True&loc=Local"
+  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local"
 redis:
   address: "127.0.0.1:6379"
   username: ""

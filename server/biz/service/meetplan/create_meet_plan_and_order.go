@@ -21,7 +21,7 @@ func NewCreateMeetPlanAndOrderService(ctx context.Context, RequestContext *app.R
 func (h *CreateMeetPlanAndOrderService) Run(req *model.CreateMeetPlanAndOrderRequest, resp *model.CreateMeetPlanAndOrderResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in CreateMeetPlanAndOrderService.Run")
 		}
 	}()
 	if resp == nil {

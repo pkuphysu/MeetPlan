@@ -21,7 +21,7 @@ func NewListUpdateRecordService(ctx context.Context, RequestContext *app.Request
 func (h *ListUpdateRecordService) Run(req *model.ListUpdateRecordRequest, resp *model.ListUpdateRecordResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in ListUpdateRecordService.Run")
 		}
 	}()
 	if resp == nil {

@@ -21,7 +21,7 @@ func NewGetUserService(ctx context.Context, RequestContext *app.RequestContext) 
 func (h *GetUserService) Run(req *model.GetUserRequest, resp *model.GetUserResponse) (err *errno.Err) {
 	defer func() {
 		if e := recover(); e != nil {
-			err = errno.NewInternalErr("panic in CreateFriendLinkService.Run")
+			err = errno.NewInternalErr("panic in GetUserService.Run")
 		}
 	}()
 	if resp == nil {
