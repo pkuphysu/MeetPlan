@@ -5,11 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"meetplan/config"
-
 	"github.com/golang-jwt/jwt/v5"
 
 	"meetplan/biz/gorm_gen"
+	"meetplan/config"
 )
 
 var privateKey *rsa.PrivateKey

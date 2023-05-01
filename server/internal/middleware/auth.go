@@ -15,6 +15,9 @@ import (
 
 func Jwt() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
+		if _, ok := ctx.Get(constant.CtxKeyUser); ok {
+			return
+		}
 		authHeader := ctx.Request.Header.Get(constant.HeaderAuthorization)
 		if authHeader == "" {
 			ctx.AbortWithStatus(consts.StatusUnauthorized)
