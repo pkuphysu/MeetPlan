@@ -12,6 +12,7 @@ type User struct {
 	PkuID        string  `gorm:"column:pku_id;not null" json:"pku_id"`
 	Name         string  `gorm:"column:name;not null" json:"name"`
 	Email        string  `gorm:"column:email;not null" json:"email"`
+	EmailChange  *string `gorm:"column:email_change" json:"email_change"`
 	IsActive     bool    `gorm:"column:is_active;not null" json:"is_active"`
 	IsTeacher    bool    `gorm:"column:is_teacher;not null" json:"is_teacher"`
 	IsAdmin      bool    `gorm:"column:is_admin;not null" json:"is_admin"`
@@ -20,7 +21,7 @@ type User struct {
 	Department   *string `gorm:"column:department" json:"department"`
 	Phone        *string `gorm:"column:phone" json:"phone"`
 	Major        *string `gorm:"column:major" json:"major"`
-	Grade        *int8   `gorm:"column:grade" json:"grade"`
+	Grade        *string `gorm:"column:grade" json:"grade"`
 	Dorm         *string `gorm:"column:dorm" json:"dorm"`
 	Office       *string `gorm:"column:office" json:"office"`
 	Introduction *string `gorm:"column:introduction" json:"introduction"`

@@ -32,6 +32,23 @@ func newOrder(db *gorm.DB, opts ...gen.DOOption) order {
 	_order.Message = field.NewString(tableName, "message")
 	_order.PlanID = field.NewInt64(tableName, "plan_id")
 	_order.StudentID = field.NewInt64(tableName, "student_id")
+	_order.Student = orderBelongsToStudent{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Student", "gorm_gen.User"),
+	}
+
+	_order.Teacher = orderBelongsToTeacher{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Teacher", "gorm_gen.User"),
+	}
+
+	_order.Plan = orderBelongsToPlan{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Plan", "gorm_gen.Plan"),
+	}
 
 	_order.fillFieldMap()
 
@@ -47,6 +64,11 @@ type order struct {
 	Message   field.String
 	PlanID    field.Int64
 	StudentID field.Int64
+	Student   orderBelongsToStudent
+
+	Teacher orderBelongsToTeacher
+
+	Plan orderBelongsToPlan
 
 	fieldMap map[string]field.Expr
 }
@@ -84,12 +106,13 @@ func (o *order) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (o *order) fillFieldMap() {
-	o.fieldMap = make(map[string]field.Expr, 5)
+	o.fieldMap = make(map[string]field.Expr, 8)
 	o.fieldMap["id"] = o.ID
 	o.fieldMap["status"] = o.Status
 	o.fieldMap["message"] = o.Message
 	o.fieldMap["plan_id"] = o.PlanID
 	o.fieldMap["student_id"] = o.StudentID
+
 }
 
 func (o order) clone(db *gorm.DB) order {
@@ -100,6 +123,219 @@ func (o order) clone(db *gorm.DB) order {
 func (o order) replaceDB(db *gorm.DB) order {
 	o.orderDo.ReplaceDB(db)
 	return o
+}
+
+type orderBelongsToStudent struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a orderBelongsToStudent) Where(conds ...field.Expr) *orderBelongsToStudent {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a orderBelongsToStudent) WithContext(ctx context.Context) *orderBelongsToStudent {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a orderBelongsToStudent) Session(session *gorm.Session) *orderBelongsToStudent {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a orderBelongsToStudent) Model(m *gorm_gen.Order) *orderBelongsToStudentTx {
+	return &orderBelongsToStudentTx{a.db.Model(m).Association(a.Name())}
+}
+
+type orderBelongsToStudentTx struct{ tx *gorm.Association }
+
+func (a orderBelongsToStudentTx) Find() (result *gorm_gen.User, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a orderBelongsToStudentTx) Append(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a orderBelongsToStudentTx) Replace(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a orderBelongsToStudentTx) Delete(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a orderBelongsToStudentTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a orderBelongsToStudentTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type orderBelongsToTeacher struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a orderBelongsToTeacher) Where(conds ...field.Expr) *orderBelongsToTeacher {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a orderBelongsToTeacher) WithContext(ctx context.Context) *orderBelongsToTeacher {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a orderBelongsToTeacher) Session(session *gorm.Session) *orderBelongsToTeacher {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a orderBelongsToTeacher) Model(m *gorm_gen.Order) *orderBelongsToTeacherTx {
+	return &orderBelongsToTeacherTx{a.db.Model(m).Association(a.Name())}
+}
+
+type orderBelongsToTeacherTx struct{ tx *gorm.Association }
+
+func (a orderBelongsToTeacherTx) Find() (result *gorm_gen.User, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a orderBelongsToTeacherTx) Append(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a orderBelongsToTeacherTx) Replace(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a orderBelongsToTeacherTx) Delete(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a orderBelongsToTeacherTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a orderBelongsToTeacherTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type orderBelongsToPlan struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a orderBelongsToPlan) Where(conds ...field.Expr) *orderBelongsToPlan {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a orderBelongsToPlan) WithContext(ctx context.Context) *orderBelongsToPlan {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a orderBelongsToPlan) Session(session *gorm.Session) *orderBelongsToPlan {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a orderBelongsToPlan) Model(m *gorm_gen.Order) *orderBelongsToPlanTx {
+	return &orderBelongsToPlanTx{a.db.Model(m).Association(a.Name())}
+}
+
+type orderBelongsToPlanTx struct{ tx *gorm.Association }
+
+func (a orderBelongsToPlanTx) Find() (result *gorm_gen.Plan, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a orderBelongsToPlanTx) Append(values ...*gorm_gen.Plan) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a orderBelongsToPlanTx) Replace(values ...*gorm_gen.Plan) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a orderBelongsToPlanTx) Delete(values ...*gorm_gen.Plan) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a orderBelongsToPlanTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a orderBelongsToPlanTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type orderDo struct{ gen.DO }

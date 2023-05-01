@@ -13,8 +13,8 @@ gen-all: gen-gorm gen-hertz
 gen-gorm:
 	go run cmd/gormgen/main.go
 
-.PHONY: gen-hertz
-gen-hertz:
+.PHONY: update
+update:
 	hz update -I ../idl -idl ../idl/service/meetplan.proto --customize_package=./pkg/tpl/hertz/package.yaml
 
 .PHONY: docker-reup

@@ -6,15 +6,14 @@ package model;
 option go_package = "meetplan";
 
 message QueryPageParam {
-    uint64 page_no = 1;
-    uint32 page_size = 2;
+    int32 page_no = 1;
+    int32 page_size = 2;
 }
 
 message Pagination {
-    uint64 page_no = 1;
-    uint32 page_size = 2;
-    bool has_more = 3;
-    uint64 total_count = 4;
+    int32 page_no = 1;
+    int32 page_size = 2;
+    int64 total_count = 3;
 }
 
 // 通用返回结构，code为0表示成功，其他值表示失败，message为失败原因

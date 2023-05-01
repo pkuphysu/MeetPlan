@@ -2,8 +2,14 @@ package meetplan
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"gorm.io/gen/field"
+	"gorm.io/gorm"
+
+	"meetplan/biz/dal/pack"
+	"meetplan/biz/gorm_gen/query"
 	model "meetplan/biz/model"
 	"meetplan/pkg/errno"
 )
@@ -11,10 +17,11 @@ import (
 type GetMeetPlanService struct {
 	RequestContext *app.RequestContext
 	Context        context.Context
+	PlanDAO        query.IPlanDo
 }
 
 func NewGetMeetPlanService(ctx context.Context, RequestContext *app.RequestContext) *GetMeetPlanService {
-	return &GetMeetPlanService{RequestContext: RequestContext, Context: ctx}
+	return &GetMeetPlanService{RequestContext: RequestContext, Context: ctx, PlanDAO: query.Plan.WithContext(ctx)}
 }
 
 // Run req should not be nil and resp should not be nil
@@ -27,6 +34,30 @@ func (h *GetMeetPlanService) Run(req *model.GetMeetPlanRequest, resp *model.GetM
 	if resp == nil {
 		resp = new(model.GetMeetPlanResponse)
 	}
-	// todo edit your code
+	var preloads []field.RelationField
+	if req.WithTeacher {
+		preloads = append(preloads, query.Plan.Teacher)
+	}
+	if req.WithOrders {
+		preloads = append(preloads, query.Plan.Orders)
+	}
+	if req.WithStudents {
+		preloads = append(preloads, query.Order.Student)
+	}
+	plan, e := h.PlanDAO.Where(query.Plan.ID.Eq(req.Id)).Preload(preloads...).First()
+	if e != nil && errors.Is(e, gorm.ErrRecordNotFound) {
+		return errno.NewNotFoundErr("plan not found")
+	} else if e != nil {
+		return errno.ToInternalErr(e)
+	}
+	resp.Data = pack.PlanDal2Vo(plan)
+	//if req.WithStudents {
+	//	for idx, order := range resp.Data.Orders {
+	//		first, err := h.OrderDAO.Where(query.Order.ID.Eq(order.Id)).First()
+	//		if err != nil {
+	//			return nil
+	//		}
+	//	}
+	//}
 	return
 }

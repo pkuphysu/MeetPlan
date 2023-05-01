@@ -10,6 +10,7 @@ require (
 	github.com/hertz-contrib/requestid v1.1.0
 	github.com/kr/pretty v0.3.1
 	github.com/redis/go-redis/v9 v9.0.3
+	github.com/samber/lo v1.38.1
 	github.com/wneessen/go-mail v0.3.9
 	google.golang.org/protobuf v1.30.0
 	gopkg.in/validator.v2 v2.0.1
@@ -49,6 +50,7 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/sys v0.0.0-20221006211917-84dc82d7e875 // indirect
 	golang.org/x/tools v0.1.12 // indirect

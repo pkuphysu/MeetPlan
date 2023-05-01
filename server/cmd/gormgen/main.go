@@ -43,16 +43,32 @@ func main() {
 
 	g.WithDataTypeMap(dataMap)
 
+	user := g.GenerateModel("users", gen.FieldIgnore("create_time", "update_time"))
+	plan := g.GenerateModel("plans", gen.FieldIgnore("create_time", "update_time"))
 	order := g.GenerateModel("orders", gen.FieldIgnore("create_time", "update_time"))
+
 	g.ApplyBasic(
-		g.GenerateModel("users", gen.FieldIgnore("create_time", "update_time")),
+		user,
 		g.GenerateModel("plans",
 			gen.FieldIgnore("create_time", "update_time"),
 			gen.FieldRelate(field.HasMany, "Orders", order, &field.RelateConfig{
 				RelateSlicePointer: true,
 			}),
+			gen.FieldRelate(field.BelongsTo, "Teacher", user, &field.RelateConfig{
+				RelatePointer: true,
+			}),
 		),
-		order,
+		g.GenerateModel("orders",
+			gen.FieldIgnore("create_time", "update_time"),
+			gen.FieldRelate(field.BelongsTo, "Student", user, &field.RelateConfig{
+				RelatePointer: true,
+			}),
+			gen.FieldRelate(field.BelongsTo, "Teacher", user, &field.RelateConfig{
+				RelatePointer: true,
+			}),
+			gen.FieldRelate(field.BelongsTo, "Plan", plan, &field.RelateConfig{
+				RelatePointer: true,
+			})),
 		g.GenerateModel("plan_view",
 			gen.FieldIgnore("create_time", "update_time"),
 			gen.FieldType("is_valid", "bool"),

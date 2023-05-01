@@ -31,6 +31,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.PkuID = field.NewString(tableName, "pku_id")
 	_user.Name = field.NewString(tableName, "name")
 	_user.Email = field.NewString(tableName, "email")
+	_user.EmailChange = field.NewString(tableName, "email_change")
 	_user.IsActive = field.NewBool(tableName, "is_active")
 	_user.IsTeacher = field.NewBool(tableName, "is_teacher")
 	_user.IsAdmin = field.NewBool(tableName, "is_admin")
@@ -39,7 +40,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.Department = field.NewString(tableName, "department")
 	_user.Phone = field.NewString(tableName, "phone")
 	_user.Major = field.NewString(tableName, "major")
-	_user.Grade = field.NewInt8(tableName, "grade")
+	_user.Grade = field.NewString(tableName, "grade")
 	_user.Dorm = field.NewString(tableName, "dorm")
 	_user.Office = field.NewString(tableName, "office")
 	_user.Introduction = field.NewString(tableName, "introduction")
@@ -57,6 +58,7 @@ type user struct {
 	PkuID        field.String
 	Name         field.String
 	Email        field.String
+	EmailChange  field.String
 	IsActive     field.Bool
 	IsTeacher    field.Bool
 	IsAdmin      field.Bool
@@ -65,7 +67,7 @@ type user struct {
 	Department   field.String
 	Phone        field.String
 	Major        field.String
-	Grade        field.Int8
+	Grade        field.String
 	Dorm         field.String
 	Office       field.String
 	Introduction field.String
@@ -89,6 +91,7 @@ func (u *user) updateTableName(table string) *user {
 	u.PkuID = field.NewString(table, "pku_id")
 	u.Name = field.NewString(table, "name")
 	u.Email = field.NewString(table, "email")
+	u.EmailChange = field.NewString(table, "email_change")
 	u.IsActive = field.NewBool(table, "is_active")
 	u.IsTeacher = field.NewBool(table, "is_teacher")
 	u.IsAdmin = field.NewBool(table, "is_admin")
@@ -97,7 +100,7 @@ func (u *user) updateTableName(table string) *user {
 	u.Department = field.NewString(table, "department")
 	u.Phone = field.NewString(table, "phone")
 	u.Major = field.NewString(table, "major")
-	u.Grade = field.NewInt8(table, "grade")
+	u.Grade = field.NewString(table, "grade")
 	u.Dorm = field.NewString(table, "dorm")
 	u.Office = field.NewString(table, "office")
 	u.Introduction = field.NewString(table, "introduction")
@@ -117,11 +120,12 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 16)
+	u.fieldMap = make(map[string]field.Expr, 17)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["pku_id"] = u.PkuID
 	u.fieldMap["name"] = u.Name
 	u.fieldMap["email"] = u.Email
+	u.fieldMap["email_change"] = u.EmailChange
 	u.fieldMap["is_active"] = u.IsActive
 	u.fieldMap["is_teacher"] = u.IsTeacher
 	u.fieldMap["is_admin"] = u.IsAdmin

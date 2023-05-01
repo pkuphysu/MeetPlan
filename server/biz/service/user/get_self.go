@@ -3,7 +3,11 @@ package user
 import (
 	"context"
 
+	"meetplan/biz/dal/pack"
+	"meetplan/biz/gorm_gen"
+
 	"github.com/cloudwego/hertz/pkg/app"
+
 	model "meetplan/biz/model"
 	"meetplan/pkg/errno"
 )
@@ -27,6 +31,11 @@ func (h *GetSelfService) Run(req *model.GetSelfRequest, resp *model.GetSelfRespo
 	if resp == nil {
 		resp = new(model.GetSelfResponse)
 	}
-	// todo edit your code
+
+	if u, ok := h.RequestContext.Get("user"); ok {
+		resp.Data = pack.UserDal2Vo(u.(*gorm_gen.User))
+	} else {
+		err = errno.NewInternalErr("get user from context failed")
+	}
 	return
 }

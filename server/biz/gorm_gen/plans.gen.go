@@ -20,6 +20,7 @@ type Plan struct {
 	Quota     int8      `gorm:"column:quota;not null" json:"quota"`
 	Message   *string   `gorm:"column:message" json:"message"`
 	Orders    []*Order  `json:"orders"`
+	Teacher   *User     `json:"teacher"`
 }
 
 // TableName Plan's table name

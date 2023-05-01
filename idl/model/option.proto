@@ -51,6 +51,7 @@ message CreateUpdateRecordRequest {
     string author = 1;
     string url = 2;
     string description = 3;
+    int64 timestamp = 4;
 }
 
 message CreateUpdateRecordResponse {

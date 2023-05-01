@@ -40,6 +40,12 @@ func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 		RelationField: field.NewRelation("Orders", "gorm_gen.Order"),
 	}
 
+	_plan.Teacher = planBelongsToTeacher{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Teacher", "gorm_gen.User"),
+	}
+
 	_plan.fillFieldMap()
 
 	return _plan
@@ -57,6 +63,8 @@ type plan struct {
 	Quota     field.Int8
 	Message   field.String
 	Orders    planHasManyOrders
+
+	Teacher planBelongsToTeacher
 
 	fieldMap map[string]field.Expr
 }
@@ -96,7 +104,7 @@ func (p *plan) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plan) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 8)
+	p.fieldMap = make(map[string]field.Expr, 9)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["teacher_id"] = p.TeacherID
 	p.fieldMap["start_time"] = p.StartTime
@@ -185,6 +193,77 @@ func (a planHasManyOrdersTx) Clear() error {
 }
 
 func (a planHasManyOrdersTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type planBelongsToTeacher struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a planBelongsToTeacher) Where(conds ...field.Expr) *planBelongsToTeacher {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a planBelongsToTeacher) WithContext(ctx context.Context) *planBelongsToTeacher {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a planBelongsToTeacher) Session(session *gorm.Session) *planBelongsToTeacher {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a planBelongsToTeacher) Model(m *gorm_gen.Plan) *planBelongsToTeacherTx {
+	return &planBelongsToTeacherTx{a.db.Model(m).Association(a.Name())}
+}
+
+type planBelongsToTeacherTx struct{ tx *gorm.Association }
+
+func (a planBelongsToTeacherTx) Find() (result *gorm_gen.User, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a planBelongsToTeacherTx) Append(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a planBelongsToTeacherTx) Replace(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a planBelongsToTeacherTx) Delete(values ...*gorm_gen.User) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a planBelongsToTeacherTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a planBelongsToTeacherTx) Count() int64 {
 	return a.tx.Count()
 }
 

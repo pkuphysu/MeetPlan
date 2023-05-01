@@ -6,6 +6,7 @@ create table if not exists users
     pku_id       varchar(10)  not null unique,
     name         varchar(255) not null,
     email        varchar(255) not null,
+    email_change varchar(255) null,
     is_active    tinyint(1)   not null default 0,
     is_teacher   tinyint(1)   not null default 0,
     is_admin     tinyint(1)   not null default 0,
@@ -14,7 +15,7 @@ create table if not exists users
     department   varchar(255) null,
     phone        varchar(255) null,
     major        varchar(255) null,
-    grade        tinyint      null,
+    grade        varchar(255) null,
     dorm         varchar(255) null,
     office       varchar(255) null,
     introduction longtext     null
