@@ -19,8 +19,16 @@ var (
 type Config struct {
 	Env   string
 	Hertz Hertz `yaml:"hertz"`
+	Oidc  Oidc  `yaml:"oidc"`
 	MySQL MySQL `yaml:"mysql"`
 	Redis Redis `yaml:"redis"`
+}
+type Oidc struct {
+	Host         string   `yaml:"host"`
+	ClientID     string   `yaml:"client_id"`
+	ClientSecret string   `yaml:"client_secret"`
+	RedirectURL  string   `yaml:"redirect_url"`
+	Scope        []string `yaml:"scope"`
 }
 type MySQL struct {
 	DSN string `yaml:"dsn"`
@@ -34,6 +42,7 @@ type Redis struct {
 type Hertz struct {
 	Address       string `yaml:"address"`
 	EnablePprof   bool   `yaml:"enable_pprof"`
+	PrivateKey    string `yaml:"private_key"`
 	LogLevel      string `yaml:"log_level"`
 	LogFileName   string `yaml:"log_file_name"`
 	LogMaxSize    int    `yaml:"log_max_size"`

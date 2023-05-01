@@ -1,6 +1,22 @@
 hertz:
   address: ":8080"
   enable_pprof: true
+  private_key: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIICWwIBAAKBgQDDf/9199hdV9lodEk2I1b8XE9afAeHZ2sk6uOarPjZwmo4iZ7o
+    SQzr5eRoboSHK6BEVRPcIc5IKWfoOzj9iLeHi81I2PPmZgbG/KvbdHTGz6dG0fyu
+    1hCiwQR6lS5Pn/uN42md0F+Q4J05+cZzMuYvyOXo2/IfW+K5k5CaFyiTvwIDAQAB
+    AoGAUBwYK1f3MjC4ZuQXx/ZtQ5Xz8mkWkLahIgyaXZx5kInpCufh1N9ySwv2L5Dx
+    /42x665NKAw2Qj2tVW1HKiUmxs3Ex2IBRS7MWoQLFCtmq9lx1W01U9vU6TDDyTUJ
+    Yy7SGmpNlOf14WtpOoLUZTtAoFvAfdbPnkkU5IHYJ8cE7rkCQQDqxzu8TLqMwYFM
+    N0pOxHog3eeKaWQdUk5P6bM+pQeO4ORYRtat9FIf88rP3mAYZWtnit7rLDWRBRnR
+    GgzYXWElAkEA1Svdq3wBawoGDg0PJULfH2O8bEdL+ArqR41JEeUz+E6TMe3Zt865
+    eTVRRMexCONR0pEtxV3QxaPel4zaLo2GEwJADuCrN2aBV9QXVnYWfmFS/+wv9QRy
+    tKz3i3baxfh9Px+fOLzcc8+MuLuhOYT0//bFVJ1nPO3jQxpYpXiKIdfhBQJAMi3g
+    QVSwdMToRfh2/zttkFMG8KobzOis22j7sVW11RaR+afWnzjvWgPd/IXRO5lfEmUQ
+    VCxQT6XSaPREC79OtwJAd3gjdXFseG3PugNM/x9s/kPoaUCe4ApnKPhQl22nN7uG
+    vWS2bPvY1wBP7JMpIBgP6++yb7S+vuUyZn8OxiZL2w==
+    -----END RSA PRIVATE KEY-----
   log_level: info
   log_file_name: "log/hertz.log"
   log_max_size: 10
@@ -13,3 +29,16 @@ redis:
   username: ""
   password: ""
   db: 0
+oidc:
+  # https://auth.phy.pku.edu.cn/oidc/authorize?response_type=code&scope=openid%20profile%20email%20phone%20address%20pku&client_id=16302204390022&redirect_uri=http://127.0.0.1:8080
+  host: https://auth.phy.pku.edu.cn/oidc
+  client_id: 16302204390022
+  client_secret: c2c51981a1e716d6b5dc32b986a3f923d57c014271cf37d8bd3e8660
+  redirect_url: http://127.0.0.1:8080
+  scope:
+    - openid
+    - profile
+    - email
+    - phone
+    - address
+    - pku

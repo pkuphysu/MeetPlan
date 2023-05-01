@@ -33,7 +33,7 @@ message User {
 }
 
 message LoginRequest {
-    string code = 1;
+    string code = 1[(api.vd) = 'len($) > 0'];
     string nonce = 2;
 }
 message LoginResponse {

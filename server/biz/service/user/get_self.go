@@ -3,6 +3,8 @@ package user
 import (
 	"context"
 
+	"meetplan/pkg/constant"
+
 	"meetplan/biz/dal/pack"
 	"meetplan/biz/gorm_gen"
 
@@ -32,7 +34,7 @@ func (h *GetSelfService) Run(req *model.GetSelfRequest, resp *model.GetSelfRespo
 		resp = new(model.GetSelfResponse)
 	}
 
-	if u, ok := h.RequestContext.Get("user"); ok {
+	if u, ok := h.RequestContext.Get(constant.CtxKeyUser); ok {
 		resp.Data = pack.UserDal2Vo(u.(*gorm_gen.User))
 	} else {
 		err = errno.NewInternalErr("get user from context failed")

@@ -9,6 +9,8 @@ import (
 	"github.com/hertz-contrib/pprof"
 	"github.com/hertz-contrib/requestid"
 
+	"meetplan/internal/oidc_rp"
+
 	"meetplan/biz/dal"
 	"meetplan/biz/dal/mysql"
 	"meetplan/biz/gorm_gen/query"
@@ -18,6 +20,7 @@ import (
 func main() {
 	dal.Init()
 	query.SetDefault(mysql.DB)
+	oidc_rp.GetProvider()
 
 	conf := config.GetConf()
 	h := server.Default(server.WithHostPorts(conf.Hertz.Address))

@@ -4,154 +4,126 @@ package service
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+
+	"meetplan/internal/middleware"
 )
 
 func rootMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _apiMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _v1Mw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _listfriendlinkMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _createfriendlinkMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _loginMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _createmeetplanMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _deletemeetplansMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _createmeetplanandorderMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _createorderMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _updatetermdaterangeMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _gettermdaterangeMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _createupdaterecordMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _listupdaterecordMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _listuserMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _meetplanMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _getmeetplanMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _meetplan0Mw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _listmeetplanMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _updatemeetplanMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _deletemeetplanMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _orderMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _listorderMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _updateorderMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _order0Mw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _getorderMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _userMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _getuserMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _getselfMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
 
 func _createuserMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{middleware.Jwt()}
 }
