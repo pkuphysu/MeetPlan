@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 
 	"gorm.io/gen"
 	"gorm.io/gen/field"
@@ -18,9 +18,9 @@ import (
 
 func init() {
 	InitializeDB()
-	err := db.AutoMigrate(&model.Plan{})
+	err := db.AutoMigrate(&gorm_gen.Plan{})
 	if err != nil {
-		fmt.Printf("Error: AutoMigrate(&model.Plan{}) fail: %s", err)
+		fmt.Printf("Error: AutoMigrate(&gorm_gen.Plan{}) fail: %s", err)
 	}
 }
 
@@ -41,17 +41,17 @@ func Test_planQuery(t *testing.T) {
 		t.Error("GetFieldByName(\"\") from plan success")
 	}
 
-	err = _do.Create(&model.Plan{})
+	err = _do.Create(&gorm_gen.Plan{})
 	if err != nil {
 		t.Error("create item in table <plans> fail:", err)
 	}
 
-	err = _do.Save(&model.Plan{})
+	err = _do.Save(&gorm_gen.Plan{})
 	if err != nil {
 		t.Error("create item in table <plans> fail:", err)
 	}
 
-	err = _do.CreateInBatches([]*model.Plan{{}, {}}, 10)
+	err = _do.CreateInBatches([]*gorm_gen.Plan{{}, {}}, 10)
 	if err != nil {
 		t.Error("create item in table <plans> fail:", err)
 	}
@@ -76,7 +76,7 @@ func Test_planQuery(t *testing.T) {
 		t.Error("FindInBatch() on table <plans> fail:", err)
 	}
 
-	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*model.Plan{}, 10, func(tx gen.Dao, batch int) error { return nil })
+	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*gorm_gen.Plan{}, 10, func(tx gen.Dao, batch int) error { return nil })
 	if err != nil {
 		t.Error("FindInBatches() on table <plans> fail:", err)
 	}
@@ -111,7 +111,7 @@ func Test_planQuery(t *testing.T) {
 		t.Error("FindByPage() on table <plans> fail:", err)
 	}
 
-	_, err = _do.ScanByPage(&model.Plan{}, 0, 1)
+	_, err = _do.ScanByPage(&gorm_gen.Plan{}, 0, 1)
 	if err != nil {
 		t.Error("ScanByPage() on table <plans> fail:", err)
 	}

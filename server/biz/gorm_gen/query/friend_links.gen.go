@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 )
 
 func newFriendLink(db *gorm.DB, opts ...gen.DOOption) friendLink {
 	_friendLink := friendLink{}
 
 	_friendLink.friendLinkDo.UseDB(db, opts...)
-	_friendLink.friendLinkDo.UseModel(&model.FriendLink{})
+	_friendLink.friendLinkDo.UseModel(&gorm_gen.FriendLink{})
 
 	tableName := _friendLink.friendLinkDo.TableName()
 	_friendLink.ALL = field.NewAsterisk(tableName)
@@ -129,17 +129,17 @@ type IFriendLinkDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IFriendLinkDo
 	Unscoped() IFriendLinkDo
-	Create(values ...*model.FriendLink) error
-	CreateInBatches(values []*model.FriendLink, batchSize int) error
-	Save(values ...*model.FriendLink) error
-	First() (*model.FriendLink, error)
-	Take() (*model.FriendLink, error)
-	Last() (*model.FriendLink, error)
-	Find() ([]*model.FriendLink, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.FriendLink, err error)
-	FindInBatches(result *[]*model.FriendLink, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*gorm_gen.FriendLink) error
+	CreateInBatches(values []*gorm_gen.FriendLink, batchSize int) error
+	Save(values ...*gorm_gen.FriendLink) error
+	First() (*gorm_gen.FriendLink, error)
+	Take() (*gorm_gen.FriendLink, error)
+	Last() (*gorm_gen.FriendLink, error)
+	Find() ([]*gorm_gen.FriendLink, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.FriendLink, err error)
+	FindInBatches(result *[]*gorm_gen.FriendLink, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*model.FriendLink) (info gen.ResultInfo, err error)
+	Delete(...*gorm_gen.FriendLink) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -151,9 +151,9 @@ type IFriendLinkDo interface {
 	Assign(attrs ...field.AssignExpr) IFriendLinkDo
 	Joins(fields ...field.RelationField) IFriendLinkDo
 	Preload(fields ...field.RelationField) IFriendLinkDo
-	FirstOrInit() (*model.FriendLink, error)
-	FirstOrCreate() (*model.FriendLink, error)
-	FindByPage(offset int, limit int) (result []*model.FriendLink, count int64, err error)
+	FirstOrInit() (*gorm_gen.FriendLink, error)
+	FirstOrCreate() (*gorm_gen.FriendLink, error)
+	FindByPage(offset int, limit int) (result []*gorm_gen.FriendLink, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IFriendLinkDo
@@ -257,57 +257,57 @@ func (f friendLinkDo) Unscoped() IFriendLinkDo {
 	return f.withDO(f.DO.Unscoped())
 }
 
-func (f friendLinkDo) Create(values ...*model.FriendLink) error {
+func (f friendLinkDo) Create(values ...*gorm_gen.FriendLink) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return f.DO.Create(values)
 }
 
-func (f friendLinkDo) CreateInBatches(values []*model.FriendLink, batchSize int) error {
+func (f friendLinkDo) CreateInBatches(values []*gorm_gen.FriendLink, batchSize int) error {
 	return f.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (f friendLinkDo) Save(values ...*model.FriendLink) error {
+func (f friendLinkDo) Save(values ...*gorm_gen.FriendLink) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return f.DO.Save(values)
 }
 
-func (f friendLinkDo) First() (*model.FriendLink, error) {
+func (f friendLinkDo) First() (*gorm_gen.FriendLink, error) {
 	if result, err := f.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.FriendLink), nil
+		return result.(*gorm_gen.FriendLink), nil
 	}
 }
 
-func (f friendLinkDo) Take() (*model.FriendLink, error) {
+func (f friendLinkDo) Take() (*gorm_gen.FriendLink, error) {
 	if result, err := f.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.FriendLink), nil
+		return result.(*gorm_gen.FriendLink), nil
 	}
 }
 
-func (f friendLinkDo) Last() (*model.FriendLink, error) {
+func (f friendLinkDo) Last() (*gorm_gen.FriendLink, error) {
 	if result, err := f.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.FriendLink), nil
+		return result.(*gorm_gen.FriendLink), nil
 	}
 }
 
-func (f friendLinkDo) Find() ([]*model.FriendLink, error) {
+func (f friendLinkDo) Find() ([]*gorm_gen.FriendLink, error) {
 	result, err := f.DO.Find()
-	return result.([]*model.FriendLink), err
+	return result.([]*gorm_gen.FriendLink), err
 }
 
-func (f friendLinkDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.FriendLink, err error) {
-	buf := make([]*model.FriendLink, 0, batchSize)
+func (f friendLinkDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.FriendLink, err error) {
+	buf := make([]*gorm_gen.FriendLink, 0, batchSize)
 	err = f.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -315,7 +315,7 @@ func (f friendLinkDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) 
 	return results, err
 }
 
-func (f friendLinkDo) FindInBatches(result *[]*model.FriendLink, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (f friendLinkDo) FindInBatches(result *[]*gorm_gen.FriendLink, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return f.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -341,23 +341,23 @@ func (f friendLinkDo) Preload(fields ...field.RelationField) IFriendLinkDo {
 	return &f
 }
 
-func (f friendLinkDo) FirstOrInit() (*model.FriendLink, error) {
+func (f friendLinkDo) FirstOrInit() (*gorm_gen.FriendLink, error) {
 	if result, err := f.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.FriendLink), nil
+		return result.(*gorm_gen.FriendLink), nil
 	}
 }
 
-func (f friendLinkDo) FirstOrCreate() (*model.FriendLink, error) {
+func (f friendLinkDo) FirstOrCreate() (*gorm_gen.FriendLink, error) {
 	if result, err := f.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.FriendLink), nil
+		return result.(*gorm_gen.FriendLink), nil
 	}
 }
 
-func (f friendLinkDo) FindByPage(offset int, limit int) (result []*model.FriendLink, count int64, err error) {
+func (f friendLinkDo) FindByPage(offset int, limit int) (result []*gorm_gen.FriendLink, count int64, err error) {
 	result, err = f.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -386,7 +386,7 @@ func (f friendLinkDo) Scan(result interface{}) (err error) {
 	return f.DO.Scan(result)
 }
 
-func (f friendLinkDo) Delete(models ...*model.FriendLink) (result gen.ResultInfo, err error) {
+func (f friendLinkDo) Delete(models ...*gorm_gen.FriendLink) (result gen.ResultInfo, err error) {
 	return f.DO.Delete(models)
 }
 

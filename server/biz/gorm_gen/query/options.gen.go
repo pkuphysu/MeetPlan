@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 )
 
 func newOption(db *gorm.DB, opts ...gen.DOOption) option {
 	_option := option{}
 
 	_option.optionDo.UseDB(db, opts...)
-	_option.optionDo.UseModel(&model.Option{})
+	_option.optionDo.UseModel(&gorm_gen.Option{})
 
 	tableName := _option.optionDo.TableName()
 	_option.ALL = field.NewAsterisk(tableName)
@@ -125,17 +125,17 @@ type IOptionDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IOptionDo
 	Unscoped() IOptionDo
-	Create(values ...*model.Option) error
-	CreateInBatches(values []*model.Option, batchSize int) error
-	Save(values ...*model.Option) error
-	First() (*model.Option, error)
-	Take() (*model.Option, error)
-	Last() (*model.Option, error)
-	Find() ([]*model.Option, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Option, err error)
-	FindInBatches(result *[]*model.Option, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*gorm_gen.Option) error
+	CreateInBatches(values []*gorm_gen.Option, batchSize int) error
+	Save(values ...*gorm_gen.Option) error
+	First() (*gorm_gen.Option, error)
+	Take() (*gorm_gen.Option, error)
+	Last() (*gorm_gen.Option, error)
+	Find() ([]*gorm_gen.Option, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.Option, err error)
+	FindInBatches(result *[]*gorm_gen.Option, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*model.Option) (info gen.ResultInfo, err error)
+	Delete(...*gorm_gen.Option) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -147,9 +147,9 @@ type IOptionDo interface {
 	Assign(attrs ...field.AssignExpr) IOptionDo
 	Joins(fields ...field.RelationField) IOptionDo
 	Preload(fields ...field.RelationField) IOptionDo
-	FirstOrInit() (*model.Option, error)
-	FirstOrCreate() (*model.Option, error)
-	FindByPage(offset int, limit int) (result []*model.Option, count int64, err error)
+	FirstOrInit() (*gorm_gen.Option, error)
+	FirstOrCreate() (*gorm_gen.Option, error)
+	FindByPage(offset int, limit int) (result []*gorm_gen.Option, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IOptionDo
@@ -253,57 +253,57 @@ func (o optionDo) Unscoped() IOptionDo {
 	return o.withDO(o.DO.Unscoped())
 }
 
-func (o optionDo) Create(values ...*model.Option) error {
+func (o optionDo) Create(values ...*gorm_gen.Option) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return o.DO.Create(values)
 }
 
-func (o optionDo) CreateInBatches(values []*model.Option, batchSize int) error {
+func (o optionDo) CreateInBatches(values []*gorm_gen.Option, batchSize int) error {
 	return o.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (o optionDo) Save(values ...*model.Option) error {
+func (o optionDo) Save(values ...*gorm_gen.Option) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return o.DO.Save(values)
 }
 
-func (o optionDo) First() (*model.Option, error) {
+func (o optionDo) First() (*gorm_gen.Option, error) {
 	if result, err := o.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Option), nil
+		return result.(*gorm_gen.Option), nil
 	}
 }
 
-func (o optionDo) Take() (*model.Option, error) {
+func (o optionDo) Take() (*gorm_gen.Option, error) {
 	if result, err := o.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Option), nil
+		return result.(*gorm_gen.Option), nil
 	}
 }
 
-func (o optionDo) Last() (*model.Option, error) {
+func (o optionDo) Last() (*gorm_gen.Option, error) {
 	if result, err := o.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Option), nil
+		return result.(*gorm_gen.Option), nil
 	}
 }
 
-func (o optionDo) Find() ([]*model.Option, error) {
+func (o optionDo) Find() ([]*gorm_gen.Option, error) {
 	result, err := o.DO.Find()
-	return result.([]*model.Option), err
+	return result.([]*gorm_gen.Option), err
 }
 
-func (o optionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Option, err error) {
-	buf := make([]*model.Option, 0, batchSize)
+func (o optionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.Option, err error) {
+	buf := make([]*gorm_gen.Option, 0, batchSize)
 	err = o.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -311,7 +311,7 @@ func (o optionDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) erro
 	return results, err
 }
 
-func (o optionDo) FindInBatches(result *[]*model.Option, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (o optionDo) FindInBatches(result *[]*gorm_gen.Option, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return o.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -337,23 +337,23 @@ func (o optionDo) Preload(fields ...field.RelationField) IOptionDo {
 	return &o
 }
 
-func (o optionDo) FirstOrInit() (*model.Option, error) {
+func (o optionDo) FirstOrInit() (*gorm_gen.Option, error) {
 	if result, err := o.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Option), nil
+		return result.(*gorm_gen.Option), nil
 	}
 }
 
-func (o optionDo) FirstOrCreate() (*model.Option, error) {
+func (o optionDo) FirstOrCreate() (*gorm_gen.Option, error) {
 	if result, err := o.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Option), nil
+		return result.(*gorm_gen.Option), nil
 	}
 }
 
-func (o optionDo) FindByPage(offset int, limit int) (result []*model.Option, count int64, err error) {
+func (o optionDo) FindByPage(offset int, limit int) (result []*gorm_gen.Option, count int64, err error) {
 	result, err = o.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -382,7 +382,7 @@ func (o optionDo) Scan(result interface{}) (err error) {
 	return o.DO.Scan(result)
 }
 
-func (o optionDo) Delete(models ...*model.Option) (result gen.ResultInfo, err error) {
+func (o optionDo) Delete(models ...*gorm_gen.Option) (result gen.ResultInfo, err error) {
 	return o.DO.Delete(models)
 }
 

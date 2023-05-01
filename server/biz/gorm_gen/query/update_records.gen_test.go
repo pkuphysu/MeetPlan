@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 
 	"gorm.io/gen"
 	"gorm.io/gen/field"
@@ -18,9 +18,9 @@ import (
 
 func init() {
 	InitializeDB()
-	err := db.AutoMigrate(&model.UpdateRecord{})
+	err := db.AutoMigrate(&gorm_gen.UpdateRecord{})
 	if err != nil {
-		fmt.Printf("Error: AutoMigrate(&model.UpdateRecord{}) fail: %s", err)
+		fmt.Printf("Error: AutoMigrate(&gorm_gen.UpdateRecord{}) fail: %s", err)
 	}
 }
 
@@ -41,17 +41,17 @@ func Test_updateRecordQuery(t *testing.T) {
 		t.Error("GetFieldByName(\"\") from updateRecord success")
 	}
 
-	err = _do.Create(&model.UpdateRecord{})
+	err = _do.Create(&gorm_gen.UpdateRecord{})
 	if err != nil {
 		t.Error("create item in table <update_records> fail:", err)
 	}
 
-	err = _do.Save(&model.UpdateRecord{})
+	err = _do.Save(&gorm_gen.UpdateRecord{})
 	if err != nil {
 		t.Error("create item in table <update_records> fail:", err)
 	}
 
-	err = _do.CreateInBatches([]*model.UpdateRecord{{}, {}}, 10)
+	err = _do.CreateInBatches([]*gorm_gen.UpdateRecord{{}, {}}, 10)
 	if err != nil {
 		t.Error("create item in table <update_records> fail:", err)
 	}
@@ -76,7 +76,7 @@ func Test_updateRecordQuery(t *testing.T) {
 		t.Error("FindInBatch() on table <update_records> fail:", err)
 	}
 
-	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*model.UpdateRecord{}, 10, func(tx gen.Dao, batch int) error { return nil })
+	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*gorm_gen.UpdateRecord{}, 10, func(tx gen.Dao, batch int) error { return nil })
 	if err != nil {
 		t.Error("FindInBatches() on table <update_records> fail:", err)
 	}
@@ -111,7 +111,7 @@ func Test_updateRecordQuery(t *testing.T) {
 		t.Error("FindByPage() on table <update_records> fail:", err)
 	}
 
-	_, err = _do.ScanByPage(&model.UpdateRecord{}, 0, 1)
+	_, err = _do.ScanByPage(&gorm_gen.UpdateRecord{}, 0, 1)
 	if err != nil {
 		t.Error("ScanByPage() on table <update_records> fail:", err)
 	}

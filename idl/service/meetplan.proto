@@ -3,83 +3,103 @@ syntax = "proto3";
 package service;
 
 import "common/api.proto";
-import "model/user.proto";
 import "model/meetplan.proto";
 import "model/option.proto";
+import "model/user.proto";
 
 service User {
-  rpc Login (model.LoginRequest) returns (model.LoginResponse) {
-    option (api.get) = "/api/v1/login";
-  }
-  rpc GetSelf(model.GetSelfRequest) returns(model.GetSelfResponse) {
-    option (api.get) = "/api/v1/user/self";
-  }
-  rpc GetUser(model.GetUserRequest) returns(model.GetUserResponse) {
-    option (api.get) = "/api/v1/user/:id";
-  }
-  rpc ListUser(model.ListUserRequest) returns(model.ListUserResponse){
-    option (api.get) = "/api/v1/user";
-  }
+    rpc Login (model.LoginRequest) returns (model.LoginResponse) {
+        option (api.get) = "/api/v1/login";
+        option (api.handler_path) = "user";
+    }
+    rpc GetSelf (model.GetSelfRequest) returns (model.GetSelfResponse) {
+        option (api.get) = "/api/v1/user/self";
+        option (api.handler_path) = "user";
+    }
+    rpc GetUser (model.GetUserRequest) returns (model.GetUserResponse) {
+        option (api.get) = "/api/v1/user/:id";
+        option (api.handler_path) = "user";
+    }
+    rpc ListUser (model.ListUserRequest) returns (model.ListUserResponse) {
+        option (api.get) = "/api/v1/user";
+        option (api.handler_path) = "user";
+    }
 }
 
 service MeetPlan {
-  rpc GetMeetPlan(model.GetMeetPlanRequest) returns(model.GetMeetPlanResponse){
-    option (api.get) = "/api/v1/meetplan/:id";
-  }
-  rpc ListMeetPlan(model.ListMeetPlanRequest) returns(model.ListMeetPlanResponse){
-    option (api.get) = "/api/v1/meetplan";
-  }
-  rpc CreateMeetPlan(model.CreateMeetPlanRequest) returns(model.CreateMeetPlanResponse){
-     option (api.post) = "/api/v1/meetplan";
-  }
-  rpc UpdateMeetPlan(model.UpdateMeetPlanRequest) returns(model.UpdateMeetPlanResponse){
-    option (api.put) = "/api/v1/meetplan/:id";
-  }
-  rpc DeleteMeetPlan(model.DeleteMeetPlanRequest) returns(model.DeleteMeetPlanResponse){
-    option (api.delete) = "/api/v1/meetplan/:id";
-  }
-  rpc DeleteMeetPlans(model.DeleteMeetPlansRequest) returns(model.DeleteMeetPlansResponse){
-    option (api.delete) = "/api/v1/meetplan";
-  }
+    rpc GetMeetPlan (model.GetMeetPlanRequest) returns (model.GetMeetPlanResponse) {
+        option (api.get) = "/api/v1/meetplan/:id";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc ListMeetPlan (model.ListMeetPlanRequest) returns (model.ListMeetPlanResponse) {
+        option (api.get) = "/api/v1/meetplan";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc CreateMeetPlan (model.CreateMeetPlanRequest) returns (model.CreateMeetPlanResponse) {
+        option (api.post) = "/api/v1/meetplan";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc UpdateMeetPlan (model.UpdateMeetPlanRequest) returns (model.UpdateMeetPlanResponse) {
+        option (api.put) = "/api/v1/meetplan/:id";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc DeleteMeetPlan (model.DeleteMeetPlanRequest) returns (model.DeleteMeetPlanResponse) {
+        option (api.delete) = "/api/v1/meetplan/:id";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc DeleteMeetPlans (model.DeleteMeetPlansRequest) returns (model.DeleteMeetPlansResponse) {
+        option (api.delete) = "/api/v1/meetplan";
+        option (api.handler_path) = "meetplan";
+    }
 
-  rpc GetOrder(model.GetOrderRequest) returns(model.GetOrderResponse){
-    option (api.get) = "/api/v1/order/:id";
-  }
-  rpc ListOrder(model.ListOrderRequest) returns(model.ListOrderResponse){
-    option (api.get) = "/api/v1/order";
-  }
-  rpc CreateOrder(model.CreateOrderRequest) returns(model.CreateOrderResponse){
-    option (api.post) = "/api/v1/order";
-  }
-  rpc UpdateOrder(model.UpdateOrderRequest) returns(model.UpdateOrderResponse){
-    option (api.put) = "/api/v1/order/:id";
-  }
+    rpc GetOrder (model.GetOrderRequest) returns (model.GetOrderResponse) {
+        option (api.get) = "/api/v1/order/:id";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc ListOrder (model.ListOrderRequest) returns (model.ListOrderResponse) {
+        option (api.get) = "/api/v1/order";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc CreateOrder (model.CreateOrderRequest) returns (model.CreateOrderResponse) {
+        option (api.post) = "/api/v1/order";
+        option (api.handler_path) = "meetplan";
+    }
+    rpc UpdateOrder (model.UpdateOrderRequest) returns (model.UpdateOrderResponse) {
+        option (api.put) = "/api/v1/order/:id";
+        option (api.handler_path) = "meetplan";
+    }
 
-  rpc CreateMeetPlanAndOrder(model.CreateMeetPlanAndOrderRequest) returns(model.CreateMeetPlanAndOrderResponse){
-    option (api.post) = "/api/v1/meetplanorder";
-  }
+    rpc CreateMeetPlanAndOrder (model.CreateMeetPlanAndOrderRequest) returns (model.CreateMeetPlanAndOrderResponse) {
+        option (api.post) = "/api/v1/meetplanorder";
+        option (api.handler_path) = "meetplan";
+    }
 }
 
 service Option {
-  rpc ListFriendLink(model.ListFriendLinkRequest) returns(model.ListFriendLinkResponse){
-    option (api.get) = "/api/v1/friendlink";
-  }
-  rpc CreateFriendLink(model.CreateFriendLinkRequest) returns(model.CreateFriendLinkResponse){
-    option (api.post) = "/api/v1/friendlink";
-  }
+    rpc ListFriendLink (model.ListFriendLinkRequest) returns (model.ListFriendLinkResponse) {
+        option (api.get) = "/api/v1/friendlink";
+        option (api.handler_path) = "option";
+    }
+    rpc CreateFriendLink (model.CreateFriendLinkRequest) returns (model.CreateFriendLinkResponse) {
+        option (api.post) = "/api/v1/friendlink";
+        option (api.handler_path) = "option";
+    }
 
-  rpc ListUpdateRecord(model.ListUpdateRecordRequest) returns(model.ListUpdateRecordResponse){
-    option (api.get) = "/api/v1/updaterecord";
-  }
-  rpc CreateUpdateRecord(model.CreateUpdateRecordRequest) returns(model.CreateUpdateRecordResponse){
-    option (api.post) = "/api/v1/updaterecord";
-  }
+    rpc ListUpdateRecord (model.ListUpdateRecordRequest) returns (model.ListUpdateRecordResponse) {
+        option (api.get) = "/api/v1/updaterecord";
+        option (api.handler_path) = "option";
+    }
+    rpc CreateUpdateRecord (model.CreateUpdateRecordRequest) returns (model.CreateUpdateRecordResponse) {
+        option (api.post) = "/api/v1/updaterecord";
+        option (api.handler_path) = "option";
+    }
 
-  rpc GetTermDateRange(model.GetTermDateRangeRequest) returns(model.GetTermDateRangeResponse){
-    option (api.get) = "/api/v1/termdate";
-  }
-  rpc UpdateTermDateRange(model.UpdateTermDateRangeRequest) returns(model.UpdateTermDateRangeResponse){
-    option (api.put) = "/api/v1/termdate";
-  }
-
+    rpc GetTermDateRange (model.GetTermDateRangeRequest) returns (model.GetTermDateRangeResponse) {
+        option (api.get) = "/api/v1/termdate";
+        option (api.handler_path) = "option";
+    }
+    rpc UpdateTermDateRange (model.UpdateTermDateRangeRequest) returns (model.UpdateTermDateRangeResponse) {
+        option (api.put) = "/api/v1/termdate";
+        option (api.handler_path) = "option";
+    }
 }

@@ -1,27 +1,27 @@
 syntax = "proto3";
+
 package model;
 
-import "common/api.proto";
 
 option go_package = "meetplan";
 
 message QueryPageParam {
-  uint64 page_no = 1;
-  uint32 page_size = 2;
+    uint64 page_no = 1;
+    uint32 page_size = 2;
 }
 
 message Pagination {
-  uint64 page_no = 1;
-  uint32 page_size = 2;
-  bool has_more = 3;
-  uint64 total_count = 4;
+    uint64 page_no = 1;
+    uint32 page_size = 2;
+    bool has_more = 3;
+    uint64 total_count = 4;
 }
 
 // 通用返回结构，code为0表示成功，其他值表示失败，message为失败原因
 // 所有返回结构都应包含这两个字段
 // 本结构不应该被直接使用
 message BaseResponse {
-  int32 code = 1;
-  string message = 2;
-  // any data = 3;
+    int32 code = 1;
+    string message = 2;
+    // any data = 3;
 }

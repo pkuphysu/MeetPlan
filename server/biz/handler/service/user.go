@@ -5,9 +5,8 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
 	model "meetplan/biz/model"
-	"meetplan/biz/service"
+	"meetplan/biz/service/user"
 	"meetplan/pkg/httputil"
 )
 
@@ -22,7 +21,8 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewLoginService(ctx, c).Run(&req, resp)
+
+	err := user.NewLoginService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -44,7 +44,8 @@ func GetSelf(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewGetSelfService(ctx, c).Run(&req, resp)
+
+	err := user.NewGetSelfService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -66,7 +67,8 @@ func GetUser(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewGetUserService(ctx, c).Run(&req, resp)
+
+	err := user.NewGetUserService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -88,7 +90,8 @@ func ListUser(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewListUserService(ctx, c).Run(&req, resp)
+
+	err := user.NewListUserService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())

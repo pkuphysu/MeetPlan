@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 )
 
 func newPlanView(db *gorm.DB, opts ...gen.DOOption) planView {
 	_planView := planView{}
 
 	_planView.planViewDo.UseDB(db, opts...)
-	_planView.planViewDo.UseModel(&model.PlanView{})
+	_planView.planViewDo.UseModel(&gorm_gen.PlanView{})
 
 	tableName := _planView.planViewDo.TableName()
 	_planView.ALL = field.NewAsterisk(tableName)
@@ -149,17 +149,17 @@ type IPlanViewDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IPlanViewDo
 	Unscoped() IPlanViewDo
-	Create(values ...*model.PlanView) error
-	CreateInBatches(values []*model.PlanView, batchSize int) error
-	Save(values ...*model.PlanView) error
-	First() (*model.PlanView, error)
-	Take() (*model.PlanView, error)
-	Last() (*model.PlanView, error)
-	Find() ([]*model.PlanView, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.PlanView, err error)
-	FindInBatches(result *[]*model.PlanView, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*gorm_gen.PlanView) error
+	CreateInBatches(values []*gorm_gen.PlanView, batchSize int) error
+	Save(values ...*gorm_gen.PlanView) error
+	First() (*gorm_gen.PlanView, error)
+	Take() (*gorm_gen.PlanView, error)
+	Last() (*gorm_gen.PlanView, error)
+	Find() ([]*gorm_gen.PlanView, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.PlanView, err error)
+	FindInBatches(result *[]*gorm_gen.PlanView, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*model.PlanView) (info gen.ResultInfo, err error)
+	Delete(...*gorm_gen.PlanView) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -171,9 +171,9 @@ type IPlanViewDo interface {
 	Assign(attrs ...field.AssignExpr) IPlanViewDo
 	Joins(fields ...field.RelationField) IPlanViewDo
 	Preload(fields ...field.RelationField) IPlanViewDo
-	FirstOrInit() (*model.PlanView, error)
-	FirstOrCreate() (*model.PlanView, error)
-	FindByPage(offset int, limit int) (result []*model.PlanView, count int64, err error)
+	FirstOrInit() (*gorm_gen.PlanView, error)
+	FirstOrCreate() (*gorm_gen.PlanView, error)
+	FindByPage(offset int, limit int) (result []*gorm_gen.PlanView, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IPlanViewDo
@@ -277,57 +277,57 @@ func (p planViewDo) Unscoped() IPlanViewDo {
 	return p.withDO(p.DO.Unscoped())
 }
 
-func (p planViewDo) Create(values ...*model.PlanView) error {
+func (p planViewDo) Create(values ...*gorm_gen.PlanView) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Create(values)
 }
 
-func (p planViewDo) CreateInBatches(values []*model.PlanView, batchSize int) error {
+func (p planViewDo) CreateInBatches(values []*gorm_gen.PlanView, batchSize int) error {
 	return p.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (p planViewDo) Save(values ...*model.PlanView) error {
+func (p planViewDo) Save(values ...*gorm_gen.PlanView) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Save(values)
 }
 
-func (p planViewDo) First() (*model.PlanView, error) {
+func (p planViewDo) First() (*gorm_gen.PlanView, error) {
 	if result, err := p.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.PlanView), nil
+		return result.(*gorm_gen.PlanView), nil
 	}
 }
 
-func (p planViewDo) Take() (*model.PlanView, error) {
+func (p planViewDo) Take() (*gorm_gen.PlanView, error) {
 	if result, err := p.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.PlanView), nil
+		return result.(*gorm_gen.PlanView), nil
 	}
 }
 
-func (p planViewDo) Last() (*model.PlanView, error) {
+func (p planViewDo) Last() (*gorm_gen.PlanView, error) {
 	if result, err := p.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.PlanView), nil
+		return result.(*gorm_gen.PlanView), nil
 	}
 }
 
-func (p planViewDo) Find() ([]*model.PlanView, error) {
+func (p planViewDo) Find() ([]*gorm_gen.PlanView, error) {
 	result, err := p.DO.Find()
-	return result.([]*model.PlanView), err
+	return result.([]*gorm_gen.PlanView), err
 }
 
-func (p planViewDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.PlanView, err error) {
-	buf := make([]*model.PlanView, 0, batchSize)
+func (p planViewDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.PlanView, err error) {
+	buf := make([]*gorm_gen.PlanView, 0, batchSize)
 	err = p.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -335,7 +335,7 @@ func (p planViewDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) er
 	return results, err
 }
 
-func (p planViewDo) FindInBatches(result *[]*model.PlanView, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (p planViewDo) FindInBatches(result *[]*gorm_gen.PlanView, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return p.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -361,23 +361,23 @@ func (p planViewDo) Preload(fields ...field.RelationField) IPlanViewDo {
 	return &p
 }
 
-func (p planViewDo) FirstOrInit() (*model.PlanView, error) {
+func (p planViewDo) FirstOrInit() (*gorm_gen.PlanView, error) {
 	if result, err := p.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.PlanView), nil
+		return result.(*gorm_gen.PlanView), nil
 	}
 }
 
-func (p planViewDo) FirstOrCreate() (*model.PlanView, error) {
+func (p planViewDo) FirstOrCreate() (*gorm_gen.PlanView, error) {
 	if result, err := p.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.PlanView), nil
+		return result.(*gorm_gen.PlanView), nil
 	}
 }
 
-func (p planViewDo) FindByPage(offset int, limit int) (result []*model.PlanView, count int64, err error) {
+func (p planViewDo) FindByPage(offset int, limit int) (result []*gorm_gen.PlanView, count int64, err error) {
 	result, err = p.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -406,7 +406,7 @@ func (p planViewDo) Scan(result interface{}) (err error) {
 	return p.DO.Scan(result)
 }
 
-func (p planViewDo) Delete(models ...*model.PlanView) (result gen.ResultInfo, err error) {
+func (p planViewDo) Delete(models ...*gorm_gen.PlanView) (result gen.ResultInfo, err error) {
 	return p.DO.Delete(models)
 }
 

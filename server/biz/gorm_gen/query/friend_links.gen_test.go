@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 
 	"gorm.io/gen"
 	"gorm.io/gen/field"
@@ -18,9 +18,9 @@ import (
 
 func init() {
 	InitializeDB()
-	err := db.AutoMigrate(&model.FriendLink{})
+	err := db.AutoMigrate(&gorm_gen.FriendLink{})
 	if err != nil {
-		fmt.Printf("Error: AutoMigrate(&model.FriendLink{}) fail: %s", err)
+		fmt.Printf("Error: AutoMigrate(&gorm_gen.FriendLink{}) fail: %s", err)
 	}
 }
 
@@ -41,17 +41,17 @@ func Test_friendLinkQuery(t *testing.T) {
 		t.Error("GetFieldByName(\"\") from friendLink success")
 	}
 
-	err = _do.Create(&model.FriendLink{})
+	err = _do.Create(&gorm_gen.FriendLink{})
 	if err != nil {
 		t.Error("create item in table <friend_links> fail:", err)
 	}
 
-	err = _do.Save(&model.FriendLink{})
+	err = _do.Save(&gorm_gen.FriendLink{})
 	if err != nil {
 		t.Error("create item in table <friend_links> fail:", err)
 	}
 
-	err = _do.CreateInBatches([]*model.FriendLink{{}, {}}, 10)
+	err = _do.CreateInBatches([]*gorm_gen.FriendLink{{}, {}}, 10)
 	if err != nil {
 		t.Error("create item in table <friend_links> fail:", err)
 	}
@@ -76,7 +76,7 @@ func Test_friendLinkQuery(t *testing.T) {
 		t.Error("FindInBatch() on table <friend_links> fail:", err)
 	}
 
-	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*model.FriendLink{}, 10, func(tx gen.Dao, batch int) error { return nil })
+	err = _do.Where(primaryKey.IsNotNull()).FindInBatches(&[]*gorm_gen.FriendLink{}, 10, func(tx gen.Dao, batch int) error { return nil })
 	if err != nil {
 		t.Error("FindInBatches() on table <friend_links> fail:", err)
 	}
@@ -111,7 +111,7 @@ func Test_friendLinkQuery(t *testing.T) {
 		t.Error("FindByPage() on table <friend_links> fail:", err)
 	}
 
-	_, err = _do.ScanByPage(&model.FriendLink{}, 0, 1)
+	_, err = _do.ScanByPage(&gorm_gen.FriendLink{}, 0, 1)
 	if err != nil {
 		t.Error("ScanByPage() on table <friend_links> fail:", err)
 	}

@@ -1,32 +1,32 @@
 syntax = "proto3";
+
 package model;
 
 import "common/api.proto";
-import "model/common.proto";
 
 option go_package = "meetplan";
 
-message FriendLink{
+message FriendLink {
     string name = 1;
     string url = 2;
     string description = 3;
 }
 
-message ListFriendLinkRequest{}
+message ListFriendLinkRequest {}
 
-message ListFriendLinkResponse{
+message ListFriendLinkResponse {
     int32 code = 1;
     string message = 2;
     repeated FriendLink data = 3;
 }
 
-message CreateFriendLinkRequest{
-    string name = 1;
-    string url = 2;
+message CreateFriendLinkRequest {
+    string name = 1 [(api.vd) = "len($) > 0"];
+    string url = 2 [(api.vd) = "len($) > 0"];
     string description = 3;
 }
 
-message CreateFriendLinkResponse{
+message CreateFriendLinkResponse {
     int32 code = 1;
     string message = 2;
     FriendLink data = 3;
@@ -39,21 +39,21 @@ message UpdateRecord {
     string description = 4;
 }
 
-message ListUpdateRecordRequest{}
+message ListUpdateRecordRequest {}
 
-message ListUpdateRecordResponse{
+message ListUpdateRecordResponse {
     int32 code = 1;
     string message = 2;
     repeated UpdateRecord data = 3;
 }
 
-message CreateUpdateRecordRequest{
+message CreateUpdateRecordRequest {
     string author = 1;
     string url = 2;
     string description = 3;
 }
 
-message CreateUpdateRecordResponse{
+message CreateUpdateRecordResponse {
     int32 code = 1;
     string message = 2;
     UpdateRecord data = 3;
@@ -64,20 +64,20 @@ message TermDateRange {
     int64 end = 2;
 }
 
-message GetTermDateRangeRequest{}
+message GetTermDateRangeRequest {}
 
-message GetTermDateRangeResponse{
+message GetTermDateRangeResponse {
     int32 code = 1;
     string message = 2;
     TermDateRange data = 3;
 }
 
-message UpdateTermDateRangeRequest{
+message UpdateTermDateRangeRequest {
     int64 start = 1;
     int64 end = 2;
 }
 
-message UpdateTermDateRangeResponse{
+message UpdateTermDateRangeResponse {
     int32 code = 1;
     string message = 2;
     TermDateRange data = 3;

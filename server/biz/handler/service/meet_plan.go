@@ -5,9 +5,8 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
 	model "meetplan/biz/model"
-	"meetplan/biz/service"
+	"meetplan/biz/service/meetplan"
 	"meetplan/pkg/httputil"
 )
 
@@ -22,7 +21,8 @@ func GetMeetPlan(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewGetMeetPlanService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewGetMeetPlanService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -44,7 +44,8 @@ func ListMeetPlan(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewListMeetPlanService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewListMeetPlanService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -66,7 +67,8 @@ func CreateMeetPlan(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewCreateMeetPlanService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewCreateMeetPlanService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -88,7 +90,8 @@ func UpdateMeetPlan(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewUpdateMeetPlanService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewUpdateMeetPlanService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -110,7 +113,8 @@ func DeleteMeetPlan(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewDeleteMeetPlanService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewDeleteMeetPlanService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -132,7 +136,8 @@ func DeleteMeetPlans(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewDeleteMeetPlansService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewDeleteMeetPlansService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -154,7 +159,8 @@ func GetOrder(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewGetOrderService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewGetOrderService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -176,7 +182,8 @@ func ListOrder(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewListOrderService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewListOrderService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -198,7 +205,8 @@ func CreateOrder(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewCreateOrderService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewCreateOrderService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -220,7 +228,8 @@ func UpdateOrder(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewUpdateOrderService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewUpdateOrderService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -242,7 +251,8 @@ func CreateMeetPlanAndOrder(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewCreateMeetPlanAndOrderService(ctx, c).Run(&req, resp)
+
+	err := meetplan.NewCreateMeetPlanAndOrderService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())

@@ -5,9 +5,8 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
-
 	model "meetplan/biz/model"
-	"meetplan/biz/service"
+	"meetplan/biz/service/option"
 	"meetplan/pkg/httputil"
 )
 
@@ -22,7 +21,8 @@ func ListFriendLink(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewListFriendLinkService(ctx, c).Run(&req, resp)
+
+	err := option.NewListFriendLinkService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -44,7 +44,8 @@ func CreateFriendLink(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewCreateFriendLinkService(ctx, c).Run(&req, resp)
+
+	err := option.NewCreateFriendLinkService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -66,7 +67,8 @@ func ListUpdateRecord(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewListUpdateRecordService(ctx, c).Run(&req, resp)
+
+	err := option.NewListUpdateRecordService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -88,7 +90,8 @@ func CreateUpdateRecord(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewCreateUpdateRecordService(ctx, c).Run(&req, resp)
+
+	err := option.NewCreateUpdateRecordService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -110,7 +113,8 @@ func GetTermDateRange(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewGetTermDateRangeService(ctx, c).Run(&req, resp)
+
+	err := option.NewGetTermDateRangeService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())
@@ -132,7 +136,8 @@ func UpdateTermDateRange(ctx context.Context, c *app.RequestContext) {
 		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
 		return
 	}
-	err := service.NewUpdateTermDateRangeService(ctx, c).Run(&req, resp)
+
+	err := option.NewUpdateTermDateRangeService(ctx, c).Run(&req, resp)
 
 	if err != nil {
 		resp.Code = int32(err.ErrCode())

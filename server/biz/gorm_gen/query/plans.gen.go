@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 )
 
 func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 	_plan := plan{}
 
 	_plan.planDo.UseDB(db, opts...)
-	_plan.planDo.UseModel(&model.Plan{})
+	_plan.planDo.UseModel(&gorm_gen.Plan{})
 
 	tableName := _plan.planDo.TableName()
 	_plan.ALL = field.NewAsterisk(tableName)
@@ -37,7 +37,7 @@ func newPlan(db *gorm.DB, opts ...gen.DOOption) plan {
 	_plan.Orders = planHasManyOrders{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("Orders", "model.Order"),
+		RelationField: field.NewRelation("Orders", "gorm_gen.Order"),
 	}
 
 	_plan.fillFieldMap()
@@ -146,17 +146,17 @@ func (a planHasManyOrders) Session(session *gorm.Session) *planHasManyOrders {
 	return &a
 }
 
-func (a planHasManyOrders) Model(m *model.Plan) *planHasManyOrdersTx {
+func (a planHasManyOrders) Model(m *gorm_gen.Plan) *planHasManyOrdersTx {
 	return &planHasManyOrdersTx{a.db.Model(m).Association(a.Name())}
 }
 
 type planHasManyOrdersTx struct{ tx *gorm.Association }
 
-func (a planHasManyOrdersTx) Find() (result []*model.Order, err error) {
+func (a planHasManyOrdersTx) Find() (result []*gorm_gen.Order, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a planHasManyOrdersTx) Append(values ...*model.Order) (err error) {
+func (a planHasManyOrdersTx) Append(values ...*gorm_gen.Order) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -164,7 +164,7 @@ func (a planHasManyOrdersTx) Append(values ...*model.Order) (err error) {
 	return a.tx.Append(targetValues...)
 }
 
-func (a planHasManyOrdersTx) Replace(values ...*model.Order) (err error) {
+func (a planHasManyOrdersTx) Replace(values ...*gorm_gen.Order) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -172,7 +172,7 @@ func (a planHasManyOrdersTx) Replace(values ...*model.Order) (err error) {
 	return a.tx.Replace(targetValues...)
 }
 
-func (a planHasManyOrdersTx) Delete(values ...*model.Order) (err error) {
+func (a planHasManyOrdersTx) Delete(values ...*gorm_gen.Order) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -219,17 +219,17 @@ type IPlanDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IPlanDo
 	Unscoped() IPlanDo
-	Create(values ...*model.Plan) error
-	CreateInBatches(values []*model.Plan, batchSize int) error
-	Save(values ...*model.Plan) error
-	First() (*model.Plan, error)
-	Take() (*model.Plan, error)
-	Last() (*model.Plan, error)
-	Find() ([]*model.Plan, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Plan, err error)
-	FindInBatches(result *[]*model.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*gorm_gen.Plan) error
+	CreateInBatches(values []*gorm_gen.Plan, batchSize int) error
+	Save(values ...*gorm_gen.Plan) error
+	First() (*gorm_gen.Plan, error)
+	Take() (*gorm_gen.Plan, error)
+	Last() (*gorm_gen.Plan, error)
+	Find() ([]*gorm_gen.Plan, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.Plan, err error)
+	FindInBatches(result *[]*gorm_gen.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*model.Plan) (info gen.ResultInfo, err error)
+	Delete(...*gorm_gen.Plan) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -241,9 +241,9 @@ type IPlanDo interface {
 	Assign(attrs ...field.AssignExpr) IPlanDo
 	Joins(fields ...field.RelationField) IPlanDo
 	Preload(fields ...field.RelationField) IPlanDo
-	FirstOrInit() (*model.Plan, error)
-	FirstOrCreate() (*model.Plan, error)
-	FindByPage(offset int, limit int) (result []*model.Plan, count int64, err error)
+	FirstOrInit() (*gorm_gen.Plan, error)
+	FirstOrCreate() (*gorm_gen.Plan, error)
+	FindByPage(offset int, limit int) (result []*gorm_gen.Plan, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IPlanDo
@@ -347,57 +347,57 @@ func (p planDo) Unscoped() IPlanDo {
 	return p.withDO(p.DO.Unscoped())
 }
 
-func (p planDo) Create(values ...*model.Plan) error {
+func (p planDo) Create(values ...*gorm_gen.Plan) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Create(values)
 }
 
-func (p planDo) CreateInBatches(values []*model.Plan, batchSize int) error {
+func (p planDo) CreateInBatches(values []*gorm_gen.Plan, batchSize int) error {
 	return p.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (p planDo) Save(values ...*model.Plan) error {
+func (p planDo) Save(values ...*gorm_gen.Plan) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return p.DO.Save(values)
 }
 
-func (p planDo) First() (*model.Plan, error) {
+func (p planDo) First() (*gorm_gen.Plan, error) {
 	if result, err := p.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Plan), nil
+		return result.(*gorm_gen.Plan), nil
 	}
 }
 
-func (p planDo) Take() (*model.Plan, error) {
+func (p planDo) Take() (*gorm_gen.Plan, error) {
 	if result, err := p.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Plan), nil
+		return result.(*gorm_gen.Plan), nil
 	}
 }
 
-func (p planDo) Last() (*model.Plan, error) {
+func (p planDo) Last() (*gorm_gen.Plan, error) {
 	if result, err := p.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Plan), nil
+		return result.(*gorm_gen.Plan), nil
 	}
 }
 
-func (p planDo) Find() ([]*model.Plan, error) {
+func (p planDo) Find() ([]*gorm_gen.Plan, error) {
 	result, err := p.DO.Find()
-	return result.([]*model.Plan), err
+	return result.([]*gorm_gen.Plan), err
 }
 
-func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Plan, err error) {
-	buf := make([]*model.Plan, 0, batchSize)
+func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.Plan, err error) {
+	buf := make([]*gorm_gen.Plan, 0, batchSize)
 	err = p.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -405,7 +405,7 @@ func (p planDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error)
 	return results, err
 }
 
-func (p planDo) FindInBatches(result *[]*model.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (p planDo) FindInBatches(result *[]*gorm_gen.Plan, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return p.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -431,23 +431,23 @@ func (p planDo) Preload(fields ...field.RelationField) IPlanDo {
 	return &p
 }
 
-func (p planDo) FirstOrInit() (*model.Plan, error) {
+func (p planDo) FirstOrInit() (*gorm_gen.Plan, error) {
 	if result, err := p.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Plan), nil
+		return result.(*gorm_gen.Plan), nil
 	}
 }
 
-func (p planDo) FirstOrCreate() (*model.Plan, error) {
+func (p planDo) FirstOrCreate() (*gorm_gen.Plan, error) {
 	if result, err := p.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Plan), nil
+		return result.(*gorm_gen.Plan), nil
 	}
 }
 
-func (p planDo) FindByPage(offset int, limit int) (result []*model.Plan, count int64, err error) {
+func (p planDo) FindByPage(offset int, limit int) (result []*gorm_gen.Plan, count int64, err error) {
 	result, err = p.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -476,7 +476,7 @@ func (p planDo) Scan(result interface{}) (err error) {
 	return p.DO.Scan(result)
 }
 
-func (p planDo) Delete(models ...*model.Plan) (result gen.ResultInfo, err error) {
+func (p planDo) Delete(models ...*gorm_gen.Plan) (result gen.ResultInfo, err error) {
 	return p.DO.Delete(models)
 }
 

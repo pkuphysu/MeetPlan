@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package model;
 
 import "common/api.proto";
@@ -8,180 +9,180 @@ import "model/user.proto";
 option go_package = "meetplan";
 
 message MeetPlan {
-  int64 id = 1;
-  int64 teacher_id = 2;
-  int64 start_time = 3;
-  int64 duration = 4;
-  string place = 5;
-  string message = 6;
-  int32 quota = 7;
-  User teacher = 8;
-  repeated Order orders = 9;
+    int64 id = 1;
+    int64 teacher_id = 2;
+    int64 start_time = 3;
+    int64 duration = 4;
+    string place = 5;
+    string message = 6;
+    int32 quota = 7;
+    User teacher = 8;
+    repeated Order orders = 9;
 }
 
 enum OrderStatus {
-  CREATED = 0;
-  FINISHED = 1;
+    ORDER_STATUS_CREATED = 0;
+    ORDER_STATUS_FINISHED = 1;
 }
 
 message Order {
-  int64 id = 1;
-  int64 meet_plan_id = 2;
-  int64 student_id = 3;
-  string message = 4;
-  OrderStatus status = 5;
-  MeetPlan meet_plan = 6;
-  User student = 7;
-  User teacher = 8;
+    int64 id = 1;
+    int64 meet_plan_id = 2;
+    int64 student_id = 3;
+    string message = 4;
+    OrderStatus status = 5;
+    MeetPlan meet_plan = 6;
+    User student = 7;
+    User teacher = 8;
 }
 
 message GetMeetPlanRequest {
-  int64 id = 1[(api.path)="id"];
-  bool with_teacher = 2;
-  bool with_orders = 3;
-  bool with_students = 4;
+    int64 id = 1 [(api.path) = "id"];
+    bool with_teacher = 2;
+    bool with_orders = 3;
+    bool with_students = 4;
 }
 
 message GetMeetPlanResponse {
-  int32 code = 1;
-  string message = 2;
-  MeetPlan data = 3;
+    int32 code = 1;
+    string message = 2;
+    MeetPlan data = 3;
 }
 
 message ListMeetPlanRequest {
-  repeated int64 id = 1;
-  repeated int64 teacher_id = 2;
-  int64 start_time_ge = 3;
-  repeated int64 student_id = 4;
+    repeated int64 id = 1;
+    repeated int64 teacher_id = 2;
+    int64 start_time_ge = 3;
+    repeated int64 student_id = 4;
 
-  bool with_teacher = 5;
-  bool with_orders = 6;
-  bool with_students = 7;
-  QueryPageParam page_param = 8;
+    bool with_teacher = 5;
+    bool with_orders = 6;
+    bool with_students = 7;
+    QueryPageParam page_param = 8;
 }
 
 message ListMeetPlanResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated MeetPlan data = 3;
-  Pagination page_param = 4;
+    int32 code = 1;
+    string message = 2;
+    repeated MeetPlan data = 3;
+    Pagination page_param = 4;
 }
 
 message CreateMeetPlanRequest {
-  int64 teacher_id = 1;
-  int64 start_time = 2;
-  int64 duration = 3;
-  string place = 4;
-  string message = 5;
-  int32 quota = 6;
+    int64 teacher_id = 1;
+    int64 start_time = 2;
+    int64 duration = 3;
+    string place = 4;
+    string message = 5;
+    int32 quota = 6;
 }
 
 message CreateMeetPlanResponse {
-  int32 code = 1;
-  string message = 2;
-  MeetPlan data = 3;
+    int32 code = 1;
+    string message = 2;
+    MeetPlan data = 3;
 }
 
 message UpdateMeetPlanRequest {
-  int64 id = 1[(api.path)="id"];
-  int64 start_time = 3;
-  int64 duration = 4;
-  string place = 5;
-  string message = 6;
-  int32 quota = 7;
+    int64 id = 1 [(api.path) = "id"];
+    int64 start_time = 3;
+    int64 duration = 4;
+    string place = 5;
+    string message = 6;
+    int32 quota = 7;
 }
 
 message UpdateMeetPlanResponse {
-  int32 code = 1;
-  string message = 2;
-  MeetPlan data = 3;
+    int32 code = 1;
+    string message = 2;
+    MeetPlan data = 3;
 }
 
 message DeleteMeetPlanRequest {
-  int64 id = 1[(api.path)="id"];
+    int64 id = 1 [(api.path) = "id"];
 }
 
 message DeleteMeetPlanResponse {
-  int32 code = 1;
-  string message = 2;
+    int32 code = 1;
+    string message = 2;
 }
 
 message DeleteMeetPlansRequest {
-  repeated int64 ids = 1;
+    repeated int64 ids = 1;
 }
 
 message DeleteMeetPlansResponse {
-  int32 code = 1;
-  string message = 2;
+    int32 code = 1;
+    string message = 2;
 }
 
 message GetOrderRequest {
-  int64 id = 1[(api.path)="id"];
-  bool with_meet_plan = 2;
-  bool with_student = 3;
-  bool with_teacher = 4;
+    int64 id = 1 [(api.path) = "id"];
+    bool with_meet_plan = 2;
+    bool with_student = 3;
+    bool with_teacher = 4;
 }
 message GetOrderResponse {
-  int32 code = 1;
-  string message = 2;
-  Order data = 3;
+    int32 code = 1;
+    string message = 2;
+    Order data = 3;
 }
 
 message ListOrderRequest {
-  repeated int64 id = 1;
-  repeated int64 meet_plan_id = 2;
-  repeated int64 student_id = 3;
-  OrderStatus status = 4;
-  bool with_meet_plan = 5;
-  bool with_student = 6;
-  bool with_teacher = 7;
-  QueryPageParam page_param = 8;
+    repeated int64 id = 1;
+    repeated int64 meet_plan_id = 2;
+    repeated int64 student_id = 3;
+    OrderStatus status = 4;
+    bool with_meet_plan = 5;
+    bool with_student = 6;
+    bool with_teacher = 7;
+    QueryPageParam page_param = 8;
 }
 
 message ListOrderResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated Order data = 3;
-  Pagination page_param = 4;
+    int32 code = 1;
+    string message = 2;
+    repeated Order data = 3;
+    Pagination page_param = 4;
 }
 
 
 message CreateOrderRequest {
-  int64 meet_plan_id = 1;
-  int64 student_id = 2;
-  string message = 3;
+    int64 meet_plan_id = 1;
+    int64 student_id = 2;
+    string message = 3;
 }
 
 message CreateOrderResponse {
-  int32 code = 1;
-  string message = 2;
-  Order data = 3;
+    int32 code = 1;
+    string message = 2;
+    Order data = 3;
 }
 message UpdateOrderRequest {
-  int64 id = 1[(api.path)="id"];
-  string message = 2;
-  OrderStatus status = 3;
+    int64 id = 1 [(api.path) = "id"];
+    string message = 2;
+    OrderStatus status = 3;
 }
 
 message UpdateOrderResponse {
-  int32 code = 1;
-  string message = 2;
-  Order data = 3;
+    int32 code = 1;
+    string message = 2;
+    Order data = 3;
 }
 
 message CreateMeetPlanAndOrderRequest {
-  int64 teacher_id = 1;
-  int64 start_time = 2;
-  int64 duration = 3;
-  string place = 4;
-  string message = 5;
-  int32 quota = 6;
-  repeated Order orders = 7;
+    int64 teacher_id = 1;
+    int64 start_time = 2;
+    int64 duration = 3;
+    string place = 4;
+    string message = 5;
+    int32 quota = 6;
+    repeated Order orders = 7;
 }
 
 message CreateMeetPlanAndOrderResponse {
-  int32 code = 1;
-  string message = 2;
-  MeetPlan data = 3;
+    int32 code = 1;
+    string message = 2;
+    MeetPlan data = 3;
 }
 

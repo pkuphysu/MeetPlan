@@ -16,14 +16,14 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"meetplan/biz/gorm_gen/model"
+	"meetplan/biz/gorm_gen"
 )
 
 func newUpdateRecord(db *gorm.DB, opts ...gen.DOOption) updateRecord {
 	_updateRecord := updateRecord{}
 
 	_updateRecord.updateRecordDo.UseDB(db, opts...)
-	_updateRecord.updateRecordDo.UseModel(&model.UpdateRecord{})
+	_updateRecord.updateRecordDo.UseModel(&gorm_gen.UpdateRecord{})
 
 	tableName := _updateRecord.updateRecordDo.TableName()
 	_updateRecord.ALL = field.NewAsterisk(tableName)
@@ -133,17 +133,17 @@ type IUpdateRecordDo interface {
 	Count() (count int64, err error)
 	Scopes(funcs ...func(gen.Dao) gen.Dao) IUpdateRecordDo
 	Unscoped() IUpdateRecordDo
-	Create(values ...*model.UpdateRecord) error
-	CreateInBatches(values []*model.UpdateRecord, batchSize int) error
-	Save(values ...*model.UpdateRecord) error
-	First() (*model.UpdateRecord, error)
-	Take() (*model.UpdateRecord, error)
-	Last() (*model.UpdateRecord, error)
-	Find() ([]*model.UpdateRecord, error)
-	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.UpdateRecord, err error)
-	FindInBatches(result *[]*model.UpdateRecord, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Create(values ...*gorm_gen.UpdateRecord) error
+	CreateInBatches(values []*gorm_gen.UpdateRecord, batchSize int) error
+	Save(values ...*gorm_gen.UpdateRecord) error
+	First() (*gorm_gen.UpdateRecord, error)
+	Take() (*gorm_gen.UpdateRecord, error)
+	Last() (*gorm_gen.UpdateRecord, error)
+	Find() ([]*gorm_gen.UpdateRecord, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.UpdateRecord, err error)
+	FindInBatches(result *[]*gorm_gen.UpdateRecord, batchSize int, fc func(tx gen.Dao, batch int) error) error
 	Pluck(column field.Expr, dest interface{}) error
-	Delete(...*model.UpdateRecord) (info gen.ResultInfo, err error)
+	Delete(...*gorm_gen.UpdateRecord) (info gen.ResultInfo, err error)
 	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
 	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
 	Updates(value interface{}) (info gen.ResultInfo, err error)
@@ -155,9 +155,9 @@ type IUpdateRecordDo interface {
 	Assign(attrs ...field.AssignExpr) IUpdateRecordDo
 	Joins(fields ...field.RelationField) IUpdateRecordDo
 	Preload(fields ...field.RelationField) IUpdateRecordDo
-	FirstOrInit() (*model.UpdateRecord, error)
-	FirstOrCreate() (*model.UpdateRecord, error)
-	FindByPage(offset int, limit int) (result []*model.UpdateRecord, count int64, err error)
+	FirstOrInit() (*gorm_gen.UpdateRecord, error)
+	FirstOrCreate() (*gorm_gen.UpdateRecord, error)
+	FindByPage(offset int, limit int) (result []*gorm_gen.UpdateRecord, count int64, err error)
 	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
 	Scan(result interface{}) (err error)
 	Returning(value interface{}, columns ...string) IUpdateRecordDo
@@ -261,57 +261,57 @@ func (u updateRecordDo) Unscoped() IUpdateRecordDo {
 	return u.withDO(u.DO.Unscoped())
 }
 
-func (u updateRecordDo) Create(values ...*model.UpdateRecord) error {
+func (u updateRecordDo) Create(values ...*gorm_gen.UpdateRecord) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Create(values)
 }
 
-func (u updateRecordDo) CreateInBatches(values []*model.UpdateRecord, batchSize int) error {
+func (u updateRecordDo) CreateInBatches(values []*gorm_gen.UpdateRecord, batchSize int) error {
 	return u.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (u updateRecordDo) Save(values ...*model.UpdateRecord) error {
+func (u updateRecordDo) Save(values ...*gorm_gen.UpdateRecord) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return u.DO.Save(values)
 }
 
-func (u updateRecordDo) First() (*model.UpdateRecord, error) {
+func (u updateRecordDo) First() (*gorm_gen.UpdateRecord, error) {
 	if result, err := u.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.UpdateRecord), nil
+		return result.(*gorm_gen.UpdateRecord), nil
 	}
 }
 
-func (u updateRecordDo) Take() (*model.UpdateRecord, error) {
+func (u updateRecordDo) Take() (*gorm_gen.UpdateRecord, error) {
 	if result, err := u.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.UpdateRecord), nil
+		return result.(*gorm_gen.UpdateRecord), nil
 	}
 }
 
-func (u updateRecordDo) Last() (*model.UpdateRecord, error) {
+func (u updateRecordDo) Last() (*gorm_gen.UpdateRecord, error) {
 	if result, err := u.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.UpdateRecord), nil
+		return result.(*gorm_gen.UpdateRecord), nil
 	}
 }
 
-func (u updateRecordDo) Find() ([]*model.UpdateRecord, error) {
+func (u updateRecordDo) Find() ([]*gorm_gen.UpdateRecord, error) {
 	result, err := u.DO.Find()
-	return result.([]*model.UpdateRecord), err
+	return result.([]*gorm_gen.UpdateRecord), err
 }
 
-func (u updateRecordDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.UpdateRecord, err error) {
-	buf := make([]*model.UpdateRecord, 0, batchSize)
+func (u updateRecordDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*gorm_gen.UpdateRecord, err error) {
+	buf := make([]*gorm_gen.UpdateRecord, 0, batchSize)
 	err = u.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -319,7 +319,7 @@ func (u updateRecordDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int
 	return results, err
 }
 
-func (u updateRecordDo) FindInBatches(result *[]*model.UpdateRecord, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (u updateRecordDo) FindInBatches(result *[]*gorm_gen.UpdateRecord, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return u.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -345,23 +345,23 @@ func (u updateRecordDo) Preload(fields ...field.RelationField) IUpdateRecordDo {
 	return &u
 }
 
-func (u updateRecordDo) FirstOrInit() (*model.UpdateRecord, error) {
+func (u updateRecordDo) FirstOrInit() (*gorm_gen.UpdateRecord, error) {
 	if result, err := u.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.UpdateRecord), nil
+		return result.(*gorm_gen.UpdateRecord), nil
 	}
 }
 
-func (u updateRecordDo) FirstOrCreate() (*model.UpdateRecord, error) {
+func (u updateRecordDo) FirstOrCreate() (*gorm_gen.UpdateRecord, error) {
 	if result, err := u.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.UpdateRecord), nil
+		return result.(*gorm_gen.UpdateRecord), nil
 	}
 }
 
-func (u updateRecordDo) FindByPage(offset int, limit int) (result []*model.UpdateRecord, count int64, err error) {
+func (u updateRecordDo) FindByPage(offset int, limit int) (result []*gorm_gen.UpdateRecord, count int64, err error) {
 	result, err = u.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -390,7 +390,7 @@ func (u updateRecordDo) Scan(result interface{}) (err error) {
 	return u.DO.Scan(result)
 }
 
-func (u updateRecordDo) Delete(models ...*model.UpdateRecord) (result gen.ResultInfo, err error) {
+func (u updateRecordDo) Delete(models ...*gorm_gen.UpdateRecord) (result gen.ResultInfo, err error) {
 	return u.DO.Delete(models)
 }
 

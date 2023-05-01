@@ -27,6 +27,7 @@ var dataMap = map[string]func(columnType gorm.ColumnType) (dataType string){
 func main() {
 	g := gen.NewGenerator(gen.Config{
 		OutPath:           "./biz/gorm_gen/query",
+		ModelPkgPath:      "./biz/gorm_gen",
 		WithUnitTest:      true,
 		FieldNullable:     true,
 		FieldCoverable:    false,
