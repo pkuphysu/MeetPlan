@@ -10,7 +10,7 @@ create table if not exists users
     is_active    tinyint(1)   not null default 0,
     is_teacher   tinyint(1)   not null default 0,
     is_admin     tinyint(1)   not null default 0,
-    gender       tinyint(1)   not null default 0,
+    gender       tinyint(1)   null,
     avatar       varchar(255) null,
     department   varchar(255) null,
     phone        varchar(255) null,

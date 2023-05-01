@@ -2,6 +2,9 @@ package meetplan
 
 import (
 	"context"
+	"errors"
+
+	"gorm.io/gorm"
 
 	"github.com/cloudwego/hertz/pkg/app"
 
@@ -15,10 +18,12 @@ type CreateOrderService struct {
 	RequestContext *app.RequestContext
 	Context        context.Context
 	DAO            query.IOrderDo
+	UserDAO        query.IUserDo
 }
 
 func NewCreateOrderService(ctx context.Context, RequestContext *app.RequestContext) *CreateOrderService {
-	return &CreateOrderService{RequestContext: RequestContext, Context: ctx, DAO: query.Order.WithContext(ctx)}
+	return &CreateOrderService{RequestContext: RequestContext, Context: ctx,
+		DAO: query.Order.WithContext(ctx), UserDAO: query.User.WithContext(ctx)}
 }
 
 // Run req should not be nil and resp should not be nil
@@ -31,7 +36,16 @@ func (h *CreateOrderService) Run(req *model.CreateOrderRequest, resp *model.Crea
 	if resp == nil {
 		resp = new(model.CreateOrderResponse)
 	}
-	e := h.DAO.Create(&gorm_gen.Order{
+	student, e := h.UserDAO.Where(query.User.ID.Eq(req.StudentId)).First()
+	if e != nil && errors.Is(e, gorm.ErrRecordNotFound) {
+		return errno.NewNotFoundErr("student not found")
+	} else if e != nil {
+		return errno.ToInternalErr(e)
+	}
+	if student.IsTeacher {
+		return errno.NewValidationErr("student_id is not a student")
+	}
+	e = h.DAO.Create(&gorm_gen.Order{
 		PlanID:    req.MeetPlanId,
 		StudentID: req.StudentId,
 		Message:   &req.Message,

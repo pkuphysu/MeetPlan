@@ -46,19 +46,57 @@ func (h *CreateMeetPlanAndOrderService) Run(req *model.CreateMeetPlanAndOrderReq
 	} else if e != nil {
 		return errno.ToInternalErr(e)
 	}
+	if !teacher.IsTeacher {
+		return errno.NewValidationErr("teacher_id is not a teacher")
+	}
 
 	plan := &gorm_gen.Plan{
 		ID:        0,
 		TeacherID: req.TeacherId,
 		StartTime: time.Unix(req.StartTime, 0),
 		Duration:  req.Duration,
-		Place: lo.If(req.Place != "", req.Place).ElseIfF(teacher.Office != nil, func() string {
+		Place: lo.IfF(req.Place != nil, func() string {
+			return *req.Place
+		}).ElseIfF(teacher.Office != nil, func() string {
 			return *teacher.Office
 		}).Else(""),
 		Quota:   int8(req.Quota),
-		Message: nil,
-		Orders:  pack.OrdersVo2Dal(req.Orders),
+		Message: req.Message,
+		Orders:  []*gorm_gen.Order{},
 		Teacher: nil,
+	}
+
+	req.Orders = lo.UniqBy(req.Orders, func(order *model.CreateMeetPlanAndOrderRequest_Order) int64 {
+		return order.StudentId
+	})
+
+	students, e := h.UserDAO.Where(query.User.ID.In(lo.Map(req.Orders, func(order *model.CreateMeetPlanAndOrderRequest_Order, _ int) int64 {
+		return order.StudentId
+	})...)).Find()
+	if e != nil {
+		return errno.ToInternalErr(e)
+	}
+	if len(lo.Filter(students, func(student *gorm_gen.User, _ int) bool {
+		return student.IsTeacher
+	})) > 0 {
+		return errno.NewValidationErr("student_id is not a student")
+	}
+
+	for _, order := range req.Orders {
+
+		plan.Orders = append(plan.Orders, &gorm_gen.Order{
+			//ID:        0,
+			//PlanID:    0,
+			StudentID: order.StudentId,
+			Message:   order.Message,
+			Status:    int8(order.Status),
+			//Plan:      nil,
+			//Student:   nil,
+		})
+	}
+
+	if plan.Place == "" {
+		return errno.NewValidationErr("place is empty")
 	}
 
 	e = h.PlanDAO.Create(plan)

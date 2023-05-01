@@ -44,6 +44,9 @@ func (h *CreateMeetPlanService) Run(req *model.CreateMeetPlanRequest, resp *mode
 	} else if e != nil {
 		return errno.ToInternalErr(e)
 	}
+	if !teacher.IsTeacher {
+		return errno.NewValidationErr("teacher_id is not a teacher")
+	}
 
 	office := ""
 	if teacher.Office != nil {
@@ -54,9 +57,11 @@ func (h *CreateMeetPlanService) Run(req *model.CreateMeetPlanRequest, resp *mode
 		TeacherID: req.TeacherId,
 		StartTime: time.Unix(req.StartTime, 0),
 		Duration:  req.Duration,
-		Place:     lo.If(req.Place != "", req.Place).Else(office),
-		Quota:     int8(req.Quota),
-		Message:   &req.Message,
+		Place: lo.IfF(req.Place != nil, func() string {
+			return *req.Place
+		}).Else(office),
+		Quota:   int8(req.Quota),
+		Message: req.Message,
 	}
 	if len(plan.Place) == 0 {
 		return errno.NewValidationErr("plan place can not be empty")

@@ -6,7 +6,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"meetplan/biz/gorm_gen/query"
 	"meetplan/config"
 )
 
@@ -25,7 +24,6 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	query.SetDefault(DB)
 }
 
 func Close() {

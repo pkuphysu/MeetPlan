@@ -63,9 +63,6 @@ func main() {
 			gen.FieldRelate(field.BelongsTo, "Student", user, &field.RelateConfig{
 				RelatePointer: true,
 			}),
-			gen.FieldRelate(field.BelongsTo, "Teacher", user, &field.RelateConfig{
-				RelatePointer: true,
-			}),
 			gen.FieldRelate(field.BelongsTo, "Plan", plan, &field.RelateConfig{
 				RelatePointer: true,
 			})),

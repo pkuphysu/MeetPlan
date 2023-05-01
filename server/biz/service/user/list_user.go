@@ -3,15 +3,13 @@ package user
 import (
 	"context"
 
-	"meetplan/biz/dal/pack"
-	"meetplan/pkg/httputil"
-
-	"meetplan/biz/gorm_gen/query"
-
 	"github.com/cloudwego/hertz/pkg/app"
 
+	"meetplan/biz/dal/pack"
+	"meetplan/biz/gorm_gen/query"
 	model "meetplan/biz/model"
 	"meetplan/pkg/errno"
+	"meetplan/pkg/httputil"
 )
 
 type ListUserService struct {
@@ -48,7 +46,7 @@ func (h *ListUserService) Run(req *model.ListUserRequest, resp *model.ListUserRe
 	if req.IsAdmin != nil {
 		dao = dao.Where(query.User.IsAdmin.Is(*req.IsAdmin))
 	}
-	offset, limit := httputil.GetPageParam(req.PageParam)
+	offset, limit, param := httputil.GetPageParam(req.PageParam)
 	users, count, e := dao.FindByPage(offset, limit)
 	if e != nil {
 		return errno.ToInternalErr(e)
@@ -58,8 +56,8 @@ func (h *ListUserService) Run(req *model.ListUserRequest, resp *model.ListUserRe
 		resp.Data = append(resp.Data, pack.UserDal2Vo(u))
 	}
 	resp.PageParam = &model.Pagination{
-		PageNo:     req.PageParam.PageNo,
-		PageSize:   req.PageParam.PageSize,
+		PageNo:     param.PageNo,
+		PageSize:   param.PageSize,
 		TotalCount: count,
 	}
 

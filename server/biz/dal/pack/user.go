@@ -19,7 +19,12 @@ func UserDal2Vo(user *gorm_gen.User) *model.User {
 		IsTeacher: user.IsTeacher,
 		IsAdmin:   user.IsAdmin,
 		IsActive:  user.IsActive,
-		Gender:    lo.If(user.Gender, model.Gender_GENDER_FEMALE).Else(model.Gender_GENDER_MALE),
+		Gender: lo.IfF(user.Gender != nil, func() *model.Gender {
+			if *user.Gender {
+				return lo.ToPtr(model.Gender_GENDER_FEMALE)
+			}
+			return lo.ToPtr(model.Gender_GENDER_MALE)
+		}).Else(nil),
 		Avatar: lo.IfF(user.Avatar != nil, func() string {
 			return *user.Avatar
 		}).Else(""),

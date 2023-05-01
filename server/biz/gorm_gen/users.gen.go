@@ -16,7 +16,7 @@ type User struct {
 	IsActive     bool    `gorm:"column:is_active;not null" json:"is_active"`
 	IsTeacher    bool    `gorm:"column:is_teacher;not null" json:"is_teacher"`
 	IsAdmin      bool    `gorm:"column:is_admin;not null" json:"is_admin"`
-	Gender       bool    `gorm:"column:gender;not null" json:"gender"`
+	Gender       *bool   `gorm:"column:gender" json:"gender"`
 	Avatar       *string `gorm:"column:avatar" json:"avatar"`
 	Department   *string `gorm:"column:department" json:"department"`
 	Phone        *string `gorm:"column:phone" json:"phone"`

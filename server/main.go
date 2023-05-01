@@ -10,11 +10,15 @@ import (
 	"github.com/hertz-contrib/requestid"
 
 	"meetplan/biz/dal"
+	"meetplan/biz/dal/mysql"
+	"meetplan/biz/gorm_gen/query"
 	"meetplan/config"
 )
 
 func main() {
 	dal.Init()
+	query.SetDefault(mysql.DB)
+
 	conf := config.GetConf()
 	h := server.Default(server.WithHostPorts(conf.Hertz.Address))
 	if conf.Hertz.EnablePprof {

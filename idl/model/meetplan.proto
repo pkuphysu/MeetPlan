@@ -34,7 +34,6 @@ message Order {
     OrderStatus status = 5;
     MeetPlan meet_plan = 6;
     User student = 7;
-    User teacher = 8;
 }
 
 message GetMeetPlanRequest {
@@ -72,9 +71,9 @@ message ListMeetPlanResponse {
 message CreateMeetPlanRequest {
     int64 teacher_id = 1 [(api.vd) = "$ > 0"];
     int64 start_time = 2 [(api.vd) = "$ > 946656000"];
-    int64 duration = 3 [(api.vd) = "$ > 1800"];
-    string place = 4 [(api.vd) = "len($) > 0"];
-    string message = 5;
+    int64 duration = 3 [(api.vd) = "$ >= 1800"];
+    optional string place = 4 [(api.vd) = "$ == nil || len($) > 0"];
+    optional string message = 5;
     int32 quota = 6 [(api.vd) = "$ > 0"];
 }
 
@@ -90,7 +89,7 @@ message UpdateMeetPlanRequest {
     optional int64 duration = 4;
     optional string place = 5;
     optional string message = 6;
-    optional int32 quota = 7;
+    optional int32 quota = 7 [(api.vd) = "$ >= 0"];
 }
 
 message UpdateMeetPlanResponse {
@@ -149,8 +148,8 @@ message ListOrderResponse {
 
 
 message CreateOrderRequest {
-    int64 meet_plan_id = 1;
-    int64 student_id = 2;
+    int64 meet_plan_id = 1 [(api.vd) = "$ > 0"];
+    int64 student_id = 2 [(api.vd) = "$ > 0"];
     string message = 3;
 }
 
@@ -172,12 +171,17 @@ message UpdateOrderResponse {
 }
 
 message CreateMeetPlanAndOrderRequest {
-    int64 teacher_id = 1;
-    int64 start_time = 2;
-    int64 duration = 3;
-    string place = 4;
-    string message = 5;
-    int32 quota = 6;
+    int64 teacher_id = 1 [(api.vd) = "$ > 0"];
+    int64 start_time = 2 [(api.vd) = "$ > 946656000"];
+    int64 duration = 3 [(api.vd) = "$ >= 1800"];
+    optional string place = 4 [(api.vd) = "$ == nil || len($) > 0"];
+    optional string message = 5;
+    int32 quota = 6 [(api.vd) = "$ >= 0"];
+    message Order {
+        int64 student_id = 1 [(api.vd) = "$ > 0"];
+        optional string message = 2;
+        OrderStatus status = 3;
+    }
     repeated Order orders = 7;
 }
 

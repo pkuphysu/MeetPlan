@@ -14,7 +14,6 @@ type Order struct {
 	PlanID    int64   `gorm:"column:plan_id;not null" json:"plan_id"`
 	StudentID int64   `gorm:"column:student_id;not null" json:"student_id"`
 	Student   *User   `json:"student"`
-	Teacher   *User   `json:"teacher"`
 	Plan      *Plan   `json:"plan"`
 }
 

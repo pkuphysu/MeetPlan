@@ -20,7 +20,7 @@ message User {
     bool is_teacher = 5;
     bool is_admin = 6;
     bool is_active = 7;
-    Gender gender = 8;
+    optional Gender gender = 8;
     string avatar = 9;
     string phone = 10;
     string department = 11;
@@ -72,3 +72,25 @@ message ListUserResponse {
     repeated User data = 4;
 }
 
+message CreateUserRequest {
+    string pku_id = 1 [(api.vd) = "regexp('^\\d{10}$')"];
+    string name = 2 [(api.vd) = 'len($) > 0'];
+    string email = 3 [(api.vd) = 'email($)'];
+    optional bool is_teacher = 4;
+    optional bool is_admin = 5;
+    optional Gender gender = 6;
+    optional string avatar = 7;
+    optional string phone = 8 [(api.vd) = '$==nil || phone($)'];
+    optional string department = 9;
+    optional string major = 10;
+    optional string grade = 11;
+    optional string dorm = 12;
+    optional string office = 13;
+    optional string introduction = 14;
+}
+
+message CreateUserResponse {
+    int32 code = 1;
+    string message = 2;
+    User data = 3;
+}

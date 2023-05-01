@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"gorm.io/gen/field"
+
 	"github.com/cloudwego/hertz/pkg/app"
 
 	"meetplan/biz/dal/pack"
@@ -46,21 +48,21 @@ func (h *ListMeetPlanService) Run(req *model.ListMeetPlanRequest, resp *model.Li
 	if req.WithTeacher {
 		dao = dao.Preload(query.Plan.Teacher)
 	}
-	if req.WithOrders {
+	if req.WithOrders || req.WithStudents {
 		dao = dao.Preload(query.Plan.Orders)
 		if req.WithStudents {
-			dao = dao.Preload(query.Order.Student)
+			dao = dao.Preload(field.NewRelation("Orders.Student", ""))
 		}
 	}
-	offset, limit := httputil.GetPageParam(req.PageParam)
-	res, count, e := dao.FindByPage(offset, limit)
+	offset, limit, param := httputil.GetPageParam(req.PageParam)
+	res, count, e := dao.Order(query.Plan.ID.Desc()).FindByPage(offset, limit)
 	if e != nil {
 		return errno.NewInternalErr(e.Error())
 	}
 	resp.Data = pack.PlansDal2Vo(res)
 	resp.PageParam = &model.Pagination{
-		PageNo:     req.PageParam.PageNo,
-		PageSize:   req.PageParam.PageSize,
+		PageNo:     param.PageNo,
+		PageSize:   param.PageSize,
 		TotalCount: count,
 	}
 

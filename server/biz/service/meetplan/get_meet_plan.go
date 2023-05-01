@@ -38,11 +38,11 @@ func (h *GetMeetPlanService) Run(req *model.GetMeetPlanRequest, resp *model.GetM
 	if req.WithTeacher {
 		preloads = append(preloads, query.Plan.Teacher)
 	}
-	if req.WithOrders {
+	if req.WithOrders || req.WithStudents {
 		preloads = append(preloads, query.Plan.Orders)
-	}
-	if req.WithStudents {
-		preloads = append(preloads, query.Order.Student)
+		if req.WithStudents {
+			preloads = append(preloads, field.NewRelation("Orders.Student", ""))
+		}
 	}
 	plan, e := h.PlanDAO.Where(query.Plan.ID.Eq(req.Id)).Preload(preloads...).First()
 	if e != nil && errors.Is(e, gorm.ErrRecordNotFound) {
@@ -51,13 +51,5 @@ func (h *GetMeetPlanService) Run(req *model.GetMeetPlanRequest, resp *model.GetM
 		return errno.ToInternalErr(e)
 	}
 	resp.Data = pack.PlanDal2Vo(plan)
-	//if req.WithStudents {
-	//	for idx, order := range resp.Data.Orders {
-	//		first, err := h.OrderDAO.Where(query.Order.ID.Eq(order.Id)).First()
-	//		if err != nil {
-	//			return nil
-	//		}
-	//	}
-	//}
 	return
 }

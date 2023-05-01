@@ -30,7 +30,7 @@ func (h *ListUpdateRecordService) Run(req *model.ListUpdateRecordRequest, resp *
 	if resp == nil {
 		resp = new(model.ListUpdateRecordResponse)
 	}
-	records, e := h.DAO.Find()
+	records, e := h.DAO.Order(query.UpdateRecord.ID.Desc()).Find()
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}

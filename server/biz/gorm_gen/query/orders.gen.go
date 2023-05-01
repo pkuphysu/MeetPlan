@@ -38,12 +38,6 @@ func newOrder(db *gorm.DB, opts ...gen.DOOption) order {
 		RelationField: field.NewRelation("Student", "gorm_gen.User"),
 	}
 
-	_order.Teacher = orderBelongsToTeacher{
-		db: db.Session(&gorm.Session{}),
-
-		RelationField: field.NewRelation("Teacher", "gorm_gen.User"),
-	}
-
 	_order.Plan = orderBelongsToPlan{
 		db: db.Session(&gorm.Session{}),
 
@@ -65,8 +59,6 @@ type order struct {
 	PlanID    field.Int64
 	StudentID field.Int64
 	Student   orderBelongsToStudent
-
-	Teacher orderBelongsToTeacher
 
 	Plan orderBelongsToPlan
 
@@ -106,7 +98,7 @@ func (o *order) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (o *order) fillFieldMap() {
-	o.fieldMap = make(map[string]field.Expr, 8)
+	o.fieldMap = make(map[string]field.Expr, 7)
 	o.fieldMap["id"] = o.ID
 	o.fieldMap["status"] = o.Status
 	o.fieldMap["message"] = o.Message
@@ -193,77 +185,6 @@ func (a orderBelongsToStudentTx) Clear() error {
 }
 
 func (a orderBelongsToStudentTx) Count() int64 {
-	return a.tx.Count()
-}
-
-type orderBelongsToTeacher struct {
-	db *gorm.DB
-
-	field.RelationField
-}
-
-func (a orderBelongsToTeacher) Where(conds ...field.Expr) *orderBelongsToTeacher {
-	if len(conds) == 0 {
-		return &a
-	}
-
-	exprs := make([]clause.Expression, 0, len(conds))
-	for _, cond := range conds {
-		exprs = append(exprs, cond.BeCond().(clause.Expression))
-	}
-	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
-	return &a
-}
-
-func (a orderBelongsToTeacher) WithContext(ctx context.Context) *orderBelongsToTeacher {
-	a.db = a.db.WithContext(ctx)
-	return &a
-}
-
-func (a orderBelongsToTeacher) Session(session *gorm.Session) *orderBelongsToTeacher {
-	a.db = a.db.Session(session)
-	return &a
-}
-
-func (a orderBelongsToTeacher) Model(m *gorm_gen.Order) *orderBelongsToTeacherTx {
-	return &orderBelongsToTeacherTx{a.db.Model(m).Association(a.Name())}
-}
-
-type orderBelongsToTeacherTx struct{ tx *gorm.Association }
-
-func (a orderBelongsToTeacherTx) Find() (result *gorm_gen.User, err error) {
-	return result, a.tx.Find(&result)
-}
-
-func (a orderBelongsToTeacherTx) Append(values ...*gorm_gen.User) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Append(targetValues...)
-}
-
-func (a orderBelongsToTeacherTx) Replace(values ...*gorm_gen.User) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Replace(targetValues...)
-}
-
-func (a orderBelongsToTeacherTx) Delete(values ...*gorm_gen.User) (err error) {
-	targetValues := make([]interface{}, len(values))
-	for i, v := range values {
-		targetValues[i] = v
-	}
-	return a.tx.Delete(targetValues...)
-}
-
-func (a orderBelongsToTeacherTx) Clear() error {
-	return a.tx.Clear()
-}
-
-func (a orderBelongsToTeacherTx) Count() int64 {
 	return a.tx.Count()
 }
 

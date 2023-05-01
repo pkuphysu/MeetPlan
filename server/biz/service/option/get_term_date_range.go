@@ -40,7 +40,11 @@ func (h *GetTermDateRangeService) Run(req *model.GetTermDateRangeRequest, resp *
 		End:   time.Now().Add(time.Hour * 24 * 30 * 6).Unix(),
 	}
 	recordCol := &datatypes.JSON{}
-	e := recordCol.Scan(&record)
+	bytes, e := json.Marshal(&record)
+	if e != nil {
+		return errno.ToInternalErr(e)
+	}
+	e = recordCol.Scan(bytes)
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}
@@ -50,7 +54,7 @@ func (h *GetTermDateRangeService) Run(req *model.GetTermDateRangeRequest, resp *
 		return errno.ToInternalErr(e)
 	}
 
-	bytes, e := option.Value.MarshalJSON()
+	bytes, e = option.Value.MarshalJSON()
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}

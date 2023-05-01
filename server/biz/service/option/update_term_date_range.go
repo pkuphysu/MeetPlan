@@ -37,8 +37,12 @@ func (h *UpdateTermDateRangeService) Run(req *model.UpdateTermDateRangeRequest, 
 		Start: req.Start,
 		End:   req.End,
 	}
+	bytes, e := json.Marshal(&record)
+	if e != nil {
+		return errno.ToInternalErr(e)
+	}
 	recordCol := &datatypes.JSON{}
-	e := recordCol.Scan(&record)
+	e = recordCol.Scan(bytes)
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}
@@ -47,7 +51,7 @@ func (h *UpdateTermDateRangeService) Run(req *model.UpdateTermDateRangeRequest, 
 		return errno.ToInternalErr(e)
 	}
 
-	bytes, e := option.Value.MarshalJSON()
+	bytes, e = option.Value.MarshalJSON()
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}

@@ -24,6 +24,10 @@ service User {
         option (api.get) = "/api/v1/user";
         option (api.handler_path) = "user";
     }
+    rpc CreateUser (model.CreateUserRequest) returns (model.CreateUserResponse) {
+        option (api.post) = "/api/v1/user";
+        option (api.handler_path) = "user";
+    }
 }
 
 service MeetPlan {

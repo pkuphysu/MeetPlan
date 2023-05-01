@@ -3,6 +3,8 @@ package meetplan
 import (
 	"context"
 
+	"gorm.io/gen/field"
+
 	"github.com/cloudwego/hertz/pkg/app"
 
 	"meetplan/biz/dal/pack"
@@ -16,10 +18,12 @@ type ListOrderService struct {
 	RequestContext *app.RequestContext
 	Context        context.Context
 	DAO            query.IOrderDo
+	UserDAO        query.IUserDo
 }
 
 func NewListOrderService(ctx context.Context, RequestContext *app.RequestContext) *ListOrderService {
-	return &ListOrderService{RequestContext: RequestContext, Context: ctx, DAO: query.Order.WithContext(ctx)}
+	return &ListOrderService{RequestContext: RequestContext, Context: ctx,
+		DAO: query.Order.WithContext(ctx), UserDAO: query.User.WithContext(ctx)}
 }
 
 // Run req should not be nil and resp should not be nil
@@ -45,21 +49,22 @@ func (h *ListOrderService) Run(req *model.ListOrderRequest, resp *model.ListOrde
 	if req.WithStudent {
 		dao = dao.Preload(query.Order.Student)
 	}
-	if req.WithMeetPlan {
+	if req.WithMeetPlan || req.WithTeacher {
 		dao = dao.Preload(query.Order.Plan)
+		if req.WithTeacher {
+			dao = dao.Preload(field.NewRelation("Plan.Teacher", ""))
+		}
 	}
-	if req.WithTeacher {
-		dao = dao.Preload(query.Order.Teacher)
-	}
-	offset, limit := httputil.GetPageParam(req.PageParam)
-	orders, count, e := dao.FindByPage(offset, limit)
+	offset, limit, param := httputil.GetPageParam(req.PageParam)
+	orders, count, e := dao.Order(query.Order.ID.Desc()).FindByPage(offset, limit)
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}
+
 	resp.Data = pack.OrdersDal2Vo(orders)
 	resp.PageParam = &model.Pagination{
-		PageNo:     req.PageParam.PageNo,
-		PageSize:   req.PageParam.PageSize,
+		PageNo:     param.PageNo,
+		PageSize:   param.PageSize,
 		TotalCount: count,
 	}
 

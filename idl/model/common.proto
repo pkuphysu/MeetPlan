@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package model;
 
+import "common/api.proto";
+
 
 option go_package = "meetplan";
 
@@ -13,7 +15,7 @@ message QueryPageParam {
 message Pagination {
     int32 page_no = 1;
     int32 page_size = 2;
-    int64 total_count = 3;
+    int64 total_count = 3[(api.go_tag)="json:\"total_count\""];
 }
 
 // 通用返回结构，code为0表示成功，其他值表示失败，message为失败原因

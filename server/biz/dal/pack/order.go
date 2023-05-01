@@ -21,7 +21,6 @@ func OrderDal2Vo(order *gorm_gen.Order) *model.Order {
 		Status:   model.OrderStatus(order.Status),
 		MeetPlan: PlanDal2Vo(order.Plan),
 		Student:  UserDal2Vo(order.Student),
-		Teacher:  UserDal2Vo(order.Teacher),
 	}
 }
 
@@ -47,7 +46,6 @@ func OrderVo2Dal(order *model.Order) *gorm_gen.Order {
 		PlanID:    order.MeetPlanId,
 		StudentID: order.StudentId,
 		Student:   nil,
-		Teacher:   nil,
 		Plan:      nil,
 	}
 }
