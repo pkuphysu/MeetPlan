@@ -97,6 +97,6 @@ func (h *LoginService) Run(req *model.LoginRequest, resp *model.LoginResponse) (
 	if e != nil {
 		return errno.ToInternalErr(e)
 	}
-	resp.Jwt = jwtToken
+	resp.Data = jwtToken
 	return
 }

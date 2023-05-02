@@ -39,7 +39,7 @@ message LoginRequest {
 message LoginResponse {
     int32 code = 1;
     string message = 2;
-    string jwt = 3;
+    string data = 3;
 }
 
 message GetSelfRequest {}
