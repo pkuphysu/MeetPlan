@@ -2,7 +2,7 @@ MODULE=meetplan
 
 .PHONY: api
 api-init:
-	hz new -force -module ${MODULE} -I ../idl -idl ../idl/service/meetplan.proto --customize_package=./pkg/tpl/hertz/package.yaml
+	hz new -force -module ${MODULE} -I ./idl -idl ./idl/service/meetplan.proto --customize_package=./pkg/tpl/hertz/package.yaml
 	rm -rf script
 	go mod tidy
 
@@ -15,7 +15,7 @@ gen-gorm:
 
 .PHONY: update
 update:
-	hz update -I ../idl -idl ../idl/service/meetplan.proto --customize_package=./pkg/tpl/hertz/package.yaml
+	hz update -I ./idl -idl ./idl/service/meetplan.proto --customize_package=./pkg/tpl/hertz/package.yaml
 
 .PHONY: docker-reup
 docker-reup:

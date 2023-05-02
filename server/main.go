@@ -9,12 +9,11 @@ import (
 	"github.com/hertz-contrib/pprof"
 	"github.com/hertz-contrib/requestid"
 
-	"meetplan/internal/oidc_rp"
-
 	"meetplan/biz/dal"
 	"meetplan/biz/dal/mysql"
 	"meetplan/biz/gorm_gen/query"
 	"meetplan/config"
+	"meetplan/internal/oidc_rp"
 )
 
 func main() {
