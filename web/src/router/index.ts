@@ -7,11 +7,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     component: () => import('@/views/Guest.vue'),
   },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue'),
-  },
+  // {
+  //   path: '/login',
+  //   name: 'Login',
+  //   component: () => import('@/views/Login.vue'),
+  // },
   {
     path: "/:pathMatch(.*)*",
     name: "Error",
@@ -19,40 +19,40 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
-const dynamicRoutes: Array<RouteRecordRaw> = [
-  {
-    path: '/index',
-    name: 'Overview',
-    component: () => import('@/views/Home.vue'),
-    meta: {
-      role: ['teacher', 'student', 'admin'],
-    }
-  },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: () => import('@/views/profile/Profile.vue'),
-    meta: {
-      role: ['teacher', 'student'],
-    }
-  },
-  {
-    path: '/meetplan',
-    name: 'MeetPlan',
-    component: () => import('@/views/meetplan/Profile.vue'),
-    meta: {
-      role: ['teacher', 'student'],
-    }
-  },
-  {
-    path: '/meetplanorder',
-    name: 'MeetPlanOrder',
-    component: () => import('@/views/meetplan/Order.vue'),
-    meta: {
-      role: ['teacher', 'student'],
-    }
-  }
-]
+// const dynamicRoutes: Array<RouteRecordRaw> = [
+//   {
+//     path: '/index',
+//     name: 'Overview',
+//     component: () => import('@/views/Home.vue'),
+//     meta: {
+//       role: ['teacher', 'student', 'admin'],
+//     }
+//   },
+//   {
+//     path: '/profile',
+//     name: 'Profile',
+//     component: () => import('@/views/profile/Profile.vue'),
+//     meta: {
+//       role: ['teacher', 'student'],
+//     }
+//   },
+//   {
+//     path: '/meetplan',
+//     name: 'MeetPlan',
+//     component: () => import('@/views/meetplan/Profile.vue'),
+//     meta: {
+//       role: ['teacher', 'student'],
+//     }
+//   },
+//   {
+//     path: '/meetplanorder',
+//     name: 'MeetPlanOrder',
+//     component: () => import('@/views/meetplan/Order.vue'),
+//     meta: {
+//       role: ['teacher', 'student'],
+//     }
+//   }
+// ]
 
 const router = createRouter({
   history: createWebHistory(),
