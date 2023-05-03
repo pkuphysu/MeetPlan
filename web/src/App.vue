@@ -1,8 +1,8 @@
 <template>
   <v-app id="app" :theme="theme" >
-    <component v-if="routerLoaded">
-      <router-view/>
-    </component>
+<!--    <component v-if="routerLoaded">-->
+      <router-view v-if="routerLoaded"/>
+<!--    </component>-->
   </v-app>
 
 </template>

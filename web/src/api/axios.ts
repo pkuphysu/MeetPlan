@@ -1,11 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 
-interface ResultData<T> {
-  code: number;
-  message: string;
-  data?: T;
-}
-
 class Request {
   private service: AxiosInstance;
 

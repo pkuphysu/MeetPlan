@@ -6,6 +6,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: () => import('@/views/Guest.vue'),
+    meta: {
+      title: '首页'
+    }
   },
   // {
   //   path: '/login',
@@ -65,7 +68,18 @@ const router = createRouter({
   }
 })
 
+const getTitle = (title?: string) => {
+  const siteName = import.meta.env.VITE_APP_TITLE;
+  // const siteNameEn = import.meta.env.VITE_APP_TITLE_EN;
+  if (title) {
+    return `${title} - ${siteName}`
+  }
+  return `${import.meta.env.VITE_APP_NAME}`
+}
+
 router.beforeEach((to) => {
+  const meta: { [key: string]: any } = to.meta || {};
+  document.title = getTitle(meta.title);
 })
 
 export default router
