@@ -127,3 +127,13 @@ func _getselfMw() []app.HandlerFunc {
 func _createuserMw() []app.HandlerFunc {
 	return []app.HandlerFunc{middleware.Jwt()}
 }
+
+func _updateuserMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _user0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

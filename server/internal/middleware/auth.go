@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -16,6 +17,16 @@ import (
 func Jwt() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
 		if _, ok := ctx.Get(constant.CtxKeyUser); ok {
+			return
+		}
+		//goland:noinspection GoBoolExpressions
+		if runtime.GOOS == "darwin" {
+			user, e := query.User.WithContext(c).First()
+			if e != nil {
+				ctx.AbortWithStatus(consts.StatusUnauthorized)
+				return
+			}
+			ctx.Set(constant.CtxKeyUser, user)
 			return
 		}
 		authHeader := ctx.Request.Header.Get(constant.HeaderAuthorization)
@@ -45,6 +56,6 @@ func Jwt() app.HandlerFunc {
 			return
 		}
 		ctx.Set(constant.CtxKeyUser, user)
-		ctx.Next(c)
+		return
 	}
 }

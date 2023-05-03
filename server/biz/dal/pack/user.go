@@ -25,32 +25,32 @@ func UserDal2Vo(user *gorm_gen.User) *model.User {
 			}
 			return lo.ToPtr(model.Gender_GENDER_MALE)
 		}).Else(nil),
-		Avatar: lo.IfF(user.Avatar != nil, func() string {
-			return *user.Avatar
-		}).Else(""),
-		Phone: lo.IfF(user.Phone != nil, func() string {
-			return *user.Phone
-		}).Else(""),
-		Department: lo.IfF(user.Department != nil, func() string {
-			return *user.Department
-		}).Else(""),
-		Major: lo.IfF(user.Major != nil, func() string {
-			return *user.Major
-		}).Else(""),
-		Grade: lo.IfF(user.Grade != nil, func() string {
-			return *user.Grade
-		}).Else(""),
-		Dorm: lo.IfF(user.Dorm != nil, func() string {
-			return *user.Dorm
-		}).Else(""),
-		Office: lo.IfF(user.Office != nil, func() string {
-			return *user.Office
-		}).Else(""),
-		Introduction: lo.IfF(user.Introduction != nil, func() string {
-			return *user.Introduction
-		}).Else(""),
-		EmailChange: lo.IfF(user.EmailChange != nil, func() string {
-			return *user.EmailChange
-		}).Else(""),
+		Avatar: lo.IfF(user.Avatar != nil, func() *string {
+			return user.Avatar
+		}).Else(nil),
+		Phone: lo.IfF(user.Phone != nil, func() *string {
+			return user.Phone
+		}).Else(nil),
+		Department: lo.IfF(user.Department != nil, func() *string {
+			return user.Department
+		}).Else(nil),
+		Major: lo.IfF(user.Major != nil, func() *string {
+			return user.Major
+		}).Else(nil),
+		Grade: lo.IfF(user.Grade != nil, func() *string {
+			return user.Grade
+		}).Else(nil),
+		Dorm: lo.IfF(user.Dorm != nil, func() *string {
+			return user.Dorm
+		}).Else(nil),
+		Office: lo.IfF(user.Office != nil, func() *string {
+			return user.Office
+		}).Else(nil),
+		Introduction: lo.IfF(user.Introduction != nil, func() *string {
+			return user.Introduction
+		}).Else(nil),
+		EmailChange: lo.IfF(user.EmailChange != nil, func() *string {
+			return user.EmailChange
+		}).Else(nil),
 	}
 }

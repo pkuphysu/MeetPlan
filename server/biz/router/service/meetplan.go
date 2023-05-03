@@ -33,7 +33,6 @@ func Register(r *server.Hertz) {
 			_v1.GET("/updaterecord", append(_listupdaterecordMw(), service.ListUpdateRecord)...)
 			_v1.POST("/updaterecord", append(_createupdaterecordMw(), service.CreateUpdateRecord)...)
 			_v1.POST("/user", append(_createuserMw(), service.CreateUser)...)
-			_v1.GET("/user", append(_listuserMw(), service.ListUser)...)
 			_v1.GET("/meetplan", append(_listmeetplanMw(), service.ListMeetPlan)...)
 			_meetplan := _v1.Group("/meetplan", _meetplanMw()...)
 			_meetplan.PUT("/:id", append(_updatemeetplanMw(), service.UpdateMeetPlan)...)
@@ -49,10 +48,13 @@ func Register(r *server.Hertz) {
 				_order0 := _v1.Group("/order", _order0Mw()...)
 				_order0.GET("/:id", append(_getorderMw(), service.GetOrder)...)
 			}
+			_v1.GET("/user", append(_listuserMw(), service.ListUser)...)
+			_user := _v1.Group("/user", _userMw()...)
+			_user.PUT("/:id", append(_updateuserMw(), service.UpdateUser)...)
 			{
-				_user := _v1.Group("/user", _userMw()...)
-				_user.GET("/:id", append(_getuserMw(), service.GetUser)...)
-				_user.GET("/self", append(_getselfMw(), service.GetSelf)...)
+				_user0 := _v1.Group("/user", _user0Mw()...)
+				_user0.GET("/:id", append(_getuserMw(), service.GetUser)...)
+				_user0.GET("/self", append(_getselfMw(), service.GetSelf)...)
 			}
 		}
 	}

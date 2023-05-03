@@ -124,3 +124,26 @@ func CreateUser(ctx context.Context, c *app.RequestContext) {
 	}
 	httputil.SendResponse(ctx, c, consts.StatusOK, resp)
 }
+
+// UpdateUser .
+// @router /api/v1/user/:id [PUT]
+func UpdateUser(ctx context.Context, c *app.RequestContext) {
+	var req model.UpdateUserRequest
+	resp := new(model.UpdateUserResponse)
+	if err := c.BindAndValidate(&req); err != nil {
+		resp.Code = -1
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
+		return
+	}
+
+	err := user.NewUpdateUserService(ctx, c).Run(&req, resp)
+
+	if err != nil {
+		resp.Code = int32(err.ErrCode())
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, err.StatusCode(), resp)
+		return
+	}
+	httputil.SendResponse(ctx, c, consts.StatusOK, resp)
+}

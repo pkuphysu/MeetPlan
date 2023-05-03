@@ -28,6 +28,10 @@ service User {
         option (api.post) = "/api/v1/user";
         option (api.handler_path) = "user";
     }
+    rpc UpdateUser (model.UpdateUserRequest) returns (model.UpdateUserResponse) {
+        option (api.put) = "/api/v1/user/:id";
+        option (api.handler_path) = "user";
+    }
 }
 
 service MeetPlan {
