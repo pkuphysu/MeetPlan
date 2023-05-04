@@ -46,6 +46,9 @@ func (h *ListUserService) Run(req *model.ListUserRequest, resp *model.ListUserRe
 	if req.IsAdmin != nil {
 		dao = dao.Where(query.User.IsAdmin.Is(*req.IsAdmin))
 	}
+	if req.Name != nil {
+		dao = dao.Where(query.User.Name.Like(*req.Name))
+	}
 	offset, limit, param := httputil.GetPageParam(req.PageParam)
 	users, count, e := dao.FindByPage(offset, limit)
 	if e != nil {

@@ -64,6 +64,7 @@ message ListUserRequest {
     optional bool is_teacher = 3;
     optional bool is_admin = 4;
     repeated int64 ids = 5;
+    optional string name = 6;
 }
 message ListUserResponse {
     int32 code = 1;

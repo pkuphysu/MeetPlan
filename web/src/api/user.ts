@@ -10,69 +10,70 @@ export const login = (params: LoginParams) => {
   return axios.post<LoginResult>('/api/v1/login', params);
 }
 
-  export interface User {
-    id: number;
-    pku_id: string;
-    name: string;
-    email: string;
-    is_teacher: boolean;
-    is_admin: boolean;
-    is_active: boolean;
-    gender?: number;
-    avatar?: string;
-    phone?: string;
-    department?: string;
-    major?: string;
-    grade?: string;
-    dorm?: string;
-    office?: string;
-    introduction?: string;
-    email_change?: string;
-  }
+export interface User {
+  id: number;
+  pku_id: string;
+  name: string;
+  email: string;
+  is_teacher: boolean;
+  is_admin: boolean;
+  is_active: boolean;
+  gender?: number;
+  avatar?: string;
+  phone?: string;
+  department?: string;
+  major?: string;
+  grade?: string;
+  dorm?: string;
+  office?: string;
+  introduction?: string;
+  email_change?: string;
+}
 
-  export interface ListUserParams {
-    page_no: number;
-    page_size: number;
-    is_active?: boolean;
-    is_teacher?: boolean;
-    is_admin?: boolean;
-    ids?: number[];
-  }
+export interface ListUserParams {
+  page_no: number;
+  page_size: number;
+  is_active?: boolean;
+  is_teacher?: boolean;
+  is_admin?: boolean;
+  ids?: number[];
+  name?: string;
+}
 
-  export interface CreateUserParams {
-    pku_id: string;
-    name: string;
-    email: string;
-    is_teacher?: boolean;
-    is_admin?: boolean;
-    gender?: number;
-    avatar?: string;
-    phone?: string;
-    department?: string;
-    major?: string;
-    grade?: string;
-    dorm?: string;
-    office?: string;
-    introduction?: string;
-  }
+export interface CreateUserParams {
+  pku_id: string;
+  name: string;
+  email: string;
+  is_teacher?: boolean;
+  is_admin?: boolean;
+  gender?: number;
+  avatar?: string;
+  phone?: string;
+  department?: string;
+  major?: string;
+  grade?: string;
+  dorm?: string;
+  office?: string;
+  introduction?: string;
+}
 
-  export interface UpdateUserParams {
-    pku_id?: string;
-    name?: string;
-    email?: string;
-    is_teacher?: boolean;
-    is_admin?: boolean;
-    is_active?: boolean;
-    gender?: number;
-    avatar?: string;
-    phone?: string;
-    department?: string;
-    major?: string;
-    grade?: string;
-    dorm?: string;
-    office?: string;
-    introduction?: string;
-  }
+export interface UpdateUserParams {
+  pku_id?: string;
+  name?: string;
+  email?: string;
+  is_teacher?: boolean;
+  is_admin?: boolean;
+  is_active?: boolean;
+  gender?: number;
+  avatar?: string;
+  phone?: string;
+  department?: string;
+  major?: string;
+  grade?: string;
+  dorm?: string;
+  office?: string;
+  introduction?: string;
+}
 
 
 export const getSelf = () => {
