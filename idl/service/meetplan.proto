@@ -9,7 +9,7 @@ import "model/user.proto";
 
 service User {
     rpc Login (model.LoginRequest) returns (model.LoginResponse) {
-        option (api.get) = "/api/v1/login";
+        option (api.post) = "/api/v1/login";
         option (api.handler_path) = "user";
     }
     rpc GetSelf (model.GetSelfRequest) returns (model.GetSelfResponse) {

@@ -23,7 +23,7 @@ func Register(r *server.Hertz) {
 			_v1 := _api.Group("/v1", _v1Mw()...)
 			_v1.POST("/friendlink", append(_createfriendlinkMw(), service.CreateFriendLink)...)
 			_v1.GET("/friendlink", append(_listfriendlinkMw(), service.ListFriendLink)...)
-			_v1.GET("/login", append(_loginMw(), service.Login)...)
+			_v1.POST("/login", append(_loginMw(), service.Login)...)
 			_v1.POST("/meetplan", append(_createmeetplanMw(), service.CreateMeetPlan)...)
 			_v1.DELETE("/meetplan", append(_deletemeetplansMw(), service.DeleteMeetPlans)...)
 			_v1.POST("/meetplanorder", append(_createmeetplanandorderMw(), service.CreateMeetPlanAndOrder)...)
