@@ -1,19 +1,15 @@
-
 import axios from './axios';
 
-namespace Login {
-  export interface LoginParams {
-    code: string;
-  }
-
-  export type LoginResult = string;
+export interface LoginParams {
+  code: string;
 }
 
-export const login = (params: Login.LoginParams) => {
-  return axios.post<Login.LoginResult>('/api/v1/login', params);
+export type LoginResult = string;
+
+export const login = (params: LoginParams) => {
+  return axios.post<LoginResult>('/api/v1/login', params);
 }
 
-namespace User {
   export interface User {
     id: number;
     pku_id: string;
@@ -77,24 +73,24 @@ namespace User {
     office?: string;
     introduction?: string;
   }
-}
+
 
 export const getSelf = () => {
-    return axios.get<User.User>('/api/v1/user/self');
+  return axios.get<User>('/api/v1/user/self');
 }
 
 export const getUser = (id: number) => {
-    return axios.get<User.User>(`/api/v1/user/${id}`);
+  return axios.get<User>(`/api/v1/user/${id}`);
 }
 
-export const listUser = (params: User.ListUserParams) => {
-    return axios.get<User.User[]>('/api/v1/user', params);
+export const listUser = (params: ListUserParams) => {
+  return axios.get<User[]>('/api/v1/user', params);
 }
 
-export const createUser = (params: User.CreateUserParams) => {
-    return axios.post<User.User>('/api/v1/user', params);
+export const createUser = (params: CreateUserParams) => {
+  return axios.post<User>('/api/v1/user', params);
 }
 
-export const updateUser = (id: number, params: User.UpdateUserParams) => {
-    return axios.put<User.User>(`/api/v1/user/${id}`, params);
+export const updateUser = (id: number, params: UpdateUserParams) => {
+  return axios.put<User>(`/api/v1/user/${id}`, params);
 }

@@ -1,4 +1,7 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
+import {useUserStore} from "@/store/user";
+
+const userStore = useUserStore();
 
 class Request {
   private service: AxiosInstance;
@@ -11,11 +14,11 @@ class Request {
      */
     this.service.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        if (config!.url?.indexOf('login') === -1) {
+        if (config!.url?.indexOf('login') !== -1) {
           return config;
         }
 
-        const token = localStorage.getItem("token") || '';
+        const token = userStore.jwt || '';
         if (token) {
           config!.headers!.Authorization = 'Bearer ' + token;
         }
@@ -33,11 +36,11 @@ class Request {
       (response: AxiosResponse) => {
         const {data, status} = response;
         if (status === 401) {
-          localStorage.removeItem("token");
+          userStore.clear();
           return Promise.reject('need login')
         }
-        if (status !== 200 || data?.code !== 0) {
-          return Promise.reject(data?.message || this.handleStatusCode(status));
+        if (data.code && data.code !== 0) {
+          return Promise.reject(data.message || this.handleStatusCode(status));
         }
         return data.data;
       },
@@ -84,6 +87,6 @@ class Request {
 }
 
 export default new Request({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 3000,
 })

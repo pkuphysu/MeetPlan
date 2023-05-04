@@ -17,7 +17,7 @@ export const useThemeStore = defineStore( {
       this.darkTheme = value
     },
     setSystemTheme(value?: boolean) {
-      this.darkTheme = value
+      this.systemTheme = value
     }
   },
   getters: {

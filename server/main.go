@@ -3,6 +3,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/cors"
 	"github.com/hertz-contrib/logger/accesslog"
@@ -26,7 +28,13 @@ func main() {
 	if conf.Hertz.EnablePprof {
 		pprof.Register(h)
 	}
-	h.Use(accesslog.New(), cors.Default(), requestid.New())
+	h.Use(accesslog.New(), cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowCredentials: false,
+		MaxAge:           12 * time.Hour,
+		AllowAllOrigins:  true,
+	}), requestid.New())
 	register(h)
 
 	h.Spin()
