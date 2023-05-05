@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" :theme="theme">
+  <v-app :theme="theme">
     <component :is="currentLayout" v-if="routerLoaded">
       <router-view/>
     </component>
@@ -9,17 +9,15 @@
 
 <script setup lang="ts">
 import {useThemeStore} from "@/store/theme";
-import {computed, onBeforeMount, onMounted} from "vue";
+import {computed, onMounted} from "vue";
 import {useRoute} from "vue-router";
-import {useUserStore} from "@/store/user";
 import Default from "@/layouts/Default.vue";
-import router, {registerDynamicRoutes} from "@/router";
 
 const route = useRoute();
 const routerLoaded = computed(() => {
   return route.name !== undefined;
 })
-
+console.log(route)
 const layouts: { [key: string]: any } = {
   default: Default,
 }
@@ -39,17 +37,6 @@ const currentLayout = computed(() => {
 const themeStore = useThemeStore();
 const theme = computed(() => {
   return themeStore.theme;
-})
-
-const userStore = useUserStore();
-
-onBeforeMount(()=>{
-  if (userStore.user){
-    console.log(userStore.user)
-    if (registerDynamicRoutes(userStore.isTeacher, userStore.isAdmin)){
-      router.replace(route);
-    }
-  }
 })
 
 onMounted(() => {

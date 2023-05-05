@@ -64,44 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useRoute} from "vue-router";
-import {LoginParams, login, getSelf} from "@/api/user";
-import {useUserStore} from "@/store/user";
-import router, {registerDynamicRoutes} from "@/router";
 import {useThemeStore} from "@/store/theme";
 
-const userStore = useUserStore();
 const themeStore = useThemeStore();
-const route = useRoute();
-
-const redirectHome = ()=>{
-  registerDynamicRoutes(userStore.isTeacher, userStore.isAdmin);
-  router.replace({path: '/home'});
-}
-
-if (route.query['code']) {
-  console.log(route.query['code'])
-  var params: LoginParams = {
-    code: route.query['code'].toString(),
-  }
-  login(params).then((res)=>{
-    userStore.setJwt(res);
-    getSelf().then((res)=>{
-      userStore.setUser(res);
-      redirectHome();
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }).catch((err)=>{
-    console.log(err)
-  })
-}else if (userStore.jwt){
-  getSelf().then((res)=>{
-    userStore.setUser(res);
-    redirectHome();
-  }).catch((err)=>{
-    console.log(err)
-  })
-}
-
 </script>

@@ -3,21 +3,15 @@ import {useUserStore} from "@/store/user";
 // import {useDisplay} from "vuetify";
 import {computed} from "vue";
 import {useThemeStore} from "@/store/theme";
-
+import {loginRedirectUrl} from "@/utils/constants";
 const userStore = useUserStore();
 const themeStore = useThemeStore();
-
-const logoUrl = computed(() => {
-  return themeStore.theme === 'dark' ? '@/assets/logo-dark.png' : '@/assets/logo.png';
-})
 
 const hasLogin = computed(() => {
   return userStore.user !== undefined;
 })
 
 // const {mdAndUp} = useDisplay();
-
-const loginUrl = `https://auth.phy.pku.edu.cn/oidc/authorize/?response_type=code&scope=openid profile email address pku&client_id=16302204390022&redirect_uri=${import.meta.env.VITE_HOST_URL}`
 
 </script>
 
@@ -27,12 +21,16 @@ const loginUrl = `https://auth.phy.pku.edu.cn/oidc/authorize/?response_type=code
       <!--      <div class="hidden-md-and-down">-->
       <div class="logo" v-if="hasLogin">
         <router-link to="/" class="d-flex">
-          <v-img :src="logoUrl" alt="Home" width="130"></v-img>
+          <v-img v-if="themeStore.theme === 'dark'" src="@/assets/logo-dark.png" alt="Home" width="125"></v-img>
+          <v-img v-else src="@/assets/logo.png" alt="Home" width="125"></v-img>
         </router-link>
       </div>
+      <template v-if="hasLogin">
+        <router-link to="/dashboard">主页</router-link>
+      </template>
       <!--      </div>-->
       <div class="flex-grow-1"></div>
-      <v-btn :href="loginUrl" v-if="!hasLogin"
+      <v-btn :href="loginRedirectUrl" v-if="!hasLogin"
         class="float-right text-white bg-background font-weight-bold"
       >统一认证登录
       </v-btn>

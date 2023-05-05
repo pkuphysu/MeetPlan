@@ -1,10 +1,10 @@
 // Composables
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 
-const routes: Array<RouteRecordRaw> = [
+export const static_routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Guest',
+    name: 'Home',
     component: () => import('@/views/Guest.vue'),
     meta: {
       title: '首页',
@@ -12,22 +12,23 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/:pathMatch(.*)*",
-    name: "Error",
-    component: () => import( "@/views/errors/404.vue"),
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/Login.vue'),
     meta: {
-      title: '404',
+      title: '登录',
       layout: 'default',
     }
   },
 ]
 
-const dynamicRoutes: Array<RouteRecordRaw> = [
+export const dynamic_routes: Array<RouteRecordRaw> = [
   {
-    path: '/home',
-    name: 'Overview',
+    path: '/dashboard',
+    name: 'Dashboard',
     component: () => import('@/views/Home.vue'),
     meta: {
+      title: '主页',
       role: ['teacher', 'student', 'admin'],
     }
   },
@@ -55,11 +56,20 @@ const dynamicRoutes: Array<RouteRecordRaw> = [
   //     role: ['teacher', 'student'],
   //   }
   // }
+  {
+    path: "/:pathMatch(.*)*",
+    name: "Error",
+    component: () => import( "@/views/errors/404.vue"),
+    meta: {
+      title: '404',
+      layout: 'default',
+    }
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes,
+  routes: static_routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -67,49 +77,5 @@ const router = createRouter({
     return {top: 0}
   }
 })
-
-const getTitle = (title?: string) => {
-  const siteName = import.meta.env.VITE_APP_TITLE;
-  // const siteNameEn = import.meta.env.VITE_APP_TITLE_EN;
-  if (title) {
-    return `${title} - ${siteName}`
-  }
-  return `${import.meta.env.VITE_APP_NAME}`
-}
-
-router.beforeEach((to) => {
-  console.log(to)
-  const meta: { [key: string]: any } = to.meta || {};
-  document.title = getTitle(meta.title);
-})
-
-export const registerDynamicRoutes = (isTeacher: boolean, isAdmin: boolean) => {
-  const routes = dynamicRoutes.filter((route) => {
-    if (router.hasRoute(route.name as string)){
-      return false;
-    }
-    const meta: {[key:string]: any} = route.meta || {};
-    if (!meta.role) {
-      return true;
-    }
-    const roles = meta.role as Array<string>;
-    if (roles.includes('teacher') && isTeacher) {
-      return true;
-    }
-    if (roles.includes('student') && !isTeacher) {
-      return true;
-    }
-    return roles.includes('admin') && isAdmin;
-
-  });
-  console.log(routes)
-  if (routes.length === 0) {
-    return false;
-  }
-  routes.forEach((route) => {
-    router.addRoute(route);
-  });
-  return true;
-}
 
 export default router

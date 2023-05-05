@@ -17,4 +17,6 @@ const app = createApp(App)
 
 registerPlugins(app)
 
+import './router/permission'
+
 app.mount('#app')
