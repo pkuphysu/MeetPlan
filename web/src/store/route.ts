@@ -24,12 +24,4 @@ export const useRouteStore = defineStore('route', {
     }
   },
   getters: {},
-  // persist: {
-  //   enabled: true,
-  //   strategies: [
-  //     {
-  //       storage: localStorage,
-  //     }
-  //   ]
-  // }
 })

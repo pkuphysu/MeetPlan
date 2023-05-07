@@ -9,10 +9,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DefaultAppBar: typeof import('./src/components/toolbar/DefaultAppBar.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginLoader: typeof import('./src/components/animations/LoginLoader.vue')['default']
-    MainAppBar: typeof import('./src/components/toolbar/MainAppBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ToolbarLanguage: typeof import('./src/components/toolbar/ToolbarLanguage.vue')['default']

@@ -2,10 +2,8 @@
   <v-btn></v-btn>
 </template>
 
-<script>
-export default {
-  name: "Profile"
-}
+<script setup lang="ts">
+
 </script>
 
 <style scoped>

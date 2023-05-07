@@ -33,19 +33,38 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/views/Home.vue'),
+    component: () => import('@/views/student/Home.vue'),
     meta: {
       title: '主页',
-      role: ['teacher', 'student', 'admin'],
+      role: ['student'],
+      needAuth: true,
+    }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('@/views/teacher/Home.vue'),
+    meta: {
+      title: '主页',
+      role: ['teacher'],
       needAuth: true,
     }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/views/profile/Profile.vue'),
+    component: () => import('@/views/teacher/Profile.vue'),
     meta: {
-      role: ['teacher', 'student', 'admin'],
+      role: ['teacher'],
+      needAuth: true,
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('@/views/student/Profile.vue'),
+    meta: {
+      role: ['student'],
       needAuth: true,
     }
   },

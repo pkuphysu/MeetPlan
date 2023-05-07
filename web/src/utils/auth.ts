@@ -1,14 +1,12 @@
 import {useUserStore} from "@/store/user";
 import {useRouteStore} from "@/store/route";
-import {resetRouter} from "@/router";
-import {useRouter} from "vue-router";
+import router, {resetRouter} from "@/router";
 
 
 
 export const logout = () => {
   const userStore = useUserStore();
   const routeStore = useRouteStore();
-  const router = useRouter();
 
   userStore.clear();
   routeStore.clear();

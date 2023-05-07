@@ -4,10 +4,6 @@
  * Framework documentation: https://vuetifyjs.com`
  */
 
-// Styles
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-
 // Composables
 import { createVuetify } from 'vuetify'
 import {createVueI18nAdapter} from "vuetify/locale/adapters/vue-i18n";
