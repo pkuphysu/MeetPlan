@@ -2,8 +2,6 @@ import router, {dynamic_routes} from '@/router/index';
 import {useRouteStore} from "@/store/route";
 import {useUserStore} from "@/store/user";
 
-const whiteList = ['/', '/login'];
-
 router.beforeEach((to, from, next) => {
   console.log(to)
   const meta: { [key: string]: any } = to.meta || {};
@@ -30,7 +28,7 @@ router.beforeEach((to, from, next) => {
       console.log(to)
       next(to)
     } else {
-      if (whiteList.indexOf(to.path) !== -1) {
+      if (!(to.meta.needAuth as boolean)) {
         next()
       } else {
         next(`/login?redirect=${to.path}`)
@@ -42,17 +40,20 @@ router.beforeEach((to, from, next) => {
 export const registerDynamicRoutes = (isTeacher: boolean, isAdmin: boolean) => {
   const routes = dynamic_routes.filter((route) => {
     const meta: { [key: string]: any } = route.meta || {};
+    if (meta.needAuth?.value === false) {
+      return true;
+    }
     const roles = meta.role as Array<string>;
     if (!roles) {
       return true;
     }
-    if (roles.includes('teacher') && isTeacher) {
+    if (isTeacher && roles.includes('teacher')) {
       return true;
     }
-    if (roles.includes('student') && !isTeacher) {
+    if (!isTeacher && roles.includes('student')) {
       return true;
     }
-    return roles.includes('admin') && isAdmin;
+    return isAdmin && roles.includes('admin');
   });
 
   routes.forEach((route) => {

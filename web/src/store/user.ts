@@ -1,14 +1,9 @@
 // Utilities
 import {defineStore} from 'pinia'
+import {User} from "@/api/user";
 
 interface State {
-  _user?: {
-    id: number
-    pku_id: string
-    name: string
-    is_teacher: boolean
-    is_admin: boolean
-  },
+  _user?: User,
   _jwt?: string
 }
 
@@ -18,10 +13,10 @@ export const useUserStore = defineStore('user', {
     _jwt: undefined
   }),
   actions: {
-    setUser(user: State['_user']) {
+    setUser(user: User) {
       this._user = user
     },
-    setJwt(jwt: State['_jwt']) {
+    setJwt(jwt: string) {
       this._jwt = jwt
     },
     clear(){
@@ -30,7 +25,7 @@ export const useUserStore = defineStore('user', {
     }
   },
   getters: {
-    user(): State['_user'] {
+    user(): User | undefined {
       return this._user
     },
     isTeacher(): boolean {

@@ -9,6 +9,7 @@ import { loadFonts } from './webfontloader'
 import vuetify from './vuetify'
 import router from '../router'
 import pinia from '../store'
+import i18n from "./i18n";
 import Vue3Lottie from 'vue3-lottie'
 
 // Types
@@ -20,5 +21,6 @@ export function registerPlugins (app: App) {
     .use(vuetify)
     .use(router)
     .use(pinia)
+    .use(i18n)
     .use(Vue3Lottie, { name: "Vue3Lottie" })
 }

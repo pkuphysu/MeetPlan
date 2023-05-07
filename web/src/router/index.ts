@@ -1,5 +1,5 @@
 // Composables
-import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import {createRouter, createWebHistory, Router, RouteRecordRaw} from 'vue-router'
 
 export const static_routes: Array<RouteRecordRaw> = [
   {
@@ -9,6 +9,7 @@ export const static_routes: Array<RouteRecordRaw> = [
     meta: {
       title: '首页',
       layout: 'default',
+      needAuth: false,
     }
   },
   {
@@ -18,8 +19,14 @@ export const static_routes: Array<RouteRecordRaw> = [
     meta: {
       title: '登录',
       layout: 'default',
+      needAuth: false,
     }
   },
+  {
+    path: '/:catchAll(.*)',
+    name: 'Redirect',
+    redirect: {name: 'Login'},
+  }
 ]
 
 export const dynamic_routes: Array<RouteRecordRaw> = [
@@ -30,16 +37,18 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
     meta: {
       title: '主页',
       role: ['teacher', 'student', 'admin'],
+      needAuth: true,
     }
   },
-  // {
-  //   path: '/profile',
-  //   name: 'Profile',
-  //   component: () => import('@/views/profile/Profile.vue'),
-  //   meta: {
-  //     role: ['teacher', 'student'],
-  //   }
-  // },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('@/views/profile/Profile.vue'),
+    meta: {
+      role: ['teacher', 'student', 'admin'],
+      needAuth: true,
+    }
+  },
   // {
   //   path: '/meetplan',
   //   name: 'MeetPlan',
@@ -63,19 +72,30 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
     meta: {
       title: '404',
       layout: 'default',
+      needAuth: true,
     }
   },
 ]
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: static_routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
+const initRouter = (): Router =>{
+  return createRouter({
+    history: createWebHistory(),
+    routes: static_routes,
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition
+      }
+      return {top: 0}
     }
-    return {top: 0}
-  }
-})
+  })
+}
+
+const router = initRouter()
+
+export function resetRouter () {
+  const newRouter = initRouter()
+  // @ts-ignore bef
+  router.matcher = newRouter.matcher
+}
 
 export default router

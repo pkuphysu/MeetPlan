@@ -1,6 +1,9 @@
 // Plugins
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import Components from 'unplugin-vue-components/vite'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -16,6 +19,11 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
+    Components({dts: true, resolvers: [
+        // 自动按需加载iconify图标库图标
+        IconsResolver()
+      ]}),
+    Icons({autoInstall: true}),
   ],
   define: { 'process.env': {} },
   resolve: {

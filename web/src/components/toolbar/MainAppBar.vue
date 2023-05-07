@@ -4,6 +4,9 @@ import {useUserStore} from "@/store/user";
 import {computed} from "vue";
 import {useThemeStore} from "@/store/theme";
 import {loginRedirectUrl} from "@/utils/constants";
+import ToolbarUser from "@/components/toolbar/ToolbarUser.vue";
+import ToolbarLanguage from "@/components/toolbar/ToolbarLanguage.vue";
+
 const userStore = useUserStore();
 const themeStore = useThemeStore();
 
@@ -28,11 +31,18 @@ const hasLogin = computed(() => {
       <template v-if="hasLogin">
         <router-link to="/dashboard">主页</router-link>
       </template>
-      <!--      </div>-->
+
       <div class="flex-grow-1"></div>
-      <v-btn :href="loginRedirectUrl" v-if="!hasLogin"
+      <ToolbarLanguage/>
+      <template v-if="hasLogin">
+        <ToolbarUser/>
+      </template>
+      <v-btn
+        :href="loginRedirectUrl"
+        v-if="!hasLogin"
         class="float-right text-white bg-background font-weight-bold"
-      >统一认证登录
+      >
+        统一认证登录
       </v-btn>
     </div>
   </v-app-bar>
