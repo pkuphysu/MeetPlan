@@ -12,7 +12,7 @@ router.beforeEach((to, from, next) => {
 
   if (routeStore._add_routes) {
     if (to.path === '/login') {
-      next({path: '/dashboard'})
+      next(to.query.redirect? {path: to.query.redirect as string}:{path: '/dashboard'})
     } else {
       next()
     }
@@ -28,9 +28,9 @@ router.beforeEach((to, from, next) => {
       console.log(to)
       next(to)
     } else {
-      if (!(to.meta.needAuth as boolean)) {
+      if (router.hasRoute(to.name as string) && !(to.meta.needAuth as boolean)) {
         next()
-      } else {
+      }else {
         next(`/login?redirect=${to.path}`)
       }
     }

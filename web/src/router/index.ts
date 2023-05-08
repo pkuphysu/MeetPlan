@@ -25,7 +25,7 @@ export const static_routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
     name: 'Redirect',
-    redirect: {name: 'Login'},
+    redirect: to => {return { name: 'Login', query: { redirect: to.path }}},
   }
 ]
 

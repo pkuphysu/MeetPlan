@@ -1,19 +1,31 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import {useRoute} from "vue-router";
-import {getSelf, login, LoginParams} from "@/api/user";
+import {getSelf, login, LoginParams, User} from "@/api/user";
 import {useUserStore} from "@/store/user";
 import router from "@/router";
 import LoginLoader from "@/components/animations/LoginLoader.vue";
-import {loginRedirectUrl} from "@/utils/constants";
+import {registerDynamicRoutes} from "@/router/permission";
+import {loginRedirectUrl} from "@/utils/utils";
 
 const userStore = useUserStore();
 const route = useRoute();
 
 const text = ref('')
 
-const redirectHome = () => {
-  router.push({path: '/dashboard'})
+const getRedirectTarget = () =>{
+  return sessionStorage.getItem('redirect')
+}
+
+if (route.query.redirect) {
+  sessionStorage.setItem('redirect', route.query.redirect as string)
+}
+
+const redirectHome = (user: User) => {
+  registerDynamicRoutes(user.is_teacher, user.is_admin)
+  console.log(route)
+  router.push( getRedirectTarget()? {path: getRedirectTarget()} : {path: '/dashboard'})
+  sessionStorage.removeItem('redirect')
 }
 
 if (route.query['code']) {
@@ -28,7 +40,7 @@ if (route.query['code']) {
     getSelf().then((res) => {
       text.value = '获取用户信息成功，跳转中。。。'
       userStore.setUser(res);
-      redirectHome();
+      redirectHome(res);
     }).catch((err) => {
       userStore.clear();
       console.log(err)
@@ -40,13 +52,13 @@ if (route.query['code']) {
   text.value = '已登录，获取用户信息中。。。'
   getSelf().then((res) => {
     userStore.setUser(res);
-    redirectHome();
+    redirectHome(res);
   }).catch((err) => {
     console.log(err)
   })
 } else {
   text.value = '未登录，跳转中。。。'
-  window.location.href = loginRedirectUrl;
+  window.location.href = loginRedirectUrl();
 }
 
 </script>

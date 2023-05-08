@@ -1,7 +1,8 @@
 <template>
-  <HelloWorld />
+  <v-row>
+
+  </v-row>
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
 </script>

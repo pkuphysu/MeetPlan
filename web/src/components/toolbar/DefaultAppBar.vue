@@ -3,7 +3,6 @@ import {useUserStore} from "@/store/user";
 // import {useDisplay} from "vuetify";
 import {computed} from "vue";
 import {useThemeStore} from "@/store/theme";
-import {loginRedirectUrl} from "@/utils/constants";
 import ToolbarLanguage from "@/components/toolbar/ToolbarLanguage.vue";
 import ToolbarUser from "@/components/toolbar/ToolbarUser.vue";
 
@@ -30,12 +29,12 @@ const hasLogin = computed(() => {
       </div>
 
       <v-row v-if="hasLogin" class="pl-4 hidden-sm-and-down ">
-        <router-link :to="{name: 'Dashboard'}" class="text-decoration-none flex-0-0">
+        <router-link to="/dashboard" class="text-decoration-none flex-0-0">
           <v-btn density="default" size="large" style="color: #2a3547">
             首页
           </v-btn>
         </router-link>
-        <router-link :to="{name: 'Profile'}" class="text-decoration-none flex-0-0">
+        <router-link to="/profile" class="text-decoration-none flex-0-0">
           <v-btn density="default" size="large" style="color: #2a3547">
             我
           </v-btn>
@@ -48,7 +47,7 @@ const hasLogin = computed(() => {
         <ToolbarUser/>
       </template>
       <v-btn
-        :href="loginRedirectUrl"
+        :to="{name: 'Login'}"
         v-if="!hasLogin"
         class="float-right text-white bg-background font-weight-bold"
       >

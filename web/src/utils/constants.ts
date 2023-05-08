@@ -1,1 +1,0 @@
-export const loginRedirectUrl = `https://auth.phy.pku.edu.cn/oidc/authorize/?response_type=code&scope=openid profile email address pku&client_id=16302204390022&redirect_uri=${import.meta.env.VITE_HOST_URL}/login`

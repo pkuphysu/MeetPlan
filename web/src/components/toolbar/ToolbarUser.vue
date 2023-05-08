@@ -3,7 +3,7 @@ import {useRouter} from "vue-router";
 import {logout} from "@/utils/auth";
 import {useUserStore} from "@/store/user";
 import {computed} from "vue";
-import {Md5} from "ts-md5"
+import {getAvatarUrl} from "@/utils/utils";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -13,10 +13,7 @@ const currentUser = computed(() => {
 })
 
 const userAvatar = computed(() => {
-  if (currentUser.value.avatar) {
-    return currentUser.value.avatar
-  }
-  return `https://cravatar.cn/avatar/${Md5.hashStr(currentUser.value.email)}.png`
+  return getAvatarUrl(currentUser.value)
 });
 
 const handleLogout = () => {
@@ -29,7 +26,6 @@ const handleLogout = () => {
 <template>
   <v-menu
     :close-on-content-click="false"
-    open-on-hover
     location="bottom right"
     transition="slide-y-transition"
   >
