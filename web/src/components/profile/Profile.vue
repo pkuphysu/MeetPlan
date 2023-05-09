@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {getAvatarUrl} from "@/utils/utils";
 import {computed, reactive} from "vue";
-import {getUser, User} from "@/api/user";
+import {getUser, updateUser, User} from "@/api/user";
 import {useUserStore} from "@/store/user";
 import {getOption} from "@/api/option";
 
@@ -80,10 +80,29 @@ if (sessionStorage.getItem('grades')) {
 }
 
 
-const clickAvatar = () => {
+const onClickAvatar = () => {
   if (!userRef.user.avatar) {
     window.open("https://cn.gravatar.com/")
   }
+}
+
+const onSave = () => {
+  updateUser(userRef.user.id, userRef.user).then(res => {
+    userRef.user = res
+    if (userStore.user?.id === res.id) {
+      userStore.setUser(res)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+const onReset = () => {
+  getUser(props.userid).then((res) => {
+    userRef.user = res
+  }).catch((err) => {
+    console.log(err)
+  })
 }
 
 </script>
@@ -99,7 +118,7 @@ const clickAvatar = () => {
             </span>
             <template v-slot:activator="{ props }">
               <v-avatar v-bind="props" density="default" class="rounded-sm me-6" variant="flat" size="100"
-                        @click="clickAvatar">
+                        @click="onClickAvatar">
                 <v-img :src="getAvatarUrl(userRef.user, 1000)">
                 </v-img>
               </v-avatar>
@@ -246,6 +265,14 @@ const clickAvatar = () => {
                   ></v-switch>
                 </v-col>
               </template>
+              <v-col cols="12" class="d-flex flex-wrap gap-4">
+                <v-btn color="primary" density="default" variant="elevated" @click="onSave">
+                  保存
+                </v-btn>
+                <v-btn density="default" variant="tonal" class="text-secondary" @click="onReset">
+                  重置
+                </v-btn>
+              </v-col>
             </v-row>
           </v-form>
         </v-card-text>
@@ -270,5 +297,9 @@ const clickAvatar = () => {
 
 .gap-3 {
   gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 </style>
