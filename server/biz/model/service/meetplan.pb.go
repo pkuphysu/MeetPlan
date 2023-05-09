@@ -141,7 +141,7 @@ var file_meetplan_proto_rawDesc = []byte{
 	0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0xd2,
 	0xc1, 0x18, 0x15, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x6d, 0x65, 0x65, 0x74, 0x70,
 	0x6c, 0x61, 0x6e, 0x6f, 0x72, 0x64, 0x65, 0x72, 0xaa, 0xc8, 0x18, 0x08, 0x6d, 0x65, 0x65, 0x74,
-	0x70, 0x6c, 0x61, 0x6e, 0x32, 0xdb, 0x05, 0x0a, 0x06, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x70, 0x6c, 0x61, 0x6e, 0x32, 0xa0, 0x07, 0x0a, 0x06, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
 	0x6f, 0x0a, 0x0e, 0x4c, 0x69, 0x73, 0x74, 0x46, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x4c, 0x69, 0x6e,
 	0x6b, 0x12, 0x1c, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x46, 0x72,
 	0x69, 0x65, 0x6e, 0x64, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
@@ -187,9 +187,21 @@ var file_meetplan_proto_rawDesc = []byte{
 	0x6d, 0x44, 0x61, 0x74, 0x65, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x22, 0x1e, 0xda, 0xc1, 0x18, 0x10, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f,
 	0x74, 0x65, 0x72, 0x6d, 0x64, 0x61, 0x74, 0x65, 0xaa, 0xc8, 0x18, 0x06, 0x6f, 0x70, 0x74, 0x69,
-	0x6f, 0x6e, 0x42, 0x1c, 0x5a, 0x1a, 0x6d, 0x65, 0x65, 0x74, 0x70, 0x6c, 0x61, 0x6e, 0x2f, 0x62,
-	0x69, 0x7a, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x6e, 0x12, 0x5c, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x17, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x47, 0x65, 0x74, 0x4f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
+	0x2e, 0x47, 0x65, 0x74, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x1c, 0xca, 0xc1, 0x18, 0x0e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f,
+	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0xaa, 0xc8, 0x18, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x12, 0x65, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x12, 0x1a, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x6d,
+	0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x1c, 0xda, 0xc1, 0x18, 0x0e, 0x2f,
+	0x61, 0x70, 0x69, 0x2f, 0x76, 0x31, 0x2f, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0xaa, 0xc8, 0x18,
+	0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x1c, 0x5a, 0x1a, 0x6d, 0x65, 0x65, 0x74, 0x70,
+	0x6c, 0x61, 0x6e, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2f, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var file_meetplan_proto_goTypes = []interface{}{
@@ -216,29 +228,33 @@ var file_meetplan_proto_goTypes = []interface{}{
 	(*model.CreateUpdateRecordRequest)(nil),      // 20: model.CreateUpdateRecordRequest
 	(*model.GetTermDateRangeRequest)(nil),        // 21: model.GetTermDateRangeRequest
 	(*model.UpdateTermDateRangeRequest)(nil),     // 22: model.UpdateTermDateRangeRequest
-	(*model.LoginResponse)(nil),                  // 23: model.LoginResponse
-	(*model.GetSelfResponse)(nil),                // 24: model.GetSelfResponse
-	(*model.GetUserResponse)(nil),                // 25: model.GetUserResponse
-	(*model.ListUserResponse)(nil),               // 26: model.ListUserResponse
-	(*model.CreateUserResponse)(nil),             // 27: model.CreateUserResponse
-	(*model.UpdateUserResponse)(nil),             // 28: model.UpdateUserResponse
-	(*model.GetMeetPlanResponse)(nil),            // 29: model.GetMeetPlanResponse
-	(*model.ListMeetPlanResponse)(nil),           // 30: model.ListMeetPlanResponse
-	(*model.CreateMeetPlanResponse)(nil),         // 31: model.CreateMeetPlanResponse
-	(*model.UpdateMeetPlanResponse)(nil),         // 32: model.UpdateMeetPlanResponse
-	(*model.DeleteMeetPlanResponse)(nil),         // 33: model.DeleteMeetPlanResponse
-	(*model.DeleteMeetPlansResponse)(nil),        // 34: model.DeleteMeetPlansResponse
-	(*model.GetOrderResponse)(nil),               // 35: model.GetOrderResponse
-	(*model.ListOrderResponse)(nil),              // 36: model.ListOrderResponse
-	(*model.CreateOrderResponse)(nil),            // 37: model.CreateOrderResponse
-	(*model.UpdateOrderResponse)(nil),            // 38: model.UpdateOrderResponse
-	(*model.CreateMeetPlanAndOrderResponse)(nil), // 39: model.CreateMeetPlanAndOrderResponse
-	(*model.ListFriendLinkResponse)(nil),         // 40: model.ListFriendLinkResponse
-	(*model.CreateFriendLinkResponse)(nil),       // 41: model.CreateFriendLinkResponse
-	(*model.ListUpdateRecordResponse)(nil),       // 42: model.ListUpdateRecordResponse
-	(*model.CreateUpdateRecordResponse)(nil),     // 43: model.CreateUpdateRecordResponse
-	(*model.GetTermDateRangeResponse)(nil),       // 44: model.GetTermDateRangeResponse
-	(*model.UpdateTermDateRangeResponse)(nil),    // 45: model.UpdateTermDateRangeResponse
+	(*model.GetOptionRequest)(nil),               // 23: model.GetOptionRequest
+	(*model.UpdateOptionRequest)(nil),            // 24: model.UpdateOptionRequest
+	(*model.LoginResponse)(nil),                  // 25: model.LoginResponse
+	(*model.GetSelfResponse)(nil),                // 26: model.GetSelfResponse
+	(*model.GetUserResponse)(nil),                // 27: model.GetUserResponse
+	(*model.ListUserResponse)(nil),               // 28: model.ListUserResponse
+	(*model.CreateUserResponse)(nil),             // 29: model.CreateUserResponse
+	(*model.UpdateUserResponse)(nil),             // 30: model.UpdateUserResponse
+	(*model.GetMeetPlanResponse)(nil),            // 31: model.GetMeetPlanResponse
+	(*model.ListMeetPlanResponse)(nil),           // 32: model.ListMeetPlanResponse
+	(*model.CreateMeetPlanResponse)(nil),         // 33: model.CreateMeetPlanResponse
+	(*model.UpdateMeetPlanResponse)(nil),         // 34: model.UpdateMeetPlanResponse
+	(*model.DeleteMeetPlanResponse)(nil),         // 35: model.DeleteMeetPlanResponse
+	(*model.DeleteMeetPlansResponse)(nil),        // 36: model.DeleteMeetPlansResponse
+	(*model.GetOrderResponse)(nil),               // 37: model.GetOrderResponse
+	(*model.ListOrderResponse)(nil),              // 38: model.ListOrderResponse
+	(*model.CreateOrderResponse)(nil),            // 39: model.CreateOrderResponse
+	(*model.UpdateOrderResponse)(nil),            // 40: model.UpdateOrderResponse
+	(*model.CreateMeetPlanAndOrderResponse)(nil), // 41: model.CreateMeetPlanAndOrderResponse
+	(*model.ListFriendLinkResponse)(nil),         // 42: model.ListFriendLinkResponse
+	(*model.CreateFriendLinkResponse)(nil),       // 43: model.CreateFriendLinkResponse
+	(*model.ListUpdateRecordResponse)(nil),       // 44: model.ListUpdateRecordResponse
+	(*model.CreateUpdateRecordResponse)(nil),     // 45: model.CreateUpdateRecordResponse
+	(*model.GetTermDateRangeResponse)(nil),       // 46: model.GetTermDateRangeResponse
+	(*model.UpdateTermDateRangeResponse)(nil),    // 47: model.UpdateTermDateRangeResponse
+	(*model.GetOptionResponse)(nil),              // 48: model.GetOptionResponse
+	(*model.UpdateOptionResponse)(nil),           // 49: model.UpdateOptionResponse
 }
 var file_meetplan_proto_depIdxs = []int32{
 	0,  // 0: service.User.Login:input_type -> model.LoginRequest
@@ -264,31 +280,35 @@ var file_meetplan_proto_depIdxs = []int32{
 	20, // 20: service.Option.CreateUpdateRecord:input_type -> model.CreateUpdateRecordRequest
 	21, // 21: service.Option.GetTermDateRange:input_type -> model.GetTermDateRangeRequest
 	22, // 22: service.Option.UpdateTermDateRange:input_type -> model.UpdateTermDateRangeRequest
-	23, // 23: service.User.Login:output_type -> model.LoginResponse
-	24, // 24: service.User.GetSelf:output_type -> model.GetSelfResponse
-	25, // 25: service.User.GetUser:output_type -> model.GetUserResponse
-	26, // 26: service.User.ListUser:output_type -> model.ListUserResponse
-	27, // 27: service.User.CreateUser:output_type -> model.CreateUserResponse
-	28, // 28: service.User.UpdateUser:output_type -> model.UpdateUserResponse
-	29, // 29: service.MeetPlan.GetMeetPlan:output_type -> model.GetMeetPlanResponse
-	30, // 30: service.MeetPlan.ListMeetPlan:output_type -> model.ListMeetPlanResponse
-	31, // 31: service.MeetPlan.CreateMeetPlan:output_type -> model.CreateMeetPlanResponse
-	32, // 32: service.MeetPlan.UpdateMeetPlan:output_type -> model.UpdateMeetPlanResponse
-	33, // 33: service.MeetPlan.DeleteMeetPlan:output_type -> model.DeleteMeetPlanResponse
-	34, // 34: service.MeetPlan.DeleteMeetPlans:output_type -> model.DeleteMeetPlansResponse
-	35, // 35: service.MeetPlan.GetOrder:output_type -> model.GetOrderResponse
-	36, // 36: service.MeetPlan.ListOrder:output_type -> model.ListOrderResponse
-	37, // 37: service.MeetPlan.CreateOrder:output_type -> model.CreateOrderResponse
-	38, // 38: service.MeetPlan.UpdateOrder:output_type -> model.UpdateOrderResponse
-	39, // 39: service.MeetPlan.CreateMeetPlanAndOrder:output_type -> model.CreateMeetPlanAndOrderResponse
-	40, // 40: service.Option.ListFriendLink:output_type -> model.ListFriendLinkResponse
-	41, // 41: service.Option.CreateFriendLink:output_type -> model.CreateFriendLinkResponse
-	42, // 42: service.Option.ListUpdateRecord:output_type -> model.ListUpdateRecordResponse
-	43, // 43: service.Option.CreateUpdateRecord:output_type -> model.CreateUpdateRecordResponse
-	44, // 44: service.Option.GetTermDateRange:output_type -> model.GetTermDateRangeResponse
-	45, // 45: service.Option.UpdateTermDateRange:output_type -> model.UpdateTermDateRangeResponse
-	23, // [23:46] is the sub-list for method output_type
-	0,  // [0:23] is the sub-list for method input_type
+	23, // 23: service.Option.GetOption:input_type -> model.GetOptionRequest
+	24, // 24: service.Option.UpdateOption:input_type -> model.UpdateOptionRequest
+	25, // 25: service.User.Login:output_type -> model.LoginResponse
+	26, // 26: service.User.GetSelf:output_type -> model.GetSelfResponse
+	27, // 27: service.User.GetUser:output_type -> model.GetUserResponse
+	28, // 28: service.User.ListUser:output_type -> model.ListUserResponse
+	29, // 29: service.User.CreateUser:output_type -> model.CreateUserResponse
+	30, // 30: service.User.UpdateUser:output_type -> model.UpdateUserResponse
+	31, // 31: service.MeetPlan.GetMeetPlan:output_type -> model.GetMeetPlanResponse
+	32, // 32: service.MeetPlan.ListMeetPlan:output_type -> model.ListMeetPlanResponse
+	33, // 33: service.MeetPlan.CreateMeetPlan:output_type -> model.CreateMeetPlanResponse
+	34, // 34: service.MeetPlan.UpdateMeetPlan:output_type -> model.UpdateMeetPlanResponse
+	35, // 35: service.MeetPlan.DeleteMeetPlan:output_type -> model.DeleteMeetPlanResponse
+	36, // 36: service.MeetPlan.DeleteMeetPlans:output_type -> model.DeleteMeetPlansResponse
+	37, // 37: service.MeetPlan.GetOrder:output_type -> model.GetOrderResponse
+	38, // 38: service.MeetPlan.ListOrder:output_type -> model.ListOrderResponse
+	39, // 39: service.MeetPlan.CreateOrder:output_type -> model.CreateOrderResponse
+	40, // 40: service.MeetPlan.UpdateOrder:output_type -> model.UpdateOrderResponse
+	41, // 41: service.MeetPlan.CreateMeetPlanAndOrder:output_type -> model.CreateMeetPlanAndOrderResponse
+	42, // 42: service.Option.ListFriendLink:output_type -> model.ListFriendLinkResponse
+	43, // 43: service.Option.CreateFriendLink:output_type -> model.CreateFriendLinkResponse
+	44, // 44: service.Option.ListUpdateRecord:output_type -> model.ListUpdateRecordResponse
+	45, // 45: service.Option.CreateUpdateRecord:output_type -> model.CreateUpdateRecordResponse
+	46, // 46: service.Option.GetTermDateRange:output_type -> model.GetTermDateRangeResponse
+	47, // 47: service.Option.UpdateTermDateRange:output_type -> model.UpdateTermDateRangeResponse
+	48, // 48: service.Option.GetOption:output_type -> model.GetOptionResponse
+	49, // 49: service.Option.UpdateOption:output_type -> model.UpdateOptionResponse
+	25, // [25:50] is the sub-list for method output_type
+	0,  // [0:25] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

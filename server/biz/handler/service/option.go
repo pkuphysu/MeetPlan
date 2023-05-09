@@ -147,3 +147,49 @@ func UpdateTermDateRange(ctx context.Context, c *app.RequestContext) {
 	}
 	httputil.SendResponse(ctx, c, consts.StatusOK, resp)
 }
+
+// GetOption .
+// @router /api/v1/option [GET]
+func GetOption(ctx context.Context, c *app.RequestContext) {
+	var req model.GetOptionRequest
+	resp := new(model.GetOptionResponse)
+	if err := c.BindAndValidate(&req); err != nil {
+		resp.Code = -1
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
+		return
+	}
+
+	err := option.NewGetOptionService(ctx, c).Run(&req, resp)
+
+	if err != nil {
+		resp.Code = int32(err.ErrCode())
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, err.StatusCode(), resp)
+		return
+	}
+	httputil.SendResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// UpdateOption .
+// @router /api/v1/option [PUT]
+func UpdateOption(ctx context.Context, c *app.RequestContext) {
+	var req model.UpdateOptionRequest
+	resp := new(model.UpdateOptionResponse)
+	if err := c.BindAndValidate(&req); err != nil {
+		resp.Code = -1
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, consts.StatusBadRequest, resp)
+		return
+	}
+
+	err := option.NewUpdateOptionService(ctx, c).Run(&req, resp)
+
+	if err != nil {
+		resp.Code = int32(err.ErrCode())
+		resp.Message = err.Error()
+		httputil.SendResponse(ctx, c, err.StatusCode(), resp)
+		return
+	}
+	httputil.SendResponse(ctx, c, consts.StatusOK, resp)
+}

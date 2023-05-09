@@ -110,4 +110,12 @@ service Option {
         option (api.put) = "/api/v1/termdate";
         option (api.handler_path) = "option";
     }
+    rpc GetOption (model.GetOptionRequest) returns (model.GetOptionResponse) {
+        option (api.get) = "/api/v1/option";
+        option (api.handler_path) = "option";
+    }
+    rpc UpdateOption (model.UpdateOptionRequest) returns (model.UpdateOptionResponse) {
+        option (api.put) = "/api/v1/option";
+        option (api.handler_path) = "option";
+    }
 }

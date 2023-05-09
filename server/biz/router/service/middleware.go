@@ -137,3 +137,13 @@ func _user0Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updateoptionMw() []app.HandlerFunc {
+	// your code...
+	return []app.HandlerFunc{middleware.Jwt()}
+}
+
+func _getoptionMw() []app.HandlerFunc {
+	// your code...
+	return []app.HandlerFunc{middleware.Jwt()}
+}

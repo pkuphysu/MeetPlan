@@ -891,6 +891,226 @@ func (x *UpdateTermDateRangeResponse) GetData() *TermDateRange {
 	return nil
 }
 
+type GetOptionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty" form:"key" query:"key" vd:"len($) > 0"`
+}
+
+func (x *GetOptionRequest) Reset() {
+	*x = GetOptionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_model_option_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOptionRequest) ProtoMessage() {}
+
+func (x *GetOptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_model_option_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOptionRequest.ProtoReflect.Descriptor instead.
+func (*GetOptionRequest) Descriptor() ([]byte, []int) {
+	return file_model_option_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetOptionRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+type GetOptionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code    int32  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty" form:"code" query:"code"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty" form:"message" query:"message"`
+	Data    string `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty" form:"data" query:"data"`
+}
+
+func (x *GetOptionResponse) Reset() {
+	*x = GetOptionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_model_option_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetOptionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOptionResponse) ProtoMessage() {}
+
+func (x *GetOptionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_model_option_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOptionResponse.ProtoReflect.Descriptor instead.
+func (*GetOptionResponse) Descriptor() ([]byte, []int) {
+	return file_model_option_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetOptionResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *GetOptionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *GetOptionResponse) GetData() string {
+	if x != nil {
+		return x.Data
+	}
+	return ""
+}
+
+type UpdateOptionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key   string  `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty" form:"key" query:"key" vd:"len($) > 0"`
+	Value *string `protobuf:"bytes,2,opt,name=value,proto3,oneof" json:"value,omitempty" form:"value" query:"value" vd:"$ == nil || len($) > 0"`
+}
+
+func (x *UpdateOptionRequest) Reset() {
+	*x = UpdateOptionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_model_option_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateOptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateOptionRequest) ProtoMessage() {}
+
+func (x *UpdateOptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_model_option_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateOptionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateOptionRequest) Descriptor() ([]byte, []int) {
+	return file_model_option_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *UpdateOptionRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *UpdateOptionRequest) GetValue() string {
+	if x != nil && x.Value != nil {
+		return *x.Value
+	}
+	return ""
+}
+
+type UpdateOptionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code    int32  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty" form:"code" query:"code"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty" form:"message" query:"message"`
+}
+
+func (x *UpdateOptionResponse) Reset() {
+	*x = UpdateOptionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_model_option_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateOptionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateOptionResponse) ProtoMessage() {}
+
+func (x *UpdateOptionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_model_option_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateOptionResponse.ProtoReflect.Descriptor instead.
+func (*UpdateOptionResponse) Descriptor() ([]byte, []int) {
+	return file_model_option_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UpdateOptionResponse) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UpdateOptionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_model_option_proto protoreflect.FileDescriptor
 
 var file_model_option_proto_rawDesc = []byte{
@@ -989,9 +1209,29 @@ var file_model_option_proto_rawDesc = []byte{
 	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x28, 0x0a, 0x04, 0x64,
 	0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
 	0x6c, 0x2e, 0x54, 0x65, 0x72, 0x6d, 0x44, 0x61, 0x74, 0x65, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x52,
-	0x04, 0x64, 0x61, 0x74, 0x61, 0x42, 0x14, 0x5a, 0x12, 0x6d, 0x65, 0x65, 0x74, 0x70, 0x6c, 0x61,
-	0x6e, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x34, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x4f, 0x70, 0x74, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x20, 0x0a, 0x03, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0e, 0xda, 0xbb, 0x18, 0x0a, 0x6c, 0x65, 0x6e, 0x28,
+	0x24, 0x29, 0x20, 0x3e, 0x20, 0x30, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x55, 0x0a, 0x11, 0x47,
+	0x65, 0x74, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04,
+	0x63, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x12,
+	0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61,
+	0x74, 0x61, 0x22, 0x78, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f, 0x70, 0x74, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x20, 0x0a, 0x03, 0x6b, 0x65, 0x79,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0e, 0xda, 0xbb, 0x18, 0x0a, 0x6c, 0x65, 0x6e, 0x28,
+	0x24, 0x29, 0x20, 0x3e, 0x20, 0x30, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x35, 0x0a, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x1a, 0xda, 0xbb, 0x18, 0x16,
+	0x24, 0x20, 0x3d, 0x3d, 0x20, 0x6e, 0x69, 0x6c, 0x20, 0x7c, 0x7c, 0x20, 0x6c, 0x65, 0x6e, 0x28,
+	0x24, 0x29, 0x20, 0x3e, 0x20, 0x30, 0x48, 0x00, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x88,
+	0x01, 0x01, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x44, 0x0a, 0x14,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x42, 0x14, 0x5a, 0x12, 0x6d, 0x65, 0x65, 0x74, 0x70, 0x6c, 0x61, 0x6e, 0x2f, 0x62,
+	0x69, 0x7a, 0x2f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1006,7 +1246,7 @@ func file_model_option_proto_rawDescGZIP() []byte {
 	return file_model_option_proto_rawDescData
 }
 
-var file_model_option_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_model_option_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_model_option_proto_goTypes = []interface{}{
 	(*FriendLink)(nil),                  // 0: model.FriendLink
 	(*ListFriendLinkRequest)(nil),       // 1: model.ListFriendLinkRequest
@@ -1023,6 +1263,10 @@ var file_model_option_proto_goTypes = []interface{}{
 	(*GetTermDateRangeResponse)(nil),    // 12: model.GetTermDateRangeResponse
 	(*UpdateTermDateRangeRequest)(nil),  // 13: model.UpdateTermDateRangeRequest
 	(*UpdateTermDateRangeResponse)(nil), // 14: model.UpdateTermDateRangeResponse
+	(*GetOptionRequest)(nil),            // 15: model.GetOptionRequest
+	(*GetOptionResponse)(nil),           // 16: model.GetOptionResponse
+	(*UpdateOptionRequest)(nil),         // 17: model.UpdateOptionRequest
+	(*UpdateOptionResponse)(nil),        // 18: model.UpdateOptionResponse
 }
 var file_model_option_proto_depIdxs = []int32{
 	0,  // 0: model.ListFriendLinkResponse.data:type_name -> model.FriendLink
@@ -1224,14 +1468,63 @@ func file_model_option_proto_init() {
 				return nil
 			}
 		}
+		file_model_option_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOptionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_model_option_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetOptionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_model_option_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateOptionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_model_option_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateOptionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
+	file_model_option_proto_msgTypes[17].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_model_option_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

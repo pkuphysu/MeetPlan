@@ -84,4 +84,22 @@ message UpdateTermDateRangeResponse {
     TermDateRange data = 3;
 }
 
+message GetOptionRequest{
+    string key = 1[(api.vd) = "len($) > 0"];
+}
 
+message GetOptionResponse {
+    int32 code = 1;
+    string message = 2;
+    string data = 3;
+}
+
+message UpdateOptionRequest{
+    string key = 1[(api.vd) = "len($) > 0"];
+    optional string value = 2[(api.vd) = "$ == nil || len($) > 0"];
+}
+
+message UpdateOptionResponse {
+    int32 code = 1;
+    string message = 2;
+}
