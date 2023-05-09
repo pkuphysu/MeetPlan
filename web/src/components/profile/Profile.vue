@@ -3,6 +3,7 @@ import {getAvatarUrl} from "@/utils/utils";
 import {computed, reactive} from "vue";
 import {getUser, User} from "@/api/user";
 import {useUserStore} from "@/store/user";
+import {getOption} from "@/api/option";
 
 const userStore = useUserStore();
 
@@ -30,7 +31,7 @@ const userRef = reactive<{
   }
 })
 
-const adminRef = computed(()=>{
+const adminRef = computed(() => {
   return props.asAdmin && userStore.isAdmin
 })
 
@@ -40,6 +41,51 @@ getUser(props.userid).then((res) => {
   console.log(err)
 })
 
+const choicesRef = reactive<{
+  departments: string[]
+  majors: string[]
+  grades: string[]
+
+}>({
+  departments: [],
+  majors: [],
+  grades: []
+})
+
+if (sessionStorage.getItem('departments')) {
+  choicesRef.departments = JSON.parse(sessionStorage.getItem('departments'))
+} else {
+  getOption('departments').then((res) => {
+    choicesRef.departments = JSON.parse(res)
+    sessionStorage.setItem('departments', res)
+  })
+}
+
+if (sessionStorage.getItem('majors')) {
+  choicesRef.majors = JSON.parse(sessionStorage.getItem('majors'))
+} else {
+  getOption('majors').then((res) => {
+    choicesRef.majors = JSON.parse(res)
+    sessionStorage.setItem('majors', res)
+  })
+}
+
+if (sessionStorage.getItem('grades')) {
+  choicesRef.grades = JSON.parse(sessionStorage.getItem('grades'))
+} else {
+  getOption('grades').then((res) => {
+    choicesRef.grades = JSON.parse(res)
+    sessionStorage.setItem('grades', res)
+  })
+}
+
+
+const clickAvatar = () => {
+  if (!userRef.user.avatar) {
+    window.open("https://cn.gravatar.com/")
+  }
+}
+
 </script>
 
 <template>
@@ -47,16 +93,26 @@ getUser(props.userid).then((res) => {
     <v-col class="v-col-12">
       <v-card density="default" variant="elevated">
         <v-card-text class="d-flex">
-          <v-avatar density="default" class="rounded-sm me-6" variant="flat" size="100">
-            <v-img :src="getAvatarUrl(userRef.user)"></v-img>
-          </v-avatar>
+          <v-tooltip location="bottom">
+            <span v-if="!userRef.user.avatar">
+              默认使用Gravatar头像
+            </span>
+            <template v-slot:activator="{ props }">
+              <v-avatar v-bind="props" density="default" class="rounded-sm me-6" variant="flat" size="100"
+                        @click="clickAvatar">
+                <v-img :src="getAvatarUrl(userRef.user, 1000)">
+                </v-img>
+              </v-avatar>
+            </template>
+          </v-tooltip>
+
           <v-form class="d-flex flex-column justify-center gap-3">
             <div class="d-flex flex-wrap gap-2">
-              <v-btn density="default" variant="elevated">
+              <v-btn density="default" variant="elevated" disabled>
                 <span class="d-none d-sm-block">上传新头像</span>
               </v-btn>
               <input type="file" name="file" accept=".jpg,.jpeg,.png" hidden>
-              <v-btn density="default" variant="tonal" class="text-error">
+              <v-btn density="default" variant="tonal" class="text-error" disabled>
                 <span class="d-none d-sm-block">重置</span>
               </v-btn>
             </div>
@@ -111,29 +167,31 @@ getUser(props.userid).then((res) => {
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field
+                <v-select
                   label="系所/办公室"
                   v-model="userRef.user.department"
                   density="comfortable"
                   variant="outlined"
-                ></v-text-field>
+                  :items="choicesRef.departments"
+                ></v-select>
               </v-col>
               <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
-                <v-text-field
+                <v-select
                   label="专业"
                   v-model="userRef.user.major"
                   density="comfortable"
                   variant="outlined"
-                ></v-text-field>
+                  :items="choicesRef.majors"
+                ></v-select>
               </v-col>
               <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
-                <v-text-field
+                <v-select
                   label="年级"
                   v-model="userRef.user.grade"
                   density="comfortable"
                   variant="outlined"
-                  :readonly="!adminRef"
-                ></v-text-field>
+                  :items="choicesRef.grades"
+                ></v-select>
               </v-col>
               <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
                 <v-text-field

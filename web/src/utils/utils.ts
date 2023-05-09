@@ -1,12 +1,12 @@
 import {User} from "@/api/user";
 import {Md5} from "ts-md5";
 
-export const getAvatarUrl = (user:User): string =>{
+export const getAvatarUrl = (user:User, size?: Number): string =>{
   console.log(user)
   if (user.avatar) {
     return user.avatar
   }
-  return `https://cravatar.cn/avatar/${Md5.hashStr(user.email)}.png`
+  return `https://cravatar.cn/avatar/${Md5.hashStr(user.email)}.png${size? `?size=${size}` : ''}`
 }
 
 export const loginRedirectUrl = () => {
