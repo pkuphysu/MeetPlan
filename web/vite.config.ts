@@ -34,7 +34,7 @@ export default defineConfig({
     }),
     Components({
       dts: 'src/types/components.d.ts',
-      dirs: ['src/components'],
+      deep: true,
       extensions: ['vue'],
       resolvers: [
         // 自动按需加载iconify图标库图标

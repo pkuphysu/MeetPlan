@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {getSelf, login} from "@/api/user";
-import LoginLoader from "@/components/animations/LoginLoader.vue";
 import {loginRedirectUrl} from "@/utils/utils";
 
 const userStore = useUserStore();

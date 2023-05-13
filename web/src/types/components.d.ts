@@ -13,11 +13,11 @@ declare module '@vue/runtime-core' {
     DefaultFooter: typeof import('./../components/DefaultFooter.vue')['default']
     HelloWorld: typeof import('./../components/HelloWorld.vue')['default']
     LoginLoader: typeof import('./../components/animations/LoginLoader.vue')['default']
-    Vue3Lottie: typeof import('vue3-lottie')['Vue3Lottie']
     Profile: typeof import('./../components/profile/Profile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ToolbarLanguage: typeof import('./../components/toolbar/ToolbarLanguage.vue')['default']
     ToolbarUser: typeof import('./../components/toolbar/ToolbarUser.vue')['default']
+    Vue3Lottie: typeof import('vue3-lottie')['Vue3Lottie']
   }
 }
