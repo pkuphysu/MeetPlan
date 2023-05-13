@@ -3,7 +3,9 @@ import {useRouteStore} from "@/store/route";
 import {useUserStore} from "@/store/user";
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  console.log('to', to)
+  console.log('from', from)
+  console.log('next', next)
   const meta: { [key: string]: any } = to.meta || {};
   document.title = getTitle(meta.title);
 
@@ -59,6 +61,7 @@ export const registerDynamicRoutes = (isTeacher: boolean, isAdmin: boolean) => {
   routes.forEach((route) => {
     router.addRoute(route);
   });
+  router.removeRoute('Redirect');
   return routes;
 }
 

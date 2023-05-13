@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {Vue3Lottie} from "vue3-lottie";
 import "vue3-lottie/dist/style.css";
 import loginLoader from "@/assets/lottie/97018-window10-style-login-loader.json";
 interface Props {

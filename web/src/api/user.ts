@@ -1,97 +1,25 @@
 import axios from './axios';
 
-export interface LoginParams {
-  code: string;
+export const login = (req: LoginRequest) => {
+  return axios.post<LoginResponse>('/api/v1/login', req);
 }
-
-export type LoginResult = string;
-
-export const login = (params: LoginParams) => {
-  return axios.post<LoginResult>('/api/v1/login', params);
-}
-
-export interface User {
-  id: number;
-  pku_id: string;
-  name: string;
-  email: string;
-  is_teacher: boolean;
-  is_admin: boolean;
-  is_active: boolean;
-  gender?: number;
-  avatar?: string;
-  phone?: string;
-  department?: string;
-  major?: string;
-  grade?: string;
-  dorm?: string;
-  office?: string;
-  introduction?: string;
-  email_change?: string;
-}
-
-export interface ListUserParams {
-  page_no: number;
-  page_size: number;
-  is_active?: boolean;
-  is_teacher?: boolean;
-  is_admin?: boolean;
-  ids?: number[];
-  name?: string;
-}
-
-export interface CreateUserParams {
-  pku_id: string;
-  name: string;
-  email: string;
-  is_teacher?: boolean;
-  is_admin?: boolean;
-  gender?: number;
-  avatar?: string;
-  phone?: string;
-  department?: string;
-  major?: string;
-  grade?: string;
-  dorm?: string;
-  office?: string;
-  introduction?: string;
-}
-
-export interface UpdateUserParams {
-  pku_id?: string;
-  name?: string;
-  email?: string;
-  is_teacher?: boolean;
-  is_admin?: boolean;
-  is_active?: boolean;
-  gender?: number;
-  avatar?: string;
-  phone?: string;
-  department?: string;
-  major?: string;
-  grade?: string;
-  dorm?: string;
-  office?: string;
-  introduction?: string;
-}
-
 
 export const getSelf = () => {
-  return axios.get<User>('/api/v1/user/self');
+  return axios.get<GetSelfResponse>('/api/v1/user/self');
 }
 
 export const getUser = (id: number) => {
-  return axios.get<User>(`/api/v1/user/${id}`);
+  return axios.get<GetUserResponse>(`/api/v1/user/${id}`);
 }
 
-export const listUser = (params: ListUserParams) => {
-  return axios.get<User[]>('/api/v1/user', params);
+export const listUser = (params: ListUserRequest) => {
+  return axios.get<ListUserResponse>('/api/v1/user', params);
 }
 
-export const createUser = (params: CreateUserParams) => {
-  return axios.post<User>('/api/v1/user', params);
+export const createUser = (params: CreateUserRequest) => {
+  return axios.post<CreateUserResponse>('/api/v1/user', params);
 }
 
-export const updateUser = (id: number, params: UpdateUserParams) => {
-  return axios.put<User>(`/api/v1/user/${id}`, params);
+export const updateUser = (params: UpdateUserRequest) => {
+  return axios.put<UpdateUserResponse>(`/api/v1/user/${params.id}`, params);
 }

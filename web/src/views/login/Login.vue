@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {useRoute} from "vue-router";
-import {getSelf, login, LoginParams, User} from "@/api/user";
-import {useUserStore} from "@/store/user";
-import router from "@/router";
+import {getSelf, login} from "@/api/user";
 import LoginLoader from "@/components/animations/LoginLoader.vue";
-import {registerDynamicRoutes} from "@/router/permission";
 import {loginRedirectUrl} from "@/utils/utils";
 
 const userStore = useUserStore();
@@ -31,16 +26,16 @@ const redirectHome = (user: User) => {
 if (route.query['code']) {
   text.value = '登录中。。。'
   console.log(route.query['code'])
-  var params: LoginParams = {
+  var params: LoginRequest = {
     code: route.query['code'].toString(),
   }
   login(params).then((res) => {
     text.value = 'code校验通过，获取用户信息中。。。'
-    userStore.setJwt(res);
+    userStore.setJwt(res.data);
     getSelf().then((res) => {
       text.value = '获取用户信息成功，跳转中。。。'
-      userStore.setUser(res);
-      redirectHome(res);
+      userStore.setUser(res.data);
+      redirectHome(res.data);
     }).catch((err) => {
       userStore.clear();
       console.log(err)
@@ -51,8 +46,8 @@ if (route.query['code']) {
 } else if (userStore.jwt) {
   text.value = '已登录，获取用户信息中。。。'
   getSelf().then((res) => {
-    userStore.setUser(res);
-    redirectHome(res);
+    userStore.setUser(res.data);
+    redirectHome(res.data);
   }).catch((err) => {
     console.log(err)
   })

@@ -1,16 +1,14 @@
 <template>
-  <MainAppBar/>
+  <DefaultAppBar/>
   <VMain>
     <VContainer fluid class="maxWidth page-wrapper pb-sm-15 pb-10">
       <slot/>
     </VContainer>
   </VMain>
-  <Footer/>
+  <DefaultFooter/>
 </template>
 
 <script setup lang="ts">
-import MainAppBar from "@/components/toolbar/DefaultAppBar.vue";
-import Footer from "@/components/Footer.vue";
 </script>
 
 <style scoped>

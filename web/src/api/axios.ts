@@ -42,7 +42,7 @@ class Request {
         if (data.code && data.code !== 0) {
           return Promise.reject(data.message || this.handleStatusCode(status));
         }
-        return data.data;
+        return data
       },
       (error: AxiosError) => {
         const {response} = error;

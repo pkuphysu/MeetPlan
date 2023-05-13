@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {getAvatarUrl} from "@/utils/utils";
-import {computed, reactive} from "vue";
-import {getUser, updateUser, User} from "@/api/user";
-import {useUserStore} from "@/store/user";
+import {getUser, updateUser} from "@/api/user";
 import {getOption} from "@/api/option";
 
 const userStore = useUserStore();
@@ -55,27 +53,27 @@ const choicesRef = reactive<{
 if (sessionStorage.getItem('departments')) {
   choicesRef.departments = JSON.parse(sessionStorage.getItem('departments'))
 } else {
-  getOption('departments').then((res) => {
-    choicesRef.departments = JSON.parse(res)
-    sessionStorage.setItem('departments', res)
+  getOption({key: 'departments'}).then((res) => {
+    choicesRef.departments = JSON.parse(res.data)
+    sessionStorage.setItem('departments', res.data)
   })
 }
 
 if (sessionStorage.getItem('majors')) {
   choicesRef.majors = JSON.parse(sessionStorage.getItem('majors'))
 } else {
-  getOption('majors').then((res) => {
-    choicesRef.majors = JSON.parse(res)
-    sessionStorage.setItem('majors', res)
+  getOption({key: 'majors'}).then((res) => {
+    choicesRef.majors = JSON.parse(res.data)
+    sessionStorage.setItem('majors', res.data)
   })
 }
 
 if (sessionStorage.getItem('grades')) {
   choicesRef.grades = JSON.parse(sessionStorage.getItem('grades'))
 } else {
-  getOption('grades').then((res) => {
-    choicesRef.grades = JSON.parse(res)
-    sessionStorage.setItem('grades', res)
+  getOption({key: 'grades'}).then((res) => {
+    choicesRef.grades = JSON.parse(res.data)
+    sessionStorage.setItem('grades', res.data)
   })
 }
 
@@ -87,10 +85,10 @@ const onClickAvatar = () => {
 }
 
 const onSave = () => {
-  updateUser(userRef.user.id, userRef.user).then(res => {
-    userRef.user = res
-    if (userStore.user?.id === res.id) {
-      userStore.setUser(res)
+  updateUser(userRef.user).then(res => {
+    userRef.user = res.data
+    if (userStore.user?.id === res.data.id) {
+      userStore.setUser(res.data)
     }
   }).catch(err => {
     console.log(err)
@@ -108,8 +106,8 @@ const onReset = () => {
 </script>
 
 <template>
-  <v-row>
-    <v-col class="v-col-12">
+  <VRow>
+    <VCol class="v-col-12">
       <v-card density="default" variant="elevated">
         <v-card-text class="d-flex">
           <v-tooltip location="bottom">
@@ -138,18 +136,18 @@ const onReset = () => {
             <p class="text-xs mb-0">接受 JPG, JPEG和PNG，最大800KB</p>
           </v-form>
         </v-card-text>
-        <v-card-text>
-          <v-form class="mt-6">
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
+        <VCardText>
+          <VForm class="mt-6">
+            <VRow>
+              <VCol cols="12" md="6">
+                <VTextField
                   label="姓名"
                   v-model="userRef.user.name"
                   density="comfortable"
                   variant="outlined"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
+                ></VTextField>
+              </VCol>
+              <VCol cols="12" md="6">
                 <v-text-field
                   label="PKU ID"
                   v-model="userRef.user.pku_id"
@@ -157,16 +155,16 @@ const onReset = () => {
                   variant="outlined"
                   :readonly="!adminRef"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
+              </VCol>
+              <VCol cols="12" md="6">
                 <v-text-field
                   label="邮箱"
                   v-model="userRef.user.email"
                   density="comfortable"
                   variant="outlined"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
+              </VCol>
+              <VCol cols="12" md="6">
                 <v-select
                   label="性别"
                   v-model="userRef.user.gender"
@@ -176,16 +174,16 @@ const onReset = () => {
                   item-title="title"
                   item-value="value"
                 ></v-select>
-              </v-col>
-              <v-col cols="12" md="6">
+              </VCol>
+              <VCol cols="12" md="6">
                 <v-text-field
                   label="电话"
                   v-model="userRef.user.phone"
                   density="comfortable"
                   variant="outlined"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
+              </VCol>
+              <VCol cols="12" md="6">
                 <v-select
                   label="系所/办公室"
                   v-model="userRef.user.department"
@@ -193,8 +191,8 @@ const onReset = () => {
                   variant="outlined"
                   :items="choicesRef.departments"
                 ></v-select>
-              </v-col>
-              <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
+              </VCol>
+              <VCol v-if="!userRef.user.is_teacher" cols="12" md="6">
                 <v-select
                   label="专业"
                   v-model="userRef.user.major"
@@ -202,8 +200,8 @@ const onReset = () => {
                   variant="outlined"
                   :items="choicesRef.majors"
                 ></v-select>
-              </v-col>
-              <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
+              </VCol>
+              <VCol v-if="!userRef.user.is_teacher" cols="12" md="6">
                 <v-select
                   label="年级"
                   v-model="userRef.user.grade"
@@ -211,33 +209,33 @@ const onReset = () => {
                   variant="outlined"
                   :items="choicesRef.grades"
                 ></v-select>
-              </v-col>
-              <v-col v-if="!userRef.user.is_teacher" cols="12" md="6">
+              </VCol>
+              <VCol v-if="!userRef.user.is_teacher" cols="12" md="6">
                 <v-text-field
                   label="宿舍"
                   v-model="userRef.user.dorm"
                   density="comfortable"
                   variant="outlined"
                 ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
+              </VCol>
+              <VCol cols="12" md="6">
+                <VTextField
                   label="办公室"
                   v-model="userRef.user.office"
                   density="comfortable"
                   variant="outlined"
-                ></v-text-field>
-              </v-col>
-              <v-col v-if="userRef.user.is_teacher" cols="12">
+                ></VTextField>
+              </VCol>
+              <VCol v-if="userRef.user.is_teacher" cols="12">
                 <v-textarea
                   label="个人简介"
                   v-model="userRef.user.introduction"
                   density="comfortable"
                   variant="outlined"
                 ></v-textarea>
-              </v-col>
+              </VCol>
               <template v-if="adminRef">
-                <v-col cols="4" md="3">
+                <VCol cols="4" md="3">
                   <v-switch
                     label="教师"
                     v-model="userRef.user.is_teacher"
@@ -245,8 +243,8 @@ const onReset = () => {
                     variant="outlined"
                     :readonly="!adminRef"
                   ></v-switch>
-                </v-col>
-                <v-col cols="4" md="3">
+                </VCol>
+                <VCol cols="4" md="3">
                   <v-switch
                     label="管理员"
                     v-model="userRef.user.is_admin"
@@ -254,8 +252,8 @@ const onReset = () => {
                     variant="outlined"
                     :readonly="!adminRef"
                   ></v-switch>
-                </v-col>
-                <v-col cols="4" md="3">
+                </VCol>
+                <VCol cols="4" md="3">
                   <v-switch
                     label="账号状态"
                     v-model="userRef.user.is_active"
@@ -263,22 +261,22 @@ const onReset = () => {
                     variant="outlined"
                     :readonly="!adminRef"
                   ></v-switch>
-                </v-col>
+                </VCol>
               </template>
-              <v-col cols="12" class="d-flex flex-wrap gap-4">
+              <VCol cols="12" class="d-flex flex-wrap gap-4">
                 <v-btn color="primary" density="default" variant="elevated" @click="onSave">
                   保存
                 </v-btn>
                 <v-btn density="default" variant="tonal" class="text-secondary" @click="onReset">
                   重置
                 </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
+              </VCol>
+            </VRow>
+          </VForm>
+        </VCardText>
       </v-card>
-    </v-col>
-  </v-row>
+    </VCol>
+  </VRow>
 </template>
 
 <style scoped>

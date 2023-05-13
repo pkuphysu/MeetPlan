@@ -55,6 +55,7 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
     name: 'Profile',
     component: () => import('@/views/teacher/Profile.vue'),
     meta: {
+      title: '个人信息',
       role: ['teacher'],
       needAuth: true,
     }
@@ -64,26 +65,38 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
     name: 'Profile',
     component: () => import('@/views/student/Profile.vue'),
     meta: {
+      title: '个人信息',
       role: ['student'],
       needAuth: true,
     }
   },
-  // {
-  //   path: '/meetplan',
-  //   name: 'MeetPlan',
-  //   component: () => import('@/views/meetplan/Profile.vue'),
-  //   meta: {
-  //     role: ['teacher', 'student'],
-  //   }
-  // },
-  // {
-  //   path: '/meetplanorder',
-  //   name: 'MeetPlanOrder',
-  //   component: () => import('@/views/meetplan/Order.vue'),
-  //   meta: {
-  //     role: ['teacher', 'student'],
-  //   }
-  // }
+  {
+    path: '/meetplan',
+    name: 'MeetPlan',
+    component: () => import('@/views/student/MeetPlan.vue'),
+    meta: {
+      title: '选课',
+      role: ['student'],
+    }
+  },
+  {
+    path: '/meetplan_add',
+    name: 'MeetPlanAdd',
+    component: () => import('@/views/meetplan/Add.vue'),
+    meta: {
+      title: '新增',
+      role: ['teacher'],
+    },
+  },
+  {
+    path: '/meetplan_order_add',
+    name: 'MeetPlanOrderAdd',
+    component: () => import('@/views/meetplan/Add.vue'),
+    meta: {
+      title: '补录',
+      role: ['teacher', 'student'],
+    }
+  },
   {
     path: "/:pathMatch(.*)*",
     name: "Error",
@@ -91,7 +104,6 @@ export const dynamic_routes: Array<RouteRecordRaw> = [
     meta: {
       title: '404',
       layout: 'default',
-      needAuth: true,
     }
   },
 ]

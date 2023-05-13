@@ -1,6 +1,5 @@
 // Utilities
 import {defineStore} from 'pinia'
-import {User} from "@/api/user";
 
 interface State {
   _user?: User,

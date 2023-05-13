@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import {Vue3Lottie} from "vue3-lottie";
 import lottie404 from "@/assets/lottie/36395-lonely-404.json";
 import "vue3-lottie/dist/style.css";
 </script>

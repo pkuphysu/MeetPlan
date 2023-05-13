@@ -22,5 +22,5 @@ export function registerPlugins (app: App) {
     .use(router)
     .use(pinia)
     .use(i18n)
-    .use(Vue3Lottie, { name: "Vue3Lottie" })
+    .use(Vue3Lottie, { name: "LottieAnimation" })
 }
