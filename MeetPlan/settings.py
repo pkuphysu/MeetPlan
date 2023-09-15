@@ -9,31 +9,26 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-from configparser import RawConfigParser
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-
-CONFIG_DIR = BASE_DIR / 'config'
-CONFIG = RawConfigParser()
-CONFIG.read(CONFIG_DIR / 'config.ini', encoding='utf-8')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = CONFIG.get('DJANGO', 'SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIG.getboolean('SITE', 'DEBUG')
+DEBUG = bool(os.getenv('DJANGO_DEBUG'))
 
 # 在物理学院统一身份认证平台注册 app 的信息
-CLIENT_ID = CONFIG.get('PHY', 'CLIENT_ID')
-CLIENT_SECRET = CONFIG.get('PHY', 'CLIENT_SECRET')
-REDIRECT_URL = CONFIG.get('PHY', 'REDIRECT_URL')
-TOKEN_ENDPOINT = CONFIG.get('PHY', 'TOKEN_ENDPOINT')
-USERINFO_ENDPOINT = CONFIG.get('PHY', 'USERINFO_ENDPOINT')
+CLIENT_ID = os.getenv('PHY_CLIENT_ID')
+CLIENT_SECRET = os.getenv('PHY_CLIENT_SECRET')
+REDIRECT_URL = os.getenv('PHY_REDIRECT_URL')
+TOKEN_ENDPOINT = os.getenv('PHY_TOKEN_ENDPOINT')
+USERINFO_ENDPOINT = os.getenv('PHY_USERINFO_ENDPOINT')
 
 ALLOWED_HOSTS = ['*']
 
@@ -97,34 +92,16 @@ WSGI_APPLICATION = 'MeetPlan.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASE_MAP = {
-    'sqlite': 'django.db.backends.sqlite3',
-    'mysql': 'django.db.backends.mysql',
-    'postgresql': 'django.db.backends.postgresql_psycopg2',
-    'oracle': 'django.db.backends.oracle',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': int(os.getenv('DATABASE_PORT')),
+    }
 }
-
-if CONFIG['DATABASE']['engine'] == 'sqlite':
-    DATABASES = {
-        'default': {
-            'ENGINE': DATABASE_MAP[CONFIG['DATABASE']['ENGINE']],
-            'NAME': BASE_DIR / 'db.sqlite3',
-            'OPTIONS': {
-                'timeout': 20,
-            }
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': DATABASE_MAP[CONFIG['DATABASE']['ENGINE']],
-            'NAME': CONFIG['DATABASE']['NAME'],
-            'USER': CONFIG['DATABASE']['USER'],
-            'PASSWORD': CONFIG['DATABASE']['PASSWORD'],
-            'HOST': CONFIG['DATABASE']['HOST'],
-            'PORT': CONFIG['DATABASE']['PORT'],
-        }
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -167,17 +144,9 @@ AUTH_USER_MODEL = 'account_auth.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-HOST_DOMAIN = CONFIG.get('DJANGO', 'HOST_DOMAIN')
-SUBPATH = CONFIG.get('DJANGO', 'SUBPATH')
-if SUBPATH == '/':
-    SITE_URL = HOST_DOMAIN
-else:
-    SITE_URL = '{}{}'.format(HOST_DOMAIN, SUBPATH)
+SITE_URL = os.getenv('DJANGO_SITE_URL')
 # 配置登录url地址
-if SUBPATH == '/':
-    LOGIN_URL = '/account_auth/login/phy/'
-else:
-    LOGIN_URL = '{}/account_auth/login/phy/'.format(SUBPATH)
+LOGIN_URL = '/account_auth/login/phy/'
 
 STATIC_URL = 'static/'
 # 开发阶段放置项目自己的静态文件
@@ -192,36 +161,43 @@ ALLOWED_IMG = ["jpg", "jpeg", "gif", "png", "bmp", "webp"]
 
 # 发送邮件
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_SSL = CONFIG.getboolean('EMAIL', 'USE_SSL')
-EMAIL_HOST = CONFIG.get('EMAIL', 'HOST')
-EMAIL_PORT = CONFIG.getint('EMAIL', 'PORT')
-EMAIL_HOST_USER = CONFIG.get('EMAIL', 'USER')
-EMAIL_HOST_PASSWORD = CONFIG.get('EMAIL', 'PASSWORD')
-EMAIL_FROM = CONFIG.get('EMAIL', 'FROM')
+EMAIL_USE_SSL = bool(os.getenv('EMAIL_USE_SSL'))
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_FROM = os.getenv('EMAIL_FROM')
 
 # Django Session 使用 Redis 缓存
 SESSION_COOKIE_AGE = 259200
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 SESSION_CACHE_ALIAS = "default"
-if SUBPATH != '/':
-    LANGUAGE_COOKIE_PATH = CSRF_COOKIE_PATH = SESSION_COOKIE_PATH = SUBPATH
+
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
 
     CSRF_COOKIE_SECURE = True
 
 # Redis 缓存配置
-if CONFIG.get('REDIS', 'PWD') != '':
-    REDIS_ADDRESS = ':{}@{}:{}'.format(CONFIG.get('REDIS', 'PWD'),
-                                       CONFIG.get('REDIS', 'HOST'),
-                                       CONFIG.get('REDIS', 'PORT'))
+# if CONFIG.get('REDIS', 'PWD') != '':
+#     REDIS_ADDRESS = ':{}@{}:{}'.format(CONFIG.get('REDIS', 'PWD'),
+#                                        CONFIG.get('REDIS', 'HOST'),
+#                                        CONFIG.get('REDIS', 'PORT'))
+# else:
+#     REDIS_ADDRESS = '{}:{}'.format(CONFIG.get('REDIS', 'HOST'),
+#                                    CONFIG.get('REDIS', 'PORT'))
+if os.getenv('REDIS_PASSWORD') != '':
+    REDIS_ADDRESS = ':{}@{}:{}'.format(os.getenv('REDIS_PASSWORD'),
+                                       os.getenv('REDIS_HOST'),
+                                       os.getenv('REDIS_PORT'))
 else:
-    REDIS_ADDRESS = '{}:{}'.format(CONFIG.get('REDIS', 'HOST'),
-                                   CONFIG.get('REDIS', 'PORT'))
+    REDIS_ADDRESS = '{}:{}'.format(os.getenv('REDIS_HOST'),
+                                   os.getenv('REDIS_PORT'))
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://{}/{}".format(REDIS_ADDRESS, CONFIG.get('REDIS', 'NUM')),
+        "LOCATION": "redis://{}/{}".format(REDIS_ADDRESS, os.getenv('REDIS_DB')),
         "KEY_PREFIX": "MeetPlan",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -234,7 +210,7 @@ CUBES_REDIS_TIMEOUT = 60 * 60
 NEVER_REDIS_TIMEOUT = 365 * 24 * 60 * 60
 
 # Broker配置，使用Redis作为消息中间件
-CELERY_BROKER_URL = "redis://{}/{}".format(REDIS_ADDRESS, CONFIG.get('REDIS', 'NUM'))
+CELERY_BROKER_URL = "redis://{}/{}".format(REDIS_ADDRESS, os.getenv('REDIS_DB'))
 
 # Celery 配置
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100000  # 每个worker执行10w个任务就会被销毁，可防止内存泄露
