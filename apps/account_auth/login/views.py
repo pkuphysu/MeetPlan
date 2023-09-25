@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, Http404
-from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import View
 
@@ -13,29 +12,8 @@ from ..tasks import send_account_active_email
 
 class PHYLoginView(View):
     def get(self, request):
-        if settings.DEBUG:
-            return TemplateResponse(request, template='account_auth/login/local_login.html')
         return HttpResponseRedirect("https://auth.phy.pku.edu.cn/oidc/authorize/?response_type=code&scope=openid pku&"
                                     f"client_id={settings.CLIENT_ID}&redirect_uri={settings.REDIRECT_URL}")
-
-    def post(self, request):
-        if settings.DEBUG:
-            identity_id = request.POST.get('username', None)
-            user_model = get_user_model()
-            user = user_model.objects.filter(identity_id=identity_id)
-            if user.count():
-                if not user[0].is_active:
-                    send_account_active_email.delay(user[0].identity_id)
-                    raise PermissionDenied("""<div class="callout callout-success">
-                        <h4>验证成功，但您还没有激活账号!</h4>
-                        <p>我们已经向您的PKU邮箱发送了一封激活邮件，请注意查收！</p>
-                        </div>""")
-                login(request, user[0])
-                return HttpResponseRedirect(reverse('portal:index'))
-            else:
-                return HttpResponseRedirect(reverse('account_auth:phy-login'))
-        else:
-            raise Http404()
 
 
 class PHYAuthView(View):

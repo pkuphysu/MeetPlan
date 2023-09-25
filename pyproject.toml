@@ -15,6 +15,7 @@ requests = "^2.27.1"
 mysqlclient = "^2.1.0"
 Pillow = "^9.1.0"
 itsdangerous = "2.0.1"
+chardet = "^5.2.0"
 
 [tool.poetry.dev-dependencies]
 

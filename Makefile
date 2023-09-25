@@ -1,5 +1,5 @@
-IMAGE_NAME=pkuphysu/meetplan
+IMAGE_NAME=registry.phy.np.mk/phy/meetplan
 IMAGE_TAG=v1.0.0
 
 docker:
-	docker build . -t $(IMAGE_NAME):$(IMAGE_TAG)
+	docker buildx build --platform=linux/amd64,linux/arm64 -t $(IMAGE_NAME):$(IMAGE_TAG) . --push

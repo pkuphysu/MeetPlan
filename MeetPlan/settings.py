@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -32,7 +33,7 @@ USERINFO_ENDPOINT = os.getenv('PHY_USERINFO_ENDPOINT')
 
 ALLOWED_HOSTS = ['*']
 
-VERSIONS = '0.1.0'
+VERSIONS = '1.0.0'
 
 # Application definition
 
@@ -173,10 +174,8 @@ SESSION_COOKIE_AGE = 259200
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 SESSION_CACHE_ALIAS = "default"
 
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-
-    CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Redis 缓存配置
 # if CONFIG.get('REDIS', 'PWD') != '':
@@ -221,3 +220,68 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 DEFAULT_FILE_STORAGE = 'MeetPlan.tools.storage.FileStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console_out': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'verbose'
+        },
+        'console_err': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stderr,
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console_out'],
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console_out'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'console_err'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['console_out'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}

@@ -1,29 +1,82 @@
-# this is a dockerfile for django project use poetry as package manager, python3.8 as python version
+# syntax=docker/dockerfile:1
+# Keep this syntax directive! It's used to enable Docker BuildKit
 
-FROM python:3.8-buster as builder
+# Based on https://github.com/python-poetry/poetry/discussions/1879?sort=top#discussioncomment-216865
+# but I try to keep it updated (see history)
 
-RUN pip install poetry
+################################
+# PYTHON-BASE
+# Sets up all our shared environment variables
+################################
+FROM python:3.9-slim as python-base
 
-ENV POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_IN_PROJECT=1 \
-    POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR=/tmp/poetry_cache
+    # python
+ENV PYTHONUNBUFFERED=1 \
+    # prevents python creating .pyc files
+    PYTHONDONTWRITEBYTECODE=1 \
+    \
+    # pip
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    \
+    # poetry
+    # https://python-poetry.org/docs/configuration/#using-environment-variables
+    POETRY_VERSION=1.3.2 \
+    # make poetry install to this location
+    POETRY_HOME="/opt/poetry" \
+    # make poetry create the virtual environment in the project's root
+    # it gets named `.venv`
+    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    # do not ask any interactive question
+    POETRY_NO_INTERACTION=1 \
+    \
+    # paths
+    # this is where our requirements + virtual environment will live
+    PYSETUP_PATH="/opt/pysetup" \
+    VENV_PATH="/opt/pysetup/.venv"
 
+
+# prepend poetry and venv to path
+ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+
+RUN apt-get update && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+################################
+# BUILDER-BASE
+# Used to build deps + create our virtual environment
+################################
+FROM python-base as builder-base
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        # deps for installing poetry
+        curl \
+        # deps for building python deps
+        build-essential
+
+# install poetry - respects $POETRY_VERSION & $POETRY_HOME
+# The --mount will mount the buildx cache directory to where
+# Poetry and Pip store their cache so that they can re-use it
+RUN --mount=type=cache,target=/root/.cache \
+    curl -sSL https://install.python-poetry.org | python3 -
+
+# copy project requirement files here to ensure they will be cached.
+WORKDIR $PYSETUP_PATH
+COPY poetry.lock pyproject.toml ./
+
+# install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
+RUN --mount=type=cache,target=/root/.cache \
+    poetry install --without=dev
+
+################################
+# PRODUCTION
+# Final image used for runtime
+################################
+FROM python-base
+ENV FASTAPI_ENV=production
+COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
+COPY . /app/
 WORKDIR /app
-
-COPY pyproject.toml poetry.lock ./
-
-RUN poetry install --no-dev --no-root && rm -rf $POETRY_CACHE_DIR
-
-
-FROM python:3.8-slim-buster
-
-ENV PATH="/app/.venv/bin:$PATH"
-
-COPY --from=builder /app/.venv /app/.venv
-
-COPY ./* /app
-
-EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
