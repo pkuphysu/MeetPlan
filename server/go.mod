@@ -15,7 +15,7 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/wneessen/go-mail v0.3.9
 	golang.org/x/oauth2 v0.3.0
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.33.0
 	gopkg.in/validator.v2 v2.0.1
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/datatypes v1.2.0
