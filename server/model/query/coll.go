@@ -34,23 +34,29 @@ func (c *Coll[T]) Raw() *mongo.Collection {
 }
 
 func (c *Coll[T]) FindAll(ctx context.Context, filter bson.M) ([]*T, error) {
-	return c.FindOffset(ctx, filter, -1, false)
+	return c.FindPage(ctx, filter, 1, -1)
 }
 
-func (c *Coll[T]) FindOffset(ctx context.Context, filter bson.M, limit int, asc bool) ([]*T, error) {
+func (c *Coll[T]) FindPage(ctx context.Context, filter bson.M, page, pageSize int) ([]*T, error) {
+	if page < 0 {
+		return c.FindOffset(ctx, filter, 0, -1)
+	}
+	if page == 0 {
+		return nil, errors.New("page must be greater than 0")
+	}
+	return c.FindOffset(ctx, filter, (page-1)*pageSize, pageSize)
+}
+
+func (c *Coll[T]) FindOffset(ctx context.Context, filter bson.M, offset int, limit int) ([]*T, error) {
 	if limit == 0 {
 		return nil, nil
 	}
 
-	opt := options.Find()
+	opt := options.Find().SetSkip(int64(offset))
 	if limit > 0 {
 		opt.SetLimit(int64(limit))
 	}
-	if asc {
-		opt.SetSort(bson.D{{"_id", 1}})
-	} else {
-		opt.SetSort(bson.D{{"_id", -1}})
-	}
+	opt.SetSort(bson.D{{"_id", -1}})
 
 	res, err := c.Raw().Find(ctx, filter, opt)
 	if err != nil {
@@ -78,6 +84,14 @@ func (c *Coll[T]) FindOne(ctx context.Context, filter bson.M) (*T, error) {
 		return nil, err
 	}
 	return &result, nil
+}
+
+func (c *Coll[T]) FindByIDStr(ctx context.Context, id string) (*T, error) {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	return c.FindByID(ctx, oid)
 }
 
 func (c *Coll[T]) FindByID(ctx context.Context, id primitive.ObjectID) (*T, error) {

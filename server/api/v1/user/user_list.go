@@ -2,15 +2,11 @@ package user
 
 import (
 	"context"
-	"errors"
 	"strings"
 
-	"github.com/samber/lo"
-
+	"github.com/cloudwego/hertz/pkg/app"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-
-	"github.com/cloudwego/hertz/pkg/app"
 
 	"meetplan/api/v1/types"
 	"meetplan/model"
@@ -25,9 +21,8 @@ type ListRequest struct {
 	MajorID      string `query:"major_id"`
 	GradeID      string `query:"grade_id"`
 
-	PageSize int    `query:"page_size"`
-	Before   string `query:"before"`
-	After    string `query:"after"`
+	Page     int `query:"page"`
+	PageSize int `query:"page_size"`
 }
 
 func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) ([]*model.User, *types.PageInfo, error) {
@@ -45,7 +40,6 @@ func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) (
 			{"pkuID": bson.M{"$regex": req.Search}},
 		}
 	}
-
 	if len(req.DepartmentID) > 0 {
 		var ids []primitive.ObjectID
 		for _, id := range strings.Split(req.DepartmentID, ",") {
@@ -79,63 +73,21 @@ func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) (
 		}
 		filter["gradeID"] = bson.M{"$in": ids}
 	}
-	if req.After != "" {
-		oid, err := primitive.ObjectIDFromHex(req.After)
-		if err != nil {
-			return nil, nil, err
-		}
-		filter["_id"] = bson.M{"$lt": oid}
-	} else if req.Before != "" {
-		oid, err := primitive.ObjectIDFromHex(req.Before)
-		if err != nil {
-			return nil, nil, err
-		}
-		filter["_id"] = bson.M{"$gt": oid}
-	}
-	if req.PageSize == 0 {
-		req.PageSize = -1
-	}
 
-	asc := req.After == "" && req.Before != ""
-	users, err := query.UserColl.FindOffset(ctx, filter, req.PageSize, asc)
+	users, err := query.UserColl.FindPage(ctx, filter, req.Page, req.PageSize)
 	if err != nil {
 		return nil, nil, err
 	}
-	if len(users) == 0 {
-		return nil, nil, errors.New("no more users")
-	}
-	if asc {
-		users = lo.Reverse(users)
+	total, err := query.UserColl.Count(ctx, filter)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	pageInfo := &types.PageInfo{
-		Total:   0,
-		HasPrev: false,
-		HasNext: false,
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Total:    total,
 	}
-
-	delete(filter, "_id")
-	if req.PageSize == -1 && req.After == "" && req.Before == "" {
-		pageInfo.Total = len(users)
-	} else {
-		pageInfo.Total, err = query.UserColl.Count(ctx, filter)
-		if err != nil {
-			return nil, nil, err
-		}
-	}
-
-	filter["_id"] = bson.M{"$gte": users[0].ID}
-	exist, err := query.UserColl.Exists(ctx, filter)
-	if err != nil {
-		return nil, nil, err
-	}
-	pageInfo.HasPrev = exist
-	filter["_id"] = bson.M{"$lte": users[len(users)-1].ID}
-	exist, err = query.UserColl.Exists(ctx, filter)
-	if err != nil {
-		return nil, nil, err
-	}
-	pageInfo.HasNext = exist
 
 	return users, pageInfo, nil
 }

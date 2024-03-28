@@ -35,11 +35,7 @@ type UpdateUserRequest struct {
 }
 
 func UpdateUser(ctx context.Context, c *app.RequestContext, req *UpdateUserRequest) (*model.User, *types.PageInfo, error) {
-	id, err := primitive.ObjectIDFromHex(req.ID)
-	if err != nil {
-		return nil, nil, err
-	}
-	dbUser, err := query.UserColl.FindByID(ctx, id)
+	dbUser, err := query.UserColl.FindByIDStr(ctx, req.ID)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -20,11 +20,7 @@ type CreateOrderReq struct {
 }
 
 func CreateOrder(ctx context.Context, c *app.RequestContext, req *CreateOrderReq) (*model.MeetPlan, *types.PageInfo, error) {
-	id, err := primitive.ObjectIDFromHex(req.MeetPlanID)
-	if err != nil {
-		return nil, nil, err
-	}
-	meetplan, err := query.MeetPlanColl.FindByID(ctx, id)
+	meetplan, err := query.MeetPlanColl.FindByIDStr(ctx, req.MeetPlanID)
 	if err != nil {
 		return nil, nil, err
 	}

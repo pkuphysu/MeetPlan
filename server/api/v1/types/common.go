@@ -11,9 +11,9 @@ import (
 )
 
 type PageInfo struct {
-	Total   int  `json:"total"`
-	HasPrev bool `json:"has_prev"`
-	HasNext bool `json:"has_next"`
+	Page     int `json:"page"`
+	PageSize int `json:"page_size"`
+	Total    int `json:"total"`
 }
 
 type Response[T any] struct {

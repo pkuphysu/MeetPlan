@@ -52,7 +52,7 @@ func ListMeetPlan(ctx context.Context, c *app.RequestContext, req *ListMeetPlanR
 		filter["endTime"] = bson.M{"$lte": req.EndTime}
 	}
 
-	meetplans, err := query.MeetPlanColl.FindOffset(ctx, filter, -1, false)
+	meetplans, err := query.MeetPlanColl.FindOffset(ctx, filter, 0, -1)
 	if err != nil {
 		return nil, nil, err
 	}

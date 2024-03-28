@@ -18,11 +18,7 @@ type GetMeetPlanRequest struct {
 }
 
 func GetMeetPlan(ctx context.Context, c *app.RequestContext, req *GetMeetPlanRequest) (*model.MeetPlan, *types.PageInfo, error) {
-	id, err := primitive.ObjectIDFromHex(req.ID)
-	if err != nil {
-		return nil, nil, err
-	}
-	meetplan, err := query.MeetPlanColl.FindByID(ctx, id)
+	meetplan, err := query.MeetPlanColl.FindByIDStr(ctx, req.ID)
 	if err != nil {
 		return nil, nil, err
 	}

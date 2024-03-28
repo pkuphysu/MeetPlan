@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"meetplan/api/v1/types"
 	"meetplan/model"
@@ -16,11 +15,7 @@ type GetUserRequest struct {
 }
 
 func GetUser(ctx context.Context, c *app.RequestContext, req *GetUserRequest) (*model.User, *types.PageInfo, error) {
-	id, err := primitive.ObjectIDFromHex(req.ID)
-	if err != nil {
-		return nil, nil, err
-	}
-	user, err := query.UserColl.FindByID(ctx, id)
+	user, err := query.UserColl.FindByIDStr(ctx, req.ID)
 	if err != nil {
 		return nil, nil, err
 	}
