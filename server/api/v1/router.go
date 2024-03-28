@@ -4,6 +4,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/route"
 
 	"meetplan/api/v1/meetplan"
+	"meetplan/api/v1/option"
 	"meetplan/api/v1/types"
 	"meetplan/api/v1/user"
 )
@@ -48,5 +49,13 @@ func RegisterRoutes(h *route.RouterGroup) {
 		types.RegisterPost(meetplans, "/:id/orders", meetplan.CreateOrder)
 		types.RegisterPut(meetplans, "/:id/orders/:order_id", meetplan.UpdateOrder)
 		types.RegisterDelete(meetplans, "/:id/orders/:order_id", meetplan.DeleteOrder)
+	}
+
+	options := h.Group("/options")
+	{
+		types.RegisterGet(options, "/", option.ListOption)
+		types.RegisterPost(options, "/", option.CreateOptions)
+		types.RegisterPut(options, "/:id", option.UpdateOption)
+		types.RegisterDelete(options, "/:id", option.DeleteOption)
 	}
 }
