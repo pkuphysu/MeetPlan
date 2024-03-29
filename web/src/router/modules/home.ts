@@ -19,7 +19,7 @@ export default {
       component: () => import("@/views/welcome/index.vue"),
       meta: {
         title: $t("menus.pureHome"),
-        showLink: VITE_HIDE_HOME === "true" ? false : true
+        showLink: VITE_HIDE_HOME !== "true"
       }
     }
   ]
