@@ -1,39 +1,66 @@
 import { http } from "@/utils/http";
 
-export type UserResult = {
-  success: boolean;
+export type LoginResult = {
+  code: number;
   data: {
-    /** 用户名 */
-    username: string;
-    /** 当前登陆用户的角色 */
-    roles: Array<string>;
-    /** `token` */
     accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
     refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
   };
-};
-
-export type RefreshTokenResult = {
-  success: boolean;
-  data: {
-    /** `token` */
-    accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
-    refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: Date;
-  };
+  error: string;
 };
 
 /** 登录 */
-export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/login", { data });
+export const login = (code: string) => {
+  return http.request<LoginResult>("post", "/api/v1/login", {
+    data: {
+      code: code
+    }
+  });
 };
 
 /** 刷新token */
-export const refreshTokenApi = (data?: object) => {
-  return http.request<RefreshTokenResult>("post", "/refresh-token", { data });
+export const refreshToken = (refreshToken: string) => {
+  return http.request<LoginResult>("post", "/api/v1/login", {
+    data: {
+      refreshToken: refreshToken
+    }
+  });
+};
+
+export type UserInfo = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  isAdmin: boolean;
+  isTeacher: boolean;
+  name: string;
+  pkuID: string;
+  email: string;
+  emailConfirming: string;
+  phoneNumber: string;
+  gender: string;
+  birthday: string;
+  avatar: string;
+  departmentID: string;
+  department: string;
+  office: string;
+  introduction: string;
+  dorm: string;
+  majorID: string;
+  major: string;
+  gradeID: string;
+  grade: string;
+  isGraduated: boolean;
+};
+
+export type GetSelfInfoResult = {
+  code: number;
+  data: UserInfo;
+  error: string;
+};
+
+export const getSelfInfo = () => {
+  return http.request<GetSelfInfoResult>("get", "/api/v1/users/self");
 };

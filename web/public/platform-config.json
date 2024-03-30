@@ -22,6 +22,6 @@
   "MenuArrowIconNoTransition": false,
   "CachingAsyncRoutes": false,
   "TooltipEffect": "light",
-  "ResponsiveStorageNameSpace": "responsive-",
+  "ResponsiveStorageNameSpace": "meetplan-",
   "MenuSearchHistory": 6
 }

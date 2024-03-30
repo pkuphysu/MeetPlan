@@ -20,6 +20,14 @@ export function useTranslationLang(ref?: Ref) {
     ref && handleResize(ref.value);
   }
 
+  function changeLocale() {
+    if ($storage.locale?.locale === "zh") {
+      translationEn();
+    } else {
+      translationCh();
+    }
+  }
+
   watch(
     () => locale.value,
     () => {
@@ -36,6 +44,7 @@ export function useTranslationLang(ref?: Ref) {
     route,
     locale,
     translationCh,
-    translationEn
+    translationEn,
+    changeLocale
   };
 }

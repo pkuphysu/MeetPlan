@@ -29,3 +29,5 @@ login:
   pureUsernameReg: Please enter username
   purePassWordReg: Please enter password
   purePassWordRuleReg: The password format should be any combination of 8-18 digits
+  siteTitle: Meeting Plan
+  redirectToAuthLogin: Redirect to PHY Auth Login

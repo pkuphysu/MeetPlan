@@ -3,6 +3,8 @@ package user
 import (
 	"context"
 
+	"meetplan/pkg/jwt"
+
 	"github.com/cloudwego/hertz/pkg/app"
 
 	"meetplan/api/v1/types"
@@ -19,6 +21,12 @@ func GetUser(ctx context.Context, c *app.RequestContext, req *GetUserRequest) (*
 	if err != nil {
 		return nil, nil, err
 	}
+	FulfillUser(ctx, user)
+	return user, nil, nil
+}
+
+func GetSelf(ctx context.Context, c *app.RequestContext, _ *any) (*model.User, *types.PageInfo, error) {
+	user := ctx.Value(jwt.CtxUserKey).(*model.User)
 	FulfillUser(ctx, user)
 	return user, nil, nil
 }

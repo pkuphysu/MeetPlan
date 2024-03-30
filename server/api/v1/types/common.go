@@ -18,9 +18,9 @@ type PageInfo struct {
 
 type Response[T any] struct {
 	Code     int       `json:"code"`
-	Data     T         `json:"data,omitempty"`
+	Data     T         `json:"data"`
 	PageInfo *PageInfo `json:"page_info,omitempty"`
-	Error    string    `json:"error,omitempty"`
+	Error    string    `json:"error"`
 }
 
 func register[T, R any](h *route.RouterGroup, method string, path string,
