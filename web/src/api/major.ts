@@ -45,13 +45,9 @@ export const createMajor = (major: Major) => {
 };
 
 export const updateMajor = (major: Major) => {
-  return http.request<GetMajorResult>(
-    "put",
-    `/api/v1/majors/${major.id}`,
-    {
-      data: {
-        major: major.major
-      }
+  return http.request<GetMajorResult>("put", `/api/v1/majors/${major.id}`, {
+    data: {
+      major: major.major
     }
-  );
+  });
 };

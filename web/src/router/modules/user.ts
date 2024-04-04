@@ -3,8 +3,8 @@ import { $t } from "@/plugins/i18n";
 export default [
   {
     path: "/profile",
-    component: () => import("@/views/user/profile/index.vue"),
     name: "UserInfo",
+    component: () => import("@/views/user/profile/index.vue"),
     meta: {
       icon: "ep:avatar",
       title: $t("menus.personalCenter")
@@ -13,7 +13,7 @@ export default [
   {
     path: "/users",
     redirect: "/user/list",
-    name: "UserManagement",
+    name: "UserList",
     meta: {
       icon: "ri:user-settings-line",
       title: $t("menus.userManagement")
@@ -26,7 +26,8 @@ export default [
         meta: {
           icon: "ri:user-settings-line",
           title: $t("menus.userList"),
-          roles: ["admin"]
+          roles: ["admin"],
+          keepAlive: true
         }
       },
       {
@@ -36,7 +37,8 @@ export default [
         meta: {
           icon: "mingcute:department-line",
           title: $t("menus.departmentList"),
-          roles: ["admin"]
+          roles: ["admin"],
+          keepAlive: true
         }
       },
       {
@@ -46,7 +48,8 @@ export default [
         meta: {
           icon: "icon-park-outline:degree-hat",
           title: $t("menus.majorList"),
-          roles: ["admin"]
+          roles: ["admin"],
+          keepAlive: true
         }
       },
       {
@@ -56,7 +59,8 @@ export default [
         meta: {
           icon: "ph:users",
           title: $t("menus.gradeList"),
-          roles: ["admin"]
+          roles: ["admin"],
+          keepAlive: true
         }
       }
     ]

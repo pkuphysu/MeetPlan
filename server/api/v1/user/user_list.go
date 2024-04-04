@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	lop "github.com/samber/lo/parallel"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -14,15 +15,17 @@ import (
 )
 
 type ListRequest struct {
-	Search       string `query:"search"`
-	IsActive     *bool  `query:"is_active"`
-	IsTeacher    *bool  `query:"is_teacher"`
-	DepartmentID string `query:"department_id"`
-	MajorID      string `query:"major_id"`
-	GradeID      string `query:"grade_id"`
+	Name         string `query:"name"`
+	PkuID        string `query:"pkuID"`
+	IsActive     *bool  `query:"isActive"`
+	IsTeacher    *bool  `query:"isTeacher"`
+	IsAdmin      *bool  `query:"isAdmin"`
+	DepartmentID string `query:"departmentID"`
+	MajorID      string `query:"majorID"`
+	GradeID      string `query:"gradeID"`
 
 	Page     int `query:"page"`
-	PageSize int `query:"page_size"`
+	PageSize int `query:"pageSize"`
 }
 
 func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) ([]*model.User, *types.PageInfo, error) {
@@ -34,11 +37,14 @@ func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) (
 	if req.IsTeacher != nil {
 		filter["isTeacher"] = *req.IsTeacher
 	}
-	if req.Search != "" {
-		filter["$or"] = []bson.M{
-			{"username": bson.M{"$regex": req.Search}},
-			{"pkuID": bson.M{"$regex": req.Search}},
-		}
+	if req.IsAdmin != nil {
+		filter["isAdmin"] = *req.IsAdmin
+	}
+	if req.Name != "" {
+		filter["name"] = bson.M{"$regex": req.Name}
+	}
+	if req.PkuID != "" {
+		filter["pkuID"] = bson.M{"$regex": req.PkuID}
 	}
 	if len(req.DepartmentID) > 0 {
 		var ids []primitive.ObjectID
@@ -88,6 +94,10 @@ func GetUserList(ctx context.Context, c *app.RequestContext, req *ListRequest) (
 		PageSize: req.PageSize,
 		Total:    total,
 	}
+
+	lop.ForEach(users, func(user *model.User, _ int) {
+		FulfillUser(ctx, user)
+	})
 
 	return users, pageInfo, nil
 }

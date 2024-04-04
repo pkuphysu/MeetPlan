@@ -8,6 +8,9 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import Refresh from "@iconify-icons/ep/refresh";
 
+defineOptions({
+  name: "MajorList"
+});
 const formRef = ref();
 const tableRef = ref();
 
@@ -45,6 +48,7 @@ const {
           placeholder="请输入名称"
           clearable
           class="!w-[180px]"
+          @keyup.enter="onSearch"
         />
       </el-form-item>
       <el-form-item>

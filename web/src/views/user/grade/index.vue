@@ -8,6 +8,9 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import Refresh from "@iconify-icons/ep/refresh";
 
+defineOptions({
+  name: "GradeList"
+});
 const formRef = ref();
 const tableRef = ref();
 
@@ -45,27 +48,9 @@ const {
           placeholder="请输入名称"
           clearable
           class="!w-[180px]"
+          @keyup.enter="onSearch"
         />
       </el-form-item>
-      <!--      <el-form-item label="角色标识：" prop="code">-->
-      <!--        <el-input-->
-      <!--          v-model="form.code"-->
-      <!--          placeholder="请输入角色标识"-->
-      <!--          clearable-->
-      <!--          class="!w-[180px]"-->
-      <!--        />-->
-      <!--      </el-form-item>-->
-      <!--      <el-form-item label="状态：" prop="status">-->
-      <!--        <el-select-->
-      <!--          v-model="form.status"-->
-      <!--          placeholder="请选择状态"-->
-      <!--          clearable-->
-      <!--          class="!w-[180px]"-->
-      <!--        >-->
-      <!--          <el-option label="已启用" value="1" />-->
-      <!--          <el-option label="已停用" value="0" />-->
-      <!--        </el-select>-->
-      <!--      </el-form-item>-->
       <el-form-item>
         <el-button
           type="primary"
