@@ -20,6 +20,7 @@ menus:
   purePermission: 权限管理
   purePermissionPage: 页面权限
   purePermissionButton: 按钮权限
+  profile: 个人中心
 status:
   pureLoad: 加载中...
 login:
@@ -31,4 +32,6 @@ login:
   purePassWordRuleReg: 密码格式应为8-18位数字、字母、符号的任意两种组合
   siteTitle: 综合指导课
   redirectToAuthLogin: 跳转至物理学院统一认证登录
-
+common:
+  yes: 是
+  no: 否

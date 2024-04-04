@@ -37,7 +37,9 @@ func init() {
 }
 
 type ListMajorRequest struct {
-	Search string `query:"search"`
+	Search   string `query:"search"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"pageSize"`
 }
 
 func GetMajorList(ctx context.Context, c *app.RequestContext, req *ListMajorRequest) ([]*model.Major, *types.PageInfo, error) {
@@ -46,7 +48,11 @@ func GetMajorList(ctx context.Context, c *app.RequestContext, req *ListMajorRequ
 		filter["major"] = bson.M{"$regex": req.Search}
 	}
 
-	majors, err := query.MajorColl.FindAll(ctx, filter)
+	majors, err := query.MajorColl.FindPage(ctx, filter, req.Page, req.PageSize)
+	if err != nil {
+		return nil, nil, err
+	}
+	count, err := query.MajorColl.Count(ctx, filter)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -54,7 +60,11 @@ func GetMajorList(ctx context.Context, c *app.RequestContext, req *ListMajorRequ
 	for _, major := range majors {
 		_ = majorCache.Set(ctx, major.ID.Hex(), major)
 	}
-	return majors, nil, nil
+	return majors, &types.PageInfo{
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Total:    count,
+	}, nil
 }
 
 type CreateMajorRequest struct {

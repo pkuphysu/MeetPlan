@@ -12,14 +12,14 @@ import (
 
 type PageInfo struct {
 	Page     int `json:"page"`
-	PageSize int `json:"page_size"`
+	PageSize int `json:"pageSize"`
 	Total    int `json:"total"`
 }
 
 type Response[T any] struct {
 	Code     int       `json:"code"`
 	Data     T         `json:"data"`
-	PageInfo *PageInfo `json:"page_info,omitempty"`
+	PageInfo *PageInfo `json:"pageInfo,omitempty"`
 	Error    string    `json:"error"`
 }
 

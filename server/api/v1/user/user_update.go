@@ -15,23 +15,23 @@ import (
 
 type UpdateUserRequest struct {
 	ID              string        `path:"id"`
-	IsActive        *bool         `json:"is_active"`
-	IsAdmin         *bool         `json:"is_admin"`
-	IsTeacher       *bool         `json:"is_teacher"`
+	IsActive        *bool         `json:"isActive"`
+	IsAdmin         *bool         `json:"isAdmin"`
+	IsTeacher       *bool         `json:"isTeacher"`
 	Name            *string       `json:"name"`
-	PkuID           *string       `json:"pku_id"` // pkuID 为空说明是外校师生
+	PkuID           *string       `json:"pkuID"` // pkuID 为空说明是外校师生
 	Email           *string       `json:"email"`
-	EmailConfirming *string       `json:"email_confirming"`
-	PhoneNumber     *string       `json:"phone_number"`
+	EmailConfirming *string       `json:"emailConfirming"`
+	PhoneNumber     *string       `json:"phoneNumber"`
 	Gender          *model.Gender `json:"gender"`
 	Birthday        *string       `json:"birthday"`
 	Avatar          *string       `json:"avatar"`
-	DepartmentID    *string       `json:"department_id"`
+	DepartmentID    *string       `json:"departmentID"`
 	Office          *string       `json:"office"`
 	Introduction    *string       `json:"introduction"`
 	Dorm            *string       `json:"dorm"`
-	MajorID         *string       `json:"major_id"`
-	GradeID         *string       `json:"grade_id"`
+	MajorID         *string       `json:"majorID"`
+	GradeID         *string       `json:"gradeID"`
 }
 
 func UpdateUser(ctx context.Context, c *app.RequestContext, req *UpdateUserRequest) (*model.User, *types.PageInfo, error) {
@@ -64,6 +64,45 @@ func UpdateUser(ctx context.Context, c *app.RequestContext, req *UpdateUserReque
 	}
 	if req.PhoneNumber != nil {
 		dbUser.PhoneNumber = *req.PhoneNumber
+	}
+	if req.Gender != nil {
+		dbUser.Gender = *req.Gender
+	}
+	if req.Birthday != nil {
+		dbUser.Birthday = *req.Birthday
+	}
+	if req.Avatar != nil {
+		dbUser.Avatar = *req.Avatar
+	}
+	if req.DepartmentID != nil {
+		department, err := query.DepartmentColl.FindByIDStr(ctx, *req.DepartmentID)
+		if err != nil {
+			return nil, nil, err
+		}
+		dbUser.DepartmentID = department.ID
+	}
+	if req.Office != nil {
+		dbUser.Office = *req.Office
+	}
+	if req.Introduction != nil {
+		dbUser.Introduction = *req.Introduction
+	}
+	if req.Dorm != nil {
+		dbUser.Dorm = *req.Dorm
+	}
+	if req.MajorID != nil {
+		major, err := query.MajorColl.FindByIDStr(ctx, *req.MajorID)
+		if err != nil {
+			return nil, nil, err
+		}
+		dbUser.MajorID = major.ID
+	}
+	if req.GradeID != nil {
+		grade, err := query.GradeColl.FindByIDStr(ctx, *req.GradeID)
+		if err != nil {
+			return nil, nil, err
+		}
+		dbUser.GradeID = grade.ID
 	}
 
 	err = query.UserColl.Upsert(ctx, dbUser)

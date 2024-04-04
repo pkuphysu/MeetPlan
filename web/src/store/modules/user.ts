@@ -91,9 +91,11 @@ export const useUserStore = defineStore({
       return new Promise<LoginResult>((resolve, reject) => {
         refreshToken(token)
           .then(data => {
-            if (data) {
+            if (data && data.data) {
               setToken(data.data);
               resolve(data);
+            } else {
+              reject(data);
             }
           })
           .catch(error => {

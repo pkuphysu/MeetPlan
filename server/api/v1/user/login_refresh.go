@@ -34,17 +34,15 @@ func RefreshToken(ctx context.Context, c *app.RequestContext, req *RefreshTokenR
 		return nil, nil, err
 	}
 	refreshToken := req.RefreshToken
-	expireTime := expirationTime.Time
 	if time.Now().Add(7 * 24 * time.Hour).After(expirationTime.Time) {
 		refreshToken, err = jwt.NewJwt(user, refreshTokenExpireTime)
 		if err != nil {
 			return nil, nil, err
 		}
-		expireTime = time.Now().Add(refreshTokenExpireTime)
 	}
 	return &LoginRes{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-		Expires:      expireTime,
+		Expires:      time.Now().Add(accessTokenExpireTime),
 	}, nil, nil
 }

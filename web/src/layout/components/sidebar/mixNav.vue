@@ -6,21 +6,19 @@ import FullScreen from "./fullScreen.vue";
 import { isAllEmpty } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { transformI18n } from "@/plugins/i18n";
-import { ref, toRaw, watch, onMounted, nextTick } from "vue";
+import { nextTick, onMounted, ref, toRaw, watch } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { getParentPaths, findRouteByPath } from "@/router/utils";
+import { findRouteByPath, getParentPaths } from "@/router/utils";
 import { useTranslationLang } from "../../hooks/useTranslationLang";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import globalization from "@/assets/svg/globalization.svg?component";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
-import Check from "@iconify-icons/ep/check";
 
 const menuRef = ref();
 const defaultActive = ref(null);
 
-const { t, route, locale, translationCh, translationEn } =
-  useTranslationLang(menuRef);
+const { t, route, changeLocale } = useTranslationLang(menuRef);
 const {
   device,
   logout,
@@ -29,9 +27,7 @@ const {
   username,
   userAvatar,
   getDivStyle,
-  avatarsStyle,
-  getDropdownItemStyle,
-  getDropdownItemClass
+  avatarsStyle
 } = useNav();
 
 function getDefaultActive(routePath) {
@@ -100,35 +96,10 @@ watch(
       <!-- 菜单搜索 -->
       <Search id="header-search" />
       <!-- 国际化 -->
-      <el-dropdown id="header-translation" trigger="click">
-        <globalization
-          class="navbar-bg-hover w-[40px] h-[48px] p-[11px] cursor-pointer outline-none"
-        />
-        <template #dropdown>
-          <el-dropdown-menu class="translation">
-            <el-dropdown-item
-              :style="getDropdownItemStyle(locale, 'zh')"
-              :class="['dark:!text-white', getDropdownItemClass(locale, 'zh')]"
-              @click="translationCh"
-            >
-              <span v-show="locale === 'zh'" class="check-zh">
-                <IconifyIconOffline :icon="Check" />
-              </span>
-              简体中文
-            </el-dropdown-item>
-            <el-dropdown-item
-              :style="getDropdownItemStyle(locale, 'en')"
-              :class="['dark:!text-white', getDropdownItemClass(locale, 'en')]"
-              @click="translationEn"
-            >
-              <span v-show="locale === 'en'" class="check-en">
-                <IconifyIconOffline :icon="Check" />
-              </span>
-              English
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <globalization
+        class="navbar-bg-hover w-[40px] h-[48px] p-[11px] cursor-pointer outline-none"
+        @click="changeLocale"
+      />
       <!-- 全屏 -->
       <FullScreen id="full-screen" />
       <!-- 消息通知 -->

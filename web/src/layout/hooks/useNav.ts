@@ -39,7 +39,7 @@ export function useNav() {
 
   /** 用户名 */
   const username = computed(() => {
-    return useUserStoreHook()?.userInfo?.username;
+    return useUserStoreHook()?.userInfo?.name ?? "";
   });
 
   /** 设置国际化选中后的样式 */

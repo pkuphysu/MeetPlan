@@ -20,6 +20,7 @@ menus:
   purePermission: Permission Manage
   purePermissionPage: Page Permission
   purePermissionButton: Button Permission
+  profile: Profile
 status:
   pureLoad: Loading...
 login:
@@ -31,3 +32,6 @@ login:
   purePassWordRuleReg: The password format should be any combination of 8-18 digits
   siteTitle: Meeting Plan
   redirectToAuthLogin: Redirect to PHY Auth Login
+common:
+  yes: yes
+  no: no

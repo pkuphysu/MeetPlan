@@ -36,7 +36,9 @@ func init() {
 }
 
 type ListGradeRequest struct {
-	Search string `query:"search"`
+	Search   string `query:"search"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"pageSize"`
 }
 
 func GetGradeList(ctx context.Context, c *app.RequestContext, req *ListGradeRequest) ([]*model.Grade, *types.PageInfo, error) {
@@ -45,7 +47,12 @@ func GetGradeList(ctx context.Context, c *app.RequestContext, req *ListGradeRequ
 		filter["grade"] = bson.M{"$regex": req.Search}
 	}
 
-	grades, err := query.GradeColl.FindAll(ctx, filter)
+	grades, err := query.GradeColl.FindPage(ctx, filter, req.Page, req.PageSize)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	count, err := query.GradeColl.Count(ctx, filter)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -54,12 +61,16 @@ func GetGradeList(ctx context.Context, c *app.RequestContext, req *ListGradeRequ
 		_ = gradeCache.Set(ctx, grade.ID.Hex(), grade)
 	}
 
-	return grades, nil, nil
+	return grades, &types.PageInfo{
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Total:    count,
+	}, nil
 }
 
 type CreateGradeRequest struct {
 	Grade       string `json:"grade"`
-	IsGraduated bool   `json:"is_graduated"`
+	IsGraduated bool   `json:"isGraduated"`
 }
 
 func CreateGrade(ctx context.Context, c *app.RequestContext, req *CreateGradeRequest) (*model.Grade, *types.PageInfo, error) {
@@ -84,27 +95,21 @@ func CreateGrade(ctx context.Context, c *app.RequestContext, req *CreateGradeReq
 }
 
 type UpdateGradeRequest struct {
-	ID          string `path:"id"`
-	Grade       string `json:"grade"`
-	IsGraduated bool   `json:"is_graduated"`
+	ID          string  `path:"id"`
+	Grade       *string `json:"grade"`
+	IsGraduated *bool   `json:"isGraduated"`
 }
 
 func UpdateGrade(ctx context.Context, c *app.RequestContext, req *UpdateGradeRequest) (*model.Grade, *types.PageInfo, error) {
-	id, err := primitive.ObjectIDFromHex(req.ID)
+	grade, err := query.GradeColl.FindByIDStr(ctx, req.ID)
 	if err != nil {
 		return nil, nil, err
 	}
-	exists, err := query.GradeColl.Exists(ctx, bson.M{"grade": req.Grade, "_id": bson.M{"$ne": id}})
-	if err != nil {
-		return nil, nil, err
+	if req.Grade != nil {
+		grade.Grade = *req.Grade
 	}
-	if exists {
-		return nil, nil, errors.New("grade already exists")
-	}
-	grade := &model.Grade{
-		ID:          id,
-		Grade:       req.Grade,
-		IsGraduated: req.IsGraduated,
+	if req.IsGraduated != nil {
+		grade.IsGraduated = *req.IsGraduated
 	}
 	err = query.GradeColl.Upsert(ctx, grade)
 	if err != nil {

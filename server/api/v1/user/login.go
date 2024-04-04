@@ -65,6 +65,6 @@ func Login(ctx context.Context, c *app.RequestContext, req *LoginReq) (*LoginRes
 	return &LoginRes{
 		AccessToken:  jwtToken,
 		RefreshToken: refreshToken,
-		Expires:      time.Now().Add(refreshTokenExpireTime),
+		Expires:      time.Now().Add(accessTokenExpireTime),
 	}, nil, nil
 }

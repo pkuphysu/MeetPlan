@@ -37,7 +37,9 @@ func init() {
 }
 
 type ListDepartmentRequest struct {
-	Search string `query:"search"`
+	Search   string `query:"search"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"pageSize"`
 }
 
 func GetDepartmentList(ctx context.Context, c *app.RequestContext, req *ListDepartmentRequest) ([]*model.Department, *types.PageInfo, error) {
@@ -46,7 +48,11 @@ func GetDepartmentList(ctx context.Context, c *app.RequestContext, req *ListDepa
 		filter["department"] = bson.M{"$regex": req.Search}
 	}
 
-	departments, err := query.DepartmentColl.FindAll(ctx, filter)
+	departments, err := query.DepartmentColl.FindPage(ctx, filter, req.Page, req.PageSize)
+	if err != nil {
+		return nil, nil, err
+	}
+	count, err := query.DepartmentColl.Count(ctx, filter)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,7 +61,11 @@ func GetDepartmentList(ctx context.Context, c *app.RequestContext, req *ListDepa
 		_ = departmentCache.Set(ctx, department.ID.Hex(), department)
 	}
 
-	return departments, nil, nil
+	return departments, &types.PageInfo{
+		Page:     req.Page,
+		PageSize: req.PageSize,
+		Total:    count,
+	}, nil
 }
 
 type CreateDepartmentRequest struct {
