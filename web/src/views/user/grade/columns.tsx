@@ -1,18 +1,28 @@
-import { onMounted, reactive, type Ref, ref } from "vue";
-import { delay, delObjectProperty } from "@pureadmin/utils";
-
+import { h, onMounted, reactive, type Ref, ref } from "vue";
+import { delay, delObjectProperty, deviceDetection } from "@pureadmin/utils";
+import editForm from "./form.vue";
 import type {
   AdaptiveConfig,
   LoadingConfig,
   PaginationProps
 } from "@pureadmin/table";
-import { getGradeList, type Grade, updateGrade } from "@/api/grade";
+import {
+  createGrade,
+  getGradeList,
+  type Grade,
+  updateGrade
+} from "@/api/grade";
+import { addDialog } from "@/components/ReDialog/index";
 
 export function useColumns() {
   // editMap 是用来存储原始数据的
   const editMap: Ref<Record<number, { editable: boolean } & Grade>> = ref({});
   const dataList: Ref<Grade[]> = ref([]);
   const loading = ref(true);
+  const searchForm = reactive({
+    grade: ""
+  });
+  const formRef = ref();
 
   /** 分页配置 */
   const pagination = reactive<PaginationProps>({
@@ -55,8 +65,25 @@ export function useColumns() {
     // zIndex: 100
   };
 
+  async function onSearch() {
+    console.log("onSearch");
+    editMap.value = {};
+    loadingConfig.text = `正在加载...`;
+    loading.value = true;
+    delay(600).then(() => {
+      getTableData();
+      loading.value = false;
+    });
+  }
+
+  const resetForm = formEl => {
+    if (!formEl) return;
+    formEl.resetFields();
+    onSearch();
+  };
+
   function getTableData() {
-    getGradeList(pagination.currentPage, pagination.pageSize)
+    getGradeList(pagination.currentPage, pagination.pageSize, searchForm.grade)
       .then(res => {
         if (res.code === 0) {
           dataList.value = res.data;
@@ -97,6 +124,8 @@ export function useColumns() {
     {
       label: "ID",
       prop: "id",
+      fixed: "left",
+      minWidth: "80px",
       cellRenderer: ({ row }) => (
         <>
           <p>{row.id}</p>
@@ -188,6 +217,48 @@ export function useColumns() {
     }
   ];
 
+  function openDialog() {
+    addDialog({
+      title: "新建年级",
+      props: {
+        formInline: {}
+      },
+      width: "40%",
+      draggable: true,
+      fullscreen: deviceDetection(),
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(editForm, { ref: formRef }),
+      beforeSure: (done, { options }) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline as Grade;
+
+        function chores() {
+          done(); // 关闭弹框
+          onSearch(); // 刷新表格数据
+        }
+
+        FormRef.validate(valid => {
+          if (valid) {
+            console.log("curData", curData);
+            // 表单规则校验通过
+            createGrade(curData)
+              .then(res => {
+                if (res.code === 0) {
+                  chores();
+                } else {
+                  console.log(res.error);
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        });
+      }
+    });
+  }
+
   onMounted(() => {
     delay(600).then(() => {
       getTableData();
@@ -220,6 +291,10 @@ export function useColumns() {
   }
 
   return {
+    searchForm,
+    onSearch,
+    resetForm,
+    openDialog,
     editMap,
     columns,
     dataList,
