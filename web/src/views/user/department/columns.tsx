@@ -7,20 +7,20 @@ import type {
   PaginationProps
 } from "@pureadmin/table";
 import {
-  createGrade,
-  getGradeList,
-  type Grade,
-  updateGrade
-} from "@/api/grade";
+  createDepartment,
+  getDepartmentList,
+  type Department,
+  updateDepartment
+} from "@/api/department";
 import { addDialog } from "@/components/ReDialog/index";
 
 export function useColumns() {
   // editMap 是用来存储原始数据的
-  const editMap: Ref<Record<number, { editable: boolean } & Grade>> = ref({});
-  const dataList: Ref<Grade[]> = ref([]);
+  const editMap: Ref<Record<number, { editable: boolean } & Department>> = ref({});
+  const dataList: Ref<Department[]> = ref([]);
   const loading = ref(true);
   const searchForm = reactive({
-    grade: ""
+    department: ""
   });
   const formRef = ref();
 
@@ -83,7 +83,7 @@ export function useColumns() {
   };
 
   function getTableData() {
-    getGradeList(pagination.currentPage, pagination.pageSize, searchForm.grade)
+    getDepartmentList(pagination.currentPage, pagination.pageSize, searchForm.department)
       .then(res => {
         if (res.code === 0) {
           dataList.value = res.data;
@@ -133,83 +133,18 @@ export function useColumns() {
       )
     },
     {
-      label: "Grade",
-      prop: "grade",
+      label: "Department",
+      prop: "department",
       cellRenderer: ({ row, index }) => (
         <>
           {editMap.value[index]?.editable ? (
-            <el-input v-model={row.grade} />
+            <el-input v-model={row.department} />
           ) : (
-            <p>{row.grade}</p>
+            <p>{row.department}</p>
           )}
         </>
       )
     },
-    {
-      label: "已毕业离校",
-      prop: "isGraduated",
-      cellRenderer: ({ row, index }) => (
-        <>
-          {editMap.value[index]?.editable ? (
-            <el-switch
-              v-model={row.isGraduated}
-              inline-prompt
-              active-value={true}
-              inactive-value={false}
-              active-text="是"
-              inactive-text="否"
-            />
-          ) : (
-            <p>{row.isGraduated === true ? "是" : "否"}</p>
-          )}
-        </>
-      )
-    },
-    // {
-    //   label: "爱好",
-    //   prop: "hobby",
-    //   cellRenderer: ({ row, index }) => (
-    //     <>
-    //       {editMap.value[index]?.editable ? (
-    //         <el-select v-model={row.hobby} clearable placeholder="请选择爱好">
-    //           {options.map(item => {
-    //             return (
-    //               <el-option
-    //                 key={item.value}
-    //                 label={item.label}
-    //                 value={item.value}
-    //               />
-    //             );
-    //           })}
-    //         </el-select>
-    //       ) : (
-    //         <el-tag type="primary">
-    //           {options.filter(opt => opt.value == row.hobby)[0]?.label}
-    //         </el-tag>
-    //       )}
-    //     </>
-    //   )
-    // },
-    // {
-    //   label: "日期",
-    //   prop: "date",
-    //   cellRenderer: ({ row, index }) => (
-    //     <>
-    //       {editMap.value[index]?.editable ? (
-    //         <el-date-picker
-    //           v-model={row.date}
-    //           type="date"
-    //           format="YYYY/MM/DD"
-    //           value-format="YYYY-MM-DD"
-    //           placeholder="请选择日期"
-    //         />
-    //       ) : (
-    //         <p>{row.date}</p>
-    //       )}
-    //     </>
-    //   ),
-    //   minWidth: 110
-    // },
     {
       label: "操作",
       fixed: "right",
@@ -219,7 +154,7 @@ export function useColumns() {
 
   function openDialog() {
     addDialog({
-      title: "新建年级",
+      title: "新建系所",
       props: {
         formInline: {}
       },
@@ -231,7 +166,7 @@ export function useColumns() {
       contentRenderer: () => h(editForm, { ref: formRef }),
       beforeSure: (done, { options }) => {
         const FormRef = formRef.value.getRef();
-        const curData = options.props.formInline as Grade;
+        const curData = options.props.formInline as Department;
 
         function chores() {
           done(); // 关闭弹框
@@ -242,7 +177,7 @@ export function useColumns() {
           if (valid) {
             console.log("curData", curData);
             // 表单规则校验通过
-            createGrade(curData)
+            createDepartment(curData)
               .then(res => {
                 if (res.code === 0) {
                   chores();
@@ -266,13 +201,13 @@ export function useColumns() {
     });
   });
 
-  function onEdit(row: Grade, index: number) {
+  function onEdit(row: Department, index: number) {
     console.log("onEdit", row, index);
     editMap.value[index] = Object.assign({ ...row, editable: true });
   }
 
   function onSave(index: number) {
-    updateGrade(dataList.value[index])
+    updateDepartment(dataList.value[index])
       .then(res => {
         if (res.code === 0) {
           editMap.value[index].editable = false;

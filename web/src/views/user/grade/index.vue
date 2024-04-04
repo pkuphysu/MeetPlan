@@ -86,7 +86,7 @@ const {
         :columns="columns"
         class="w-full"
         style="transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1)"
-        title="角色管理（仅演示，操作后不生效）"
+        title="年级管理"
         @refresh="onSearch"
       >
         <template #buttons>
@@ -95,7 +95,7 @@ const {
             :icon="useRenderIcon(AddFill)"
             @click="openDialog()"
           >
-            新增角色
+            新增
           </el-button>
         </template>
         <template v-slot="{ size, dynamicColumns }">
