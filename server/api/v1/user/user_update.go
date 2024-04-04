@@ -74,7 +74,7 @@ func UpdateUser(ctx context.Context, c *app.RequestContext, req *UpdateUserReque
 	if req.Avatar != nil {
 		dbUser.Avatar = *req.Avatar
 	}
-	if req.DepartmentID != nil {
+	if req.DepartmentID != nil && *req.DepartmentID != primitive.NilObjectID.Hex() {
 		department, err := query.DepartmentColl.FindByIDStr(ctx, *req.DepartmentID)
 		if err != nil {
 			return nil, nil, err
@@ -90,14 +90,14 @@ func UpdateUser(ctx context.Context, c *app.RequestContext, req *UpdateUserReque
 	if req.Dorm != nil {
 		dbUser.Dorm = *req.Dorm
 	}
-	if req.MajorID != nil {
+	if req.MajorID != nil && *req.MajorID != primitive.NilObjectID.Hex() {
 		major, err := query.MajorColl.FindByIDStr(ctx, *req.MajorID)
 		if err != nil {
 			return nil, nil, err
 		}
 		dbUser.MajorID = major.ID
 	}
-	if req.GradeID != nil {
+	if req.GradeID != nil && *req.GradeID != primitive.NilObjectID.Hex() {
 		grade, err := query.GradeColl.FindByIDStr(ctx, *req.GradeID)
 		if err != nil {
 			return nil, nil, err

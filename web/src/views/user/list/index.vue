@@ -34,7 +34,7 @@ const majorPage = reactive({
 const departmentList: Ref<Department[]> = ref([]);
 const departmentPage = reactive({
   query: undefined,
-  pageSize: 2,
+  pageSize: 10,
   currentPage: 1,
   total: 0
 });

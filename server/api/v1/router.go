@@ -6,6 +6,7 @@ import (
 	"meetplan/api/middleware"
 	"meetplan/api/v1/meetplan"
 	"meetplan/api/v1/option"
+	"meetplan/api/v1/system"
 	"meetplan/api/v1/types"
 	"meetplan/api/v1/user"
 )
@@ -14,6 +15,10 @@ import (
 func RegisterRoutes(h *route.RouterGroup) {
 	types.RegisterPost(h, "/login", user.Login)
 	types.RegisterPost(h, "/login/refresh", user.RefreshToken)
+	systemG := h.Group("/system", middleware.Jwt())
+	{
+		types.RegisterPost(systemG, "/uploadFile", system.UploadFile)
+	}
 	users := h.Group("/users", middleware.Jwt())
 	{
 		types.RegisterGet(users, "/", user.GetUserList)

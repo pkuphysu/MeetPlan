@@ -28,7 +28,7 @@ export const refreshToken = (refreshToken: string) => {
   });
 };
 
-export type UserInfo = {
+export interface UserInfo {
   id?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -53,24 +53,36 @@ export type UserInfo = {
   gradeID?: string;
   grade?: string;
   isGraduated?: boolean;
-};
+}
 
-export type GetSelfInfoResult = {
+export interface GetSelfInfoResult {
   code: number;
   data?: UserInfo;
   error: string;
-};
+}
 
 export const getSelfInfo = () => {
   return http.request<GetSelfInfoResult>("get", "/api/v1/users/self");
 };
 
-export const uploadUserInfoAvatarApi = (params?: object, data?: object) => {
-  return http.request<GetSelfInfoResult>(
-    "put",
-    "/api/system/userinfo/self/upload",
-    params,
-    data
+export interface UploadResult {
+  code: number;
+  data?: string;
+  error: string;
+}
+
+export const uploadUserInfoAvatarApi = (data?: object) => {
+  return http.request<UploadResult>(
+    "post",
+    "/api/v1/system/uploadFile",
+    {
+      data
+    },
+    {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }
   );
 };
 

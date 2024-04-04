@@ -28,13 +28,12 @@ function onCropper({ blob }) {
 </script>
 
 <template>
-  <el-form ref="ruleFormRef" label-width="82px">
+  <el-form ref="ruleFormRef" label-width="auto">
     <el-row :gutter="30">
       <re-col :sm="24" :value="24" :xs="24">
         <el-form-item :label="t('user.avatar')">
           <cropping-upload
             :canvasOption="{ width: 512, height: 512 }"
-            :circled="true"
             :img-src="props.avatar"
             :quality="1"
             @cropper="onCropper"

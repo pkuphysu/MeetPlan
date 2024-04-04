@@ -45,16 +45,24 @@ export function useUserInfo() {
 
   /** 上传头像 */
   function handleUpload(info) {
-    const avatarFile = new File([info], "avatar.png", {
+    const avatarFile = new File([info], `${currentUserInfo.id}.png`, {
       type: info.type,
       lastModified: Date.now()
     });
     const data = new FormData();
     data.append("file", avatarFile);
-    uploadUserInfoAvatarApi({}, data).then(res => {
-      if (res.code === 1000) {
+    uploadUserInfoAvatarApi(data).then(res => {
+      if (res.code === 0) {
         message(t("results.success"), { type: "success" });
-        onSearch();
+        updateUserInfoApi({
+          id: currentUserInfo.id,
+          avatar: res.data
+        }).then(res => {
+          if (res.code === 0) {
+            message(t("results.success"), { type: "success" });
+            onSearch();
+          }
+        });
       } else {
         // message(`${t("results.failed")}，${res.detail}`, { type: "error" });
       }

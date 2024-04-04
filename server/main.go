@@ -8,6 +8,7 @@ import (
 
 func main() {
 	h := server.Default()
+	h.Static("/file", "./")
 
 	api.RegisterRoutes(h.Group("/api"))
 
