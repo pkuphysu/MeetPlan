@@ -15,7 +15,7 @@ type CreateMeetPlanRequest struct {
 }
 
 func CreateMeetPlans(ctx context.Context, c *app.RequestContext, req *CreateMeetPlanRequest) ([]*model.MeetPlan, *types.PageInfo, error) {
-	err := query.MeetPlanColl.UpsertMany(ctx, req.MeetPlans)
+	err := query.MeetPlanColl.InsertMany(ctx, req.MeetPlans)
 	if err != nil {
 		return nil, nil, err
 	}

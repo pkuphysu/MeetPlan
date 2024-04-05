@@ -5,6 +5,8 @@ import (
 	"errors"
 	"reflect"
 
+	"github.com/samber/lo"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -130,31 +132,11 @@ func (c *Coll[T]) Upsert(ctx context.Context, doc *T) error {
 	return err
 }
 
-func (c *Coll[T]) UpsertMany(ctx context.Context, docs []*T) error {
+func (c *Coll[T]) InsertMany(ctx context.Context, docs []*T) error {
 	if len(docs) == 0 {
 		return nil
 	}
-	sess, err := db.Client().StartSession()
-	if err != nil {
-		return err
-	}
-	defer sess.EndSession(ctx)
-	sessCtx := mongo.NewSessionContext(ctx, sess)
-	err = sess.StartTransaction()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		_ = sess.AbortTransaction(sessCtx)
-	}()
-	res, err := c.Raw().UpdateMany(sessCtx, docs, options.Update().SetUpsert(true))
-	if err != nil {
-		return err
-	}
-	if res.MatchedCount+res.UpsertedCount != int64(len(docs)) {
-		return errors.New("not all documents are upserted")
-	}
-	err = sess.CommitTransaction(sessCtx)
+	_, err := c.Raw().InsertMany(ctx, lo.ToAnySlice(docs))
 	if err != nil {
 		return err
 	}

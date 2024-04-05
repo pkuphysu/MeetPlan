@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useUserStoreHook } from "@/store/modules/user";
+import WelcomeTeacher from "@/views/welcome/teacher/index.vue";
+import WelcomeStudent from "@/views/welcome/student/index.vue";
+
 defineOptions({
   name: "Welcome"
 });
+
+const userStore = useUserStoreHook();
 </script>
 
 <template>
-  <h1>Pure-Admin-Thin（国际化版本）</h1>
+  <WelcomeTeacher v-if="userStore.userInfo.isTeacher" />
+  <WelcomeStudent v-else />
 </template>

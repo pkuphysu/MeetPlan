@@ -15,7 +15,7 @@ type CreateUserRequest struct {
 }
 
 func CreateUsers(ctx context.Context, c *app.RequestContext, req *CreateUserRequest) ([]*model.User, *types.PageInfo, error) {
-	err := query.UserColl.UpsertMany(ctx, req.Users)
+	err := query.UserColl.InsertMany(ctx, req.Users)
 	if err != nil {
 		return nil, nil, err
 	}

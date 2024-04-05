@@ -13,8 +13,10 @@ import (
 )
 
 type ListOptionRequest struct {
-	Search string `query:"search"`
-	Name   string `query:"name"`
+	Search   string `query:"search"`
+	Name     string `query:"name"`
+	Page     int    `query:"page"`
+	PageSize int    `query:"pageSize"`
 }
 
 func ListOption(ctx context.Context, c *app.RequestContext, req *ListOptionRequest) ([]*model.Option, *types.PageInfo, error) {
@@ -25,9 +27,18 @@ func ListOption(ctx context.Context, c *app.RequestContext, req *ListOptionReque
 	if req.Name != "" {
 		filter["name"] = strings.Split(req.Name, ",")
 	}
-	options, err := query.OptionColl.FindAll(ctx, filter)
+	options, err := query.OptionColl.FindPage(ctx, filter, req.Page, req.PageSize)
 	if err != nil {
 		return nil, nil, err
 	}
-	return options, nil, nil
+	total, err := query.OptionColl.Count(ctx, filter)
+	if err != nil {
+		return nil, nil, err
+	}
+	pageInfo := &types.PageInfo{
+		Total:    total,
+		Page:     req.Page,
+		PageSize: req.PageSize,
+	}
+	return options, pageInfo, nil
 }

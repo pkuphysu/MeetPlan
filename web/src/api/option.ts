@@ -1,31 +1,48 @@
 import { http } from "@/utils/http";
 
-export type Option = {
+export interface Option {
   id?: string;
   name?: string;
   value?: string;
-};
+}
 
-export type OptionResult = {
-  data: Option;
-};
+export interface OptionResult {
+  code: number;
+  data?: Option;
+  error: string;
+}
 
-export type OptionsResult = {
+export interface OptionsResult {
+  code: number;
   data?: Option[];
-};
+  error: string;
+  pageInfo: {
+    total: number;
+    page: number;
+    pageSize: number;
+  };
+}
 
-export const searchOptions = (search?: string) => {
+export const searchOptions = (
+  page: number,
+  pageSize: number,
+  search?: string
+) => {
   return http.request<OptionsResult>("get", "/api/v1/options", {
     params: {
-      search: search
+      search: search,
+      page: page,
+      pageSize: pageSize
     }
   });
 };
 
-export const getOption = (names: string[]) => {
+export const getOption = (page: number, pageSize: number, names: string[]) => {
   return http.request<OptionsResult>("get", "/api/v1/options", {
     params: {
-      name: names.join(",")
+      name: names.join(","),
+      page: page,
+      pageSize: pageSize
     }
   });
 };
