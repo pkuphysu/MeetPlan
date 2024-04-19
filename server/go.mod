@@ -5,10 +5,13 @@ go 1.22
 require (
 	github.com/allegro/bigcache/v3 v3.1.0
 	github.com/cloudwego/hertz v0.8.1
+	github.com/coreos/go-oidc/v3 v3.10.0
 	github.com/eko/gocache/lib/v4 v4.1.5
 	github.com/eko/gocache/store/bigcache/v4 v4.2.1
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/samber/lo v1.39.0
 	go.mongodb.org/mongo-driver v1.14.0
+	golang.org/x/oauth2 v0.18.0
 	golang.org/x/sync v0.1.0
 )
 
@@ -20,10 +23,8 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/cloudwego/netpoll v0.5.0 // indirect
-	github.com/coreos/go-oidc/v3 v3.10.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-jose/go-jose/v4 v4.0.1 // indirect
-	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
@@ -49,8 +50,6 @@ require (
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20230315142452-642cacee5cc0 // indirect
-	golang.org/x/net v0.22.0 // indirect
-	golang.org/x/oauth2 v0.18.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
